@@ -4,8 +4,6 @@ use super::*;
 pub(crate) struct Mint {
   #[clap(long, help = "Use <FEE_RATE> sats/vbyte for mint transaction.")]
   fee_rate: FeeRate,
-  #[clap(long, help = "Mint <RUNE>. May contain `.` or `•`as spacers.")]
-  rune: SpacedRune,
   #[clap(
     long,
     help = "Include <AMOUNT> postage with mint output. [default: 10000sat]"
@@ -29,21 +27,19 @@ impl Mint {
       "`ord wallet mint` requires index created with `--index-runes` flag",
     );
 
-    let rune = self.rune.rune;
-
     let bitcoin_client = wallet.bitcoin_client();
 
     let block_height = bitcoin_client.get_block_count()?;
 
-    let Some((id, rune_entry, _)) = wallet.get_rune(rune)? else {
-      bail!("rune {rune} has not been etched");
+    let Some((id, rune_entry, _)) = wallet.get_rune(Rune(0))? else {
+      bail!("rune has not been etched");
     };
 
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
 
     let amount = rune_entry
       .mintable(block_height + 1)
-      .map_err(|err| anyhow!("rune {rune} {err}"))?;
+      .map_err(|err| anyhow!("rune {err}"))?;
 
     let chain = wallet.chain();
 
@@ -106,7 +102,7 @@ impl Mint {
     let transaction = bitcoin_client.send_raw_transaction(&signed_transaction)?;
 
     Ok(Some(Box::new(Output {
-      rune: self.rune,
+      rune: rune_entry.spaced_rune,
       pile: Pile {
         amount,
         divisibility: rune_entry.divisibility,

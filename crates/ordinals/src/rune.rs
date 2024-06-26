@@ -111,28 +111,11 @@ impl Rune {
 
 impl Display for Rune {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-    let mut n = self.0;
-    if n == u128::MAX {
-      return write!(f, "BCGDENLQRQWDSLRUGSNLBTMFIJAV");
+    if self.0 % 2 == 0{
+      return write!(f, "TIGHTEN");
+    } else {
+      return write!(f, "EASE");
     }
-
-    n += 1;
-    let mut symbol = String::new();
-    while n > 0 {
-      symbol.push(
-        "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
-          .chars()
-          .nth(((n - 1) % 26) as usize)
-          .unwrap(),
-      );
-      n = (n - 1) / 26;
-    }
-
-    for c in symbol.chars().rev() {
-      write!(f, "{c}")?;
-    }
-
-    Ok(())
   }
 }
 
@@ -140,20 +123,26 @@ impl FromStr for Rune {
   type Err = Error;
 
   fn from_str(s: &str) -> Result<Self, Error> {
-    let mut x = 0u128;
-    for (i, c) in s.chars().enumerate() {
-      if i > 0 {
-        x = x.checked_add(1).ok_or(Error::Range)?;
-      }
-      x = x.checked_mul(26).ok_or(Error::Range)?;
-      match c {
-        'A'..='Z' => {
-          x = x.checked_add(c as u128 - 'A' as u128).ok_or(Error::Range)?;
+    if s == "TIGHTEN" {
+      Ok(Rune(0))
+    } else if s == "EASE" {
+      Ok(Rune(1))
+    } else {
+      let mut x = 0u128;
+      for (i, c) in s.chars().enumerate() {
+        if i > 0 {
+          x = x.checked_add(1).ok_or(Error::Range)?;
         }
-        _ => return Err(Error::Character(c)),
+        x = x.checked_mul(26).ok_or(Error::Range)?;
+        match c {
+          'A'..='Z' => {
+            x = x.checked_add(c as u128 - 'A' as u128).ok_or(Error::Range)?;
+          }
+          _ => return Err(Error::Character(c)),
+        }
       }
+      Ok(Rune(x))
     }
-    Ok(Rune(x))
   }
 }
 

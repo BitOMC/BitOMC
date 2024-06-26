@@ -29,9 +29,9 @@ pub enum Event {
     txid: Txid,
   },
   RuneMinted {
-    amount: u128,
+    amount0: u128,
+    amount1: u128,
     block_height: u32,
-    rune_id: RuneId,
     txid: Txid,
   },
   RuneTransferred {

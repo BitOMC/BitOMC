@@ -19,6 +19,9 @@ pub(super) struct RuneUpdater<'a, 'tx, 'client> {
 
 impl<'a, 'tx, 'client> RuneUpdater<'a, 'tx, 'client> {
   pub(super) fn index_runes(&mut self, tx_index: u32, tx: &Transaction, txid: Txid) -> Result<()> {
+    let id0 = RuneId { block: 1, tx: 0 };
+    let id1 = RuneId { block: 1, tx: 1 };
+
     let artifact = Runestone::decipher(tx);
 
     let mut unallocated = self.unallocated(tx)?;
@@ -26,16 +29,17 @@ impl<'a, 'tx, 'client> RuneUpdater<'a, 'tx, 'client> {
     let mut allocated: Vec<HashMap<RuneId, Lot>> = vec![HashMap::new(); tx.output.len()];
 
     if let Some(artifact) = &artifact {
-      if let Some(id) = artifact.mint() {
-        if let Some(amount) = self.mint(id)? {
-          *unallocated.entry(id).or_default() += amount;
+      if !artifact.mint().is_none() {
+        if let Some((amount0, amount1)) = self.mint(id0, id1)? {
+          *unallocated.entry(id0).or_default() += amount0;
+          *unallocated.entry(id1).or_default() += amount1;
 
           if let Some(sender) = self.event_sender {
             sender.blocking_send(Event::RuneMinted {
               block_height: self.height,
               txid,
-              rune_id: id,
-              amount: amount.n(),
+              amount0: amount0.n(),
+              amount1: amount1.n(),
             })?;
           }
         }
@@ -379,24 +383,34 @@ impl<'a, 'tx, 'client> RuneUpdater<'a, 'tx, 'client> {
     )))
   }
 
-  fn mint(&mut self, id: RuneId) -> Result<Option<Lot>> {
-    let Some(entry) = self.id_to_entry.get(&id.store())? else {
+  fn mint(&mut self, id0: RuneId, id1: RuneId) -> Result<Option<(Lot, Lot)>> {
+    let Some(entry0) = self.id_to_entry.get(&id0.store())? else {
+      return Ok(None);
+    };
+    let Some(entry1) = self.id_to_entry.get(&id1.store())? else {
       return Ok(None);
     };
 
-    let mut rune_entry = RuneEntry::load(entry.value());
+    let mut rune_entry0 = RuneEntry::load(entry0.value());
+    let mut rune_entry1 = RuneEntry::load(entry1.value());
 
-    let Ok(amount) = rune_entry.mintable(self.height.into()) else {
+    let Ok(amount0) = rune_entry0.mintable(self.height.into()) else {
+      return Ok(None);
+    };
+    let Ok(amount1) = rune_entry1.mintable(self.height.into()) else {
       return Ok(None);
     };
 
-    drop(entry);
+    drop(entry0);
+    drop(entry1);
 
-    rune_entry.mints += 1;
+    rune_entry0.mints += 1;
+    rune_entry1.mints += 1;
 
-    self.id_to_entry.insert(&id.store(), rune_entry.store())?;
+    self.id_to_entry.insert(&id0.store(), rune_entry0.store())?;
+    self.id_to_entry.insert(&id1.store(), rune_entry1.store())?;
 
-    Ok(Some(Lot(amount)))
+    Ok(Some((Lot(amount0), Lot(amount1))))
   }
 
   fn tx_commits_to_rune(&self, tx: &Transaction, rune: Rune) -> Result<bool> {
