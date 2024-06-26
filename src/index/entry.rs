@@ -48,7 +48,7 @@ pub struct RuneEntry {
   pub etching: Txid,
   pub mints: u128,
   pub number: u64,
-  pub premine: u128,
+  pub supply: u128,
   pub spaced_rune: SpacedRune,
   pub symbol: Option<char>,
   pub terms: Option<Terms>,
@@ -84,21 +84,15 @@ impl RuneEntry {
   }
 
   pub fn supply(&self) -> u128 {
-    self.premine
-      + self.mints
-        * self
-          .terms
-          .and_then(|terms| terms.amount)
-          .unwrap_or_default()
+    self.supply
   }
 
   pub fn max_supply(&self) -> u128 {
-    self.premine
-      + self.terms.and_then(|terms| terms.cap).unwrap_or_default()
-        * self
-          .terms
-          .and_then(|terms| terms.amount)
-          .unwrap_or_default()
+    self.terms.and_then(|terms| terms.cap).unwrap_or_default()
+      * self
+        .terms
+        .and_then(|terms| terms.amount)
+        .unwrap_or_default()
   }
 
   pub fn pile(&self, amount: u128) -> Pile {
@@ -158,7 +152,7 @@ pub(super) type RuneEntryValue = (
   (u128, u128),            // etching
   u128,                    // mints
   u64,                     // number
-  u128,                    // premine
+  u128,                    // supply
   (u128, u32),             // spaced rune
   Option<char>,            // symbol
   Option<TermsEntryValue>, // terms
@@ -175,7 +169,7 @@ impl Default for RuneEntry {
       etching: Txid::all_zeros(),
       mints: 0,
       number: 0,
-      premine: 0,
+      supply: 0,
       spaced_rune: SpacedRune::default(),
       symbol: None,
       terms: None,
@@ -196,7 +190,7 @@ impl Entry for RuneEntry {
       etching,
       mints,
       number,
-      premine,
+      supply,
       (rune, spacers),
       symbol,
       terms,
@@ -220,7 +214,7 @@ impl Entry for RuneEntry {
       },
       mints,
       number,
-      premine,
+      supply,
       spaced_rune: SpacedRune {
         rune: Rune(rune),
         spacers,
@@ -257,7 +251,7 @@ impl Entry for RuneEntry {
       },
       self.mints,
       self.number,
-      self.premine,
+      self.supply,
       (self.spaced_rune.rune.0, self.spaced_rune.spacers),
       self.symbol,
       self.terms.map(
@@ -613,7 +607,7 @@ mod tests {
       }),
       mints: 11,
       number: 6,
-      premine: 12,
+      supply: 12,
       spaced_rune: SpacedRune {
         rune: Rune(7),
         spacers: 8,
@@ -935,7 +929,7 @@ mod tests {
           ..default()
         }),
         mints: 0,
-        premine: 1,
+        supply: 1,
         ..default()
       }
       .supply(),
@@ -949,7 +943,7 @@ mod tests {
           ..default()
         }),
         mints: 1,
-        premine: 1,
+        supply: 1,
         ..default()
       }
       .supply(),

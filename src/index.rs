@@ -84,14 +84,13 @@ pub(crate) enum Statistic {
   IndexSats = 5,
   LostSats = 6,
   OutputsTraversed = 7,
-  ReservedRunes = 8,
-  Runes = 9,
-  SatRanges = 10,
-  UnboundInscriptions = 11,
-  IndexTransactions = 12,
-  IndexSpentSats = 13,
-  InitialSyncTime = 14,
-  IndexAddresses = 15,
+  Runes = 8,
+  SatRanges = 9,
+  UnboundInscriptions = 10,
+  IndexTransactions = 11,
+  IndexSpentSats = 12,
+  InitialSyncTime = 13,
+  IndexAddresses = 14,
 }
 
 impl Statistic {
@@ -383,17 +382,17 @@ impl Index {
             RuneEntry {
               block: 0,
               burned: 0,
-              divisibility: 0,
+              divisibility: 8,
               etching,
               terms: Some(Terms {
-                amount: Some(1),
+                amount: Some(50),
                 cap: Some(u128::MAX),
                 height: (None, None),
                 offset: (None, None),
               }),
               mints: 0,
               number: 0,
-              premine: 0,
+              supply: 0,
               spaced_rune: SpacedRune {
                 rune: rune0,
                 spacers: 0,
@@ -410,17 +409,17 @@ impl Index {
             RuneEntry {
               block: 0,
               burned: 0,
-              divisibility: 0,
+              divisibility: 8,
               etching,
               terms: Some(Terms {
-                amount: Some(1),
+                amount: Some(50),
                 cap: Some(u128::MAX),
                 height: (None, None),
                 offset: (None, None),
               }),
               mints: 0,
               number: 0,
-              premine: 0,
+              supply: 0,
               spaced_rune: SpacedRune {
                 rune: rune1,
                 spacers: 0,

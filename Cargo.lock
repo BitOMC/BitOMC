@@ -2288,6 +2288,7 @@ dependencies = [
  "mockcore",
  "mp4",
  "nix",
+ "num-integer",
  "ord-bitcoincore-rpc",
  "ordinals",
  "pretty_assertions",
