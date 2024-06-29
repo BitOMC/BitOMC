@@ -2,7 +2,7 @@ use {
   super::*,
   std::{
     cmp::{PartialEq, PartialOrd},
-    ops::{Add, AddAssign, Div, Rem, Sub, SubAssign},
+    ops::{Add, AddAssign, Div, Mul, Rem, Sub, SubAssign},
   },
 };
 
@@ -69,6 +69,13 @@ impl Sub for Lot {
 impl SubAssign for Lot {
   fn sub_assign(&mut self, other: Self) {
     *self = *self - other;
+  }
+}
+
+impl Mul<u128> for Lot {
+  type Output = Self;
+  fn mul(self, other: u128) -> Self::Output {
+    Lot(self.0 * other)
   }
 }
 
