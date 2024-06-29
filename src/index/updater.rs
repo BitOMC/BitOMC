@@ -636,7 +636,7 @@ impl<'index> Updater<'index> {
         outpoint_to_balances: &mut outpoint_to_rune_balances,
       };
 
-      for (_, (tx, txid)) in block.txdata.iter().enumerate() {
+      for (tx, txid) in block.txdata.iter() {
         rune_updater.index_runes(tx, *txid)?;
       }
 

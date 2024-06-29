@@ -1,10 +1,6 @@
 pub(crate) use {
   super::*,
-  bitcoin::{
-    blockdata::script::{PushBytes, PushBytesBuf},
-    constants::COIN_VALUE,
-    opcodes, WPubkeyHash,
-  },
+  bitcoin::{blockdata::script::PushBytesBuf, constants::COIN_VALUE, opcodes, WPubkeyHash},
   mockcore::TransactionTemplate,
   pretty_assertions::assert_eq as pretty_assert_eq,
   std::iter,
@@ -126,6 +122,7 @@ pub(crate) fn envelope(payload: &[&[u8]]) -> Witness {
   Witness::from_slice(&[script.into_bytes(), Vec::new()])
 }
 
+#[allow(dead_code)]
 pub(crate) fn default_address(chain: Chain) -> Address {
   Address::from_script(
     &ScriptBuf::new_v0_p2wpkh(&WPubkeyHash::all_zeros()),

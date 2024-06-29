@@ -386,34 +386,6 @@ mod tests {
   }
 
   #[test]
-  fn with_rune() {
-    assert_regex_match!(
-      InscriptionHtml {
-        fee: 1,
-        inscription: inscription("text/plain;charset=utf-8", "HELLOWORLD"),
-        id: inscription_id(1),
-        number: 1,
-        satpoint: satpoint(1, 0),
-        rune: Some(SpacedRune {
-          rune: Rune(26),
-          spacers: 1
-        }),
-        ..default()
-      },
-      "
-        <h1>Inscription 1</h1>
-        .*
-        <dl>
-          <dt>rune</dt>
-          <dd><a href=/rune/A•A>A•A</a></dd>
-          .*
-        </dl>
-      "
-      .unindent()
-    );
-  }
-
-  #[test]
   fn with_content_encoding() {
     assert_regex_match!(
       InscriptionHtml {

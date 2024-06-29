@@ -546,7 +546,7 @@ fn get_runes() {
         etching: a.output.reveal,
         mints: 0,
         number: 0,
-        premine: 1000,
+        supply: 1000,
         spaced_rune: SpacedRune {
           rune: Rune(RUNE),
           spacers: 0
@@ -584,7 +584,7 @@ fn get_runes() {
             etching: c.output.reveal,
             mints: 0,
             number: 2,
-            premine: 1000,
+            supply: 1000,
             spaced_rune: SpacedRune {
               rune: Rune(RUNE + 2),
               spacers: 0
@@ -604,7 +604,7 @@ fn get_runes() {
             etching: b.output.reveal,
             mints: 0,
             number: 1,
-            premine: 1000,
+            supply: 1000,
             spaced_rune: SpacedRune {
               rune: Rune(RUNE + 1),
               spacers: 0
@@ -624,7 +624,7 @@ fn get_runes() {
             etching: a.output.reveal,
             mints: 0,
             number: 0,
-            premine: 1000,
+            supply: 1000,
             spaced_rune: SpacedRune {
               rune: Rune(RUNE),
               spacers: 0
@@ -650,56 +650,31 @@ fn get_runes_balances() {
 
   create_wallet(&core, &ord);
 
+  const ID0: RuneId = RuneId { block: 1, tx: 0 };
+  // const ID1: RuneId = RuneId { block: 1, tx: 1 };
+
   core.mine_blocks(3);
 
-  let rune0 = Rune(RUNE);
-  let rune1 = Rune(RUNE + 1);
-  let rune2 = Rune(RUNE + 2);
-
-  let e0 = etch(&core, &ord, rune0);
-  let e1 = etch(&core, &ord, rune1);
-  let e2 = etch(&core, &ord, rune2);
+  let txid = core.broadcast_tx(TransactionTemplate {
+    inputs: &[(2, 0, 0, Witness::new())],
+    op_return: Some(
+      Runestone {
+        mint: Some(ID0),
+        ..default()
+      }
+      .encipher(),
+    ),
+    ..default()
+  });
 
   core.mine_blocks(1);
 
-  let rune_balances: BTreeMap<Rune, BTreeMap<OutPoint, u128>> = vec![
-    (
-      rune0,
-      vec![(
-        OutPoint {
-          txid: e0.output.reveal,
-          vout: 1,
-        },
-        1000,
-      )]
+  let rune_balances: BTreeMap<Rune, BTreeMap<OutPoint, u128>> = vec![(
+    Rune(0),
+    vec![(OutPoint { txid, vout: 0 }, 50 * 100000000)]
       .into_iter()
       .collect(),
-    ),
-    (
-      rune1,
-      vec![(
-        OutPoint {
-          txid: e1.output.reveal,
-          vout: 1,
-        },
-        1000,
-      )]
-      .into_iter()
-      .collect(),
-    ),
-    (
-      rune2,
-      vec![(
-        OutPoint {
-          txid: e2.output.reveal,
-          vout: 1,
-        },
-        1000,
-      )]
-      .into_iter()
-      .collect(),
-    ),
-  ]
+  )]
   .into_iter()
   .collect();
 

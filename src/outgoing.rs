@@ -201,17 +201,17 @@ mod tests {
     case("1.2 btc", Outgoing::Amount("1.2 btc".parse().unwrap()));
 
     case(
-      "0:XY•Z",
+      "0:TIGHTEN",
       Outgoing::Rune {
-        rune: "XY•Z".parse().unwrap(),
+        rune: "TIGHTEN".parse().unwrap(),
         decimal: "0".parse().unwrap(),
       },
     );
 
     case(
-      "1.1:XYZ",
+      "1.1:EASE",
       Outgoing::Rune {
-        rune: "XYZ".parse().unwrap(),
+        rune: "EASE".parse().unwrap(),
         decimal: "1.1".parse().unwrap(),
       },
     );
@@ -260,10 +260,10 @@ mod tests {
     );
 
     case(
-      "6.66:HELL.MONEY",
-      "\"6.66:HELL•MONEY\"",
+      "6.66:TIGHTEN",
+      "\"6.66:TIGHTEN\"",
       Outgoing::Rune {
-        rune: "HELL•MONEY".parse().unwrap(),
+        rune: "TIGHTEN".parse().unwrap(),
         decimal: "6.66".parse().unwrap(),
       },
     );

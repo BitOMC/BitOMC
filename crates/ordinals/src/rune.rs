@@ -111,10 +111,10 @@ impl Rune {
 
 impl Display for Rune {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-    if self.0 % 2 == 0{
-      return write!(f, "TIGHTEN");
+    if self.0 % 2 == 0 {
+      write!(f, "TIGHTEN")
     } else {
-      return write!(f, "EASE");
+      write!(f, "EASE")
     }
   }
 }

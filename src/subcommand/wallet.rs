@@ -8,6 +8,7 @@ use {
 pub mod balance;
 mod batch_command;
 pub mod cardinals;
+pub mod convert;
 pub mod create;
 pub mod dump;
 pub mod inscribe;
@@ -49,6 +50,8 @@ pub(crate) enum Subcommand {
   Batch(batch_command::Batch),
   #[command(about = "List unspent cardinal outputs in wallet")]
   Cardinals,
+  #[command(about = "Convert between tighten and ease")]
+  Convert(convert::Convert),
   #[command(about = "Create new wallet")]
   Create(create::Create),
   #[command(about = "Dump wallet descriptors")]
@@ -107,6 +110,7 @@ impl WalletCommand {
       Subcommand::Balance => balance::run(wallet),
       Subcommand::Batch(batch) => batch.run(wallet),
       Subcommand::Cardinals => cardinals::run(wallet),
+      Subcommand::Convert(convert) => convert.run(wallet),
       Subcommand::Create(_) | Subcommand::Restore(_) => unreachable!(),
       Subcommand::Dump => dump::run(wallet),
       Subcommand::Inscribe(inscribe) => inscribe.run(wallet),

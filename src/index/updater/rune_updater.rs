@@ -1,7 +1,4 @@
-use {
-  super::*,
-  num_integer::Roots
-};
+use {super::*, num_integer::Roots};
 
 pub(super) struct RuneUpdater<'a, 'tx> {
   pub(super) burned: HashMap<RuneId, Lot>,
@@ -22,8 +19,13 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     let mut allocated: Vec<HashMap<RuneId, Lot>> = vec![HashMap::new(); tx.output.len()];
 
+    let mut converted: HashMap<RuneId, Lot> = HashMap::new();
+    let mut allocated_conversion: Vec<HashMap<RuneId, Lot>> = vec![HashMap::new(); tx.output.len()];
+
+    let mut burned: HashMap<RuneId, Lot> = HashMap::new();
+
     if let Some(artifact) = &artifact {
-      if !artifact.mint().is_none() {
+      if artifact.mint().is_some() {
         if let Some((amount0, amount1)) = self.mint(id0, id1)? {
           *unallocated.entry(id0).or_default() += amount0;
           *unallocated.entry(id1).or_default() += amount1;
@@ -49,6 +51,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           assert!(output <= tx.output.len());
 
           let Some(balance) = unallocated.get_mut(&id) else {
+            *converted.entry(id).or_default() += amount;
+            *allocated_conversion[output].entry(id).or_default() += amount;
             continue;
           };
 
@@ -86,11 +90,22 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
               } else {
                 // if amount is non-zero, distribute amount to eligible outputs
                 for output in destinations {
+                  if amount > *balance {
+                    // if amount exceeds balance, add remaining amount to (potential) conversion output amount
+                    *converted.entry(id).or_default() += amount - *balance;
+                    *allocated_conversion[output].entry(id).or_default() += amount - *balance;
+                  }
                   allocate(balance, amount.min(*balance), output);
                 }
               }
             }
           } else {
+            // if amount exceeds balance, add remaining amount to (potential) conversion output amount
+            if amount > *balance {
+              *converted.entry(id).or_default() += amount - *balance;
+              *allocated_conversion[output].entry(id).or_default() += amount - *balance;
+            }
+
             // Get the allocatable amount
             let amount = if amount == 0 {
               *balance
@@ -103,8 +118,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         }
       }
     }
-
-    let mut burned: HashMap<RuneId, Lot> = HashMap::new();
 
     if let Some(Artifact::Cenotaph(_)) = artifact {
       for (id, balance) in unallocated {
@@ -143,6 +156,81 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           }
         }
       }
+    }
+    
+    let mut conversion_output_id: Option<RuneId> = None;
+    let mut residual: Option<(RuneId, Lot)> = None;
+
+    // update fields if burned amount and converted amount represent valid conversion
+    if burned.entry(id0).or_default().0 > 0 && converted.entry(id1).or_default().0 > 0 {
+      let input_amt = burned.entry(id0).or_default();
+      let min_output_amt = converted.entry(id1).or_default();
+      if let Some(output_amt) = self.convert(id0, id1, *input_amt, *min_output_amt)? {
+        // set burned amount to zero if conversion successful and allocate converted amount
+        *burned.entry(id0).or_default() = Lot(0);
+        conversion_output_id = Some(id1);
+        residual = Some((id1, output_amt - *min_output_amt));
+      }
+    } else if burned.entry(id1).or_default().0 > 0 && converted.entry(id0).or_default().0 > 0  {
+      let input_amt = burned.entry(id1).or_default();
+      let min_output_amt = converted.entry(id0).or_default();
+      if let Some(output_amt) = self.convert(id1, id0, *input_amt, *min_output_amt)? {
+        // set burned amount to zero if conversion successful and allocate converted amount
+        *burned.entry(id1).or_default() = Lot(0);
+        conversion_output_id = Some(id0);
+        residual = Some((id0, output_amt - *min_output_amt));
+      }
+    }
+
+    if let Some(conversion_output_id) = conversion_output_id {
+      let mut residual_vout: Option<usize> = None;
+
+        for (vout, balances) in allocated_conversion.into_iter().enumerate() {
+          let amount = balances[&conversion_output_id];
+          if vout == tx.output.len() {
+            // find non-OP_RETURN outputs
+            let destinations = tx
+            .output
+            .iter()
+            .enumerate()
+            .filter_map(|(vout, tx_out)| {
+              (!tx_out.script_pubkey.is_op_return()).then_some(vout)
+            })
+            .collect::<Vec<usize>>();
+
+            if !destinations.is_empty() {
+              // divide amount between eligible outputs
+              let sub_amount = amount / destinations.len() as u128;
+              let remainder = usize::try_from(amount % destinations.len() as u128).unwrap();
+
+              for (i, output) in destinations.iter().enumerate() {
+                let rounded_sub_amount = if i < remainder { sub_amount + 1 } else { sub_amount };
+                *allocated[*output].entry(conversion_output_id).or_default() += rounded_sub_amount;
+
+                if residual_vout.is_none() {
+                  residual_vout = Some(*output);
+                }
+              }
+            } else {
+              *burned.entry(conversion_output_id).or_default() += amount;
+            }
+          } else {
+            *allocated[vout].entry(conversion_output_id).or_default() += amount;
+
+            if residual_vout.is_none() {
+              residual_vout = Some(vout);
+            }
+          }
+        }
+
+        // add residual amount to residual vout
+        if let Some((residual_id, residual_amt)) = residual {
+          if let Some(residual_vout) = residual_vout {
+            *allocated[residual_vout].entry(residual_id).or_default() += residual_amt;
+          } else {
+            *burned.entry(residual_id).or_default() += residual_amt;
+          }
+        }
     }
 
     // update outpoint balances
@@ -231,7 +319,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let mut rune_entry1 = RuneEntry::load(entry1.value());
 
     let reward = self.reward(self.height.into());
-    let sum_of_sq = rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
+    let sum_of_sq =
+      rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
     let amount0;
     let amount1;
     if sum_of_sq == 0 {
@@ -262,13 +351,43 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
   fn reward(&self, height: u128) -> u128 {
     let halvings = height / 210000;
-      // Force reward to zero when right shift is undefined
-      if halvings >= 128 {
-        return 0;
-      }
-      // Cut reward in half every 210,000 blocks
-      let reward = 50 * 100000000; 
-      return reward >> halvings;
+    // Force reward to zero when right shift is undefined
+    if halvings >= 128 {
+      return 0;
+    }
+    // Cut reward in half every 210,000 blocks
+    let reward = 50 * 100000000;
+    reward >> halvings
+  }
+
+  fn convert(&mut self, input_id: RuneId, output_id: RuneId, input_amt: Lot, min_output_amt: Lot) -> Result<Option<Lot>> {
+    let Some(entry0) = self.id_to_entry.get(&input_id.store())? else {
+      return Ok(None);
+    };
+    let Some(entry1) = self.id_to_entry.get(&output_id.store())? else {
+      return Ok(None);
+    };
+
+    let mut rune_entry0 = RuneEntry::load(entry0.value());
+    let mut rune_entry1 = RuneEntry::load(entry1.value());
+
+    if input_amt.0 > rune_entry0.supply {
+      return Ok(None);
+    }
+
+    let invariant = rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
+    let new_input_sq = (rune_entry0.supply - input_amt.0) * (rune_entry0.supply - input_amt.0);
+    let new_output = (invariant - new_input_sq).sqrt();
+    let output_amt = new_output - rune_entry1.supply;
+
+    if output_amt < min_output_amt.0 {
+      return Ok(None);
+    }
+
+    rune_entry0.supply -= input_amt.0;
+    rune_entry1.supply += output_amt;
+
+    Ok(Some(Lot(output_amt)))
   }
 
   fn unallocated(&mut self, tx: &Transaction) -> Result<HashMap<RuneId, Lot>> {

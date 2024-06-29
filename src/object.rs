@@ -182,17 +182,17 @@ mod tests {
       ),
     );
     case(
-      "A",
+      "TIGHTEN",
       Object::Rune(SpacedRune {
         rune: Rune(0),
         spacers: 0,
       }),
     );
     case(
-      "A•A",
+      "EASE",
       Object::Rune(SpacedRune {
-        rune: Rune(26),
-        spacers: 1,
+        rune: Rune(1),
+        spacers: 0,
       }),
     );
   }
