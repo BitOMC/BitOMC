@@ -168,17 +168,11 @@ impl Runestone {
     if !self.edicts.is_empty() {
       varint::encode_to_vec(Tag::Body.into(), &mut payload);
 
-      let mut edicts = self.edicts.clone();
-      edicts.sort_by_key(|edict| edict.id);
-
-      let mut previous = RuneId::default();
-      for edict in edicts {
-        let (block, tx) = previous.delta(edict.id).unwrap();
-        varint::encode_to_vec(block, &mut payload);
-        varint::encode_to_vec(tx, &mut payload);
+      for edict in self.edicts.clone() {
+        varint::encode_to_vec(edict.id.block as u128, &mut payload);
+        varint::encode_to_vec(edict.id.tx as u128, &mut payload);
         varint::encode_to_vec(edict.amount, &mut payload);
         varint::encode_to_vec(edict.output.into(), &mut payload);
-        previous = edict.id;
       }
     }
 

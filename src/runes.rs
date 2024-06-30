@@ -1024,6 +1024,138 @@ mod tests {
   }
 
   #[test]
+  fn convert_exact_output() {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_balance();
+
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(2, 0, 0, Witness::new())],
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 0,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    // Convert to exactly 30 EASE with at most 20 TIGHTEN (expect 10 TIGHTEN)
+    let supply0 = 50 * COIN_VALUE;
+    let max_input_amt = 20 * COIN_VALUE;
+    let output_amt = 30 * COIN_VALUE;
+
+    let expected_balance1 = output_amt;
+    let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID1,
+              amount: expected_balance1,
+              output: 0,
+            },
+            Edict {
+              id: ID0,
+              amount: supply0 - max_input_amt,
+              output: 0,
+            },
+          ],
+          pointer: Some(2),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: expected_balance0,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: expected_balance1,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid1,
+          vout: 0,
+        },
+        vec![(ID0, expected_balance0), (ID1, expected_balance1)],
+      )],
+    );
+  }
+
+  #[test]
   fn convert_exact_input_and_split() {
     let context = Context::builder().arg("--index-runes").build();
 
@@ -1454,13 +1586,13 @@ mod tests {
         Runestone {
           edicts: vec![
             Edict {
-              id: ID1,
-              amount: expected_balance1_2,
+              id: ID0,
+              amount: expected_balance0_2,
               output: 0,
             },
             Edict {
-              id: ID0,
-              amount: expected_balance0_2,
+              id: ID1,
+              amount: expected_balance1_2,
               output: 0,
             },
           ],

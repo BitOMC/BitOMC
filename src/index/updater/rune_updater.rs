@@ -19,6 +19,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     let mut allocated: Vec<HashMap<RuneId, Lot>> = vec![HashMap::new(); tx.output.len()];
 
+    let mut last_id: Option<RuneId> = None;
     let mut converted: HashMap<RuneId, Lot> = HashMap::new();
     let mut allocated_conversion: Vec<HashMap<RuneId, Lot>> = vec![HashMap::new(); tx.output.len()];
 
@@ -44,6 +45,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       if let Artifact::Runestone(runestone) = artifact {
         for Edict { id, amount, output } in runestone.edicts.iter().copied() {
           let amount = Lot(amount);
+
+          if id == id0 || id == id1 {
+            last_id = Some(id);
+          }
 
           // edicts with output values greater than the number of outputs
           // should never be produced by the edict parser
@@ -191,49 +196,78 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       output_id = None;
     }
 
-    if let (Some(input_id), Some(output_id)) = (input_id, output_id) {
-      let input_amt = burned.entry(input_id).or_default();
-      let min_output_amt = converted.entry(output_id).or_default();
-      if let Some(output_amt) = self.convert(input_id, output_id, *input_amt, *min_output_amt)? {
-        // undo burned entry if conversion successful
-        *burned.entry(input_id).or_default() = Lot(0);
+    if let (Some(input_id), Some(output_id), Some(residual_id)) = (input_id, output_id, last_id) {
+      if residual_id == output_id {
+        // convert exact input
+        let input_amt = burned.entry(input_id).or_default();
+        let min_output_amt = converted.entry(output_id).or_default();
+        if let Some(output_amt) = self.convert_exact_input(input_id, output_id, *input_amt, *min_output_amt)? {
+          // undo burned entry if conversion successful
+          *burned.entry(input_id).or_default() = Lot(0);
 
-        // allocate conversion outputs and assign residual output
-        let mut residual_vout: Option<usize> = None;
-        for (vout, balances) in allocated_conversion.into_iter().enumerate() {
-          for (id, balance) in &balances {
-            if *id != output_id {
-              continue;
-            }
+          // allocate conversion outputs and assign residual output
+          let mut residual_vout: Option<usize> = None;
+          for (vout, balances) in allocated_conversion.clone().into_iter().enumerate() {
+            for (id, balance) in &balances {
+              if *id != output_id {
+                continue;
+              }
 
-            // conversion output values greater than or equal to the number of outputs
-            // should never be produced by the initial edict scan
-            assert!(vout < tx.output.len());
+              // conversion output values greater than or equal to the number of outputs
+              // should never be produced by the initial edict scan
+              assert!(vout < tx.output.len());
 
-            *allocated[vout].entry(*id).or_default() += *balance;
+              *allocated[vout].entry(*id).or_default() += *balance;
 
-            // residual output is first conversion output
-            if residual_vout.is_none() {
-              residual_vout = Some(vout);
+              // residual output is first conversion output
+              if residual_vout.is_none() {
+                residual_vout = Some(vout);
+              }
             }
           }
-        }
 
-        // add residual amount to residual vout
-        if output_amt > *min_output_amt {
-          if let Some(residual_vout) = residual_vout {
-            *allocated[residual_vout].entry(output_id).or_default() += output_amt - *min_output_amt;
-          } else {
-            *burned.entry(output_id).or_default() += output_amt - *min_output_amt;
+          // add residual amount to residual vout
+          if output_amt > *min_output_amt {
+            if let Some(residual_vout) = residual_vout {
+              *allocated[residual_vout].entry(output_id).or_default() += output_amt - *min_output_amt;
+            } else {
+              *burned.entry(output_id).or_default() += output_amt - *min_output_amt;
+            }
           }
         }
       } else {
+        // convert exact output
+        let max_input_amt = burned.entry(input_id).or_default();
+        let output_amt = converted.entry(output_id).or_default();
+        if let Some(input_amt) = self.convert_exact_output(input_id, output_id, *output_amt, *max_input_amt)? {
+          // allocate conversion outputs
+          for (vout, balances) in allocated_conversion.clone().into_iter().enumerate() {
+            for (id, balance) in &balances {
+              if *id != output_id {
+                continue;
+              }
+
+              // conversion output values greater than or equal to the number of outputs
+              // should never be produced by the initial edict scan
+              assert!(vout < tx.output.len());
+
+              *allocated[vout].entry(*id).or_default() += *balance;
+            }
+          }
+
+          // assign residual to input balance by adding it to burned entry
+          *burned.entry(input_id).or_default() = *max_input_amt - input_amt;
+        }
+      }
+      
+      // add burned entry back to input balance
+      if burned.entry(input_id).or_default().0 > 0 {
         // try to allocate input amount to first output that has input_id balance
         let mut is_allocated: bool = false;
         for (vout, balances) in allocated.clone().into_iter().enumerate() {
           for (id, balance) in &balances {
             if !is_allocated && *balance > 0 && *id == input_id {
-              *allocated[vout].entry(input_id).or_default() += *input_amt;
+              *allocated[vout].entry(input_id).or_default() += *burned.entry(input_id).or_default();
               is_allocated = true;
               break;
             }
@@ -245,7 +279,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           for (vout, balances) in allocated_conversion.into_iter().enumerate() {
             for (id, balance) in &balances {
               if *balance > 0 && *id == output_id {
-                *allocated[vout].entry(input_id).or_default() += *input_amt;
+                *allocated[vout].entry(input_id).or_default() += *burned.entry(input_id).or_default();
                 is_allocated = true;
               }
               break;
@@ -387,7 +421,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     reward >> halvings
   }
 
-  fn convert(
+  fn convert_exact_input(
     &mut self,
     input_id: RuneId,
     output_id: RuneId,
@@ -411,8 +445,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let invariant =
       rune_entry_in.supply * rune_entry_in.supply + rune_entry_out.supply * rune_entry_out.supply;
     let new_input_sq = (rune_entry_in.supply - input_amt.0) * (rune_entry_in.supply - input_amt.0);
-    let new_output = (invariant - new_input_sq).sqrt();
-    let output_amt = new_output - rune_entry_out.supply;
+    let output_amt = (invariant - new_input_sq).sqrt() - rune_entry_out.supply;
 
     if output_amt < min_output_amt.0 {
       return Ok(None);
@@ -432,6 +465,53 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       .insert(&output_id.store(), rune_entry_out.store())?;
 
     Ok(Some(Lot(output_amt)))
+  }
+
+  fn convert_exact_output(
+    &mut self,
+    input_id: RuneId,
+    output_id: RuneId,
+    output_amt: Lot,
+    max_input_amt: Lot,
+  ) -> Result<Option<Lot>> {
+    let Some(entry_in) = self.id_to_entry.get(&input_id.store())? else {
+      return Ok(None);
+    };
+    let Some(entry_out) = self.id_to_entry.get(&output_id.store())? else {
+      return Ok(None);
+    };
+
+    let mut rune_entry_in = RuneEntry::load(entry_in.value());
+    let mut rune_entry_out = RuneEntry::load(entry_out.value());
+
+    let invariant =
+      rune_entry_in.supply * rune_entry_in.supply + rune_entry_out.supply * rune_entry_out.supply;
+    let new_output_sq = (rune_entry_out.supply + output_amt.0) * (rune_entry_out.supply + output_amt.0);
+
+    if new_output_sq > invariant {
+      return Ok(None);
+    }
+
+    let input_amt = rune_entry_in.supply - (invariant - new_output_sq).sqrt();
+
+    if input_amt > max_input_amt.0 {
+      return Ok(None);
+    }
+
+    drop(entry_in);
+    drop(entry_out);
+
+    rune_entry_in.supply -= input_amt;
+    rune_entry_out.supply += output_amt.0;
+
+    self
+      .id_to_entry
+      .insert(&input_id.store(), rune_entry_in.store())?;
+    self
+      .id_to_entry
+      .insert(&output_id.store(), rune_entry_out.store())?;
+
+    Ok(Some(Lot(input_amt)))
   }
 
   fn unallocated(&mut self, tx: &Transaction) -> Result<HashMap<RuneId, Lot>> {
