@@ -367,7 +367,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     for (rune_id, burned) in self.burned {
       let mut entry = RuneEntry::load(self.id_to_entry.get(&rune_id.store())?.unwrap().value());
       entry.burned = entry.burned.checked_add(burned.n()).unwrap();
-      entry.supply = entry.supply.checked_sub(burned.n()).unwrap();
       self.id_to_entry.insert(&rune_id.store(), entry.store())?;
     }
 

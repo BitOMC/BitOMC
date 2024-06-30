@@ -263,7 +263,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 0,
+            supply: 50 * COIN_VALUE,
             ..default()
           },
         ),
@@ -469,7 +469,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 0,
+            supply: 50 * COIN_VALUE,
             ..default()
           },
         ),
@@ -688,7 +688,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 0,
+            supply: 50 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1908,7 +1908,7 @@ mod tests {
       )],
     );
 
-    // Convert 10 TIGHTEN to 30 EASE)
+    // Convert 10 TIGHTEN to 30 EASE
     let supply0 = 50 * COIN_VALUE;
     let input_amt = 10 * COIN_VALUE;
 
@@ -1967,7 +1967,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 0,
+            supply: expected_balance1,
             ..default()
           },
         ),
@@ -2583,6 +2583,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
+            supply: supply0,
             ..default()
           },
         ),
