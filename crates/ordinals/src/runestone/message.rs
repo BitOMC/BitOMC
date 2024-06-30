@@ -16,18 +16,16 @@ impl Message {
       let tag = payload[i];
 
       if Tag::Body == tag {
-        for chunk in payload[i + 1..].chunks(4) {
-          if chunk.len() != 4 {
+        for chunk in payload[i + 1..].chunks(2) {
+          if chunk.len() != 2 {
             flaw.get_or_insert(Flaw::TrailingIntegers);
             break;
           }
 
-          let Some(id) = RuneId::default().next(chunk[0], chunk[1]) else {
-            flaw.get_or_insert(Flaw::EdictRuneId);
-            break;
-          };
+          let id = RuneId { block: 1, tx: (chunk[0] % 2) as u32 };
+          let amount = chunk[0] / 2;
 
-          let Some(edict) = Edict::from_integers(tx, id, chunk[2], chunk[3]) else {
+          let Some(edict) = Edict::from_integers(tx, id, amount, chunk[1]) else {
             flaw.get_or_insert(Flaw::EdictOutput);
             break;
           };
