@@ -22,7 +22,10 @@ impl Message {
             break;
           }
 
-          let id = RuneId { block: 1, tx: (chunk[0] % 2) as u32 };
+          let id = RuneId {
+            block: 1,
+            tx: (chunk[0] % 2) as u32,
+          };
           let amount = chunk[0] / 2;
 
           let Some(edict) = Edict::from_integers(tx, id, amount, chunk[1]) else {

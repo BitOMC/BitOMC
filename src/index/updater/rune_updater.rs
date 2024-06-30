@@ -201,7 +201,9 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         // convert exact input
         let input_amt = burned.entry(input_id).or_default();
         let min_output_amt = converted.entry(output_id).or_default();
-        if let Some(output_amt) = self.convert_exact_input(input_id, output_id, *input_amt, *min_output_amt)? {
+        if let Some(output_amt) =
+          self.convert_exact_input(input_id, output_id, *input_amt, *min_output_amt)?
+        {
           // undo burned entry if conversion successful
           *burned.entry(input_id).or_default() = Lot(0);
 
@@ -229,7 +231,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           // add residual amount to residual vout
           if output_amt > *min_output_amt {
             if let Some(residual_vout) = residual_vout {
-              *allocated[residual_vout].entry(output_id).or_default() += output_amt - *min_output_amt;
+              *allocated[residual_vout].entry(output_id).or_default() +=
+                output_amt - *min_output_amt;
             } else {
               *burned.entry(output_id).or_default() += output_amt - *min_output_amt;
             }
@@ -239,7 +242,9 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         // convert exact output
         let max_input_amt = burned.entry(input_id).or_default();
         let output_amt = converted.entry(output_id).or_default();
-        if let Some(input_amt) = self.convert_exact_output(input_id, output_id, *output_amt, *max_input_amt)? {
+        if let Some(input_amt) =
+          self.convert_exact_output(input_id, output_id, *output_amt, *max_input_amt)?
+        {
           // allocate conversion outputs
           for (vout, balances) in allocated_conversion.clone().into_iter().enumerate() {
             for (id, balance) in &balances {
@@ -259,7 +264,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           *burned.entry(input_id).or_default() = *max_input_amt - input_amt;
         }
       }
-      
+
       // add burned entry back to input balance
       if burned.entry(input_id).or_default().0 > 0 {
         // try to allocate input amount to first output that has input_id balance
@@ -279,7 +284,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           for (vout, balances) in allocated_conversion.into_iter().enumerate() {
             for (id, balance) in &balances {
               if *balance > 0 && *id == output_id {
-                *allocated[vout].entry(input_id).or_default() += *burned.entry(input_id).or_default();
+                *allocated[vout].entry(input_id).or_default() +=
+                  *burned.entry(input_id).or_default();
                 is_allocated = true;
               }
               break;
@@ -486,7 +492,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     let invariant =
       rune_entry_in.supply * rune_entry_in.supply + rune_entry_out.supply * rune_entry_out.supply;
-    let new_output_sq = (rune_entry_out.supply + output_amt.0) * (rune_entry_out.supply + output_amt.0);
+    let new_output_sq =
+      (rune_entry_out.supply + output_amt.0) * (rune_entry_out.supply + output_amt.0);
 
     if new_output_sq > invariant {
       return Ok(None);

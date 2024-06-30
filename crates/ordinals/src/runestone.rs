@@ -173,7 +173,7 @@ impl Runestone {
           continue;
         }
         let id0 = RuneId { block: 1, tx: 0 };
-        let encoded_id: u128 = if edict.id == id0 { 0 } else { 1 }; 
+        let encoded_id: u128 = if edict.id == id0 { 0 } else { 1 };
         let encoded_amt: u128 = 2 * edict.amount + encoded_id;
         varint::encode_to_vec(encoded_amt, &mut payload);
         varint::encode_to_vec(edict.output.into(), &mut payload);
