@@ -24,6 +24,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let mut allocated_conversion: Vec<HashMap<RuneId, Lot>> = vec![HashMap::new(); tx.output.len()];
 
     let mut burned: HashMap<RuneId, Lot> = HashMap::new();
+    let mut edicts: Vec<Edict> = Vec::new();
 
     if let Some(artifact) = &artifact {
       if artifact.mint().is_some() {
@@ -43,37 +44,39 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       }
 
       if let Artifact::Runestone(runestone) = artifact {
+        edicts = runestone.edicts.clone();
         for Edict { id, amount, output } in runestone.edicts.iter().copied() {
           let amount = Lot(amount);
-
-          if id == id0 || id == id1 {
-            last_id = Some(id);
-          }
+          last_id = Some(id);
 
           // edicts with output values greater than the number of outputs
           // should never be produced by the edict parser
           let output = usize::try_from(output).unwrap();
           assert!(output <= tx.output.len());
 
-          // find non-OP_RETURN outputs
-          let destinations = tx
-            .output
-            .iter()
-            .enumerate()
-            .filter_map(|(output, tx_out)| (!tx_out.script_pubkey.is_op_return()).then_some(output))
-            .collect::<Vec<usize>>();
-
           let Some(balance) = unallocated.get_mut(&id) else {
             if amount > 0 {
               if output < tx.output.len() {
                 *allocated_conversion[output].entry(id).or_default() += amount;
                 *converted.entry(id).or_default() += amount;
-              } else if !destinations.is_empty() {
-                for output in &destinations {
-                  *allocated_conversion[*output].entry(id).or_default() += amount;
+              } else {
+                // find non-OP_RETURN outputs
+                let destinations = tx
+                  .output
+                  .iter()
+                  .enumerate()
+                  .filter_map(|(output, tx_out)| {
+                    (!tx_out.script_pubkey.is_op_return()).then_some(output)
+                  })
+                  .collect::<Vec<usize>>();
+
+                if !destinations.is_empty() {
+                  for output in &destinations {
+                    *allocated_conversion[*output].entry(id).or_default() += amount;
+                  }
+                  *converted.entry(id).or_default() +=
+                    amount * destinations.len().try_into().unwrap();
                 }
-                *converted.entry(id).or_default() +=
-                  amount * destinations.len().try_into().unwrap();
               }
             }
             continue;
@@ -87,6 +90,16 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           };
 
           if output == tx.output.len() {
+            // find non-OP_RETURN outputs
+            let destinations = tx
+              .output
+              .iter()
+              .enumerate()
+              .filter_map(|(output, tx_out)| {
+                (!tx_out.script_pubkey.is_op_return()).then_some(output)
+              })
+              .collect::<Vec<usize>>();
+
             if !destinations.is_empty() {
               if amount == 0 {
                 // if amount is zero, divide balance between eligible outputs
@@ -267,35 +280,58 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
       // add burned entry back to input balance
       if burned.entry(input_id).or_default().0 > 0 {
-        // try to allocate input amount to first output that has input_id balance
-        let mut is_allocated: bool = false;
-        for (vout, balances) in allocated.clone().into_iter().enumerate() {
-          for (id, balance) in &balances {
-            if !is_allocated && *balance > 0 && *id == input_id {
+        // allocate input amount to output of first edict of input_id with valid output
+        for Edict { id, output, .. } in edicts.iter().copied() {
+          let output = usize::try_from(output).unwrap();
+          if id == input_id {
+            // allocate only if output is valid
+            if output < tx.output.len() {
+              *allocated[output].entry(input_id).or_default() += *burned.entry(input_id).or_default();
+              *burned.entry(input_id).or_default() = Lot(0);
+            }
+            // NOTE: If output equals length, we allocate to first non-OP_RETURN output.
+            // Since inputs have been burnt and the first input edict has an output equal to length, 
+            // we know the first non-OP_RETURN output has a balance.
+            // Therefore, it is safe to break this loop. We will find this output in the next loop.
+            break;
+          }
+        }
+
+        // if unallocated, allocate to first output with non-zero balance for input_id
+        if burned.entry(input_id).or_default().0 > 0 {
+          let mut cloned_allocated = allocated.clone();
+          for vout in 0..tx.output.len() {
+            if cloned_allocated[vout].entry(input_id).or_default().0 > 0 {
               *allocated[vout].entry(input_id).or_default() += *burned.entry(input_id).or_default();
-              is_allocated = true;
+              *burned.entry(input_id).or_default() = Lot(0);
               break;
             }
           }
         }
 
-        // if unallocated, allocate input amount to first conversion output
-        if !is_allocated {
-          for (vout, balances) in allocated_conversion.into_iter().enumerate() {
-            for (id, balance) in &balances {
-              if *balance > 0 && *id == output_id {
-                *allocated[vout].entry(input_id).or_default() +=
-                  *burned.entry(input_id).or_default();
-                is_allocated = true;
-              }
-              break;
+        // if unallocated, allocate input amount to output of first edict
+        if burned.entry(input_id).or_default().0 > 0 {
+          let mut output = usize::try_from(edicts[0].output).unwrap();
+          if output == tx.output.len() {
+            // find first non-OP_RETURN output
+            let destinations = tx
+              .output
+              .iter()
+              .enumerate()
+              .filter_map(|(output, tx_out)| {
+                (!tx_out.script_pubkey.is_op_return()).then_some(output)
+              })
+              .collect::<Vec<usize>>();
+
+            if !destinations.is_empty() {
+              output = destinations[0];
             }
           }
-        }
 
-        // undo burned entry if successfully allocated
-        if is_allocated {
-          *burned.entry(input_id).or_default() = Lot(0);
+          if output < tx.output.len() {
+            *allocated[output].entry(input_id).or_default() += *burned.entry(input_id).or_default();
+            *burned.entry(input_id).or_default() = Lot(0);
+          }
         }
       }
     }
@@ -387,8 +423,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let reward = self.reward(self.height.into());
     let sum_of_sq =
       rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
-    let amount0;
-    let amount1;
+    let mut amount0;
+    let mut amount1;
     if sum_of_sq == 0 {
       // Assign entire reward to amount0
       amount0 = reward;
@@ -408,6 +444,16 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     rune_entry0.supply += amount0;
     rune_entry1.supply += amount1;
+
+    // Assign any burned amounts
+    if rune_entry0.burned > 0 {
+      amount0 += rune_entry0.burned;
+      rune_entry0.burned = 0;
+    }
+    if rune_entry1.burned > 0 {
+      amount1 += rune_entry1.burned;
+      rune_entry1.burned = 0;
+    }
 
     self.id_to_entry.insert(&id0.store(), rune_entry0.store())?;
     self.id_to_entry.insert(&id1.store(), rune_entry1.store())?;

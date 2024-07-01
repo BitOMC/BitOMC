@@ -2490,6 +2490,128 @@ mod tests {
   }
 
   #[test]
+  fn convert_undo_burn_input_if_min_output_not_met_and_missing_output_with_input_id_and_output_id_invalid(
+  ) {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_balance();
+
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(2, 0, 0, Witness::new())],
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 0,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    // Convert 50 TIGHTEN and require 100 EASE
+    let supply0 = 50 * COIN_VALUE;
+    let min_output1 = supply0 * 2;
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          edicts: vec![Edict {
+            id: ID1,
+            amount: min_output1,
+            output: 3,
+          }],
+          pointer: Some(2),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: supply0,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            supply: 0,
+            mints: 1,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid1,
+          vout: 0,
+        },
+        vec![(ID0, supply0)],
+      )],
+    );
+  }
+
+  #[test]
   fn convert_burn_input_if_min_output_not_met_and_no_output_exists() {
     let context = Context::builder().arg("--index-runes").build();
 
@@ -2783,6 +2905,143 @@ mod tests {
           vout: 0,
         },
         vec![(ID0, expected_balance0 * 2), (ID1, expected_balance1 * 2)],
+      )],
+    );
+  }
+
+  #[test]
+  fn mint_receives_burnt_runes() {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_balance();
+
+    // Mint 30 EASE, burning 1 EASE, using at most 11 TIGHTEN, burning 1 TIGHTEN
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(2, 0, 0, Witness::new())],
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          edicts: vec![
+            Edict {
+              id: ID1,
+              amount: 29 * COIN_VALUE,
+              output: 0,
+            },
+            Edict {
+              id: ID1,
+              amount: 1 * COIN_VALUE,
+              output: 1,
+            },
+            Edict {
+              id: ID0,
+              amount: 1 * COIN_VALUE,
+              output: 1,
+            },
+            Edict {
+              id: ID0,
+              amount: 39 * COIN_VALUE,
+              output: 0,
+            },
+          ],
+          pointer: Some(1),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            burned: 1 * COIN_VALUE,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 40 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            burned: 1 * COIN_VALUE,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 30 * COIN_VALUE,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 0,
+        },
+        vec![(ID0, 39 * COIN_VALUE), (ID1, 29 * COIN_VALUE)],
+      )],
+    );
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: 80 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: 60 * COIN_VALUE,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid1,
+          vout: 0,
+        },
+        vec![(ID0, 80 * COIN_VALUE), (ID1, 60 * COIN_VALUE)],
       )],
     );
   }
