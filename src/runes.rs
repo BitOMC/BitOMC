@@ -3591,12 +3591,13 @@ mod tests {
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      outputs: 2,
       op_return: Some(
         Runestone {
           edicts: vec![Edict {
             id: ID0,
             amount: u128::MAX,
-            output: 0,
+            output: 1,
           }],
           ..default()
         }
@@ -3639,7 +3640,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],

@@ -71,9 +71,9 @@ impl Runestone {
     if !self.edicts.is_empty() {
       varint::encode_to_vec(Tag::Body.into(), &mut payload);
 
-      for edict in self.edicts.clone() {
+      for mut edict in self.edicts.clone() {
         if edict.amount >= u128::MAX / 2 {
-          continue;
+          edict.amount = u128::MAX / 2 - 1;
         }
         let id0 = RuneId { block: 1, tx: 0 };
         let encoded_id: u128 = if edict.id == id0 { 0 } else { 1 };
