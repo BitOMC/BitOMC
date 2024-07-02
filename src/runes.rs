@@ -4970,9 +4970,7 @@ mod tests {
     );
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[
-        (context.get_block_count() - 1, 1, 0, Witness::new())
-      ],
+      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
       ..default()
     });
 
@@ -5019,9 +5017,7 @@ mod tests {
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[
-        (context.get_block_count() - 1, 0, 0, Witness::new())
-      ],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -5081,7 +5077,7 @@ mod tests {
             vout: 1,
           },
           vec![(ID0, 50 * COIN_VALUE)],
-        )
+        ),
       ],
     );
   }
@@ -5207,10 +5203,22 @@ mod tests {
         ),
       ],
       [
-        (OutPoint { txid, vout: 1 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
-        (OutPoint { txid, vout: 2 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
-        (OutPoint { txid, vout: 3 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
-        (OutPoint { txid, vout: 4 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
+        (
+          OutPoint { txid, vout: 1 },
+          vec![(ID0, 125 * COIN_VALUE / 10)],
+        ),
+        (
+          OutPoint { txid, vout: 2 },
+          vec![(ID0, 125 * COIN_VALUE / 10)],
+        ),
+        (
+          OutPoint { txid, vout: 3 },
+          vec![(ID0, 125 * COIN_VALUE / 10)],
+        ),
+        (
+          OutPoint { txid, vout: 4 },
+          vec![(ID0, 125 * COIN_VALUE / 10)],
+        ),
       ],
     );
   }
