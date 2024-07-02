@@ -1,7 +1,6 @@
-use {super::*, message::Message, tag::Tag};
+use {super::*, message::Message};
 
 mod message;
-mod tag;
 
 #[derive(Default, Serialize, Deserialize, Debug, PartialEq, Eq)]
 pub struct Runestone {
@@ -37,18 +36,15 @@ impl Runestone {
     };
 
     let Message {
-      mut flaw,
+      flaw,
       edicts,
-      mut fields,
+      mut pointer,
     } = Message::from_integers(transaction, &integers);
-
-    let pointer = Tag::Pointer.take(&mut fields, |[pointer]| {
-      let pointer = u32::try_from(pointer).ok()?;
-      (u64::from(pointer) < u64::try_from(transaction.output.len()).unwrap()).then_some(pointer)
-    });
-
-    if fields.keys().any(|tag| tag % 2 == 0) {
-      flaw.get_or_insert(Flaw::UnrecognizedEvenTag);
+    
+    if let Some(p) = pointer {
+      if u64::from(p) >= u64::try_from(transaction.output.len()).unwrap() {
+        pointer = None;
+      }
     }
 
     if let Some(flaw) = flaw {
@@ -66,11 +62,11 @@ impl Runestone {
   pub fn encipher(&self) -> ScriptBuf {
     let mut payload = Vec::new();
 
-    Tag::Pointer.encode_option(self.pointer, &mut payload);
+    if let Some(pointer) = self.pointer {
+      varint::encode_to_vec(pointer.into(), &mut payload);
+    }
 
     if !self.edicts.is_empty() {
-      varint::encode_to_vec(Tag::Body.into(), &mut payload);
-
       for mut edict in self.edicts.clone() {
         if edict.amount >= u128::MAX / 2 {
           edict.amount = u128::MAX / 2 - 1;

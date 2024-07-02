@@ -113,7 +113,7 @@ The integer sequence is parsed into an untyped message:
 
 ```rust
 struct Message {
-  fields: Map<u128, Vec<u128>>,
+  pointer: Option<u32>,
   edicts: Vec<Edict>,
 }
 ```
@@ -176,9 +176,6 @@ edict rune ID is encountered with block zero and nonzero transaction index, or
 a field is truncated, meaning a tag is encountered without a value, the decoded
 runestone is a cenotaph.
 
-Note that if a cenotaph is produced here, the cenotaph is not empty, meaning
-that it contains the fields and edicts, which may include an etching and mint.
-
 #### Parsing the Runestone
 
 The runestone:
@@ -189,37 +186,6 @@ struct Runestone {
   pointer: Option<u32>,
 }
 ```
-
-Is parsed from the unsigned message using the following tags:
-
-```rust
-enum Tag {
-  Body = 0,
-  Flags = 2,
-  Rune = 4,
-  Premine = 6,
-  Cap = 8,
-  Amount = 10,
-  HeightStart = 12,
-  HeightEnd = 14,
-  OffsetStart = 16,
-  OffsetEnd = 18,
-  Mint = 20,
-  Pointer = 22,
-  Cenotaph = 126,
-
-  Divisibility = 1,
-  Spacers = 3,
-  Symbol = 5,
-  Nop = 127,
-}
-```
-
-Note that tags are grouped by parity, i.e., whether they are even or odd.
-Unrecognized odd tags are ignored. Unrecognized even tags produce a cenotaph.
-
-All unused tags are reserved for use by the protocol, may be assigned at any
-time, and must not be used.
 
 ##### Body
 
