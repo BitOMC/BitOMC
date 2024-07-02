@@ -488,7 +488,14 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(None);
     }
 
-    let reward = self.reward(self.height.into());
+    // Reward is running sum of available reward since last mint
+    let mut reward = 0;
+    let mut mints = 0;
+    for mint in (rune_entry0.mints)..((self.height as u128) - (rune_entry0.block as u128) + 1) {
+      reward += self.reward(mint);
+      mints += 1;
+    }
+
     let sum_of_sq =
       rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
     let mut amount0;
@@ -507,8 +514,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     drop(entry0);
     drop(entry1);
 
-    rune_entry0.mints += 1;
-    rune_entry1.mints += 1;
+    rune_entry0.mints += mints;
+    rune_entry1.mints += mints;
 
     rune_entry0.supply += amount0;
     rune_entry1.supply += amount1;

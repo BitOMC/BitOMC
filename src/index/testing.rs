@@ -153,18 +153,4 @@ impl Context {
   pub(crate) fn get_block_count(&self) -> usize {
     usize::try_from(self.index.block_count().unwrap()).unwrap()
   }
-
-  pub(crate) fn mine_balance(&self) {
-    let block_count = usize::try_from(self.index.block_count().unwrap()).unwrap();
-
-    self.mine_blocks(1);
-
-    self.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(block_count, 0, 0, Witness::new())],
-      p2tr: true,
-      ..default()
-    });
-
-    self.mine_blocks(Runestone::COMMIT_CONFIRMATIONS.into());
-  }
 }

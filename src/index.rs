@@ -6522,10 +6522,10 @@ mod tests {
       .event_sender(event_sender)
       .build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       op_return: Some(
         Runestone {
           mint: Some(ID0),

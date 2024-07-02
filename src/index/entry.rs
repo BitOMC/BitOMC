@@ -163,9 +163,9 @@ pub(super) type RuneEntryValue = (
 impl Default for RuneEntry {
   fn default() -> Self {
     Self {
-      block: 0,
+      block: 2,
       burned: 0,
-      divisibility: 0,
+      divisibility: 8,
       etching: Txid::all_zeros(),
       mints: 0,
       number: 0,

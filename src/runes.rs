@@ -39,7 +39,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -50,7 +49,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -67,10 +65,10 @@ mod tests {
   fn input_runes_may_be_allocated() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -90,7 +88,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -104,7 +101,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -149,7 +145,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -163,7 +158,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -189,10 +183,10 @@ mod tests {
   fn input_runes_are_burned_if_an_unrecognized_even_tag_is_encountered() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -212,7 +206,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -226,7 +219,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -266,7 +258,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
@@ -281,7 +272,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -301,10 +291,10 @@ mod tests {
   fn unallocated_runes_are_assigned_to_first_non_op_return_output() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -324,7 +314,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -338,7 +327,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -372,7 +360,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -386,7 +373,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -412,10 +398,10 @@ mod tests {
   fn unallocated_runes_are_burned_if_no_non_op_return_output_is_present() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -435,7 +421,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -449,7 +434,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -484,7 +468,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
@@ -499,7 +482,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -519,10 +501,10 @@ mod tests {
   fn unallocated_runes_are_assigned_to_default_output() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -542,7 +524,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -556,7 +537,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -597,7 +577,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -611,7 +590,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -637,10 +615,10 @@ mod tests {
   fn unallocated_runes_are_burned_if_default_output_is_op_return() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -660,7 +638,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -674,7 +651,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -715,7 +691,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
@@ -730,7 +705,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -751,10 +725,10 @@ mod tests {
   ) {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -774,7 +748,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -788,7 +761,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -822,7 +794,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -836,7 +807,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -862,10 +832,10 @@ mod tests {
   fn convert_exact_input() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -885,7 +855,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -899,7 +868,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -960,7 +928,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -974,7 +941,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1037,7 +1003,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1051,7 +1016,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1077,10 +1041,10 @@ mod tests {
   fn convert_exact_output() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -1100,7 +1064,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1114,7 +1077,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1175,7 +1137,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1189,7 +1150,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1215,10 +1175,10 @@ mod tests {
   fn convert_exact_input_and_split() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -1238,7 +1198,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1252,7 +1211,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1313,7 +1271,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1327,7 +1284,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1362,10 +1318,10 @@ mod tests {
   fn convert_exact_input_and_split_with_remainder_assigned_to_first_conversion_output() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -1385,7 +1341,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1399,7 +1354,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1460,7 +1414,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1474,7 +1427,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1512,10 +1464,10 @@ mod tests {
   fn convert_even_if_output_is_provided_as_an_input() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -1535,7 +1487,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1549,7 +1500,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1609,7 +1559,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1623,7 +1572,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1685,7 +1633,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1699,7 +1646,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1725,10 +1671,10 @@ mod tests {
   fn convert_even_if_output_is_provided_as_an_input_and_split() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -1748,7 +1694,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1762,7 +1707,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1822,7 +1766,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1836,7 +1779,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1898,7 +1840,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1912,7 +1853,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1938,10 +1878,10 @@ mod tests {
   fn convert_and_burn_if_conversion_output_is_op_return() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -1961,7 +1901,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -1975,7 +1914,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2035,7 +1973,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2049,7 +1986,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             burned: expected_balance1,
             spaced_rune: SpacedRune {
@@ -2076,10 +2012,10 @@ mod tests {
   fn convert_undo_burn_input_if_min_output_not_met() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2099,7 +2035,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2113,7 +2048,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2173,7 +2107,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2187,7 +2120,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2212,10 +2144,10 @@ mod tests {
   fn convert_undo_burn_input_if_desired_output_exceeds_max_output() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2235,7 +2167,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2249,7 +2180,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2307,7 +2237,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2321,7 +2250,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2346,10 +2274,10 @@ mod tests {
   fn convert_undo_burn_input_if_input_exceeds_max_input() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2369,7 +2297,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2383,7 +2310,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2441,7 +2367,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2455,7 +2380,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2480,10 +2404,10 @@ mod tests {
   fn convert_undo_burn_input_if_min_output_not_met_and_missing_output_with_input_id() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2503,7 +2427,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2517,7 +2440,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2567,7 +2489,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2581,7 +2502,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2608,10 +2528,10 @@ mod tests {
   ) {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2631,7 +2551,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2645,7 +2564,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2695,7 +2613,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2709,7 +2626,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2735,10 +2651,10 @@ mod tests {
   fn convert_burn_input_if_min_output_not_met_and_no_output_exists() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2758,7 +2674,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2772,7 +2687,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2822,7 +2736,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             burned: supply0,
             spaced_rune: SpacedRune {
@@ -2837,7 +2750,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2856,10 +2768,10 @@ mod tests {
   fn mint_after_conversion() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -2879,7 +2791,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2893,7 +2804,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2953,7 +2863,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2967,7 +2876,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3012,28 +2920,26 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid2,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 2,
-            supply: expected_balance0 * 2,
+            mints: 3,
+            supply: expected_balance0 * 3,
             ..default()
           },
         ),
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid2,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 2,
-            supply: expected_balance1 * 2,
+            mints: 3,
+            supply: expected_balance1 * 3,
             ..default()
           },
         ),
@@ -3043,7 +2949,7 @@ mod tests {
           txid: txid2,
           vout: 1,
         },
-        vec![(ID0, expected_balance0 * 2), (ID1, expected_balance1 * 2)],
+        vec![(ID0, expected_balance0 * 3), (ID1, expected_balance1 * 3)],
       )],
     );
   }
@@ -3052,11 +2958,11 @@ mod tests {
   fn mint_receives_burnt_runes() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     // Mint 30 EASE, burning 1 EASE, using at most 11 TIGHTEN, burning 1 TIGHTEN
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3099,7 +3005,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             burned: 1 * COIN_VALUE,
             etching: txid0,
             spaced_rune: SpacedRune {
@@ -3114,7 +3019,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             burned: 1 * COIN_VALUE,
             etching: txid0,
             spaced_rune: SpacedRune {
@@ -3160,7 +3064,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3174,7 +3077,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3200,10 +3102,10 @@ mod tests {
   fn multiple_input_runes_on_different_inputs_may_be_allocated() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3223,7 +3125,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3237,7 +3138,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3298,7 +3198,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3312,7 +3211,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3376,7 +3274,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3390,7 +3287,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3426,10 +3322,10 @@ mod tests {
   ) {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3449,7 +3345,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3463,7 +3358,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3502,7 +3396,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3516,7 +3409,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3542,10 +3434,10 @@ mod tests {
   fn edicts_over_max_inputs_are_ignored() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3565,7 +3457,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3579,7 +3470,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3623,7 +3513,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3637,7 +3526,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3663,10 +3551,10 @@ mod tests {
   fn split() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3686,7 +3574,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3700,7 +3587,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3745,7 +3631,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3759,7 +3644,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3794,10 +3678,10 @@ mod tests {
   fn split_with_preceding_edict() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3817,7 +3701,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3831,7 +3714,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3883,7 +3765,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3897,7 +3778,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -3932,10 +3812,10 @@ mod tests {
   fn split_with_following_edict() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -3955,7 +3835,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -3969,7 +3848,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4021,7 +3899,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4035,7 +3912,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4070,10 +3946,10 @@ mod tests {
   fn split_with_amount() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4093,7 +3969,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4107,7 +3982,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4152,7 +4026,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4166,7 +4039,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4201,10 +4073,10 @@ mod tests {
   fn split_with_amount_with_preceding_edict() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4224,7 +4096,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4238,7 +4109,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4290,7 +4160,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4304,7 +4173,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4339,10 +4207,10 @@ mod tests {
   fn split_with_amount_with_following_edict() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4362,7 +4230,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4376,7 +4243,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4428,7 +4294,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4442,7 +4307,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4491,10 +4355,10 @@ mod tests {
   fn allocate_all_remaining_runes_in_inputs() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4514,7 +4378,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4528,7 +4391,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4573,7 +4435,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4587,7 +4448,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4613,10 +4473,10 @@ mod tests {
   fn rune_can_be_minted_without_edict() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4636,7 +4496,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4650,7 +4509,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4670,10 +4528,10 @@ mod tests {
   fn rune_cannot_be_minted_if_previous_mint_is_not_an_input() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4693,7 +4551,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4707,7 +4564,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4729,7 +4585,7 @@ mod tests {
     );
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(3, 0, 0, Witness::new())],
+      inputs: &[(2, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4749,7 +4605,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4763,7 +4618,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4789,10 +4643,10 @@ mod tests {
   fn rune_can_be_minted_if_previous_mint_output_is_an_input() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4812,7 +4666,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4826,7 +4679,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4871,7 +4723,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4885,7 +4736,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4911,10 +4761,10 @@ mod tests {
   fn rune_can_be_minted_if_previous_mint_output_is_spent() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -4934,7 +4784,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4948,7 +4797,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -4981,7 +4829,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: Txid::all_zeros(),
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -4995,7 +4842,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: Txid::all_zeros(),
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -5037,27 +4883,25 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 2,
-            supply: 100 * COIN_VALUE,
+            mints: 3,
+            supply: 150 * COIN_VALUE,
             ..default()
           },
         ),
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 2,
+            mints: 3,
             supply: 0,
             ..default()
           },
@@ -5076,7 +4920,7 @@ mod tests {
             txid: txid1,
             vout: 1,
           },
-          vec![(ID0, 50 * COIN_VALUE)],
+          vec![(ID0, 100 * COIN_VALUE)],
         ),
       ],
     );
@@ -5086,10 +4930,10 @@ mod tests {
   fn rune_cannot_be_minted_less_than_limit_amount() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -5114,7 +4958,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -5128,7 +4971,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -5148,10 +4990,10 @@ mod tests {
   fn open_mint_claims_can_use_split() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 5,
       op_return: Some(
@@ -5176,7 +5018,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -5190,7 +5031,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -5227,14 +5067,13 @@ mod tests {
   fn transactions_cannot_claim_more_than_mint_amount() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     context.assert_runes(
       [
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -5245,7 +5084,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -5258,7 +5096,7 @@ mod tests {
     );
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -5283,7 +5121,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -5297,7 +5134,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -5317,14 +5153,13 @@ mod tests {
   fn multiple_edicts_in_one_transaction_may_claim_open_mint() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     context.assert_runes(
       [
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -5335,7 +5170,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -5348,7 +5182,7 @@ mod tests {
     );
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
       op_return: Some(
@@ -5385,7 +5219,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -5399,7 +5232,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -5419,14 +5251,13 @@ mod tests {
   fn edict_with_amount_zero_and_no_destinations_is_ignored() {
     let context = Context::builder().arg("--index-runes").build();
 
-    context.mine_balance();
+    context.mine_blocks(1);
 
     context.assert_runes(
       [
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -5437,7 +5268,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -5450,7 +5280,7 @@ mod tests {
     );
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(2, 0, 0, Witness::new())],
+      inputs: &[(1, 0, 0, Witness::new())],
       op_return: Some(
         Runestone {
           edicts: vec![Edict {
@@ -5472,7 +5302,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -5483,7 +5312,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -5512,7 +5340,6 @@ mod tests {
           (
             ID0,
             RuneEntry {
-              divisibility: 8,
               spaced_rune: SpacedRune {
                 rune: Rune(TIGHTEN),
                 spacers: 0,
@@ -5523,7 +5350,6 @@ mod tests {
           (
             ID1,
             RuneEntry {
-              divisibility: 8,
               spaced_rune: SpacedRune {
                 rune: Rune(EASE),
                 spacers: 0,
