@@ -195,17 +195,30 @@ impl State {
   }
 
   pub(crate) fn broadcast_tx(&mut self, template: TransactionTemplate) -> Txid {
+    // 1 CHECKSEQUENCEVERIFY OP_DROP OP_TRUE (anyone can spend after 1 block)
+    let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2, 0x75, 0x51]));
+    let mint_script_pubkey = ScriptBuf::new_v0_p2wsh(&mint_script.clone().wscript_hash());
+
     let mut total_value = 0;
     let mut input = Vec::new();
     for (height, tx, vout, witness) in template.inputs.iter() {
       let tx = &self.blocks.get(&self.hashes[*height]).unwrap().txdata[*tx];
       total_value += tx.output[*vout].value;
-      input.push(TxIn {
-        previous_output: OutPoint::new(tx.txid(), *vout as u32),
-        script_sig: ScriptBuf::new(),
-        sequence: Sequence::MAX,
-        witness: witness.clone(),
-      });
+      if template.mint && tx.output[*vout].script_pubkey == mint_script_pubkey {
+        input.push(TxIn {
+          previous_output: OutPoint::new(tx.txid(), *vout as u32),
+          script_sig: ScriptBuf::new(),
+          sequence: Sequence::from_height(1),
+          witness: Witness::from_slice(&[mint_script.clone().into_bytes()]),
+        });
+      } else {
+        input.push(TxIn {
+          previous_output: OutPoint::new(tx.txid(), *vout as u32),
+          script_sig: ScriptBuf::new(),
+          sequence: Sequence::MAX,
+          witness: witness.clone(),
+        });
+      }
     }
 
     let value_per_output = if template.outputs > 0 {
@@ -232,7 +245,9 @@ impl State {
             .get(i)
             .cloned()
             .unwrap_or(value_per_output),
-          script_pubkey: if template.p2tr {
+          script_pubkey: if template.mint && i == 0 {
+            mint_script_pubkey.clone()
+          } else if template.p2tr {
             let secp = Secp256k1::new();
             let keypair = KeyPair::new(&secp, &mut rand::thread_rng());
             let internal_key = XOnlyPublicKey::from_keypair(&keypair);

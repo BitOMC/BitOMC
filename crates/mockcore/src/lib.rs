@@ -136,6 +136,7 @@ pub struct TransactionTemplate<'a> {
   pub output_values: &'a [u64],
   pub outputs: usize,
   pub p2tr: bool,
+  pub mint: bool,
 }
 
 #[derive(Serialize, Deserialize, Debug)]
@@ -183,6 +184,7 @@ impl<'a> Default for TransactionTemplate<'a> {
       output_values: &[],
       outputs: 1,
       p2tr: false,
+      mint: false,
     }
   }
 }

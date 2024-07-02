@@ -71,6 +71,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -89,6 +91,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -102,6 +105,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -115,14 +119,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -146,6 +150,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -159,6 +164,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -187,6 +193,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -205,6 +213,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -218,6 +227,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -231,14 +241,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: Some(
         Runestone {
           pointer: Some(10),
@@ -257,6 +267,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -271,6 +282,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -293,6 +305,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -311,6 +325,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -324,6 +339,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -337,14 +353,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: Some(Runestone::default().encipher()),
       ..default()
     });
@@ -357,6 +373,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -370,6 +387,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -398,6 +416,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -416,6 +436,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -429,6 +450,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -442,14 +464,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: Some(Runestone::default().encipher()),
       outputs: 0,
       ..default()
@@ -463,6 +485,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -477,6 +500,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -499,6 +523,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -517,6 +543,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -530,6 +557,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -543,14 +571,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -570,6 +598,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -583,6 +612,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -611,6 +641,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -629,6 +661,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -642,6 +675,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -655,14 +689,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -682,6 +716,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -696,6 +731,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -719,6 +755,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -737,6 +775,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -750,6 +789,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -763,14 +803,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: None,
       ..default()
     });
@@ -783,6 +823,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -796,6 +837,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -824,6 +866,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -842,6 +886,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -855,6 +900,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -868,7 +914,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -883,7 +929,7 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -915,6 +961,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -928,6 +975,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -990,6 +1038,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1003,6 +1052,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1031,6 +1081,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -1049,6 +1101,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1062,6 +1115,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1075,7 +1129,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -1090,7 +1144,7 @@ mod tests {
     let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -1122,6 +1176,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1135,6 +1190,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1163,6 +1219,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -1181,6 +1239,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1194,6 +1253,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1207,7 +1267,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -1222,7 +1282,7 @@ mod tests {
     let expected_supply1 = min_output_amt;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -1254,6 +1314,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1267,6 +1328,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1304,6 +1366,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -1322,6 +1386,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1335,6 +1400,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1348,7 +1414,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -1363,7 +1429,7 @@ mod tests {
     let expected_supply1 = (supply0 * supply0 - expected_supply0 * expected_supply0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -1395,6 +1461,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1408,6 +1475,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1448,6 +1516,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -1466,6 +1536,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1479,6 +1550,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1492,7 +1564,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -1506,7 +1578,7 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -1538,6 +1610,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1551,6 +1624,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1612,6 +1686,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1625,6 +1700,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1653,6 +1729,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -1671,6 +1749,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1684,6 +1763,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1697,7 +1777,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -1711,7 +1791,7 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -1743,6 +1823,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1756,6 +1837,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1817,6 +1899,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1830,6 +1913,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1858,6 +1942,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -1876,6 +1962,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1889,6 +1976,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1902,7 +1990,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -1916,7 +2004,7 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -1948,6 +2036,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1961,6 +2050,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             burned: expected_balance1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1990,6 +2080,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2008,6 +2100,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2021,6 +2114,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2034,7 +2128,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2048,7 +2142,7 @@ mod tests {
     let min_output1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt() * 2;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -2080,6 +2174,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2093,6 +2188,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2120,6 +2216,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2138,6 +2236,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2151,6 +2250,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2164,7 +2264,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2176,7 +2276,7 @@ mod tests {
     let output_amt = 100 * COIN_VALUE;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -2208,6 +2308,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2221,6 +2322,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2248,6 +2350,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2266,6 +2370,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2279,6 +2384,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2292,7 +2398,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2304,7 +2410,7 @@ mod tests {
     let output_amt = 40 * COIN_VALUE;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -2336,6 +2442,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2349,6 +2456,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2376,6 +2484,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2394,6 +2504,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2407,6 +2518,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2420,7 +2532,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2431,7 +2543,7 @@ mod tests {
     let min_output1 = supply0 * 2;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -2456,6 +2568,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2469,6 +2582,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2498,6 +2612,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2516,6 +2632,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2529,6 +2646,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2542,7 +2660,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2553,7 +2671,7 @@ mod tests {
     let min_output1 = supply0 * 2;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -2578,6 +2696,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2591,6 +2710,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2619,6 +2739,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2637,6 +2759,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2650,6 +2773,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2663,7 +2787,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2674,7 +2798,7 @@ mod tests {
     let min_output1 = supply0 * 2;
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 0,
       op_return: Some(
         Runestone {
@@ -2699,6 +2823,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             burned: supply0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2713,6 +2838,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2734,6 +2860,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2752,6 +2880,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2765,6 +2894,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2778,7 +2908,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -2792,7 +2922,7 @@ mod tests {
     let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -2824,6 +2954,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2837,6 +2968,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2857,7 +2989,12 @@ mod tests {
     );
 
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[
+        (context.get_block_count() - 2, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+      ],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2876,6 +3013,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid2,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2889,6 +3027,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid2,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2902,7 +3041,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid2,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, expected_balance0 * 2), (ID1, expected_balance1 * 2)],
       )],
@@ -2918,6 +3057,8 @@ mod tests {
     // Mint 30 EASE, burning 1 EASE, using at most 11 TIGHTEN, burning 1 TIGHTEN
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -2925,25 +3066,25 @@ mod tests {
             Edict {
               id: ID1,
               amount: 29 * COIN_VALUE,
-              output: 0,
+              output: 1,
             },
             Edict {
               id: ID1,
               amount: 1 * COIN_VALUE,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: 1 * COIN_VALUE,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: 39 * COIN_VALUE,
-              output: 0,
+              output: 1,
             },
           ],
-          pointer: Some(1),
+          pointer: Some(2),
           ..default()
         }
         .encipher(),
@@ -2960,6 +3101,7 @@ mod tests {
           RuneEntry {
             divisibility: 8,
             burned: 1 * COIN_VALUE,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2974,6 +3116,7 @@ mod tests {
           RuneEntry {
             divisibility: 8,
             burned: 1 * COIN_VALUE,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2987,14 +3130,19 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 39 * COIN_VALUE), (ID1, 29 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+      ],
+      outputs: 2,
+      mint: true,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3013,6 +3161,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3026,6 +3175,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3039,7 +3189,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 80 * COIN_VALUE), (ID1, 60 * COIN_VALUE)],
       )],
@@ -3054,6 +3204,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3072,6 +3224,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3085,6 +3238,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3098,7 +3252,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -3113,7 +3267,7 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -3145,6 +3299,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3158,6 +3313,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3221,6 +3377,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3234,6 +3391,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3272,6 +3430,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3290,6 +3450,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3303,6 +3464,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3316,14 +3478,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: Some(
         script::Builder::new()
           .push_opcode(opcodes::all::OP_RETURN)
@@ -3341,6 +3503,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3354,6 +3517,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3382,6 +3546,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3400,6 +3566,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3413,6 +3580,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3426,14 +3594,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: Some(
         Runestone {
           edicts: vec![Edict {
@@ -3456,6 +3624,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3469,6 +3638,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3497,6 +3667,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3515,6 +3687,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3528,6 +3701,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3541,14 +3715,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -3572,6 +3746,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3585,6 +3760,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3622,6 +3798,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3640,6 +3818,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3653,6 +3832,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3666,14 +3846,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -3704,6 +3884,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3717,6 +3898,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3754,6 +3936,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3772,6 +3956,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3785,6 +3970,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3798,14 +3984,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -3836,6 +4022,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3849,6 +4036,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3886,6 +4074,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -3904,6 +4094,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3917,6 +4108,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3930,14 +4122,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -3961,6 +4153,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3974,6 +4167,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4011,6 +4205,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -4029,6 +4225,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4042,6 +4239,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4055,14 +4253,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 4,
       op_return: Some(
         Runestone {
@@ -4093,6 +4291,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4106,6 +4305,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4143,6 +4343,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -4161,6 +4363,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4174,6 +4377,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4187,14 +4391,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 4,
       op_return: Some(
         Runestone {
@@ -4225,6 +4429,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4238,6 +4443,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4289,6 +4495,8 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -4307,6 +4515,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4320,6 +4529,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4333,14 +4543,14 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -4364,6 +4574,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4377,6 +4588,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4403,36 +4615,10 @@ mod tests {
 
     context.mine_balance();
 
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            divisibility: 8,
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            divisibility: 8,
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            ..default()
-          },
-        ),
-      ],
-      [],
-    );
-
     let txid = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
@@ -4451,6 +4637,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4464,6 +4651,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4474,7 +4662,427 @@ mod tests {
           },
         ),
       ],
-      [(OutPoint { txid, vout: 0 }, vec![(ID0, 50 * COIN_VALUE)])],
+      [(OutPoint { txid, vout: 1 }, vec![(ID0, 50 * COIN_VALUE)])],
+    );
+  }
+
+  #[test]
+  fn rune_cannot_be_minted_if_previous_mint_is_not_an_input() {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_balance();
+
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(3, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+  }
+
+  #[test]
+  fn rune_can_be_minted_if_previous_mint_output_is_an_input() {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_balance();
+
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+      ],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid1,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: 100 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid1,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid1,
+          vout: 1,
+        },
+        vec![(ID0, 100 * COIN_VALUE)],
+      )],
+    );
+  }
+
+  #[test]
+  fn rune_can_be_minted_if_previous_mint_output_is_spent() {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_balance();
+
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new())
+      ],
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: Txid::all_zeros(),
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: Txid::all_zeros(),
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 0, 0, Witness::new())
+      ],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          mint: Some(ID0),
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid1,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: 100 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            divisibility: 8,
+            etching: txid1,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: 0,
+            ..default()
+          },
+        ),
+      ],
+      [
+        (
+          OutPoint {
+            txid: txid0,
+            vout: 1,
+          },
+          vec![(ID0, 50 * COIN_VALUE)],
+        ),
+        (
+          OutPoint {
+            txid: txid1,
+            vout: 1,
+          },
+          vec![(ID0, 50 * COIN_VALUE)],
+        )
+      ],
     );
   }
 
@@ -4484,36 +5092,9 @@ mod tests {
 
     context.mine_balance();
 
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            divisibility: 8,
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            divisibility: 8,
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            ..default()
-          },
-        ),
-      ],
-      [],
-    );
-
     let txid = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -4521,7 +5102,7 @@ mod tests {
           edicts: vec![Edict {
             id: ID0,
             amount: 100,
-            output: 0,
+            output: 1,
           }],
           ..default()
         }
@@ -4538,6 +5119,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4551,6 +5133,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4561,7 +5144,7 @@ mod tests {
           },
         ),
       ],
-      [(OutPoint { txid, vout: 0 }, vec![(ID0, 50 * COIN_VALUE)])],
+      [(OutPoint { txid, vout: 1 }, vec![(ID0, 50 * COIN_VALUE)])],
     );
   }
 
@@ -4571,44 +5154,17 @@ mod tests {
 
     context.mine_balance();
 
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            divisibility: 8,
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            divisibility: 8,
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            ..default()
-          },
-        ),
-      ],
-      [],
-    );
-
     let txid = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
-      outputs: 2,
+      mint: true,
+      outputs: 5,
       op_return: Some(
         Runestone {
           mint: Some(ID0),
           edicts: vec![Edict {
             id: ID0,
             amount: 0,
-            output: 3,
+            output: 6,
           }],
           ..default()
         }
@@ -4625,6 +5181,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4638,6 +5195,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4649,8 +5207,10 @@ mod tests {
         ),
       ],
       [
-        (OutPoint { txid, vout: 0 }, vec![(ID0, 25 * COIN_VALUE)]),
-        (OutPoint { txid, vout: 1 }, vec![(ID0, 25 * COIN_VALUE)]),
+        (OutPoint { txid, vout: 1 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
+        (OutPoint { txid, vout: 2 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
+        (OutPoint { txid, vout: 3 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
+        (OutPoint { txid, vout: 4 }, vec![(ID0, 125 * COIN_VALUE / 10)]),
       ],
     );
   }
@@ -4691,6 +5251,7 @@ mod tests {
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -4698,7 +5259,7 @@ mod tests {
           edicts: vec![Edict {
             id: ID0,
             amount: 100 * COIN_VALUE,
-            output: 0,
+            output: 1,
           }],
           ..default()
         }
@@ -4715,6 +5276,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4728,6 +5290,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4738,7 +5301,7 @@ mod tests {
           },
         ),
       ],
-      [(OutPoint { txid, vout: 0 }, vec![(ID0, 50 * COIN_VALUE)])],
+      [(OutPoint { txid, vout: 1 }, vec![(ID0, 50 * COIN_VALUE)])],
     );
   }
 
@@ -4778,6 +5341,7 @@ mod tests {
 
     let txid = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(2, 0, 0, Witness::new())],
+      mint: true,
       outputs: 2,
       op_return: Some(
         Runestone {
@@ -4786,17 +5350,17 @@ mod tests {
             Edict {
               id: ID0,
               amount: 10 * COIN_VALUE,
-              output: 0,
+              output: 1,
             },
             Edict {
               id: ID0,
               amount: 10 * COIN_VALUE,
-              output: 0,
+              output: 1,
             },
             Edict {
               id: ID0,
               amount: 30 * COIN_VALUE,
-              output: 0,
+              output: 1,
             },
           ],
           ..default()
@@ -4814,6 +5378,7 @@ mod tests {
           ID0,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4827,6 +5392,7 @@ mod tests {
           ID1,
           RuneEntry {
             divisibility: 8,
+            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4837,7 +5403,7 @@ mod tests {
           },
         ),
       ],
-      [(OutPoint { txid, vout: 0 }, vec![(ID0, 50 * COIN_VALUE)])],
+      [(OutPoint { txid, vout: 1 }, vec![(ID0, 50 * COIN_VALUE)])],
     );
   }
 

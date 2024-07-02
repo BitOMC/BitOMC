@@ -25,21 +25,23 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     let mut burned: HashMap<RuneId, Lot> = HashMap::new();
     let mut edicts: Vec<Edict> = Vec::new();
+    let mut contains_mint = false;
+
+    self.update_status_of_last_mint_output(tx, id0, id1)?;
 
     if let Some(artifact) = &artifact {
-      if artifact.mint().is_some() {
-        if let Some((amount0, amount1)) = self.mint(id0, id1)? {
-          *unallocated.entry(id0).or_default() += amount0;
-          *unallocated.entry(id1).or_default() += amount1;
+      if let Some((amount0, amount1)) = self.mint(tx, txid, id0, id1)? {
+        *unallocated.entry(id0).or_default() += amount0;
+        *unallocated.entry(id1).or_default() += amount1;
+        contains_mint = true;
 
-          if let Some(sender) = self.event_sender {
-            sender.blocking_send(Event::RuneMinted {
-              block_height: self.height,
-              txid,
-              amount0: amount0.n(),
-              amount1: amount1.n(),
-            })?;
-          }
+        if let Some(sender) = self.event_sender {
+          sender.blocking_send(Event::RuneMinted {
+            block_height: self.height,
+            txid,
+            amount0: amount0.n(),
+            amount1: amount1.n(),
+          })?;
         }
       }
 
@@ -60,13 +62,14 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
                 *allocated_conversion[output].entry(id).or_default() += amount;
                 *converted.entry(id).or_default() += amount;
               } else {
-                // find non-OP_RETURN outputs
+                // find non-OP_RETURN and non-mint outputs
                 let destinations = tx
                   .output
                   .iter()
                   .enumerate()
                   .filter_map(|(output, tx_out)| {
-                    (!tx_out.script_pubkey.is_op_return()).then_some(output)
+                    (!(contains_mint && output == 0) && !tx_out.script_pubkey.is_op_return())
+                      .then_some(output)
                   })
                   .collect::<Vec<usize>>();
 
@@ -90,13 +93,14 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           };
 
           if output == tx.output.len() {
-            // find non-OP_RETURN outputs
+            // find non-OP_RETURN and non-mint outputs
             let destinations = tx
               .output
               .iter()
               .enumerate()
               .filter_map(|(output, tx_out)| {
-                (!tx_out.script_pubkey.is_op_return()).then_some(output)
+                (!(contains_mint && output == 0) && !tx_out.script_pubkey.is_op_return())
+                  .then_some(output)
               })
               .collect::<Vec<usize>>();
 
@@ -158,7 +162,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         .unwrap_or_default();
 
       // assign all un-allocated runes to the default output, or the first non
-      // OP_RETURN output if there is no default
+      // OP_RETURN and non-mint output if there is no default
       if let Some(vout) = pointer
         .map(|pointer| pointer.into_usize())
         .inspect(|&pointer| assert!(pointer < allocated.len()))
@@ -166,7 +170,9 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           tx.output
             .iter()
             .enumerate()
-            .find(|(_vout, tx_out)| !tx_out.script_pubkey.is_op_return())
+            .find(|(_vout, tx_out)| {
+              !(contains_mint && *_vout == 0) && !tx_out.script_pubkey.is_op_return()
+            })
             .map(|(vout, _tx_out)| vout)
         })
       {
@@ -286,12 +292,13 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           if id == input_id {
             // allocate only if output is valid
             if output < tx.output.len() {
-              *allocated[output].entry(input_id).or_default() += *burned.entry(input_id).or_default();
+              *allocated[output].entry(input_id).or_default() +=
+                *burned.entry(input_id).or_default();
               *burned.entry(input_id).or_default() = Lot(0);
             }
-            // NOTE: If output equals length, we allocate to first non-OP_RETURN output.
-            // Since inputs have been burnt and the first input edict has an output equal to length, 
-            // we know the first non-OP_RETURN output has a balance.
+            // NOTE: If output equals length, we allocate to first non-OP_RETURN and non-mint output.
+            // Since inputs have been burnt and the first input edict has an output equal to length,
+            // we know the first non-OP_RETURN and non-mint output has a balance.
             // Therefore, it is safe to break this loop. We will find this output in the next loop.
             break;
           }
@@ -313,13 +320,14 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         if burned.entry(input_id).or_default().0 > 0 {
           let mut output = usize::try_from(edicts[0].output).unwrap();
           if output == tx.output.len() {
-            // find first non-OP_RETURN output
+            // find first non-OP_RETURN and non-mint output
             let destinations = tx
               .output
               .iter()
               .enumerate()
               .filter_map(|(output, tx_out)| {
-                (!tx_out.script_pubkey.is_op_return()).then_some(output)
+                (!(contains_mint && output == 0) && !tx_out.script_pubkey.is_op_return())
+                  .then_some(output)
               })
               .collect::<Vec<usize>>();
 
@@ -409,7 +417,60 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     Ok(())
   }
 
-  fn mint(&mut self, id0: RuneId, id1: RuneId) -> Result<Option<(Lot, Lot)>> {
+  fn update_status_of_last_mint_output(
+    &mut self,
+    tx: &Transaction,
+    id0: RuneId,
+    id1: RuneId,
+  ) -> Result {
+    let Some(entry0) = self.id_to_entry.get(&id0.store())? else {
+      return Ok(());
+    };
+    let Some(entry1) = self.id_to_entry.get(&id1.store())? else {
+      return Ok(());
+    };
+
+    let mut rune_entry0 = RuneEntry::load(entry0.value());
+    let mut rune_entry1 = RuneEntry::load(entry1.value());
+
+    // Skip if outpoint of last mint is spent
+    if rune_entry0.etching == Txid::all_zeros() {
+      return Ok(());
+    }
+
+    // Skip if outpoint of last mint is not an input to this transaction
+    for input in &tx.input {
+      if input.previous_output.txid == rune_entry0.etching && input.previous_output.vout == 0 {
+        drop(entry0);
+        drop(entry1);
+
+        // Update last mint txid so that we know it's been spent
+        rune_entry0.etching = Txid::all_zeros();
+        rune_entry1.etching = Txid::all_zeros();
+
+        self.id_to_entry.insert(&id0.store(), rune_entry0.store())?;
+        self.id_to_entry.insert(&id1.store(), rune_entry1.store())?;
+
+        break;
+      }
+    }
+
+    Ok(())
+  }
+
+  fn mint(
+    &mut self,
+    tx: &Transaction,
+    txid: Txid,
+    id0: RuneId,
+    id1: RuneId,
+  ) -> Result<Option<(Lot, Lot)>> {
+    // First output must have p2wsh for 1 CHECKSEQUENCEVERIFY OP_DROP OP_TRUE (anyone can spend after 1 block)
+    let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2, 0x75, 0x51]));
+    if tx.output[0].script_pubkey != ScriptBuf::new_v0_p2wsh(&mint_script.wscript_hash()) {
+      return Ok(None);
+    }
+
     let Some(entry0) = self.id_to_entry.get(&id0.store())? else {
       return Ok(None);
     };
@@ -419,6 +480,11 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     let mut rune_entry0 = RuneEntry::load(entry0.value());
     let mut rune_entry1 = RuneEntry::load(entry1.value());
+
+    // Outpoint of last mint must be spent (either by this tx or a previous one)
+    if rune_entry0.etching != Txid::all_zeros() {
+      return Ok(None);
+    }
 
     let reward = self.reward(self.height.into());
     let sum_of_sq =
@@ -454,6 +520,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       amount1 += rune_entry1.burned;
       rune_entry1.burned = 0;
     }
+
+    // Update last mint txid
+    rune_entry0.etching = txid;
+    rune_entry1.etching = txid;
 
     self.id_to_entry.insert(&id0.store(), rune_entry0.store())?;
     self.id_to_entry.insert(&id1.store(), rune_entry1.store())?;
