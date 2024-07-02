@@ -3,7 +3,7 @@ use super::*;
 pub(super) struct Message {
   pub(super) flaw: Option<Flaw>,
   pub(super) edicts: Vec<Edict>,
-  pub(super) pointer: Option<u32>
+  pub(super) pointer: Option<u32>,
 }
 
 impl Message {
@@ -14,7 +14,7 @@ impl Message {
 
     let mut offset = 0;
     if payload.len() % 2 == 1 {
-      if let Some(&value) = payload.get(0) {
+      if let Some(&value) = payload.first() {
         pointer = u32::try_from(value).ok();
         offset = 1;
       };

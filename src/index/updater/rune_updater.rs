@@ -46,7 +46,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       }
 
       if let Artifact::Runestone(runestone) = artifact {
-        edicts = runestone.edicts.clone();
+        edicts.clone_from(&runestone.edicts);
         for Edict { id, amount, output } in runestone.edicts.iter().copied() {
           let amount = Lot(amount);
           last_id = Some(id);
@@ -68,7 +68,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
                   .iter()
                   .enumerate()
                   .filter_map(|(output, tx_out)| {
-                    (!(contains_mint && output == 0) && !tx_out.script_pubkey.is_op_return())
+                    (!(tx_out.script_pubkey.is_op_return() || contains_mint && output == 0))
                       .then_some(output)
                   })
                   .collect::<Vec<usize>>();
@@ -99,7 +99,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
               .iter()
               .enumerate()
               .filter_map(|(output, tx_out)| {
-                (!(contains_mint && output == 0) && !tx_out.script_pubkey.is_op_return())
+                (!(tx_out.script_pubkey.is_op_return() || contains_mint && output == 0))
                   .then_some(output)
               })
               .collect::<Vec<usize>>();
@@ -171,7 +171,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
             .iter()
             .enumerate()
             .find(|(_vout, tx_out)| {
-              !(contains_mint && *_vout == 0) && !tx_out.script_pubkey.is_op_return()
+              !(tx_out.script_pubkey.is_op_return() || contains_mint && *_vout == 0)
             })
             .map(|(vout, _tx_out)| vout)
         })
@@ -326,7 +326,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
               .iter()
               .enumerate()
               .filter_map(|(output, tx_out)| {
-                (!(contains_mint && output == 0) && !tx_out.script_pubkey.is_op_return())
+                (!(tx_out.script_pubkey.is_op_return() || contains_mint && output == 0))
                   .then_some(output)
               })
               .collect::<Vec<usize>>();
@@ -392,15 +392,17 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     // increment entries with burned runes
     for (id, amount) in burned {
-      *self.burned.entry(id).or_default() += amount;
+      if amount > 0 {
+        *self.burned.entry(id).or_default() += amount;
 
-      if let Some(sender) = self.event_sender {
-        sender.blocking_send(Event::RuneBurned {
-          block_height: self.height,
-          txid,
-          rune_id: id,
-          amount: amount.n(),
-        })?;
+        if let Some(sender) = self.event_sender {
+          sender.blocking_send(Event::RuneBurned {
+            block_height: self.height,
+            txid,
+            rune_id: id,
+            amount: amount.n(),
+          })?;
+        }
       }
     }
 

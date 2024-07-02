@@ -71,12 +71,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -188,12 +183,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -294,12 +284,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -396,12 +381,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -509,12 +489,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -618,12 +593,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -724,12 +694,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -799,7 +764,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -874,7 +838,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -932,12 +895,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1007,7 +965,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1065,12 +1022,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1140,7 +1092,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1207,12 +1158,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1282,7 +1228,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1352,12 +1297,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1426,7 +1366,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1500,7 +1439,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1558,12 +1496,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1632,7 +1565,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1706,7 +1638,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1764,12 +1695,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1838,7 +1764,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -1897,12 +1822,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -1971,7 +1891,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2028,12 +1947,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2100,7 +2014,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2157,12 +2070,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2229,7 +2137,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2286,12 +2193,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2350,7 +2252,6 @@ mod tests {
             output: 1,
           }],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2409,12 +2310,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2473,7 +2369,6 @@ mod tests {
             output: 3,
           }],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2531,12 +2426,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2595,7 +2485,6 @@ mod tests {
             output: 0,
           }],
           pointer: Some(0),
-          ..default()
         }
         .encipher(),
       ),
@@ -2647,12 +2536,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2721,7 +2605,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2775,12 +2658,7 @@ mod tests {
       ],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2846,12 +2724,12 @@ mod tests {
             },
             Edict {
               id: ID1,
-              amount: 1 * COIN_VALUE,
+              amount: COIN_VALUE,
               output: 2,
             },
             Edict {
               id: ID0,
-              amount: 1 * COIN_VALUE,
+              amount: COIN_VALUE,
               output: 2,
             },
             Edict {
@@ -2861,7 +2739,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -2875,7 +2752,7 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            burned: 1 * COIN_VALUE,
+            burned: COIN_VALUE,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2889,7 +2766,7 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            burned: 1 * COIN_VALUE,
+            burned: COIN_VALUE,
             etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -2917,12 +2794,7 @@ mod tests {
       ],
       outputs: 2,
       mint: true,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -2978,12 +2850,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3035,12 +2902,7 @@ mod tests {
       ],
       outputs: 2,
       mint: true,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3088,7 +2950,7 @@ mod tests {
             vout: 1,
           },
           vec![(ID0, 10 * 50 * COIN_VALUE)],
-        )
+        ),
       ],
     );
   }
@@ -3103,12 +2965,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3178,7 +3035,6 @@ mod tests {
             },
           ],
           pointer: Some(2),
-          ..default()
         }
         .encipher(),
       ),
@@ -3322,12 +3178,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3433,12 +3284,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3550,12 +3396,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3676,12 +3517,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3809,12 +3645,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -3942,12 +3773,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4068,12 +3894,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4201,12 +4022,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4348,12 +4164,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4465,12 +4276,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4519,12 +4325,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4572,12 +4373,7 @@ mod tests {
       inputs: &[(2, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4632,12 +4428,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4688,12 +4479,7 @@ mod tests {
       ],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4748,12 +4534,7 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -4846,12 +4627,7 @@ mod tests {
       inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
       mint: true,
       outputs: 2,
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 

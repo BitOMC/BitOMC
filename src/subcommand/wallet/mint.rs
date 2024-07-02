@@ -54,9 +54,7 @@ impl Mint {
       destination.script_pubkey().dust_value().to_sat()
     );
 
-    let runestone = Runestone {
-      ..default()
-    };
+    let runestone = Runestone { ..default() };
 
     let script_pubkey = runestone.encipher();
 

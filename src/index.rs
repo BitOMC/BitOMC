@@ -6526,12 +6526,9 @@ mod tests {
 
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(1, 0, 0, Witness::new())],
-      op_return: Some(
-        Runestone {
-          ..default()
-        }
-        .encipher(),
-      ),
+      mint: true,
+      outputs: 2,
+      op_return: Some(Runestone { ..default() }.encipher()),
       ..default()
     });
 
@@ -6542,7 +6539,7 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -6555,7 +6552,7 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
+            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -6569,7 +6566,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 0,
+          vout: 1,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -6586,7 +6583,10 @@ mod tests {
     );
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 0, Witness::new())],
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+      ],
       op_return: None,
       ..default()
     });
@@ -6598,7 +6598,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -6611,7 +6610,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -6656,7 +6654,7 @@ mod tests {
             amount: 111,
             output: 0,
           }],
-          ..Default::default()
+          ..default()
         }
         .encipher(),
       ),
@@ -6671,21 +6669,19 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            divisibility: 8,
             burned: 111,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
             mints: 1,
-            supply: 50 * COIN_VALUE - 111,
+            supply: 50 * COIN_VALUE,
             ..default()
           },
         ),
         (
           ID1,
           RuneEntry {
-            divisibility: 8,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,

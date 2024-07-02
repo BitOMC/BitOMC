@@ -4,9 +4,7 @@
 use {
   bitcoin::{
     consensus::{Decodable, Encodable},
-    constants::{
-      COIN_VALUE, DIFFCHANGE_INTERVAL, SUBSIDY_HALVING_INTERVAL,
-    },
+    constants::{COIN_VALUE, DIFFCHANGE_INTERVAL, SUBSIDY_HALVING_INTERVAL},
     opcodes,
     script::{self, Instruction},
     Network, OutPoint, ScriptBuf, Transaction,

@@ -654,12 +654,7 @@ fn get_runes_balances() {
 
   let txid = core.broadcast_tx(TransactionTemplate {
     inputs: &[(2, 0, 0, Witness::new())],
-    op_return: Some(
-      Runestone {
-        ..default()
-      }
-      .encipher(),
-    ),
+    op_return: Some(Runestone { ..default() }.encipher()),
     ..default()
   });
 
