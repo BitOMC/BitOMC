@@ -10,22 +10,16 @@ pub struct Runestone {
 
 #[derive(Debug, PartialEq)]
 enum Payload {
-  Valid(Vec<u8>),
-  Invalid(Flaw),
+  Valid(Vec<u8>)
 }
 
 impl Runestone {
-  pub const MAGIC_NUMBER: opcodes::All = opcodes::all::OP_PUSHNUM_13;
+  pub const MAGIC_NUMBER: opcodes::All = opcodes::all::OP_PUSHNUM_14;
   pub const COMMIT_CONFIRMATIONS: u16 = 6;
 
   pub fn decipher(transaction: &Transaction) -> Option<Artifact> {
     let payload = match Runestone::payload(transaction) {
       Some(Payload::Valid(payload)) => payload,
-      Some(Payload::Invalid(flaw)) => {
-        return Some(Artifact::Cenotaph(Cenotaph {
-          flaw: Some(flaw)
-        }));
-      }
       None => return None,
     };
 
@@ -60,7 +54,10 @@ impl Runestone {
   }
 
   pub fn encipher(&self) -> ScriptBuf {
-    let mut payload = Vec::new();
+    let mut payload = Vec::from(script::Builder::new()
+      .push_opcode(opcodes::all::OP_RETURN)
+      .push_opcode(Runestone::MAGIC_NUMBER)
+      .as_bytes());
 
     if let Some(pointer) = self.pointer {
       varint::encode_to_vec(pointer.into(), &mut payload);
@@ -79,16 +76,7 @@ impl Runestone {
       }
     }
 
-    let mut builder = script::Builder::new()
-      .push_opcode(opcodes::all::OP_RETURN)
-      .push_opcode(Runestone::MAGIC_NUMBER);
-
-    for chunk in payload.chunks(MAX_SCRIPT_ELEMENT_SIZE) {
-      let push: &script::PushBytes = chunk.try_into().unwrap();
-      builder = builder.push_slice(push);
-    }
-
-    builder.into_script()
+    ScriptBuf::from_bytes(payload)
   }
 
   fn payload(transaction: &Transaction) -> Option<Payload> {
@@ -107,23 +95,8 @@ impl Runestone {
         continue;
       }
 
-      // construct the payload by concatenating remaining data pushes
-      let mut payload = Vec::new();
-
-      for result in instructions {
-        match result {
-          Ok(Instruction::PushBytes(push)) => {
-            payload.extend_from_slice(push.as_bytes());
-          }
-          Ok(Instruction::Op(_)) => {
-            return Some(Payload::Invalid(Flaw::Opcode));
-          }
-          Err(_) => {
-            return Some(Payload::Invalid(Flaw::InvalidScript));
-          }
-        }
-      }
-
+      // construct the payload
+      let payload = Vec::from(instructions.as_script().as_bytes());
       return Some(Payload::Valid(payload));
     }
 
