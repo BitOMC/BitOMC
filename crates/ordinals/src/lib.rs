@@ -35,10 +35,6 @@ pub use {
 
 pub const CYCLE_EPOCHS: u32 = 6;
 
-fn default<T: Default>() -> T {
-  Default::default()
-}
-
 mod artifact;
 mod cenotaph;
 mod charm;

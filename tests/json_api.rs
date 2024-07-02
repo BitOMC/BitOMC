@@ -650,16 +650,12 @@ fn get_runes_balances() {
 
   create_wallet(&core, &ord);
 
-  const ID0: RuneId = RuneId { block: 1, tx: 0 };
-  // const ID1: RuneId = RuneId { block: 1, tx: 1 };
-
   core.mine_blocks(3);
 
   let txid = core.broadcast_tx(TransactionTemplate {
     inputs: &[(2, 0, 0, Witness::new())],
     op_return: Some(
       Runestone {
-        mint: Some(ID0),
         ..default()
       }
       .encipher(),

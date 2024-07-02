@@ -6528,7 +6528,6 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),

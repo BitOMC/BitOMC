@@ -31,7 +31,7 @@ impl Mint {
 
     let block_height = bitcoin_client.get_block_count()?;
 
-    let Some((id, rune_entry, _)) = wallet.get_rune(Rune(0))? else {
+    let Some((_, rune_entry, _)) = wallet.get_rune(Rune(0))? else {
       bail!("rune has not been etched");
     };
 
@@ -55,7 +55,6 @@ impl Mint {
     );
 
     let runestone = Runestone {
-      mint: Some(id),
       ..default()
     };
 

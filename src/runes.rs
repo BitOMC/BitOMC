@@ -73,7 +73,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -191,7 +190,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -299,7 +297,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -406,7 +403,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -509,7 +505,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -623,7 +618,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -733,7 +727,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -840,7 +833,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -1049,7 +1041,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -1183,7 +1174,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -1326,7 +1316,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -1472,7 +1461,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -1679,7 +1667,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -1886,7 +1873,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2020,7 +2006,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2152,7 +2137,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2282,7 +2266,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2412,7 +2395,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2536,7 +2518,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2659,7 +2640,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2776,7 +2756,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2905,7 +2884,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -2967,7 +2945,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           edicts: vec![
             Edict {
               id: ID1,
@@ -3049,7 +3026,6 @@ mod tests {
       mint: true,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3099,6 +3075,132 @@ mod tests {
   }
 
   #[test]
+  fn mint_receives_missed_mints() {
+    let context = Context::builder().arg("--index-runes").build();
+
+    context.mine_blocks(1);
+
+    // Mint 30 EASE, burning 1 EASE, using at most 11 TIGHTEN, burning 1 TIGHTEN
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 50 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            etching: txid0,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 50 * COIN_VALUE)],
+      )],
+    );
+
+    context.mine_blocks(9);
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 0, 0, Witness::new()),
+        (2, 1, 0, Witness::new()),
+      ],
+      outputs: 2,
+      mint: true,
+      op_return: Some(
+        Runestone {
+          ..default()
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            etching: txid1,
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 11,
+            supply: 50 * 11 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            etching: txid1,
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 11,
+            ..default()
+          },
+        ),
+      ],
+      [
+        (
+          OutPoint {
+            txid: txid0,
+            vout: 1,
+          },
+          vec![(ID0, 50 * COIN_VALUE)],
+        ),
+        (
+          OutPoint {
+            txid: txid1,
+            vout: 1,
+          },
+          vec![(ID0, 10 * 50 * COIN_VALUE)],
+        )
+      ],
+    );
+  }
+
+  #[test]
   fn multiple_input_runes_on_different_inputs_may_be_allocated() {
     let context = Context::builder().arg("--index-runes").build();
 
@@ -3110,7 +3212,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3330,7 +3431,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3442,7 +3542,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3559,7 +3658,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3686,7 +3784,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3820,7 +3917,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -3954,7 +4050,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4081,7 +4176,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4215,7 +4309,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4363,7 +4456,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4481,7 +4573,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4536,7 +4627,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4590,7 +4680,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4651,7 +4740,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4708,7 +4796,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4769,7 +4856,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4868,7 +4954,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           ..default()
         }
         .encipher(),
@@ -4938,7 +5023,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           edicts: vec![Edict {
             id: ID0,
             amount: 100,
@@ -4998,7 +5082,6 @@ mod tests {
       outputs: 5,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           edicts: vec![Edict {
             id: ID0,
             amount: 0,
@@ -5101,7 +5184,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           edicts: vec![Edict {
             id: ID0,
             amount: 100 * COIN_VALUE,
@@ -5187,7 +5269,6 @@ mod tests {
       outputs: 2,
       op_return: Some(
         Runestone {
-          mint: Some(ID0),
           edicts: vec![
             Edict {
               id: ID0,

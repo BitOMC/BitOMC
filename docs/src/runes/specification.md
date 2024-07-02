@@ -30,33 +30,7 @@ Abstractly, runestones contain the following fields:
 ```rust
 struct Runestone {
   edicts: Vec<Edict>,
-  etching: Option<Etching>,
-  mint: Option<RuneId>,
   pointer: Option<u32>,
-}
-```
-
-Runes are created by etchings:
-
-```rust
-struct Etching {
-  divisibility: Option<u8>,
-  premine: Option<u128>,
-  rune: Option<Rune>,
-  spacers: Option<u32>,
-  symbol: Option<char>,
-  terms: Option<Terms>,
-}
-```
-
-Which may contain mint terms:
-
-```rust
-struct Terms {
-  amount: Option<u128>,
-  cap: Option<u128>,
-  height: (Option<u64>, Option<u64>),
-  offset: (Option<u64>, Option<u64>),
 }
 ```
 
@@ -212,8 +186,6 @@ The runestone:
 ```rust
 struct Runestone {
   edicts: Vec<Edict>,
-  etching: Option<Etching>,
-  mint: Option<RuneId>,
   pointer: Option<u32>,
 }
 ```
@@ -253,33 +225,6 @@ time, and must not be used.
 
 The `Body` tag marks the end of the runestone's fields, causing all following
 integers to be interpreted as edicts.
-
-##### Flags
-
-The `Flag` field contains a bitmap of flags, whose position is `1 <<
-FLAG_VALUE`:
-
-```rust
-enum Flag {
-  Etching = 0,
-  Terms = 1,
-  Turbo = 2,
-  Cenotaph = 127,
-}
-```
-
-The `Etching` flag marks this transaction as containing an etching.
-
-The `Terms` flag marks this transaction's etching as having open mint terms.
-
-The `Turbo` flag marks this transaction's etching as opting into future
-protocol changes. These protocol changes may increase light client validation
-costs, or just be highly degenerate.
-
-The `Cenotaph` flag is unrecognized.
-
-If the value of the flags field after removing recognized flags is nonzero, the
-runestone is a cenotaph.
 
 ##### Rune
 

@@ -454,32 +454,6 @@ impl Plan {
 
       let inner = Runestone {
         edicts: Vec::new(),
-        etching: Some(ordinals::Etching {
-          divisibility: (etching.divisibility > 0).then_some(etching.divisibility),
-          premine: (premine > 0).then_some(premine),
-          rune: Some(etching.rune.rune),
-          spacers: (etching.rune.spacers > 0).then_some(etching.rune.spacers),
-          symbol: Some(etching.symbol),
-          terms: etching
-            .terms
-            .map(|terms| -> Result<ordinals::Terms> {
-              Ok(ordinals::Terms {
-                cap: (terms.cap > 0).then_some(terms.cap),
-                height: (
-                  terms.height.and_then(|range| (range.start)),
-                  terms.height.and_then(|range| (range.end)),
-                ),
-                amount: Some(terms.amount.to_integer(etching.divisibility)?),
-                offset: (
-                  terms.offset.and_then(|range| (range.start)),
-                  terms.offset.and_then(|range| (range.end)),
-                ),
-              })
-            })
-            .transpose()?,
-          turbo: etching.turbo,
-        }),
-        mint: None,
         pointer: (premine > 0).then_some((reveal_outputs.len() - 1).try_into().unwrap()),
       };
 
