@@ -465,9 +465,9 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     id0: RuneId,
     id1: RuneId,
   ) -> Result<Option<(Lot, Lot)>> {
-    // First output must have p2wsh for 1 CHECKSEQUENCEVERIFY OP_DROP OP_TRUE (anyone can spend after 1 block)
-    let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2, 0x75, 0x51]));
-    if tx.output[0].script_pubkey != ScriptBuf::new_v0_p2wsh(&mint_script.wscript_hash()) {
+    // First output must have p2sh for 1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
+    let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
+    if tx.output[0].script_pubkey != ScriptBuf::new_p2sh(&mint_script.clone().script_hash()) {
       return Ok(None);
     }
 
