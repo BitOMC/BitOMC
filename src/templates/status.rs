@@ -11,7 +11,6 @@ pub struct StatusHtml {
   pub initial_sync_time: Duration,
   pub inscriptions: u64,
   pub lost_sats: u64,
-  pub minimum_rune_for_next_block: Rune,
   pub rune_index: bool,
   pub runes: u64,
   pub sat_index: bool,

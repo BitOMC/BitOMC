@@ -78,10 +78,7 @@ fn with_runes() {
         (
           SpacedRune::new(Rune(TIGHTEN), 0),
           vec![(
-            OutPoint {
-              txid,
-              vout: 1
-            },
+            OutPoint { txid, vout: 1 },
             Pile {
               amount: 30 * COIN_VALUE,
               divisibility: 8,
@@ -94,10 +91,7 @@ fn with_runes() {
         (
           SpacedRune::new(Rune(EASE), 0),
           vec![(
-            OutPoint {
-              txid,
-              vout: 1
-            },
+            OutPoint { txid, vout: 1 },
             Pile {
               amount: 40 * COIN_VALUE,
               divisibility: 8,

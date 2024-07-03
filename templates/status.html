@@ -22,8 +22,6 @@
   <dd>{{ humantime::format_duration(self.uptime) }}</dd>
   <dt>initial sync time</dt>
   <dd>{{ humantime::format_duration(self.initial_sync_time) }}</dd>
-  <dt>minimum rune for next block</dt>
-  <dd>{{ self.minimum_rune_for_next_block }}</dd>
   <dt>version</dt>
   <dd>{{ env!("CARGO_PKG_VERSION") }}</dd>
   <dt>unrecoverably reorged</dt>

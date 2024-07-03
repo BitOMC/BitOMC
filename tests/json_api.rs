@@ -502,9 +502,8 @@ fn get_status() {
       initial_sync_time: dummy_duration,
       inscriptions: 1,
       lost_sats: 0,
-      minimum_rune_for_next_block: Rune(99218849511960410),
       rune_index: true,
-      runes: 0,
+      runes: 2,
       sat_index: true,
       started: dummy_started,
       transaction_index: false,
@@ -522,14 +521,9 @@ fn get_runes() {
 
   create_wallet(&core, &ord);
 
-  core.mine_blocks(3);
-
-  let a = etch(&core, &ord, Rune(TIGHTEN));
-  let b = etch(&core, &ord, Rune(EASE));
-
   core.mine_blocks(1);
 
-  let response = ord.json_request(format!("/rune/{}", a.output.rune.unwrap().rune));
+  let response = ord.json_request(format!("/rune/{}", 0));
   assert_eq!(response.status(), StatusCode::OK);
 
   let rune_json: api::Rune = serde_json::from_str(&response.text().unwrap()).unwrap();
@@ -538,28 +532,15 @@ fn get_runes() {
     rune_json,
     api::Rune {
       entry: RuneEntry {
-        block: a.id.block,
-        burned: 0,
-        terms: None,
-        divisibility: 0,
-        etching: a.output.reveal,
-        mints: 0,
-        number: 0,
-        supply: 1000,
         spaced_rune: SpacedRune {
           rune: Rune(TIGHTEN),
           spacers: 0
         },
-        symbol: Some('¢'),
-        timestamp: 10,
-        turbo: false,
+        ..default()
       },
-      id: RuneId { block: 10, tx: 1 },
+      id: ID0,
       mintable: false,
-      parent: Some(InscriptionId {
-        txid: a.output.reveal,
-        index: 0,
-      }),
+      parent: None,
     }
   );
 
@@ -574,45 +555,25 @@ fn get_runes() {
     api::Runes {
       entries: vec![
         (
-          RuneId { block: 17, tx: 1 },
+          ID1,
           RuneEntry {
-            block: b.id.block,
-            burned: 0,
-            terms: None,
-            divisibility: 0,
-            etching: b.output.reveal,
-            mints: 0,
-            number: 1,
-            supply: 1000,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0
             },
-            symbol: Some('¢'),
-            timestamp: 17,
-            turbo: false,
+            ..default()
           }
         ),
         (
-          RuneId { block: 10, tx: 1 },
+          ID0,
           RuneEntry {
-            block: a.id.block,
-            burned: 0,
-            terms: None,
-            divisibility: 0,
-            etching: a.output.reveal,
-            mints: 0,
-            number: 0,
-            supply: 1000,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0
             },
-            symbol: Some('¢'),
-            timestamp: 10,
-            turbo: false,
+            ..default()
           }
-        )
+        ),
       ],
       more: false,
       next: None,
@@ -629,10 +590,12 @@ fn get_runes_balances() {
 
   create_wallet(&core, &ord);
 
-  core.mine_blocks(3);
+  core.mine_blocks(1);
 
   let txid = core.broadcast_tx(TransactionTemplate {
-    inputs: &[(2, 0, 0, Witness::new())],
+    inputs: &[(1, 0, 0, Witness::new())],
+    outputs: 2,
+    mint: true,
     op_return: Some(Runestone { ..default() }.encipher()),
     ..default()
   });
@@ -640,8 +603,8 @@ fn get_runes_balances() {
   core.mine_blocks(1);
 
   let rune_balances: BTreeMap<Rune, BTreeMap<OutPoint, u128>> = vec![(
-    Rune(0),
-    vec![(OutPoint { txid, vout: 0 }, 50 * 100000000)]
+    Rune(TIGHTEN),
+    vec![(OutPoint { txid, vout: 1 }, 50 * 100000000)]
       .into_iter()
       .collect(),
   )]

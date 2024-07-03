@@ -499,8 +499,6 @@ impl Index {
       .transpose()?
       .map(|(height, _header)| height.value());
 
-    let next_height = height.map(|height| height + 1).unwrap_or(0);
-
     let blessed_inscriptions = statistic(Statistic::BlessedInscriptions)?;
     let cursed_inscriptions = statistic(Statistic::CursedInscriptions)?;
     let initial_sync_time = statistic(Statistic::InitialSyncTime)?;
@@ -525,10 +523,6 @@ impl Index {
       initial_sync_time: Duration::from_micros(initial_sync_time),
       inscriptions: blessed_inscriptions + cursed_inscriptions,
       lost_sats: statistic(Statistic::LostSats)?,
-      minimum_rune_for_next_block: Rune::minimum_at_height(
-        self.settings.chain().network(),
-        Height(next_height),
-      ),
       rune_index: self.has_rune_index(),
       runes: statistic(Statistic::Runes)?,
       sat_index: self.has_sat_index(),
