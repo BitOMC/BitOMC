@@ -14,7 +14,7 @@ use {
   indicatif::{ProgressBar, ProgressStyle},
   log::log_enabled,
   miniscript::descriptor::{DescriptorSecretKey, DescriptorXKey, Wildcard},
-  redb::{Database, DatabaseError, ReadableTable, RepairSession, StorageError, TableDefinition},
+  redb::{Database, DatabaseError, RepairSession, StorageError, TableDefinition},
   reqwest::header,
   std::sync::Once,
   transaction_builder::TransactionBuilder,
@@ -693,19 +693,5 @@ impl Wallet {
     wtx.commit()?;
 
     Ok(())
-  }
-
-  pub(crate) fn pending_etchings(&self) -> Result<Vec<(Rune, EtchingEntry)>> {
-    let rtx = self.database.begin_read()?;
-
-    Ok(
-      rtx
-        .open_table(RUNE_TO_ETCHING)?
-        .iter()?
-        .map(|result| {
-          result.map(|(key, value)| (Rune(key.value()), EtchingEntry::load(value.value())))
-        })
-        .collect::<Result<Vec<(Rune, EtchingEntry)>, StorageError>>()?,
-    )
   }
 }

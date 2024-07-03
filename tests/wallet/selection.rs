@@ -8,7 +8,7 @@ fn inscribe_does_not_select_runic_utxos() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   drain(&core, &ord);
 
@@ -29,7 +29,7 @@ fn send_amount_does_not_select_runic_utxos() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   drain(&core, &ord);
 
@@ -51,7 +51,7 @@ fn send_satpoint_does_not_send_runic_utxos() {
 
   core.mine_blocks_with_subsidy(1, 10000);
 
-  let etched = etch(&core, &ord, Rune(RUNE));
+  let etched = etch(&core, &ord, Rune(TIGHTEN));
 
   CommandBuilder::new(format!(
     "
@@ -80,7 +80,7 @@ fn send_inscription_does_not_select_runic_utxos() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   let (id, _) = inscribe(&core, &ord);
 
@@ -120,7 +120,7 @@ fn mint_does_not_select_inscription() {
       etching: Some(batch::Etching {
         divisibility: 1,
         rune: SpacedRune {
-          rune: Rune(RUNE),
+          rune: Rune(TIGHTEN),
           spacers: 0,
         },
         premine: "1000".parse().unwrap(),
@@ -146,7 +146,7 @@ fn mint_does_not_select_inscription() {
 
   CommandBuilder::new(format!(
     "--chain regtest --index-runes wallet mint --fee-rate 0 --rune {}",
-    Rune(RUNE)
+    Rune(TIGHTEN)
   ))
   .core(&core)
   .ord(&ord)
@@ -165,7 +165,7 @@ fn sending_rune_does_not_send_inscription() {
 
   core.mine_blocks_with_subsidy(1, 10000);
 
-  let rune = Rune(RUNE);
+  let rune = Rune(TIGHTEN);
 
   CommandBuilder::new("--chain regtest --index-runes wallet inscribe --fee-rate 0 --file foo.txt")
     .write("foo.txt", "FOO")

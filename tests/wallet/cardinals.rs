@@ -46,7 +46,7 @@ fn cardinals_does_not_show_runic_outputs() {
         terms: None,
         premine: "1000".parse().unwrap(),
         rune: SpacedRune {
-          rune: Rune(RUNE),
+          rune: Rune(TIGHTEN),
           spacers: 0,
         },
         symbol: '¢',

@@ -10,9 +10,6 @@ pub(super) struct RuneUpdater<'a, 'tx> {
 
 impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   pub(super) fn index_runes(&mut self, tx: &Transaction, txid: Txid) -> Result<()> {
-    let id0 = RuneId { block: 1, tx: 0 };
-    let id1 = RuneId { block: 1, tx: 1 };
-
     let artifact = Runestone::decipher(tx);
 
     let mut unallocated = self.unallocated(tx)?;
@@ -27,12 +24,12 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let mut edicts: Vec<Edict> = Vec::new();
     let mut contains_mint = false;
 
-    self.update_status_of_last_mint_output(tx, id0, id1)?;
+    self.update_status_of_last_mint_output(tx)?;
 
     if let Some(artifact) = &artifact {
-      if let Some((amount0, amount1)) = self.mint(tx, txid, id0, id1)? {
-        *unallocated.entry(id0).or_default() += amount0;
-        *unallocated.entry(id1).or_default() += amount1;
+      if let Some((amount0, amount1)) = self.mint(tx, txid)? {
+        *unallocated.entry(ID0).or_default() += amount0;
+        *unallocated.entry(ID1).or_default() += amount1;
         contains_mint = true;
 
         if let Some(sender) = self.event_sender {
@@ -204,12 +201,12 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     // check if this transaction contains a conversion
     let input_id: Option<RuneId>;
     let output_id: Option<RuneId>;
-    if burned.entry(id0).or_default().0 > 0 && converted.entry(id1).or_default().0 > 0 {
-      input_id = Some(id0);
-      output_id = Some(id1);
-    } else if burned.entry(id1).or_default().0 > 0 && converted.entry(id0).or_default().0 > 0 {
-      input_id = Some(id1);
-      output_id = Some(id0);
+    if burned.entry(ID0).or_default().0 > 0 && converted.entry(ID1).or_default().0 > 0 {
+      input_id = Some(ID0);
+      output_id = Some(ID1);
+    } else if burned.entry(ID1).or_default().0 > 0 && converted.entry(ID0).or_default().0 > 0 {
+      input_id = Some(ID1);
+      output_id = Some(ID0);
     } else {
       input_id = None;
       output_id = None;
@@ -419,16 +416,11 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     Ok(())
   }
 
-  fn update_status_of_last_mint_output(
-    &mut self,
-    tx: &Transaction,
-    id0: RuneId,
-    id1: RuneId,
-  ) -> Result {
-    let Some(entry0) = self.id_to_entry.get(&id0.store())? else {
+  fn update_status_of_last_mint_output(&mut self, tx: &Transaction) -> Result {
+    let Some(entry0) = self.id_to_entry.get(&ID0.store())? else {
       return Ok(());
     };
-    let Some(entry1) = self.id_to_entry.get(&id1.store())? else {
+    let Some(entry1) = self.id_to_entry.get(&ID1.store())? else {
       return Ok(());
     };
 
@@ -450,8 +442,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         rune_entry0.etching = Txid::all_zeros();
         rune_entry1.etching = Txid::all_zeros();
 
-        self.id_to_entry.insert(&id0.store(), rune_entry0.store())?;
-        self.id_to_entry.insert(&id1.store(), rune_entry1.store())?;
+        self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
+        self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
 
         break;
       }
@@ -460,13 +452,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     Ok(())
   }
 
-  fn mint(
-    &mut self,
-    tx: &Transaction,
-    txid: Txid,
-    id0: RuneId,
-    id1: RuneId,
-  ) -> Result<Option<(Lot, Lot)>> {
+  fn mint(&mut self, tx: &Transaction, txid: Txid) -> Result<Option<(Lot, Lot)>> {
     // First output must have script pubkey for 1 CHECKSEQUENCEVERIFY or p2sh equivalent (anyone can spend after 1 block)
     let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
     if tx.output[0].script_pubkey != mint_script
@@ -475,10 +461,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(None);
     }
 
-    let Some(entry0) = self.id_to_entry.get(&id0.store())? else {
+    let Some(entry0) = self.id_to_entry.get(&ID0.store())? else {
       return Ok(None);
     };
-    let Some(entry1) = self.id_to_entry.get(&id1.store())? else {
+    let Some(entry1) = self.id_to_entry.get(&ID1.store())? else {
       return Ok(None);
     };
 
@@ -536,8 +522,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     rune_entry0.etching = txid;
     rune_entry1.etching = txid;
 
-    self.id_to_entry.insert(&id0.store(), rune_entry0.store())?;
-    self.id_to_entry.insert(&id1.store(), rune_entry1.store())?;
+    self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
+    self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
 
     Ok(Some((Lot(amount0), Lot(amount1))))
   }

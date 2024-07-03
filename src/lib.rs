@@ -123,6 +123,9 @@ pub mod wallet;
 
 type Result<T = (), E = Error> = std::result::Result<T, E>;
 
+const ID0: RuneId = RuneId { block: 1, tx: 0 };
+const ID1: RuneId = RuneId { block: 1, tx: 1 };
+
 const TARGET_POSTAGE: Amount = Amount::from_sat(10_000);
 
 static SHUTTING_DOWN: AtomicBool = AtomicBool::new(false);

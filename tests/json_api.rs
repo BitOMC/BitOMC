@@ -524,9 +524,8 @@ fn get_runes() {
 
   core.mine_blocks(3);
 
-  let a = etch(&core, &ord, Rune(RUNE));
-  let b = etch(&core, &ord, Rune(RUNE + 1));
-  let c = etch(&core, &ord, Rune(RUNE + 2));
+  let a = etch(&core, &ord, Rune(TIGHTEN));
+  let b = etch(&core, &ord, Rune(EASE));
 
   core.mine_blocks(1);
 
@@ -548,7 +547,7 @@ fn get_runes() {
         number: 0,
         supply: 1000,
         spaced_rune: SpacedRune {
-          rune: Rune(RUNE),
+          rune: Rune(TIGHTEN),
           spacers: 0
         },
         symbol: Some('¢'),
@@ -575,26 +574,6 @@ fn get_runes() {
     api::Runes {
       entries: vec![
         (
-          RuneId { block: 24, tx: 1 },
-          RuneEntry {
-            block: c.id.block,
-            burned: 0,
-            terms: None,
-            divisibility: 0,
-            etching: c.output.reveal,
-            mints: 0,
-            number: 2,
-            supply: 1000,
-            spaced_rune: SpacedRune {
-              rune: Rune(RUNE + 2),
-              spacers: 0
-            },
-            symbol: Some('¢'),
-            timestamp: 24,
-            turbo: false,
-          }
-        ),
-        (
           RuneId { block: 17, tx: 1 },
           RuneEntry {
             block: b.id.block,
@@ -606,7 +585,7 @@ fn get_runes() {
             number: 1,
             supply: 1000,
             spaced_rune: SpacedRune {
-              rune: Rune(RUNE + 1),
+              rune: Rune(EASE),
               spacers: 0
             },
             symbol: Some('¢'),
@@ -626,7 +605,7 @@ fn get_runes() {
             number: 0,
             supply: 1000,
             spaced_rune: SpacedRune {
-              rune: Rune(RUNE),
+              rune: Rune(TIGHTEN),
               spacers: 0
             },
             symbol: Some('¢'),

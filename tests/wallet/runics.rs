@@ -10,7 +10,7 @@ fn wallet_runics() {
 
   create_wallet(&core, &ord);
 
-  let rune = Rune(RUNE);
+  let rune = Rune(TIGHTEN);
 
   batch(
     &core,

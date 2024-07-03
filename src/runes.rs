@@ -25,10 +25,6 @@ mod tests {
 
   const TIGHTEN: u128 = 0;
   const EASE: u128 = 1;
-
-  const ID0: RuneId = RuneId { block: 1, tx: 0 };
-  const ID1: RuneId = RuneId { block: 1, tx: 1 };
-
   const COIN_VALUE: u128 = 100000000;
 
   #[test]

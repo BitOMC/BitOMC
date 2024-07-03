@@ -95,7 +95,7 @@ fn runic_utxos_are_deducted_from_cardinal() {
     }
   );
 
-  let rune = Rune(RUNE);
+  let rune = Rune(TIGHTEN);
 
   batch(
     &core,
@@ -207,7 +207,7 @@ fn runic_utxos_are_displayed_with_decimal_amount() {
     }
   );
 
-  let rune = Rune(RUNE);
+  let rune = Rune(TIGHTEN);
 
   batch(
     &core,

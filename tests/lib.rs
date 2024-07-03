@@ -5,7 +5,7 @@ use {
   bitcoin::{
     address::{Address, NetworkUnchecked},
     blockdata::constants::COIN_VALUE,
-    Network, OutPoint, Sequence, Txid, Witness,
+    Network, OutPoint, Txid, Witness,
   },
   bitcoincore_rpc::bitcoincore_rpc_json::ListDescriptorsResult,
   chrono::{DateTime, Utc},
@@ -72,7 +72,11 @@ mod traits;
 mod version;
 mod wallet;
 
-const RUNE: u128 = 99246114928149462;
+const TIGHTEN: u128 = 0;
+const EASE: u128 = 1;
+
+const ID0: RuneId = RuneId { block: 1, tx: 0 };
+const ID1: RuneId = RuneId { block: 1, tx: 1 };
 
 type Balance = ord::subcommand::wallet::balance::Output;
 type Batch = ord::wallet::batch::Output;

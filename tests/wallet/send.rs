@@ -710,11 +710,11 @@ fn sending_rune_with_excessive_precision_is_an_error() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   CommandBuilder::new(format!(
     "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1.1:{}",
-    Rune(RUNE)
+    Rune(TIGHTEN)
   ))
   .core(&core)
     .ord(&ord)
@@ -731,11 +731,11 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   CommandBuilder::new(format!(
     "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:{}",
-    Rune(RUNE)
+    Rune(TIGHTEN)
   ))
   .core(&core)
     .ord(&ord)
@@ -752,11 +752,11 @@ fn sending_rune_works() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   let output = CommandBuilder::new(format!(
     "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1000:{}",
-    Rune(RUNE)
+    Rune(TIGHTEN)
   ))
   .core(&core)
     .ord(&ord)
@@ -773,7 +773,7 @@ fn sending_rune_works() {
     balances,
     ord::subcommand::balances::Output {
       runes: vec![(
-        SpacedRune::new(Rune(RUNE), 0),
+        SpacedRune::new(Rune(TIGHTEN), 0),
         vec![(
           OutPoint {
             txid: output.txid,
@@ -802,11 +802,11 @@ fn sending_rune_with_change_works() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   let output = CommandBuilder::new(format!(
     "--chain regtest --index-runes wallet send --postage 1234sat --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 777:{}",
-    Rune(RUNE)
+    Rune(TIGHTEN)
   ))
   .core(&core)
   .ord(&ord)
@@ -828,7 +828,7 @@ fn sending_rune_with_change_works() {
     balances,
     ord::subcommand::balances::Output {
       runes: vec![(
-        SpacedRune::new(Rune(RUNE), 0),
+        SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
           (
             OutPoint {
@@ -870,7 +870,7 @@ fn sending_spaced_rune_works_with_no_change() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   let output = CommandBuilder::new(
     "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1000:A•AAAAAAAAAAAA",
@@ -894,7 +894,7 @@ fn sending_spaced_rune_works_with_no_change() {
     balances,
     ord::subcommand::balances::Output {
       runes: vec![(
-        SpacedRune::new(Rune(RUNE), 0),
+        SpacedRune::new(Rune(TIGHTEN), 0),
         vec![(
           OutPoint {
             txid: output.txid,
@@ -925,7 +925,7 @@ fn sending_rune_with_divisibility_works() {
 
   core.mine_blocks(1);
 
-  let rune = Rune(RUNE);
+  let rune = Rune(TIGHTEN);
 
   batch(
     &core,
@@ -967,7 +967,7 @@ fn sending_rune_with_divisibility_works() {
     balances,
     ord::subcommand::balances::Output {
       runes: vec![(
-        SpacedRune::new(Rune(RUNE), 0),
+        SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
           (
             OutPoint {
@@ -1009,11 +1009,11 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   let output = CommandBuilder::new(format!(
     "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 750:{}",
-    Rune(RUNE)
+    Rune(TIGHTEN)
   ))
   .core(&core)
     .ord(&ord)
@@ -1030,7 +1030,7 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
     balances,
     ord::subcommand::balances::Output {
       runes: vec![(
-        SpacedRune::new(Rune(RUNE), 0),
+        SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
           (
             OutPoint {
@@ -1078,7 +1078,7 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 
   create_wallet(&core, &ord);
 
-  let etch = etch(&core, &ord, Rune(RUNE));
+  let etch = etch(&core, &ord, Rune(TIGHTEN));
 
   let output = CommandBuilder::new(format!(
     "
@@ -1089,7 +1089,7 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
       --fee-rate 1
       bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 750:{}
     ",
-    Rune(RUNE),
+    Rune(TIGHTEN),
   ))
   .core(&core)
   .ord(&ord)
@@ -1106,7 +1106,7 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
     balances,
     ord::subcommand::balances::Output {
       runes: vec![(
-        SpacedRune::new(Rune(RUNE), 0),
+        SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
           (
             OutPoint {
@@ -1162,7 +1162,7 @@ fn error_messages_use_spaced_runes() {
 
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(RUNE));
+  etch(&core, &ord, Rune(TIGHTEN));
 
   CommandBuilder::new(
     "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:A•AAAAAAAAAAAA",
