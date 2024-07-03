@@ -11,7 +11,6 @@ use {
   },
   super::*,
   crate::{
-    runes::MintError,
     subcommand::{find::FindRangeOutput, server::query},
     templates::StatusHtml,
   },

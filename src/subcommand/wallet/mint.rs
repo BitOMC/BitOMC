@@ -37,9 +37,7 @@ impl Mint {
 
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
 
-    let amount = rune_entry
-      .mintable(block_height + 1)
-      .map_err(|err| anyhow!("rune {err}"))?;
+    let amount = rune_entry.mintable(block_height + 1);
 
     let chain = wallet.chain();
 
@@ -56,26 +54,45 @@ impl Mint {
 
     let runestone = Runestone { ..default() };
 
-    let script_pubkey = runestone.encipher();
+    let op_return_script_pubkey = runestone.encipher();
 
     ensure!(
-      script_pubkey.len() <= 82,
+      op_return_script_pubkey.len() <= 82,
       "runestone greater than maximum OP_RETURN size: {} > 82",
-      script_pubkey.len()
+      op_return_script_pubkey.len()
     );
+
+    // 1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
+    let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
+    let mint_script_pubkey = ScriptBuf::new_p2sh(&mint_script.clone().script_hash());
+
+    let input = Vec::new();
+
+    // if rune_entry.etching != Txid::all_zeros() {
+    //   input.push(TxIn {
+    //     previous_output: OutPoint::new(rune_entry.etching, 0),
+    //     script_sig: mint_script.clone(),
+    //     sequence: Sequence::from_height(1),
+    //     witness: witness.clone(),
+    //   });
+    // }
 
     let unfunded_transaction = Transaction {
       version: 2,
       lock_time: LockTime::ZERO,
-      input: Vec::new(),
+      input,
       output: vec![
         TxOut {
-          script_pubkey,
-          value: 0,
+          script_pubkey: mint_script_pubkey,
+          value: postage.to_sat(),
         },
         TxOut {
           script_pubkey: destination.script_pubkey(),
           value: postage.to_sat(),
+        },
+        TxOut {
+          script_pubkey: op_return_script_pubkey,
+          value: 0,
         },
       ],
     };

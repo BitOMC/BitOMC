@@ -57,30 +57,28 @@ pub struct RuneEntry {
 }
 
 impl RuneEntry {
-  pub fn mintable(&self, height: u64) -> Result<u128, MintError> {
-    let Some(terms) = self.terms else {
-      return Err(MintError::Unmintable);
-    };
-
-    if let Some(start) = self.start() {
-      if height < start {
-        return Err(MintError::Start(start));
-      }
+  pub fn mintable(&self, height: u64) -> u128 {
+    if height < self.block {
+      return 0;
     }
 
-    if let Some(end) = self.end() {
-      if height >= end {
-        return Err(MintError::End(end));
-      }
+    // Mintable amount is running sum of available amount since last mint
+    let mut amount = 0;
+    for mint in self.mints..((height as u128) - (self.block as u128) + 1) {
+      amount += self.reward(mint);
     }
+    amount
+  }
 
-    let cap = terms.cap.unwrap_or_default();
-
-    if self.mints >= cap {
-      return Err(MintError::Cap(cap));
+  fn reward(&self, height: u128) -> u128 {
+    let halvings = height / 210000;
+    // Force reward to zero when right shift is undefined
+    if halvings >= 128 {
+      return 0;
     }
-
-    Ok(terms.amount.unwrap_or_default())
+    // Cut reward in half every 210,000 blocks
+    let reward = 50 * 100000000;
+    reward >> halvings
   }
 
   pub fn supply(&self) -> u128 {
@@ -659,238 +657,5 @@ mod tests {
     let actual = header.store();
 
     assert_eq!(actual, expected);
-  }
-
-  #[test]
-  fn mintable_default() {
-    assert_eq!(RuneEntry::default().mintable(0), Err(MintError::Unmintable));
-  }
-
-  #[test]
-  fn mintable_cap() {
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(0),
-      Ok(1000),
-    );
-
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          ..default()
-        }),
-        mints: 1,
-        ..default()
-      }
-      .mintable(0),
-      Err(MintError::Cap(1)),
-    );
-
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: None,
-          amount: Some(1000),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(0),
-      Err(MintError::Cap(0)),
-    );
-  }
-
-  #[test]
-  fn mintable_offset_start() {
-    assert_eq!(
-      RuneEntry {
-        block: 1,
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          offset: (Some(1), None),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(1),
-      Err(MintError::Start(2)),
-    );
-
-    assert_eq!(
-      RuneEntry {
-        block: 1,
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          offset: (Some(1), None),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(2),
-      Ok(1000),
-    );
-  }
-
-  #[test]
-  fn mintable_offset_end() {
-    assert_eq!(
-      RuneEntry {
-        block: 1,
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          offset: (None, Some(1)),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(1),
-      Ok(1000),
-    );
-
-    assert_eq!(
-      RuneEntry {
-        block: 1,
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          offset: (None, Some(1)),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(2),
-      Err(MintError::End(2)),
-    );
-  }
-
-  #[test]
-  fn mintable_height_start() {
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          height: (Some(1), None),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(0),
-      Err(MintError::Start(1)),
-    );
-
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          height: (Some(1), None),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(1),
-      Ok(1000),
-    );
-  }
-
-  #[test]
-  fn mintable_height_end() {
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          height: (None, Some(1)),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(0),
-      Ok(1000),
-    );
-
-    assert_eq!(
-      RuneEntry {
-        terms: Some(Terms {
-          cap: Some(1),
-          amount: Some(1000),
-          height: (None, Some(1)),
-          ..default()
-        }),
-        mints: 0,
-        ..default()
-      }
-      .mintable(1),
-      Err(MintError::End(1)),
-    );
-  }
-
-  #[test]
-  fn mintable_multiple_terms() {
-    let entry = RuneEntry {
-      terms: Some(Terms {
-        cap: Some(1),
-        amount: Some(1000),
-        height: (Some(10), Some(20)),
-        offset: (Some(0), Some(10)),
-      }),
-      block: 10,
-      mints: 0,
-      ..default()
-    };
-
-    assert_eq!(entry.mintable(10), Ok(1000));
-
-    {
-      let mut entry = entry;
-      entry.terms.as_mut().unwrap().cap = None;
-      assert_eq!(entry.mintable(10), Err(MintError::Cap(0)));
-    }
-
-    {
-      let mut entry = entry;
-      entry.terms.as_mut().unwrap().height.0 = Some(11);
-      assert_eq!(entry.mintable(10), Err(MintError::Start(11)));
-    }
-
-    {
-      let mut entry = entry;
-      entry.terms.as_mut().unwrap().height.1 = Some(10);
-      assert_eq!(entry.mintable(10), Err(MintError::End(10)));
-    }
-
-    {
-      let mut entry = entry;
-      entry.terms.as_mut().unwrap().offset.0 = Some(1);
-      assert_eq!(entry.mintable(10), Err(MintError::Start(11)));
-    }
-
-    {
-      let mut entry = entry;
-      entry.terms.as_mut().unwrap().offset.1 = Some(0);
-      assert_eq!(entry.mintable(10), Err(MintError::End(10)));
-    }
   }
 }

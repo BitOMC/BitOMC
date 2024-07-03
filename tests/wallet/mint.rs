@@ -500,41 +500,8 @@ fn minting_is_allowed_when_mint_begins_next_block() {
 
   create_wallet(&core, &ord);
 
-  batch(
-    &core,
-    &ord,
-    batch::File {
-      etching: Some(batch::Etching {
-        divisibility: 1,
-        rune: SpacedRune {
-          rune: Rune(TIGHTEN),
-          spacers: 0,
-        },
-        premine: "0".parse().unwrap(),
-        symbol: '¢',
-        supply: "111.1".parse().unwrap(),
-        terms: Some(batch::Terms {
-          cap: 1,
-          offset: Some(batch::Range {
-            end: None,
-            start: Some(1),
-          }),
-          amount: "111.1".parse().unwrap(),
-          height: None,
-        }),
-        turbo: false,
-      }),
-      inscriptions: vec![batch::Entry {
-        file: Some("inscription.jpeg".into()),
-        ..default()
-      }],
-      ..default()
-    },
-  );
-
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1 --rune {}",
-    Rune(TIGHTEN)
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
   ))
   .core(&core)
   .ord(&ord)
@@ -550,9 +517,9 @@ fn minting_is_allowed_when_mint_begins_next_block() {
   pretty_assert_eq!(
     output.pile,
     Pile {
-      amount: 1111,
-      divisibility: 1,
-      symbol: Some('¢'),
+      amount: 50 * RUNE_COIN_VALUE,
+      divisibility: 8,
+      symbol: None,
     }
   );
 

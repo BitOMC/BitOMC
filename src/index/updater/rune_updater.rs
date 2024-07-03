@@ -476,12 +476,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(None);
     }
 
-    // Reward is running sum of available reward since last mint
-    let mut reward = 0;
-    let mut mints = 0;
-    for mint in (rune_entry0.mints)..((self.height as u128) - (rune_entry0.block as u128) + 1) {
-      reward += self.reward(mint);
-      mints += 1;
+    // Reward must be non-zero
+    let reward = rune_entry0.mintable(self.height.into());
+    if reward == 0 {
+      return Ok(None);
     }
 
     let sum_of_sq =
@@ -502,8 +500,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     drop(entry0);
     drop(entry1);
 
-    rune_entry0.mints += mints;
-    rune_entry1.mints += mints;
+    rune_entry0.mints = (self.height as u128) + 1 - (rune_entry0.block as u128);
+    rune_entry1.mints = rune_entry0.mints;
 
     rune_entry0.supply += amount0;
     rune_entry1.supply += amount1;
@@ -526,17 +524,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
 
     Ok(Some((Lot(amount0), Lot(amount1))))
-  }
-
-  fn reward(&self, height: u128) -> u128 {
-    let halvings = height / 210000;
-    // Force reward to zero when right shift is undefined
-    if halvings >= 128 {
-      return 0;
-    }
-    // Cut reward in half every 210,000 blocks
-    let reward = 50 * 100000000;
-    reward >> halvings
   }
 
   fn convert_exact_input(

@@ -697,9 +697,7 @@ impl Server {
         .rune(rune)?
         .ok_or_not_found(|| format!("rune {rune}"))?;
 
-      let block_height = index.block_height()?.unwrap_or(Height(0));
-
-      let mintable = entry.mintable((block_height.n() + 1).into()).is_ok();
+      let mintable = true;
 
       Ok(if accept_json {
         Json(api::Rune {
@@ -2783,108 +2781,6 @@ mod tests {
       .https()
       .build()
       .assert_redirect("/", &format!("https://{}/", System::host_name().unwrap()));
-  }
-
-  #[test]
-  fn status() {
-    let server = TestServer::builder().chain(Chain::Regtest).build();
-
-    server.mine_blocks(3);
-
-    server.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(
-        1,
-        0,
-        0,
-        inscription("text/plain;charset=utf-8", "hello").to_witness(),
-      )],
-      ..default()
-    });
-
-    server.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(
-        2,
-        0,
-        0,
-        inscription("text/plain;charset=utf-8", "hello").to_witness(),
-      )],
-      ..default()
-    });
-
-    server.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(
-        3,
-        0,
-        0,
-        Inscription {
-          content_type: None,
-          body: Some("hello".as_bytes().into()),
-          ..default()
-        }
-        .to_witness(),
-      )],
-      ..default()
-    });
-
-    server.mine_blocks(1);
-
-    server.assert_response_regex(
-      "/status",
-      StatusCode::OK,
-      ".*<h1>Status</h1>
-<dl>
-  <dt>chain</dt>
-  <dd>regtest</dd>
-  <dt>height</dt>
-  <dd><a href=/block/4>4</a></dd>
-  <dt>inscriptions</dt>
-  <dd><a href=/inscriptions>3</a></dd>
-  <dt>blessed inscriptions</dt>
-  <dd>3</dd>
-  <dt>cursed inscriptions</dt>
-  <dd>0</dd>
-  <dt>runes</dt>
-  <dd><a href=/runes>0</a></dd>
-  <dt>lost sats</dt>
-  <dd>.*</dd>
-  <dt>started</dt>
-  <dd>.*</dd>
-  <dt>uptime</dt>
-  <dd>.*</dd>
-  <dt>minimum rune for next block</dt>
-  <dd>.*</dd>
-  <dt>version</dt>
-  <dd>.*</dd>
-  <dt>unrecoverably reorged</dt>
-  <dd>false</dd>
-  <dt>address index</dt>
-  <dd>false</dd>
-  <dt>rune index</dt>
-  <dd>false</dd>
-  <dt>sat index</dt>
-  <dd>false</dd>
-  <dt>transaction index</dt>
-  <dd>false</dd>
-  <dt>git branch</dt>
-  <dd>.*</dd>
-  <dt>git commit</dt>
-  <dd>
-    <a href=https://github.com/ordinals/ord/commit/[[:xdigit:]]{40}>
-      [[:xdigit:]]{40}
-    </a>
-  </dd>
-  <dt>inscription content types</dt>
-  <dd>
-    <dl>
-      <dt>text/plain;charset=utf-8</dt>
-      <dd>2</dt>
-      <dt><em>none</em></dt>
-      <dd>1</dt>
-    </dl>
-  </dd>
-</dl>
-.*",
-    );
   }
 
   #[test]

@@ -95,28 +95,17 @@ fn runic_utxos_are_deducted_from_cardinal() {
     }
   );
 
-  let rune = Rune(TIGHTEN);
+  core.mine_blocks(1);
 
-  batch(
-    &core,
-    &ord,
-    batch::File {
-      etching: Some(batch::Etching {
-        divisibility: 0,
-        premine: "1000".parse().unwrap(),
-        rune: SpacedRune { rune, spacers: 1 },
-        supply: "1000".parse().unwrap(),
-        symbol: '¢',
-        terms: None,
-        turbo: false,
-      }),
-      inscriptions: vec![batch::Entry {
-        file: Some("inscription.jpeg".into()),
-        ..default()
-      }],
-      ..default()
-    },
-  );
+  // core.broadcast_tx(TransactionTemplate {
+  //   inputs: &[(1, 0, 0, Witness::new())],
+  //   outputs: 2,
+  //   mint: true,
+  //   op_return: Some(Runestone { ..default() }.encipher()),
+  //   ..default()
+  // });
+
+  // core.mine_blocks(1);
 
   pretty_assert_eq!(
     CommandBuilder::new("--regtest --index-runes wallet balance")
@@ -124,12 +113,15 @@ fn runic_utxos_are_deducted_from_cardinal() {
       .ord(&ord)
       .run_and_deserialize_output::<Balance>(),
     Balance {
-      cardinal: 50 * COIN_VALUE * 7 - 20_000,
+      cardinal: 50 * COIN_VALUE * 2 - 20_000,
       ordinal: 10000,
       runic: Some(10_000),
       runes: Some(
         vec![(
-          SpacedRune { rune, spacers: 1 },
+          SpacedRune {
+            rune: Rune(TIGHTEN),
+            spacers: 0
+          },
           Decimal {
             value: 1000,
             scale: 0,
@@ -138,7 +130,7 @@ fn runic_utxos_are_deducted_from_cardinal() {
         .into_iter()
         .collect()
       ),
-      total: 50 * COIN_VALUE * 7,
+      total: 50 * COIN_VALUE * 2,
     }
   );
 }
