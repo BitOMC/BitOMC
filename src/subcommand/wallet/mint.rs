@@ -88,11 +88,6 @@ impl Mint {
         input_amount = input_tx.details[0].amount.to_sat().unsigned_abs();
       }
       let input_vb = (input.segwit_weight() + 2) / 4; // include 2WU for segwit marker
-
-      // #[allow(clippy::cast_possible_truncation)]
-      // #[allow(clippy::cast_sign_loss)]
-      // fee_for_input = (self.fee_rate.n().round() as u64) * (input_vb as u64);
-
       fee_for_input = (self.fee_rate.n().round() * input_vb as f64).round() as u64;
     }
 
