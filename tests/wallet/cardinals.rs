@@ -36,29 +36,12 @@ fn cardinals_does_not_show_runic_outputs() {
 
   core.mine_blocks(1);
 
-  batch(
-    &core,
-    &ord,
-    batch::File {
-      etching: Some(batch::Etching {
-        supply: "1000".parse().unwrap(),
-        divisibility: 0,
-        terms: None,
-        premine: "1000".parse().unwrap(),
-        rune: SpacedRune {
-          rune: Rune(TIGHTEN),
-          spacers: 0,
-        },
-        symbol: '¢',
-        turbo: false,
-      }),
-      inscriptions: vec![batch::Entry {
-        file: Some("inscription.jpeg".into()),
-        ..default()
-      }],
-      ..default()
-    },
-  );
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   let all_outputs = CommandBuilder::new("--regtest wallet outputs")
     .core(&core)
@@ -70,5 +53,5 @@ fn cardinals_does_not_show_runic_outputs() {
     .ord(&ord)
     .run_and_deserialize_output::<Vec<CardinalUtxo>>();
 
-  assert_eq!(all_outputs.len() - cardinal_outputs.len(), 2);
+  assert_eq!(all_outputs.len() - cardinal_outputs.len(), 1);
 }

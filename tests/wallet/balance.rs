@@ -74,68 +74,6 @@ fn inscribed_utxos_are_deducted_from_cardinal() {
 }
 
 #[test]
-fn runic_utxos_are_deducted_from_cardinal() {
-  let core = mockcore::builder().network(Network::Regtest).build();
-
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest", "--index-runes"], &[]);
-
-  create_wallet(&core, &ord);
-
-  pretty_assert_eq!(
-    CommandBuilder::new("--regtest --index-runes wallet balance")
-      .core(&core)
-      .ord(&ord)
-      .run_and_deserialize_output::<Balance>(),
-    Balance {
-      cardinal: 0,
-      ordinal: 0,
-      runic: Some(0),
-      runes: Some(BTreeMap::new()),
-      total: 0,
-    }
-  );
-
-  core.mine_blocks(1);
-
-  // core.broadcast_tx(TransactionTemplate {
-  //   inputs: &[(1, 0, 0, Witness::new())],
-  //   outputs: 2,
-  //   mint: true,
-  //   op_return: Some(Runestone { ..default() }.encipher()),
-  //   ..default()
-  // });
-
-  // core.mine_blocks(1);
-
-  pretty_assert_eq!(
-    CommandBuilder::new("--regtest --index-runes wallet balance")
-      .core(&core)
-      .ord(&ord)
-      .run_and_deserialize_output::<Balance>(),
-    Balance {
-      cardinal: 50 * COIN_VALUE * 2 - 20_000,
-      ordinal: 10000,
-      runic: Some(10_000),
-      runes: Some(
-        vec![(
-          SpacedRune {
-            rune: Rune(TIGHTEN),
-            spacers: 0
-          },
-          Decimal {
-            value: 1000,
-            scale: 0,
-          }
-        )]
-        .into_iter()
-        .collect()
-      ),
-      total: 50 * COIN_VALUE * 2,
-    }
-  );
-}
-
-#[test]
 fn unsynced_wallet_fails_with_unindexed_output() {
   let core = mockcore::spawn();
   let ord = TestServer::spawn(&core);
@@ -178,7 +116,7 @@ fn unsynced_wallet_fails_with_unindexed_output() {
 }
 
 #[test]
-fn runic_utxos_are_displayed_with_decimal_amount() {
+fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
   let ord = TestServer::spawn_with_server_args(&core, &["--regtest", "--index-runes"], &[]);
@@ -199,32 +137,14 @@ fn runic_utxos_are_displayed_with_decimal_amount() {
     }
   );
 
-  let rune = Rune(TIGHTEN);
+  core.mine_blocks(1);
 
-  batch(
-    &core,
-    &ord,
-    batch::File {
-      etching: Some(batch::Etching {
-        divisibility: 3,
-        premine: "1.111".parse().unwrap(),
-        rune: SpacedRune { rune, spacers: 1 },
-        supply: "2.222".parse().unwrap(),
-        symbol: '¢',
-        terms: Some(batch::Terms {
-          amount: "1.111".parse().unwrap(),
-          cap: 1,
-          ..default()
-        }),
-        turbo: false,
-      }),
-      inscriptions: vec![batch::Entry {
-        file: Some("inscription.jpeg".into()),
-        ..default()
-      }],
-      ..default()
-    },
-  );
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   pretty_assert_eq!(
     CommandBuilder::new("--regtest --index-runes wallet balance")
@@ -232,21 +152,21 @@ fn runic_utxos_are_displayed_with_decimal_amount() {
       .ord(&ord)
       .run_and_deserialize_output::<Balance>(),
     Balance {
-      cardinal: 50 * COIN_VALUE * 7 - 20_000,
-      ordinal: 10000,
+      cardinal: 50 * COIN_VALUE * 2 - 20_000,
+      ordinal: 0,
       runic: Some(10_000),
       runes: Some(
         vec![(
-          SpacedRune { rune, spacers: 1 },
+          SpacedRune { rune: Rune(TIGHTEN), spacers: 0 },
           Decimal {
-            value: 1111,
-            scale: 3,
+            value: 50,
+            scale: 0,
           }
         )]
         .into_iter()
         .collect()
       ),
-      total: 50 * COIN_VALUE * 7,
+      total: 50 * COIN_VALUE * 2 - 10_000,
     }
   );
 }

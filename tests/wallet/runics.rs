@@ -10,28 +10,14 @@ fn wallet_runics() {
 
   create_wallet(&core, &ord);
 
-  let rune = Rune(TIGHTEN);
+  core.mine_blocks(1);
 
-  batch(
-    &core,
-    &ord,
-    batch::File {
-      etching: Some(batch::Etching {
-        divisibility: 0,
-        premine: "1000".parse().unwrap(),
-        rune: SpacedRune { rune, spacers: 1 },
-        supply: "1000".parse().unwrap(),
-        symbol: '¢',
-        terms: None,
-        turbo: false,
-      }),
-      inscriptions: vec![batch::Entry {
-        file: Some("inscription.jpeg".into()),
-        ..default()
-      }],
-      ..default()
-    },
-  );
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   pretty_assert_eq!(
     CommandBuilder::new("--regtest --index-runes wallet runics")
@@ -42,9 +28,9 @@ fn wallet_runics() {
       .unwrap()
       .runes,
     vec![(
-      SpacedRune { rune, spacers: 1 },
+      SpacedRune { rune: Rune(TIGHTEN), spacers: 0 },
       Decimal {
-        value: 1000,
+        value: 50,
         scale: 0
       }
     )]
