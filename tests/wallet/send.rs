@@ -708,12 +708,21 @@ fn sending_rune_with_excessive_precision_is_an_error() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1.1:{}",
+    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1.000000001:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -729,18 +738,27 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:{}",
+    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1000:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
     .ord(&ord)
   .expected_exit_code(1)
-  .expected_stderr("error: insufficient `AAAAAAAAAAAAA` balance, only 1000\u{A0}¢ in wallet\n")
+  .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
 }
 
@@ -822,12 +840,21 @@ fn sending_rune_with_change_works() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --postage 1234sat --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 777:{}",
+    "--chain regtest --index-runes wallet send --postage 1234sat --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -858,9 +885,9 @@ fn sending_rune_with_change_works() {
               vout: 1
             },
             Pile {
-              amount: 223,
-              divisibility: 0,
-              symbol: Some('¢')
+              amount: 45 * RUNE_COIN_VALUE,
+              divisibility: 8,
+              symbol: None
             },
           ),
           (
@@ -869,9 +896,9 @@ fn sending_rune_with_change_works() {
               vout: 2
             },
             Pile {
-              amount: 777,
-              divisibility: 0,
-              symbol: Some('¢')
+              amount: 5 * RUNE_COIN_VALUE,
+              divisibility: 8,
+              symbol: None
             },
           )
         ]
@@ -890,12 +917,21 @@ fn sending_spaced_rune_works_with_no_change() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   let output = CommandBuilder::new(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1000:A•AAAAAAAAAAAA",
+    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 50:TIGHTEN",
   )
   .core(&core)
   .ord(&ord)
@@ -923,9 +959,9 @@ fn sending_spaced_rune_works_with_no_change() {
             vout: 0
           },
           Pile {
-            amount: 1000,
-            divisibility: 0,
-            symbol: Some('¢')
+            amount: 50 * RUNE_COIN_VALUE,
+            divisibility: 8,
+            symbol: None
           },
         )]
         .into_iter()
@@ -943,36 +979,22 @@ fn sending_rune_with_divisibility_works() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
+
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
-  let rune = Rune(TIGHTEN);
-
-  batch(
-    &core,
-    &ord,
-    batch::File {
-      etching: Some(batch::Etching {
-        divisibility: 1,
-        rune: SpacedRune { rune, spacers: 0 },
-        premine: "1000".parse().unwrap(),
-        supply: "1000".parse().unwrap(),
-        symbol: '¢',
-        terms: None,
-        turbo: false,
-      }),
-      inscriptions: vec![batch::Entry {
-        file: Some("inscription.jpeg".into()),
-        ..default()
-      }],
-      ..default()
-    },
-  );
-
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 10.1:{}",
-    rune
+    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5.5:{}",
+    Rune(TIGHTEN)
   ))
   .core(&core)
     .ord(&ord)
@@ -997,9 +1019,9 @@ fn sending_rune_with_divisibility_works() {
               vout: 1
             },
             Pile {
-              amount: 9899,
-              divisibility: 1,
-              symbol: Some('¢')
+              amount: 445 * RUNE_COIN_VALUE / 10,
+              divisibility: 8,
+              symbol: None
             },
           ),
           (
@@ -1008,9 +1030,9 @@ fn sending_rune_with_divisibility_works() {
               vout: 2
             },
             Pile {
-              amount: 101,
-              divisibility: 1,
-              symbol: Some('¢')
+              amount: 55 * RUNE_COIN_VALUE / 10,
+              divisibility: 8,
+              symbol: None
             },
           )
         ]
@@ -1029,12 +1051,21 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 750:{}",
+    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -1060,9 +1091,9 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
               vout: 1
             },
             Pile {
-              amount: 250,
-              divisibility: 0,
-              symbol: Some('¢')
+              amount: 45 * RUNE_COIN_VALUE,
+              divisibility: 8,
+              symbol: None
             },
           ),
           (
@@ -1071,9 +1102,9 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
               vout: 2
             },
             Pile {
-              amount: 750,
-              divisibility: 0,
-              symbol: Some('¢')
+              amount: 5 * RUNE_COIN_VALUE,
+              divisibility: 8,
+              symbol: None
             },
           )
         ]
@@ -1098,9 +1129,18 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  let etch = etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
     "
@@ -1109,7 +1149,7 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
       wallet
       send
       --fee-rate 1
-      bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 750:{}
+      bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}
     ",
     Rune(TIGHTEN),
   ))
@@ -1136,9 +1176,9 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
               vout: 1
             },
             Pile {
-              amount: 250,
-              divisibility: 0,
-              symbol: Some('¢')
+              amount: 45 * RUNE_COIN_VALUE,
+              divisibility: 8,
+              symbol: None
             },
           ),
           (
@@ -1147,9 +1187,9 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
               vout: 2
             },
             Pile {
-              amount: 750,
-              divisibility: 0,
-              symbol: Some('¢')
+              amount: 5 * RUNE_COIN_VALUE,
+              divisibility: 8,
+              symbol: None
             },
           )
         ]
@@ -1168,8 +1208,8 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
     Artifact::Runestone(Runestone {
       pointer: None,
       edicts: vec![Edict {
-        id: etch.id,
-        amount: 750,
+        id: ID0,
+        amount: 5 * RUNE_COIN_VALUE,
         output: 2
       }],
     }),
@@ -1182,17 +1222,26 @@ fn error_messages_use_spaced_runes() {
 
   let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
 
+  core.mine_blocks(1);
+
   create_wallet(&core, &ord);
 
-  etch(&core, &ord, Rune(TIGHTEN));
+  CommandBuilder::new(format!(
+    "--chain regtest --index-runes wallet mint --fee-rate 1"
+  ))
+  .core(&core)
+  .ord(&ord)
+  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+
+  core.mine_blocks(1);
 
   CommandBuilder::new(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:A•AAAAAAAAAAAA",
+    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:TIGHTEN",
   )
   .core(&core)
     .ord(&ord)
   .expected_exit_code(1)
-  .expected_stderr("error: insufficient `A•AAAAAAAAAAAA` balance, only 1000\u{A0}¢ in wallet\n")
+  .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
 
   CommandBuilder::new("--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO")

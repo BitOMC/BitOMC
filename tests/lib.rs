@@ -156,7 +156,6 @@ fn drain(core: &mockcore::Handle, ord: &TestServer) {
 }
 
 struct Etched {
-  id: RuneId,
   output: Batch,
 }
 
@@ -407,7 +406,7 @@ fn batch(core: &mockcore::Handle, ord: &TestServer, batchfile: batch::File) -> E
     }
   }
 
-  Etched { output, id }
+  Etched { output }
 }
 
 fn envelope(payload: &[&[u8]]) -> Witness {

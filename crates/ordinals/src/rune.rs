@@ -111,10 +111,33 @@ impl Rune {
 
 impl Display for Rune {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
-    if self.0 % 2 == 0 {
+    if self.0 == 0 {
       write!(f, "TIGHTEN")
-    } else {
+    } else if self.0 == 1 {
       write!(f, "EASE")
+    } else {
+      let mut n = self.0;
+      if n == u128::MAX {
+        return write!(f, "BCGDENLQRQWDSLRUGSNLBTMFIJAV");
+      }
+
+      n += 1;
+      let mut symbol = String::new();
+      while n > 0 {
+        symbol.push(
+          "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+            .chars()
+            .nth(((n - 1) % 26) as usize)
+            .unwrap(),
+        );
+        n = (n - 1) / 26;
+      }
+
+      for c in symbol.chars().rev() {
+        write!(f, "{c}")?;
+      }
+
+      Ok(())
     }
   }
 }

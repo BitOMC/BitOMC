@@ -26,7 +26,9 @@ impl Display for Pile {
       write!(f, "{whole}.{fractional:0>width$}")?;
     }
 
-    write!(f, "\u{A0}{}", self.symbol.unwrap_or('¤'))?;
+    if let Some(symbol) = self.symbol {
+      write!(f, "\u{A0}{}", symbol)?;
+    }
 
     Ok(())
   }
