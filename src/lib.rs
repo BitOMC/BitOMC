@@ -132,12 +132,20 @@ static SHUTTING_DOWN: AtomicBool = AtomicBool::new(false);
 static LISTENERS: Mutex<Vec<axum_server::Handle>> = Mutex::new(Vec::new());
 static INDEXER: Mutex<Option<thread::JoinHandle<()>>> = Mutex::new(None);
 
-#[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
 fn fund_raw_transaction(
   client: &Client,
   fee_rate: FeeRate,
   unfunded_transaction: &Transaction,
 ) -> Result<Vec<u8>> {
+  Ok(fund_raw_transaction_result(client, fee_rate, unfunded_transaction)?.hex)
+}
+
+#[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
+fn fund_raw_transaction_result(
+  client: &Client,
+  fee_rate: FeeRate,
+  unfunded_transaction: &Transaction,
+) -> Result<bitcoincore_rpc::json::FundRawTransactionResult> {
   let mut buffer = Vec::new();
 
   {
@@ -174,8 +182,7 @@ fn fund_raw_transaction(
         } else {
           err.into()
         }
-      })?
-      .hex,
+      })?,
   )
 }
 

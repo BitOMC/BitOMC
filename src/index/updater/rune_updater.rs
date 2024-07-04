@@ -453,10 +453,9 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   fn mint(&mut self, tx: &Transaction, txid: Txid) -> Result<Option<(Lot, Lot)>> {
-    // First output must have script pubkey for 1 CHECKSEQUENCEVERIFY or p2sh equivalent (anyone can spend after 1 block)
+    // First output must have p2wsh for 1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
     let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
-    if tx.output[0].script_pubkey != mint_script
-      && tx.output[0].script_pubkey != ScriptBuf::new_p2sh(&mint_script.script_hash())
+    if tx.output[0].script_pubkey != ScriptBuf::new_v0_p2wsh(&mint_script.wscript_hash())
     {
       return Ok(None);
     }

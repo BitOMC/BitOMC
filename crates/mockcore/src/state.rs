@@ -197,7 +197,7 @@ impl State {
   pub(crate) fn broadcast_tx(&mut self, template: TransactionTemplate) -> Txid {
     // 1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
     let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
-    let mint_script_pubkey = ScriptBuf::new_p2sh(&mint_script.clone().script_hash());
+    let mint_script_pubkey = ScriptBuf::new_v0_p2wsh(&mint_script.clone().wscript_hash());
 
     let mut total_value = 0;
     let mut input = Vec::new();
@@ -207,9 +207,9 @@ impl State {
       if template.mint && tx.output[*vout].script_pubkey == mint_script_pubkey {
         input.push(TxIn {
           previous_output: OutPoint::new(tx.txid(), *vout as u32),
-          script_sig: mint_script.clone(),
+          script_sig: ScriptBuf::new(),
           sequence: Sequence::from_height(1),
-          witness: witness.clone(),
+          witness: Witness::from_slice(&[mint_script.clone().into_bytes()]),
         });
       } else {
         input.push(TxIn {
