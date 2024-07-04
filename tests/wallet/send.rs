@@ -712,12 +712,10 @@ fn sending_rune_with_excessive_precision_is_an_error() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -742,12 +740,10 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -772,12 +768,10 @@ fn sending_rune_works() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -844,12 +838,10 @@ fn sending_rune_with_change_works() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -921,12 +913,10 @@ fn sending_spaced_rune_works_with_no_change() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -983,12 +973,10 @@ fn sending_rune_with_divisibility_works() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -1055,12 +1043,10 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -1133,12 +1119,10 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -1226,12 +1210,10 @@ fn error_messages_use_spaced_runes() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 

@@ -157,33 +157,31 @@ fn fund_raw_transaction_result(
       .consensus_encode(&mut buffer)?;
   }
 
-  Ok(
-    client
-      .fund_raw_transaction(
-        &buffer,
-        Some(&bitcoincore_rpc::json::FundRawTransactionOptions {
-          // NB. This is `fundrawtransaction`'s `feeRate`, which is fee per kvB
-          // and *not* fee per vB. So, we multiply the fee rate given by the user
-          // by 1000.
-          fee_rate: Some(Amount::from_sat((fee_rate.n() * 1000.0).ceil() as u64)),
-          change_position: Some(unfunded_transaction.output.len().try_into()?),
-          ..default()
-        }),
-        Some(false),
-      )
-      .map_err(|err| {
-        if matches!(
-          err,
-          bitcoincore_rpc::Error::JsonRpc(bitcoincore_rpc::jsonrpc::Error::Rpc(
-            bitcoincore_rpc::jsonrpc::error::RpcError { code: -6, .. }
-          ))
-        ) {
-          anyhow!("not enough cardinal utxos")
-        } else {
-          err.into()
-        }
-      })?,
-  )
+  client
+    .fund_raw_transaction(
+      &buffer,
+      Some(&bitcoincore_rpc::json::FundRawTransactionOptions {
+        // NB. This is `fundrawtransaction`'s `feeRate`, which is fee per kvB
+        // and *not* fee per vB. So, we multiply the fee rate given by the user
+        // by 1000.
+        fee_rate: Some(Amount::from_sat((fee_rate.n() * 1000.0).ceil() as u64)),
+        change_position: Some(unfunded_transaction.output.len().try_into()?),
+        ..default()
+      }),
+      Some(false),
+    )
+    .map_err(|err| {
+      if matches!(
+        err,
+        bitcoincore_rpc::Error::JsonRpc(bitcoincore_rpc::jsonrpc::Error::Rpc(
+          bitcoincore_rpc::jsonrpc::error::RpcError { code: -6, .. }
+        ))
+      ) {
+        anyhow!("not enough cardinal utxos")
+      } else {
+        err.into()
+      }
+    })
 }
 
 pub fn timestamp(seconds: u64) -> DateTime<Utc> {

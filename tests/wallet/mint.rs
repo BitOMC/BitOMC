@@ -83,12 +83,10 @@ fn minting_rune_with_postage() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1 --postage 2222sat"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<mint::Output>();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1 --postage 2222sat")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
@@ -110,14 +108,12 @@ fn minting_rune_with_postage_dust() {
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1 --postage 300sat"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .expected_exit_code(1)
-  .expected_stderr("error: postage below dust limit of 330sat\n")
-  .run_and_extract_stdout();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1 --postage 300sat")
+    .core(&core)
+    .ord(&ord)
+    .expected_exit_code(1)
+    .expected_stderr("error: postage below dust limit of 330sat\n")
+    .run_and_extract_stdout();
 }
 
 #[test]
@@ -130,12 +126,10 @@ fn minting_is_allowed_on_first_mint() {
 
   create_wallet(&core, &ord);
 
-  let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<mint::Output>();
+  let output = CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
@@ -193,21 +187,17 @@ fn minting_is_allowed_using_output_of_first_mint_as_input() {
 
   create_wallet(&core, &ord);
 
-  let output0 = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<mint::Output>();
+  let output0 = CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
-  let output1 = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1"
-  ))
-  .core(&core)
-  .ord(&ord)
-  .run_and_deserialize_output::<mint::Output>();
+  let output1 = CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+    .core(&core)
+    .ord(&ord)
+    .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 

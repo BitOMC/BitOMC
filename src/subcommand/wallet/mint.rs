@@ -23,6 +23,8 @@ pub struct Output {
 }
 
 impl Mint {
+  #[allow(clippy::cast_possible_truncation)]
+  #[allow(clippy::cast_sign_loss)]
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
     ensure!(
       wallet.has_rune_index(),
@@ -82,11 +84,16 @@ impl Mint {
     let mut input_amount = 0;
     if rune_entry0.etching != Txid::all_zeros() {
       let input_tx = bitcoin_client.get_transaction(&rune_entry0.etching, None)?;
-      if input_tx.details.len() > 0 {
-        input_amount = (-input_tx.details[0].amount.to_sat()) as u64;
+      if !input_tx.details.is_empty() {
+        input_amount = input_tx.details[0].amount.to_sat().unsigned_abs();
       }
       let input_vb = (input.segwit_weight() + 2) / 4; // include 2WU for segwit marker
-      fee_for_input = (self.fee_rate.n() as u64) * (input_vb as u64);
+
+      // #[allow(clippy::cast_possible_truncation)]
+      // #[allow(clippy::cast_sign_loss)]
+      // fee_for_input = (self.fee_rate.n().round() as u64) * (input_vb as u64);
+
+      fee_for_input = (self.fee_rate.n().round() * input_vb as f64).round() as u64;
     }
 
     let unfunded_transaction = Transaction {
