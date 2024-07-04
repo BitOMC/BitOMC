@@ -70,14 +70,14 @@ impl Mint {
     // 1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
     let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
     let mint_script_pubkey = ScriptBuf::new_v0_p2wsh(&mint_script.clone().wscript_hash());
-    
+
     let input = TxIn {
       previous_output: OutPoint::new(rune_entry0.etching, 0),
       script_sig: ScriptBuf::new(),
       sequence: Sequence::from_height(1),
       witness: Witness::from_slice(&[mint_script.clone().into_bytes()]),
     };
-    
+
     let mut fee_for_input = 0;
     let mut input_amount = 0;
     if rune_entry0.etching != Txid::all_zeros() {
@@ -131,7 +131,7 @@ impl Mint {
 
     let signed_transaction = bitcoin_client
       .sign_raw_transaction_with_wallet(&unsigned_transaction, None, None)?
-      .hex;    
+      .hex;
 
     assert_eq!(
       Runestone::decipher(&consensus::encode::deserialize(&signed_transaction)?),

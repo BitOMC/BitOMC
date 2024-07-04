@@ -22,10 +22,8 @@ impl Runestone {
     let payload = match Runestone::payload(transaction) {
       Some(Payload::Valid(payload)) => payload,
       Some(Payload::Invalid(flaw)) => {
-        return Some(Artifact::Cenotaph(Cenotaph {
-          flaw: Some(flaw),
-        }));
-      },
+        return Some(Artifact::Cenotaph(Cenotaph { flaw: Some(flaw) }));
+      }
       None => return None,
     };
 
