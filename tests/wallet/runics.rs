@@ -28,7 +28,10 @@ fn wallet_runics() {
       .unwrap()
       .runes,
     vec![(
-      SpacedRune { rune: Rune(TIGHTEN), spacers: 0 },
+      SpacedRune {
+        rune: Rune(TIGHTEN),
+        spacers: 0
+      },
       Decimal {
         value: 50,
         scale: 0

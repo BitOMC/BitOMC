@@ -1,4 +1,4 @@
-use super::*;
+use {super::*, num_integer::Roots};
 
 #[derive(Debug, Parser)]
 pub(crate) struct Mint {
@@ -44,7 +44,22 @@ impl Mint {
 
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
 
-    let amount = rune_entry0.mintable(block_height + 1);
+    let reward = rune_entry0.mintable(block_height + 1);
+
+    let sum_of_sq =
+      rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
+    let amount0;
+    let amount1;
+    if sum_of_sq == 0 {
+      // Assign entire reward to amount0
+      amount0 = reward;
+      amount1 = 0;
+    } else {
+      // Split reward between runes such that converted supply increases by `reward`
+      let k = sum_of_sq.sqrt();
+      amount0 = rune_entry0.supply * reward / k;
+      amount1 = rune_entry1.supply * reward / k;
+    }
 
     let chain = wallet.chain();
 
@@ -146,12 +161,12 @@ impl Mint {
       rune0: rune_entry0.spaced_rune,
       rune1: rune_entry1.spaced_rune,
       pile0: Pile {
-        amount,
+        amount: amount0,
         divisibility: rune_entry0.divisibility,
         symbol: rune_entry0.symbol,
       },
       pile1: Pile {
-        amount: 0,
+        amount: amount1,
         divisibility: rune_entry1.divisibility,
         symbol: rune_entry1.symbol,
       },

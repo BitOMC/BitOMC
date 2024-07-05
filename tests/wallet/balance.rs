@@ -157,7 +157,10 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
       runic: Some(10_000),
       runes: Some(
         vec![(
-          SpacedRune { rune: Rune(TIGHTEN), spacers: 0 },
+          SpacedRune {
+            rune: Rune(TIGHTEN),
+            spacers: 0
+          },
           Decimal {
             value: 50,
             scale: 0,

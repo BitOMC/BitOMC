@@ -1,4 +1,6 @@
-use {super::*, crate::outgoing::Outgoing, base64::Engine, bitcoin::psbt::Psbt};
+use {
+  super::*, crate::outgoing::Outgoing, base64::Engine, bitcoin::psbt::Psbt, num_integer::Roots,
+};
 
 #[derive(Debug, Parser)]
 pub(crate) struct Convert {
@@ -11,7 +13,6 @@ pub(crate) struct Convert {
     help = "Target <AMOUNT> postage with sent inscriptions. [default: 10000 sat]"
   )]
   pub(crate) postage: Option<Amount>,
-  address: Address<NetworkUnchecked>,
   outgoing: Outgoing,
 }
 
@@ -25,15 +26,9 @@ pub struct Output {
 
 impl Convert {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
-    let address = self
-      .address
-      .clone()
-      .require_network(wallet.chain().network())?;
-
     let unsigned_transaction = match self.outgoing {
-      Outgoing::Rune { decimal, rune } => Self::create_unsigned_send_runes_transaction(
+      Outgoing::Rune { decimal, rune } => Self::create_unsigned_convert_runes_transaction(
         &wallet,
-        address,
         rune,
         decimal,
         self.postage.unwrap_or(TARGET_POSTAGE),
@@ -103,9 +98,8 @@ impl Convert {
     })))
   }
 
-  fn create_unsigned_send_runes_transaction(
+  fn create_unsigned_convert_runes_transaction(
     wallet: &Wallet,
-    destination: Address,
     spaced_rune: SpacedRune,
     decimal: Decimal,
     postage: Amount,
@@ -187,13 +181,43 @@ impl Convert {
       },
     }
 
+    let Some((_, rune_entry_in, _)) = wallet.get_rune(spaced_rune.rune)? else {
+      bail!("rune has not been etched");
+    };
+    let Some((id_out, rune_entry_out, _)) = wallet.get_rune(Rune(1 - spaced_rune.rune.n()))? else {
+      bail!("rune has not been etched");
+    };
+
+    let invariant =
+      rune_entry_in.supply * rune_entry_in.supply + rune_entry_out.supply * rune_entry_out.supply;
+    let new_input_sq = (rune_entry_in.supply - amount) * (rune_entry_in.supply - amount);
+    let expected_output_amt = (invariant - new_input_sq).sqrt() - rune_entry_out.supply;
+
+    let allowable_slippage = 20; // 20bps
+    let min_output_amt = expected_output_amt * (10000 - allowable_slippage) / 10000;
+
     let runestone = Runestone {
-      edicts: vec![Edict {
-        amount,
-        id,
-        output: 2,
-      }],
-      ..default()
+      edicts: if needs_runes_change_output {
+        vec![
+          Edict {
+            amount: input_rune_balance - amount,
+            id,
+            output: 1,
+          },
+          Edict {
+            amount: min_output_amt,
+            id: id_out,
+            output: 1,
+          },
+        ]
+      } else {
+        vec![Edict {
+          amount: min_output_amt,
+          id: id_out,
+          output: 1,
+        }]
+      },
+      pointer: Some(0),
     };
 
     let unfunded_transaction = Transaction {
@@ -208,27 +232,16 @@ impl Convert {
           witness: Witness::new(),
         })
         .collect(),
-      output: if needs_runes_change_output {
-        vec![
-          TxOut {
-            script_pubkey: runestone.encipher(),
-            value: 0,
-          },
-          TxOut {
-            script_pubkey: wallet.get_change_address()?.script_pubkey(),
-            value: postage.to_sat(),
-          },
-          TxOut {
-            script_pubkey: destination.script_pubkey(),
-            value: postage.to_sat(),
-          },
-        ]
-      } else {
-        vec![TxOut {
-          script_pubkey: destination.script_pubkey(),
+      output: vec![
+        TxOut {
+          script_pubkey: runestone.encipher(),
+          value: 0,
+        },
+        TxOut {
+          script_pubkey: wallet.get_change_address()?.script_pubkey(),
           value: postage.to_sat(),
-        }]
-      },
+        },
+      ],
     };
 
     let unsigned_transaction =
@@ -236,12 +249,10 @@ impl Convert {
 
     let unsigned_transaction = consensus::encode::deserialize(&unsigned_transaction)?;
 
-    if needs_runes_change_output {
-      assert_eq!(
-        Runestone::decipher(&unsigned_transaction),
-        Some(Artifact::Runestone(runestone)),
-      );
-    }
+    assert_eq!(
+      Runestone::decipher(&unsigned_transaction),
+      Some(Artifact::Runestone(runestone)),
+    );
 
     Ok(unsigned_transaction)
   }

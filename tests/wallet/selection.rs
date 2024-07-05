@@ -46,14 +46,12 @@ fn mint_does_not_select_runic_utxos() {
 
   drain(&core, &ord);
 
-  CommandBuilder::new(
-    "--chain regtest --index-runes wallet mint --fee-rate 0"
-  )
-  .core(&core)
-  .ord(&ord)
-  .expected_exit_code(1)
-  .expected_stderr("error: not enough cardinal utxos\n")
-  .run_and_extract_stdout();
+  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 0")
+    .core(&core)
+    .ord(&ord)
+    .expected_exit_code(1)
+    .expected_stderr("error: not enough cardinal utxos\n")
+    .run_and_extract_stdout();
 }
 
 #[test]
