@@ -9,6 +9,11 @@ pub(crate) struct Mint {
     help = "Include <AMOUNT> postage with mint output. [default: 10000sat]"
   )]
   postage: Option<Amount>,
+  #[clap(
+    long,
+    help = "Include <AMOUNT> dust with anyone-can-spend output. [default: 330sat]"
+  )]
+  dust: Option<Amount>,
   #[clap(long, help = "Send minted runes to <DESTINATION>.")]
   destination: Option<Address<NetworkUnchecked>>,
 }
@@ -23,8 +28,6 @@ pub struct Output {
 }
 
 impl Mint {
-  #[allow(clippy::cast_possible_truncation)]
-  #[allow(clippy::cast_sign_loss)]
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
     ensure!(
       wallet.has_rune_index(),
@@ -43,6 +46,7 @@ impl Mint {
     };
 
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
+    let p2wsh_dust = self.dust.unwrap_or(TARGET_P2WSH_DUST);
 
     let reward = rune_entry0.mintable(block_height + 1);
 
@@ -103,7 +107,7 @@ impl Mint {
         input_amount = input_tx.details[0].amount.to_sat().unsigned_abs();
       }
       let input_vb = (input.segwit_weight() + 2) / 4; // include 2WU for segwit marker
-      fee_for_input = (self.fee_rate.n().round() * input_vb as f64).round() as u64;
+      fee_for_input = self.fee_rate.fee(input_vb).to_sat();
     }
 
     let unfunded_transaction = Transaction {
@@ -113,7 +117,7 @@ impl Mint {
       output: vec![
         TxOut {
           script_pubkey: mint_script_pubkey,
-          value: postage.to_sat() + fee_for_input,
+          value: p2wsh_dust.to_sat() + fee_for_input,
         },
         TxOut {
           script_pubkey: destination.script_pubkey(),

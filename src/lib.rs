@@ -127,6 +127,7 @@ const ID0: RuneId = RuneId { block: 1, tx: 0 };
 const ID1: RuneId = RuneId { block: 1, tx: 1 };
 
 const TARGET_POSTAGE: Amount = Amount::from_sat(10_000);
+const TARGET_P2WSH_DUST: Amount = Amount::from_sat(330);
 
 static SHUTTING_DOWN: AtomicBool = AtomicBool::new(false);
 static LISTENERS: Mutex<Vec<axum_server::Handle>> = Mutex::new(Vec::new());
