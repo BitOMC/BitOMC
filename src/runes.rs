@@ -78,7 +78,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -91,7 +90,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -135,7 +133,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -148,7 +145,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -190,7 +186,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -203,7 +198,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -236,7 +230,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -249,7 +242,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -291,7 +283,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -304,7 +295,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -338,7 +328,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -352,7 +341,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -388,7 +376,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -401,7 +388,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -441,7 +427,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -454,7 +439,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -496,7 +480,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -509,7 +492,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -549,7 +531,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             burned: 50 * COIN_VALUE,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -563,7 +544,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -600,7 +580,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -613,7 +592,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -646,7 +624,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -659,7 +636,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -701,7 +677,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -714,7 +689,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -773,7 +747,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -786,7 +759,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -847,7 +819,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -860,7 +831,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -902,7 +872,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -915,7 +884,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -974,7 +942,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -987,7 +954,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1029,7 +995,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1042,7 +1007,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1101,7 +1065,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1114,7 +1077,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1165,7 +1127,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1178,7 +1139,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1237,7 +1197,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1250,7 +1209,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1304,7 +1262,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1317,7 +1274,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1375,7 +1331,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1388,7 +1343,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1448,7 +1402,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1461,7 +1414,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1503,7 +1455,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1516,7 +1467,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1574,7 +1524,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1587,7 +1536,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1647,7 +1595,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1660,7 +1607,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1702,7 +1648,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1715,7 +1660,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1773,7 +1717,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1786,7 +1729,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             burned: expected_balance1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
@@ -1829,7 +1771,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1842,7 +1783,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1900,7 +1840,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1913,7 +1852,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -1954,7 +1892,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -1967,7 +1904,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2023,7 +1959,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2036,7 +1971,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2077,7 +2011,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2090,7 +2023,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2146,7 +2078,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2159,7 +2090,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2200,7 +2130,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2213,7 +2142,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2261,7 +2189,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2274,7 +2201,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2317,7 +2243,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2330,7 +2255,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2378,7 +2302,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2391,7 +2314,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2433,7 +2355,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2446,7 +2367,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2494,7 +2414,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             burned: supply0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
@@ -2508,7 +2427,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2543,7 +2461,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2556,7 +2473,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2614,7 +2530,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2627,7 +2542,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2665,7 +2579,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid2,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2678,7 +2591,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid2,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2749,7 +2661,6 @@ mod tests {
           ID0,
           RuneEntry {
             burned: COIN_VALUE,
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2763,7 +2674,6 @@ mod tests {
           ID1,
           RuneEntry {
             burned: COIN_VALUE,
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2801,7 +2711,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2814,7 +2723,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2857,7 +2765,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2870,7 +2777,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2909,7 +2815,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2922,7 +2827,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -2972,7 +2876,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -2985,7 +2888,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3044,7 +2946,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3057,7 +2958,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3120,7 +3020,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3133,7 +3032,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3185,7 +3083,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3198,7 +3095,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3236,7 +3132,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3249,7 +3144,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3291,7 +3185,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3304,7 +3197,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3348,7 +3240,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3361,7 +3252,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3403,7 +3293,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3416,7 +3305,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3460,7 +3348,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3473,7 +3360,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3524,7 +3410,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3537,7 +3422,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3588,7 +3472,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3601,7 +3484,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3652,7 +3534,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3665,7 +3546,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3716,7 +3596,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3729,7 +3608,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3780,7 +3658,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3793,7 +3670,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3837,7 +3713,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3850,7 +3725,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3901,7 +3775,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3914,7 +3787,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -3965,7 +3837,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -3978,7 +3849,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4029,7 +3899,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4042,7 +3911,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4093,7 +3961,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4106,7 +3973,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4171,7 +4037,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4184,7 +4049,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4228,7 +4092,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4241,7 +4104,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4283,7 +4145,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4296,7 +4157,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4332,7 +4192,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4345,7 +4204,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4380,7 +4238,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4393,7 +4250,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4435,7 +4291,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4448,7 +4303,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4486,7 +4340,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4499,7 +4352,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4541,7 +4393,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4554,7 +4405,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4586,7 +4436,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: Txid::all_zeros(),
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4599,7 +4448,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: Txid::all_zeros(),
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4634,7 +4482,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4647,7 +4494,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid1,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4708,7 +4554,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4721,7 +4566,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4767,7 +4611,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4780,7 +4623,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4869,7 +4711,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4882,7 +4723,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,
@@ -4966,7 +4806,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -4979,7 +4818,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,

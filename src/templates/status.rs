@@ -18,6 +18,8 @@ pub struct StatusHtml {
   pub transaction_index: bool,
   pub unrecoverably_reorged: bool,
   pub uptime: Duration,
+  pub last_mint_tx: Txid,
+  pub last_conversion_tx: Txid,
 }
 
 impl PageContent for StatusHtml {

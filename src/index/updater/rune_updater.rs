@@ -5,6 +5,7 @@ pub(super) struct RuneUpdater<'a, 'tx> {
   pub(super) event_sender: Option<&'a mpsc::Sender<Event>>,
   pub(super) height: u32,
   pub(super) id_to_entry: &'a mut Table<'tx, RuneIdValue, RuneEntryValue>,
+  pub(super) state_change_to_last_txid: &'a mut Table<'tx, u8, &'static TxidValue>,
   pub(super) outpoint_to_balances: &'a mut Table<'tx, &'static OutPointValue, &'static [u8]>,
 }
 
@@ -417,33 +418,50 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   fn update_status_of_last_mint_output(&mut self, tx: &Transaction) -> Result {
-    let Some(entry0) = self.id_to_entry.get(&ID0.store())? else {
-      return Ok(());
-    };
-    let Some(entry1) = self.id_to_entry.get(&ID1.store())? else {
+    // let Some(entry0) = self.id_to_entry.get(&ID0.store())? else {
+    //   return Ok(());
+    // };
+    // let Some(entry1) = self.id_to_entry.get(&ID1.store())? else {
+    //   return Ok(());
+    // };
+    let Some(txid) = self
+      .state_change_to_last_txid
+      .get(&StateChange::Mint.key())?
+      .map(|entry| Txid::load(*entry.value()))
+    else {
+      self
+        .state_change_to_last_txid
+        .insert(&StateChange::Mint.key(), &Txid::all_zeros().store())?;
       return Ok(());
     };
 
-    let mut rune_entry0 = RuneEntry::load(entry0.value());
-    let mut rune_entry1 = RuneEntry::load(entry1.value());
+    // let mut rune_entry0 = RuneEntry::load(entry0.value());
+    // let mut rune_entry1 = RuneEntry::load(entry1.value());
 
     // Skip if outpoint of last mint is spent
-    if rune_entry0.etching == Txid::all_zeros() {
+    // if rune_entry0.etching == Txid::all_zeros() {
+    //   return Ok(());
+    // }
+    if txid == Txid::all_zeros() {
       return Ok(());
     }
 
     // Skip if outpoint of last mint is not an input to this transaction
     for input in &tx.input {
-      if input.previous_output.txid == rune_entry0.etching && input.previous_output.vout == 0 {
-        drop(entry0);
-        drop(entry1);
+      if input.previous_output.txid == txid && input.previous_output.vout == 0 {
+        // drop(entry0);
+        // drop(entry1);
 
         // Update last mint txid so that we know it's been spent
-        rune_entry0.etching = Txid::all_zeros();
-        rune_entry1.etching = Txid::all_zeros();
+        // rune_entry0.etching = Txid::all_zeros();
+        // rune_entry1.etching = Txid::all_zeros();
 
-        self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
-        self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
+        self
+          .state_change_to_last_txid
+          .insert(&StateChange::Mint.key(), &Txid::all_zeros().store())?;
+
+        // self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
+        // self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
 
         break;
       }
@@ -465,12 +483,19 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let Some(entry1) = self.id_to_entry.get(&ID1.store())? else {
       return Ok(None);
     };
+    let Some(last_txid) = self
+      .state_change_to_last_txid
+      .get(&StateChange::Mint.key())?
+      .map(|entry| Txid::load(*entry.value()))
+    else {
+      return Ok(None);
+    };
 
     let mut rune_entry0 = RuneEntry::load(entry0.value());
     let mut rune_entry1 = RuneEntry::load(entry1.value());
 
     // Outpoint of last mint must be spent (either by this tx or a previous one)
-    if rune_entry0.etching != Txid::all_zeros() {
+    if last_txid != Txid::all_zeros() {
       return Ok(None);
     }
 
@@ -515,8 +540,11 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     }
 
     // Update last mint txid
-    rune_entry0.etching = txid;
-    rune_entry1.etching = txid;
+    // rune_entry0.etching = txid;
+    // rune_entry1.etching = txid;
+    self
+      .state_change_to_last_txid
+      .insert(&StateChange::Mint.key(), &txid.store())?;
 
     self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
     self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;

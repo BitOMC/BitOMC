@@ -1,5 +1,6 @@
 use {
   super::*,
+  bitcoin::hashes::Hash,
   bitcoin::BlockHash,
   ord::{Envelope, Inscription},
 };
@@ -509,6 +510,8 @@ fn get_status() {
       transaction_index: false,
       unrecoverably_reorged: false,
       uptime: dummy_duration,
+      last_mint_tx: Txid::all_zeros(),
+      last_conversion_tx: Txid::all_zeros(),
     }
   );
 }
@@ -539,7 +542,7 @@ fn get_runes() {
         ..default()
       },
       id: ID0,
-      mintable: false,
+      mintable: true,
       parent: None,
     }
   );

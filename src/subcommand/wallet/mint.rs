@@ -44,6 +44,7 @@ impl Mint {
     let Some((_, rune_entry1, _)) = wallet.get_rune(Rune(1))? else {
       bail!("rune has not been etched");
     };
+    let last_mint_tx = wallet.get_last_mint_tx()?;
 
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
     let p2wsh_dust = self.dust.unwrap_or(TARGET_P2WSH_DUST);
@@ -93,7 +94,7 @@ impl Mint {
     let mint_script_pubkey = ScriptBuf::new_v0_p2wsh(&mint_script.clone().wscript_hash());
 
     let input = TxIn {
-      previous_output: OutPoint::new(rune_entry0.etching, 0),
+      previous_output: OutPoint::new(last_mint_tx, 0),
       script_sig: ScriptBuf::new(),
       sequence: Sequence::from_height(1),
       witness: Witness::from_slice(&[mint_script.clone().into_bytes()]),
@@ -101,8 +102,8 @@ impl Mint {
 
     let mut fee_for_input = 0;
     let mut input_amount = 0;
-    if rune_entry0.etching != Txid::all_zeros() {
-      let input_tx = bitcoin_client.get_transaction(&rune_entry0.etching, None)?;
+    if last_mint_tx != Txid::all_zeros() {
+      let input_tx = bitcoin_client.get_transaction(&last_mint_tx, None)?;
       if !input_tx.details.is_empty() {
         input_amount = input_tx.details[0].amount.to_sat().unsigned_abs();
       }
@@ -138,7 +139,7 @@ impl Mint {
     let mut unsigned_transaction = fund_transaction_result.transaction()?;
 
     // Add previous mint output as an input
-    if rune_entry0.etching != Txid::all_zeros() {
+    if last_mint_tx != Txid::all_zeros() {
       unsigned_transaction.output[0].value -= fee_for_input;
       if unsigned_transaction.output.len() > 3 {
         // If change output exists, add input amount to it

@@ -72,6 +72,7 @@ define_table! { STATISTIC_TO_COUNT, u64, u64 }
 define_table! { TRANSACTION_ID_TO_RUNE, &TxidValue, u128 }
 define_table! { TRANSACTION_ID_TO_TRANSACTION, &TxidValue, &[u8] }
 define_table! { WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP, u32, u128 }
+define_table! { STATE_CHANGE_TO_LAST_TXID, u8, &TxidValue }
 
 #[derive(Copy, Clone)]
 pub(crate) enum Statistic {
@@ -101,6 +102,24 @@ impl Statistic {
 impl From<Statistic> for u64 {
   fn from(statistic: Statistic) -> Self {
     statistic as u64
+  }
+}
+
+#[derive(Copy, Clone)]
+pub enum StateChange {
+  Mint = 0,
+  Convert = 1,
+}
+
+impl StateChange {
+  fn key(self) -> u8 {
+    self.into()
+  }
+}
+
+impl From<StateChange> for u8 {
+  fn from(state_change: StateChange) -> Self {
+    state_change as u8
   }
 }
 
@@ -317,6 +336,7 @@ impl Index {
         tx.open_table(SEQUENCE_NUMBER_TO_SATPOINT)?;
         tx.open_table(TRANSACTION_ID_TO_RUNE)?;
         tx.open_table(WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP)?;
+        tx.open_table(STATE_CHANGE_TO_LAST_TXID)?;
 
         {
           let mut outpoint_to_sat_ranges = tx.open_table(OUTPOINT_TO_SAT_RANGES)?;
@@ -529,6 +549,8 @@ impl Index {
       transaction_index: statistic(Statistic::IndexTransactions)? != 0,
       unrecoverably_reorged: self.unrecoverably_reorged.load(atomic::Ordering::Relaxed),
       uptime: (Utc::now() - self.started).to_std()?,
+      last_mint_tx: self.get_last_txid_for_state_change(StateChange::Mint)?,
+      last_conversion_tx: self.get_last_txid_for_state_change(StateChange::Convert)?,
     })
   }
 
@@ -792,6 +814,18 @@ impl Index {
       .unwrap()
       .unwrap()
       .inscription_number
+  }
+
+  pub fn get_last_txid_for_state_change(&self, state_change: StateChange) -> Result<Txid> {
+    Ok(
+      self
+        .database
+        .begin_read()?
+        .open_table(STATE_CHANGE_TO_LAST_TXID)?
+        .get(&state_change.key())?
+        .map(|entry| Txid::load(*entry.value()))
+        .unwrap_or(Txid::all_zeros()),
+    )
   }
 
   pub fn block_count(&self) -> Result<u32> {
@@ -6528,7 +6562,6 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
@@ -6541,7 +6574,6 @@ mod tests {
         (
           ID1,
           RuneEntry {
-            etching: txid0,
             spaced_rune: SpacedRune {
               rune: Rune(EASE),
               spacers: 0,

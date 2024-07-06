@@ -11,10 +11,7 @@ use {
   chrono::{DateTime, Utc},
   executable_path::executable_path,
   mockcore::TransactionTemplate,
-  ord::{
-    api, chain::Chain, decimal::Decimal, outgoing::Outgoing, wallet::batch, InscriptionId,
-    RuneEntry,
-  },
+  ord::{api, chain::Chain, outgoing::Outgoing, InscriptionId, RuneEntry},
   ordinals::{
     Artifact, Charm, Edict, Pile, Rarity, Rune, RuneId, Runestone, Sat, SatPoint, SpacedRune,
   },

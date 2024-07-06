@@ -55,25 +55,6 @@ impl Spawn {
 
     (Arc::try_unwrap(self.tempdir).unwrap(), stdout.into())
   }
-
-  #[track_caller]
-  pub(crate) fn run_and_deserialize_output<T: DeserializeOwned>(self) -> T {
-    let stdout = self.stdout_regex(".*").run_and_extract_stdout();
-    serde_json::from_str(&stdout)
-      .unwrap_or_else(|err| panic!("Failed to deserialize JSON: {err}\n{stdout}"))
-  }
-
-  #[track_caller]
-  pub(crate) fn run_and_extract_stdout(self) -> String {
-    self.run().1
-  }
-
-  pub(crate) fn stdout_regex(self, expected_stdout: impl AsRef<str>) -> Self {
-    Self {
-      expected_stdout: Expected::regex(expected_stdout.as_ref()),
-      ..self
-    }
-  }
 }
 
 pub(crate) struct CommandBuilder {
