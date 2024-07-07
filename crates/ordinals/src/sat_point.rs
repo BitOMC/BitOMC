@@ -60,7 +60,7 @@ impl FromStr for SatPoint {
     Ok(SatPoint {
       outpoint: outpoint
         .parse::<OutPoint>()
-        .map_err(|err| Error::Outpoint {
+        .map_err(|err| Error::OutPoint {
           outpoint: outpoint.into(),
           err,
         })?,
@@ -79,7 +79,7 @@ pub enum Error {
   #[error("satpoint offset `{offset}` invalid: {err}")]
   Offset { offset: String, err: ParseIntError },
   #[error("satpoint outpoint `{outpoint}` invalid: {err}")]
-  Outpoint {
+  OutPoint {
     outpoint: String,
     err: ParseOutPointError,
   },

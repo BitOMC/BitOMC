@@ -263,19 +263,34 @@ impl Wallet {
     Ok(Some((rune_json.id, rune_json.entry, rune_json.parent)))
   }
 
-  pub(crate) fn get_last_mint_tx(&self) -> Result<Txid> {
+  pub(crate) fn get_last_conversion_outpoint(&self) -> Result<OutPoint> {
     let response = self
       .ord_client
       .get(self.rpc_url.join("/status").unwrap())
       .send()?;
 
     if !response.status().is_success() {
-      return Ok(Txid::all_zeros());
+      return Ok(OutPoint::null());
     }
 
     let status_json: api::Status = serde_json::from_str(&response.text()?)?;
 
-    Ok(status_json.last_mint_tx)
+    Ok(status_json.last_conversion_outpoint)
+  }
+
+  pub(crate) fn get_last_mint_outpoint(&self) -> Result<OutPoint> {
+    let response = self
+      .ord_client
+      .get(self.rpc_url.join("/status").unwrap())
+      .send()?;
+
+    if !response.status().is_success() {
+      return Ok(OutPoint::null());
+    }
+
+    let status_json: api::Status = serde_json::from_str(&response.text()?)?;
+
+    Ok(status_json.last_mint_outpoint)
   }
 
   pub(crate) fn get_change_address(&self) -> Result<Address> {

@@ -72,7 +72,7 @@ define_table! { STATISTIC_TO_COUNT, u64, u64 }
 define_table! { TRANSACTION_ID_TO_RUNE, &TxidValue, u128 }
 define_table! { TRANSACTION_ID_TO_TRANSACTION, &TxidValue, &[u8] }
 define_table! { WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP, u32, u128 }
-define_table! { STATE_CHANGE_TO_LAST_TXID, u8, &TxidValue }
+define_table! { STATE_CHANGE_TO_LAST_OUTPOINT, u8, &OutPointValue }
 
 #[derive(Copy, Clone)]
 pub(crate) enum Statistic {
@@ -336,7 +336,7 @@ impl Index {
         tx.open_table(SEQUENCE_NUMBER_TO_SATPOINT)?;
         tx.open_table(TRANSACTION_ID_TO_RUNE)?;
         tx.open_table(WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP)?;
-        tx.open_table(STATE_CHANGE_TO_LAST_TXID)?;
+        tx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
 
         {
           let mut outpoint_to_sat_ranges = tx.open_table(OUTPOINT_TO_SAT_RANGES)?;
@@ -549,8 +549,8 @@ impl Index {
       transaction_index: statistic(Statistic::IndexTransactions)? != 0,
       unrecoverably_reorged: self.unrecoverably_reorged.load(atomic::Ordering::Relaxed),
       uptime: (Utc::now() - self.started).to_std()?,
-      last_mint_tx: self.get_last_txid_for_state_change(StateChange::Mint)?,
-      last_conversion_tx: self.get_last_txid_for_state_change(StateChange::Convert)?,
+      last_mint_outpoint: self.get_last_outpoint_for_state_change(StateChange::Mint)?,
+      last_conversion_outpoint: self.get_last_outpoint_for_state_change(StateChange::Convert)?,
     })
   }
 
@@ -816,15 +816,15 @@ impl Index {
       .inscription_number
   }
 
-  pub fn get_last_txid_for_state_change(&self, state_change: StateChange) -> Result<Txid> {
+  pub fn get_last_outpoint_for_state_change(&self, state_change: StateChange) -> Result<OutPoint> {
     Ok(
       self
         .database
         .begin_read()?
-        .open_table(STATE_CHANGE_TO_LAST_TXID)?
+        .open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?
         .get(&state_change.key())?
-        .map(|entry| Txid::load(*entry.value()))
-        .unwrap_or(Txid::all_zeros()),
+        .map(|entry| OutPoint::load(*entry.value()))
+        .unwrap_or(OutPoint::null()),
     )
   }
 

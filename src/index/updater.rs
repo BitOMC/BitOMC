@@ -277,7 +277,7 @@ impl<'index> Updater<'index> {
       rt.block_on(async move {
         loop {
           let Some(outpoint) = outpoint_receiver.recv().await else {
-            log::debug!("Outpoint channel closed");
+            log::debug!("OutPoint channel closed");
             return;
           };
 
@@ -627,7 +627,7 @@ impl<'index> Updater<'index> {
     if self.index.index_runes && self.height >= self.index.settings.first_rune_height() {
       let mut outpoint_to_rune_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
       let mut rune_id_to_rune_entry = wtx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
-      let mut state_change_to_last_txid = wtx.open_table(STATE_CHANGE_TO_LAST_TXID)?;
+      let mut state_change_to_last_outpoint = wtx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
 
       let mut rune_updater = RuneUpdater {
         event_sender: self.index.event_sender.as_ref(),
@@ -635,7 +635,7 @@ impl<'index> Updater<'index> {
         height: self.height,
         id_to_entry: &mut rune_id_to_rune_entry,
         outpoint_to_balances: &mut outpoint_to_rune_balances,
-        state_change_to_last_txid: &mut state_change_to_last_txid,
+        state_change_to_last_outpoint: &mut state_change_to_last_outpoint,
       };
 
       for (tx, txid) in block.txdata.iter() {

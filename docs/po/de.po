@@ -2682,7 +2682,7 @@ msgid ""
 "Transaction outputs can searched by outpoint, for example, the only output "
 "of the genesis block coinbase transaction:"
 msgstr ""
-"Transaktions outputs können nach Outpoint durchsucht werden, zum Beispiel "
+"Transaktions outputs können nach OutPoint durchsucht werden, zum Beispiel "
 "die einzige outputs der Genesis-Block-Coinbase-Transaktion:"
 
 #: src\guides/explorer.md:44

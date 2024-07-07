@@ -195,9 +195,12 @@ impl State {
   }
 
   pub(crate) fn broadcast_tx(&mut self, template: TransactionTemplate) -> Txid {
-    // 1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
+    // OP_TRUE CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
     let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
     let mint_script_pubkey = ScriptBuf::new_v0_p2wsh(&mint_script.clone().wscript_hash());
+    // OP_TRUE (anyone can spend immediately)
+    let convert_script = ScriptBuf::from_bytes(Vec::from(&[0x51]));
+    let convert_script_pubkey = ScriptBuf::new_v0_p2wsh(&convert_script.clone().wscript_hash());
 
     let mut total_value = 0;
     let mut input = Vec::new();
@@ -210,6 +213,13 @@ impl State {
           script_sig: ScriptBuf::new(),
           sequence: Sequence::from_height(1),
           witness: Witness::from_slice(&[mint_script.clone().into_bytes()]),
+        });
+      } else if template.convert && tx.output[*vout].script_pubkey == convert_script_pubkey {
+        input.push(TxIn {
+          previous_output: OutPoint::new(tx.txid(), *vout as u32),
+          script_sig: ScriptBuf::new(),
+          sequence: Sequence::MAX,
+          witness: Witness::from_slice(&[convert_script.clone().into_bytes()]),
         });
       } else {
         input.push(TxIn {
@@ -227,13 +237,6 @@ impl State {
       0
     };
 
-    if template.outputs > 0 {
-      assert_eq!(
-        value_per_output * template.outputs as u64 + template.fee,
-        total_value
-      );
-    }
-
     let mut tx = Transaction {
       version: 2,
       lock_time: LockTime::ZERO,
@@ -247,6 +250,10 @@ impl State {
             .unwrap_or(value_per_output),
           script_pubkey: if template.mint && i == 0 {
             mint_script_pubkey.clone()
+          } else if template.mint && template.convert && i == 1 {
+            convert_script_pubkey.clone()
+          } else if !template.mint && template.convert && i == 0 {
+            convert_script_pubkey.clone()
           } else if template.p2tr {
             let secp = Secp256k1::new();
             let keypair = KeyPair::new(&secp, &mut rand::thread_rng());
