@@ -265,7 +265,7 @@ impl Convert {
         .output[last_conversion_outpoint.vout as usize]
         .value;
 
-      let input_vb = (convert_input.segwit_weight() + 2) / 4 + 1; // include 2WU for segwit marker and round up
+      let input_vb = convert_input.segwit_weight() / 4 + 1; // round up for segwit marker
       fee_for_input = fee_rate.fee(input_vb).to_sat();
     }
 
