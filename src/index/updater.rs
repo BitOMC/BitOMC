@@ -823,4 +823,39 @@ impl<'index> Updater<'index> {
 
     Ok(())
   }
+
+  pub fn simulate(
+    wtx: WriteTransaction,
+    index: &'index Index,
+    height: u32,
+    transactions: Vec<Transaction>,
+  ) -> Result<Vec<api::SupplyState>> {
+    if !index.index_runes && height < index.settings.first_rune_height() {
+      return Ok(Vec::new());
+    }
+
+    let mut id_to_entry = wtx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
+    let mut outpoint_to_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
+    let mut state_change_to_last_outpoint = wtx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
+
+    let mut rune_updater = RuneUpdater {
+      event_sender: None,
+      burned: HashMap::new(),
+      height,
+      id_to_entry: &mut id_to_entry,
+      outpoint_to_balances: &mut outpoint_to_balances,
+      state_change_to_last_outpoint: &mut state_change_to_last_outpoint,
+    };
+
+    let mut states = Vec::new();
+    for tx in transactions {
+      rune_updater.index_runes(&tx, tx.txid())?;
+
+      if let Some(state) = rune_updater.get_state()? {
+        states.push(state);
+      }
+    }
+
+    Ok(states)
+  }
 }

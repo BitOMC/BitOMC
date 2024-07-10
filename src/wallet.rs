@@ -293,6 +293,27 @@ impl Wallet {
     Ok(status_json.last_mint_outpoint)
   }
 
+  pub(crate) fn simulate(&self, transactions: &Vec<Transaction>) -> Result<Vec<api::SupplyState>> {
+    let response = self
+      .ord_client
+      .post(self.rpc_url.join("/simulate")?)
+      .json(transactions)
+      .header(reqwest::header::ACCEPT, "application/json")
+      .send()
+      .map_err(|err| anyhow!(err))?;
+
+    if !response.status().is_success() {
+      bail!(
+        "wallet failed to simulate transactions: {}",
+        response.text()?
+      );
+    }
+
+    Ok(serde_json::from_str::<Vec<api::SupplyState>>(
+      &response.text()?,
+    )?)
+  }
+
   pub(crate) fn get_change_address(&self) -> Result<Address> {
     Ok(
       self

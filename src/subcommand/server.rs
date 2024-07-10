@@ -277,6 +277,7 @@ impl Server {
         .route("/sat/:sat", get(Self::sat))
         .route("/search", get(Self::search_by_query))
         .route("/search/*query", get(Self::search_by_path))
+        .route("/simulate", post(Self::simulate))
         .route("/static/*path", get(Self::static_asset))
         .route("/status", get(Self::status))
         .route("/tx/:txid", get(Self::transaction))
@@ -644,6 +645,21 @@ impl Server {
           response.push(output_info);
         }
         Json(response).into_response()
+      } else {
+        StatusCode::NOT_FOUND.into_response()
+      })
+    })
+  }
+
+  async fn simulate(
+    Extension(index): Extension<Arc<Index>>,
+    AcceptJson(accept_json): AcceptJson,
+    Json(transactions): Json<Vec<Transaction>>,
+  ) -> ServerResult {
+    task::block_in_place(|| {
+      Ok(if accept_json {
+        let simulation = index.simulate(transactions)?;
+        Json(simulation).into_response()
       } else {
         StatusCode::NOT_FOUND.into_response()
       })

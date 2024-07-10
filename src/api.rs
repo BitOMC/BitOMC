@@ -148,6 +148,14 @@ pub struct Inscriptions {
   pub page_index: u32,
 }
 
+#[derive(Debug, PartialEq, Serialize, Deserialize, Copy, Clone)]
+pub struct SupplyState {
+  pub supply0: u128,
+  pub supply1: u128,
+  pub burned0: u128,
+  pub burned1: u128,
+}
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Output {
   pub address: Option<Address<NetworkUnchecked>>,

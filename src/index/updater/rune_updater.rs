@@ -406,12 +406,13 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     Ok(())
   }
 
-  pub(super) fn update(self) -> Result {
-    for (rune_id, burned) in self.burned {
+  pub(super) fn update(&mut self) -> Result {
+    for (rune_id, burned) in &self.burned {
       let mut entry = RuneEntry::load(self.id_to_entry.get(&rune_id.store())?.unwrap().value());
       entry.burned = entry.burned.checked_add(burned.n()).unwrap();
       self.id_to_entry.insert(&rune_id.store(), entry.store())?;
     }
+    self.burned = HashMap::new();
 
     Ok(())
   }
@@ -542,13 +543,14 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
     // Assign any burned amounts
     if rune_entry0.burned > 0 {
-      amount0 += rune_entry0.burned;
+      amount0 += rune_entry0.burned + self.burned.entry(ID0).or_default().n();
       rune_entry0.burned = 0;
     }
     if rune_entry1.burned > 0 {
-      amount1 += rune_entry1.burned;
+      amount1 += rune_entry1.burned + self.burned.entry(ID1).or_default().n();
       rune_entry1.burned = 0;
     }
+    self.burned = HashMap::new();
 
     // Update last mint outpoint
     let mint_outpoint = OutPoint {
@@ -729,5 +731,29 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     }
 
     Ok(unallocated)
+  }
+
+  pub(super) fn get_state(&mut self) -> Result<Option<api::SupplyState>> {
+    self.update()?;
+
+    let (Some(entry0), Some(entry1)) = (
+      self
+        .id_to_entry
+        .get(ID0.store())?
+        .map(|entry| RuneEntry::load(entry.value())),
+      self
+        .id_to_entry
+        .get(ID1.store())?
+        .map(|entry| RuneEntry::load(entry.value())),
+    ) else {
+      return Ok(None);
+    };
+
+    Ok(Some(api::SupplyState {
+      supply0: entry0.supply,
+      supply1: entry1.supply,
+      burned0: entry0.burned,
+      burned1: entry1.burned,
+    }))
   }
 }

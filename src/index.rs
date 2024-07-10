@@ -640,6 +640,20 @@ impl Index {
     Ok(info)
   }
 
+  pub fn simulate(&self, transactions: Vec<Transaction>) -> Result<Vec<api::SupplyState>> {
+    let wtx = self.begin_write()?;
+
+    let height = wtx
+      .open_table(HEIGHT_TO_BLOCK_HEADER)?
+      .range(0..)?
+      .next_back()
+      .transpose()?
+      .map(|(height, _header)| height.value() + 1)
+      .unwrap_or(0);
+
+    Updater::simulate(wtx, self, height, transactions)
+  }
+
   pub fn update(&self) -> Result {
     loop {
       let wtx = self.begin_write()?;
