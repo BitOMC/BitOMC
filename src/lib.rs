@@ -126,6 +126,10 @@ type Result<T = (), E = Error> = std::result::Result<T, E>;
 const ID0: RuneId = RuneId { block: 1, tx: 0 };
 const ID1: RuneId = RuneId { block: 1, tx: 1 };
 
+const DESCENDANT_COUNT_LIMIT: u64 = 25;
+const ANCESTOR_COUNT_LIMIT: u64 = 25;
+const DESCENDANT_SIZE_LIMIT: u64 = 101_000;
+const ANCESTOR_SIZE_LIMIT: u64 = 101_000;
 const TARGET_POSTAGE: Amount = Amount::from_sat(10_000);
 const TARGET_P2WSH_DUST: Amount = Amount::from_sat(330);
 

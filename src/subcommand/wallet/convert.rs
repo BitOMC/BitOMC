@@ -107,13 +107,23 @@ impl Convert {
     wallet: &Wallet,
     spaced_rune: SpacedRune,
     decimal: Decimal,
-  ) -> Result<(RuneId, u128, u128, SupplyState)> {
+  ) -> Result<(
+    Rune,
+    Rune,
+    RuneId,
+    RuneId,
+    RuneEntry,
+    RuneEntry,
+    u128,
+    u128,
+    SupplyState,
+  )> {
     let input_rune = spaced_rune.rune;
     let output_rune = Rune(1 - spaced_rune.rune.n());
     let Some((input_id, rune_entry_in, _)) = wallet.get_rune(input_rune)? else {
       bail!("rune has not been etched");
     };
-    let Some((_, rune_entry_out, _)) = wallet.get_rune(output_rune)? else {
+    let Some((output_id, rune_entry_out, _)) = wallet.get_rune(output_rune)? else {
       bail!("rune has not been etched");
     };
 
@@ -137,7 +147,17 @@ impl Convert {
       burned1: entry1.supply,
     };
 
-    Ok((input_id, input_amt, min_output_amt, supply_state))
+    Ok((
+      input_rune,
+      output_rune,
+      input_id,
+      output_id,
+      rune_entry_in,
+      rune_entry_out,
+      input_amt,
+      min_output_amt,
+      supply_state,
+    ))
   }
 
   fn create_unsigned_convert_runes_transaction(
@@ -148,20 +168,8 @@ impl Convert {
     fee_rate: FeeRate,
     prev_outpoint: Option<OutPointTxOut>,
   ) -> Result<(Transaction, Psbt)> {
-    let input_rune = spaced_rune.rune;
-    let output_rune = Rune(1 - spaced_rune.rune.n());
-    let Some((id_in, rune_entry_in, _)) = wallet.get_rune(input_rune)? else {
-      bail!("rune has not been etched");
-    };
-    let Some((id_out, rune_entry_out, _)) = wallet.get_rune(output_rune)? else {
-      bail!("rune has not been etched");
-    };
-
-    let (_, entry, _parent) = wallet
-      .get_rune(input_rune)?
-      .with_context(|| format!("rune `{}` has not been etched", input_rune))?;
-
-    let amount = decimal.to_integer(entry.divisibility)?;
+    let (input_rune, output_rune, id_in, id_out, rune_entry_in, _, amount, min_output_amt, _) =
+      Self::get_conversion_parameters(wallet, spaced_rune, decimal)?;
 
     let inscribed_outputs = wallet
       .inscriptions()
@@ -233,18 +241,10 @@ impl Convert {
       spaced_rune,
       Pile {
         amount: input_rune_balance,
-        divisibility: entry.divisibility,
-        symbol: entry.symbol
+        divisibility: rune_entry_in.divisibility,
+        symbol: rune_entry_in.symbol
       },
     }
-
-    let invariant =
-      rune_entry_in.supply * rune_entry_in.supply + rune_entry_out.supply * rune_entry_out.supply;
-    let new_input_sq = (rune_entry_in.supply - amount) * (rune_entry_in.supply - amount);
-    let expected_output_amt = (invariant - new_input_sq).sqrt() - rune_entry_out.supply;
-
-    let allowable_slippage = 20; // 20bps
-    let min_output_amt = expected_output_amt * (10000 - allowable_slippage) / 10000;
 
     let runestone = Runestone {
       edicts: if needs_runes_change_output {
@@ -355,7 +355,7 @@ impl Convert {
     postage: Amount,
     fee_rate: FeeRate,
   ) -> Result<(Transaction, Psbt, u64)> {
-    let (input_id, input_amount, min_output_amount, initial_state) =
+    let (_, _, input_id, _, _, _, input_amount, min_output_amount, initial_state) =
       Self::get_conversion_parameters(wallet, spaced_rune, decimal)?;
 
     let mut prev_outpoint: Option<OutPointTxOut> = None;
@@ -456,7 +456,27 @@ impl Convert {
 
     // Outpoint array exceeds entries array by one if the final conversion leaves an outpoint
     if outpoints.len() == entries.len() + 1 {
-      state_chain.push((None, outpoints[entries.len()].clone(), prior_state));
+      // Check if adding this transaction would exceed package limit
+      let mut exceeds_package_limit = false;
+      for entry in &entries {
+        if entry.descendant_count == DESCENDANT_COUNT_LIMIT
+          || entry.descendant_size + unsigned_transaction.vsize() as u64 > DESCENDANT_SIZE_LIMIT
+        {
+          exceeds_package_limit = true;
+          break;
+        }
+      }
+
+      let last_entry = entries[entries.len() - 1].clone();
+      if last_entry.ancestor_count == ANCESTOR_COUNT_LIMIT
+        || last_entry.ancestor_size + unsigned_transaction.vsize() as u64 > ANCESTOR_SIZE_LIMIT
+      {
+        exceeds_package_limit = true;
+      }
+
+      if !exceeds_package_limit {
+        state_chain.push((None, outpoints[entries.len()].clone(), prior_state));
+      }
     }
 
     let best_outpoint_and_state = Self::get_best_outpoint_in_conversion_chain(
