@@ -317,8 +317,12 @@ impl Api for Server {
     replaceable: Option<bool>,
   ) -> Result<String, jsonrpc_core::Error> {
     assert_eq!(locktime, None, "locktime param not supported");
-    assert_eq!(replaceable, None, "replaceable param not supported");
 
+    let sequence = if replaceable.unwrap_or(false) {
+      Sequence::ENABLE_RBF_NO_LOCKTIME
+    } else {
+      Sequence::MAX
+    };
     let tx = Transaction {
       version: 2,
       lock_time: LockTime::ZERO,
@@ -327,7 +331,7 @@ impl Api for Server {
         .map(|input| TxIn {
           previous_output: OutPoint::new(input.txid, input.vout),
           script_sig: ScriptBuf::new(),
-          sequence: Sequence::MAX,
+          sequence,
           witness: Witness::new(),
         })
         .collect(),

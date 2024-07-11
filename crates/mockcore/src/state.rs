@@ -218,14 +218,14 @@ impl State {
         input.push(TxIn {
           previous_output: OutPoint::new(tx.txid(), *vout as u32),
           script_sig: ScriptBuf::new(),
-          sequence: Sequence::MAX,
+          sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
           witness: Witness::from_slice(&[convert_script.clone().into_bytes()]),
         });
       } else {
         input.push(TxIn {
           previous_output: OutPoint::new(tx.txid(), *vout as u32),
           script_sig: ScriptBuf::new(),
-          sequence: Sequence::MAX,
+          sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
           witness: witness.clone(),
         });
       }

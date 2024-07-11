@@ -478,6 +478,11 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   fn mint(&mut self, tx: &Transaction, txid: Txid) -> Result<Option<(Lot, Lot)>> {
+    // Every input must signal rbf
+    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
+      return Ok(None);
+    }
+
     // Must contain mint output with p2wsh for OP_1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
     // Mint output is the first such output
     let Some(vout) = tx
@@ -607,6 +612,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     input_amt: Lot,
     min_output_amt: Lot,
   ) -> Result<Option<Lot>> {
+    // Every input must signal rbf
+    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
+      return Ok(None);
+    }
     let Some(conversion_outpoint) = self.get_conversion_outpoint(tx, txid)? else {
       return Ok(None);
     };
@@ -662,6 +671,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     output_amt: Lot,
     max_input_amt: Lot,
   ) -> Result<Option<Lot>> {
+    // Every input must signal rbf
+    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
+      return Ok(None);
+    }
     let Some(conversion_outpoint) = self.get_conversion_outpoint(tx, txid)? else {
       return Ok(None);
     };
