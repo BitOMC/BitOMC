@@ -24,7 +24,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     let mut burned: HashMap<RuneId, Lot> = HashMap::new();
     let mut edicts: Vec<Edict> = Vec::new();
 
-    self.update_last_txid_of_any_state_change(tx)?;
+    self.update_outpoints(tx, txid)?;
 
     if let Some(artifact) = &artifact {
       if let Some((amount0, amount1)) = self.mint(tx, txid)? {
@@ -417,7 +417,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     Ok(())
   }
 
-  fn update_last_txid_of_any_state_change(&mut self, tx: &Transaction) -> Result {
+  fn update_outpoints(&mut self, tx: &Transaction, txid: Txid) -> Result {
     let (Some(last_mint_outpoint), Some(last_conversion_outpoint)) = (
       self
         .state_change_to_last_outpoint
@@ -444,15 +444,41 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     // Skip if outpoint of last mint is not an input to this transaction
     for input in &tx.input {
       if input.previous_output == last_mint_outpoint {
+        let next_mint_outpoint;
+        if let Some(vout) = tx
+          .output
+          .iter()
+          .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone())) {
+          next_mint_outpoint = OutPoint {
+            txid,
+            vout: vout as u32,
+          };
+        } else {
+          next_mint_outpoint = OutPoint::null();
+        };
+
         self
           .state_change_to_last_outpoint
-          .insert(&StateChange::Mint.key(), &OutPoint::null().store())?;
+          .insert(&StateChange::Mint.key(), &next_mint_outpoint.store())?;
       }
 
       if input.previous_output == last_conversion_outpoint {
+        let next_conversion_outpoint;
+        if let Some(vout) = tx
+          .output
+          .iter()
+          .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone())) {
+          next_conversion_outpoint = OutPoint {
+            txid: tx.txid(),
+            vout: vout as u32,
+          };
+        } else {
+          next_conversion_outpoint = OutPoint::null();
+        };
+
         self
           .state_change_to_last_outpoint
-          .insert(&StateChange::Convert.key(), &OutPoint::null().store())?;
+          .insert(&StateChange::Convert.key(), &next_conversion_outpoint.store())?;
       }
     }
 
@@ -483,26 +509,29 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(None);
     }
 
-    // Must contain mint output with p2wsh for OP_1 CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
-    // Mint output is the first such output
-    let Some(vout) = tx
-      .output
-      .iter()
-      .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone()))
-    else {
-      return Ok(None);
-    };
-
-    let Some(last_mint_outpoint) = self
+    let last_mint_outpoint = self
       .state_change_to_last_outpoint
       .get(&StateChange::Mint.key())?
       .map(|entry| OutPoint::load(*entry.value()))
-    else {
-      return Ok(None);
-    };
+      .unwrap();
 
-    // OutPoint of last mint must be spent (either by this tx or a previous one)
-    if last_mint_outpoint != OutPoint::null() {
+    if last_mint_outpoint == OutPoint::null() {
+      // If no saved outpoint, this transaction must create one with a mint script
+      let Some(vout) = tx
+          .output
+          .iter()
+          .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone())) else {
+        return Ok(None);
+      };
+      let mint_outpoint = OutPoint {
+        txid,
+        vout: vout as u32,
+      };
+      self
+        .state_change_to_last_outpoint
+        .insert(&StateChange::Mint.key(), &mint_outpoint.store())?;
+    } else if last_mint_outpoint.txid != txid {
+      // Saved outpoint must point to this transaction
       return Ok(None);
     }
 
@@ -557,50 +586,44 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     }
     self.burned = HashMap::new();
 
-    // Update last mint outpoint
-    let mint_outpoint = OutPoint {
-      txid,
-      vout: vout as u32,
-    };
-    self
-      .state_change_to_last_outpoint
-      .insert(&StateChange::Mint.key(), &mint_outpoint.store())?;
-
     self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
     self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
 
     Ok(Some((Lot(amount0), Lot(amount1))))
   }
 
-  fn get_conversion_outpoint(&mut self, tx: &Transaction, txid: Txid) -> Result<Option<OutPoint>> {
-    let Some(last_conversion_outpoint) = self
+  fn validate_rbf_and_conversion_outpoint(&mut self, tx: &Transaction, txid: Txid) -> Result<bool> {
+    // Every input must signal rbf
+    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
+      return Ok(false);
+    }
+
+    let last_conversion_outpoint = self
       .state_change_to_last_outpoint
       .get(&StateChange::Convert.key())?
       .map(|entry| OutPoint::load(*entry.value()))
-    else {
-      return Ok(None);
-    };
+      .unwrap();
 
-    // OutPoint of last conversion must be spent (either by this tx or a previous one)
-    if last_conversion_outpoint != OutPoint::null() {
-      return Ok(None);
+    if last_conversion_outpoint == OutPoint::null() {
+      // If no saved outpoint, this transaction must create one with a mint script
+      let Some(vout) = tx
+          .output
+          .iter()
+          .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone())) else {
+        return Ok(false);
+      };
+      let conversion_outpoint = OutPoint {
+        txid,
+        vout: vout as u32,
+      };
+
+      self
+        .state_change_to_last_outpoint
+        .insert(&StateChange::Convert.key(), &conversion_outpoint.store())?;
     }
-
-    // Must contain conversion output with p2wsh for OP_TRUE (anyone can spend)
-    // Conversion output is the first such output
-    let Some(vout) = tx
-      .output
-      .iter()
-      .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone()))
-    else {
-      return Ok(None);
-    };
-
-    let conversion_outpoint = OutPoint {
-      txid,
-      vout: vout as u32,
-    };
-    Ok(Some(conversion_outpoint))
+    
+    // Saved outpoint must point to this transaction
+    Ok(last_conversion_outpoint.txid == txid || last_conversion_outpoint == OutPoint::null())
   }
 
   fn convert_exact_input(
@@ -612,13 +635,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     input_amt: Lot,
     min_output_amt: Lot,
   ) -> Result<Option<Lot>> {
-    // Every input must signal rbf
-    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
-      return Ok(None);
-    }
-    let Some(conversion_outpoint) = self.get_conversion_outpoint(tx, txid)? else {
-      return Ok(None);
-    };
     let Some(entry_in) = self.id_to_entry.get(&input_id.store())? else {
       return Ok(None);
     };
@@ -645,6 +661,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     drop(entry_in);
     drop(entry_out);
 
+    if !self.validate_rbf_and_conversion_outpoint(tx, txid)? {
+      return Ok(None);
+    }
+
     rune_entry_in.supply -= input_amt.0;
     rune_entry_out.supply += output_amt;
 
@@ -654,10 +674,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     self
       .id_to_entry
       .insert(&output_id.store(), rune_entry_out.store())?;
-
-    self
-      .state_change_to_last_outpoint
-      .insert(&StateChange::Convert.key(), &conversion_outpoint.store())?;
 
     Ok(Some(Lot(output_amt)))
   }
@@ -671,13 +687,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     output_amt: Lot,
     max_input_amt: Lot,
   ) -> Result<Option<Lot>> {
-    // Every input must signal rbf
-    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
-      return Ok(None);
-    }
-    let Some(conversion_outpoint) = self.get_conversion_outpoint(tx, txid)? else {
-      return Ok(None);
-    };
     let Some(entry_in) = self.id_to_entry.get(&input_id.store())? else {
       return Ok(None);
     };
@@ -706,6 +715,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     drop(entry_in);
     drop(entry_out);
 
+    if !self.validate_rbf_and_conversion_outpoint(tx, txid)? {
+      return Ok(None);
+    }
+
     rune_entry_in.supply -= input_amt;
     rune_entry_out.supply += output_amt.0;
 
@@ -715,10 +728,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     self
       .id_to_entry
       .insert(&output_id.store(), rune_entry_out.store())?;
-
-    self
-      .state_change_to_last_outpoint
-      .insert(&StateChange::Convert.key(), &conversion_outpoint.store())?;
 
     Ok(Some(Lot(input_amt)))
   }
