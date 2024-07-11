@@ -3,7 +3,7 @@ use {
   crate::outgoing::Outgoing,
   api::SupplyState,
   base64::Engine,
-  bitcoin::{psbt::Psbt, Denomination},
+  bitcoin::{ecdsa, key::Secp256k1, psbt::Psbt, sighash::SighashCache, Denomination, PrivateKey},
   bitcoincore_rpc::{bitcoincore_rpc_json::GetMempoolEntryResult, Error::JsonRpc},
   num_integer::Roots,
   petgraph::{algo::toposort, Directed, Graph},
@@ -270,23 +270,9 @@ impl Convert {
       pointer: Some(0),
     };
 
-    // OP_TRUE (anyone can spend immediately)
-    let convert_script = ScriptBuf::from_bytes(Vec::from(&[0x51]));
-    let convert_script_pubkey = ScriptBuf::new_v0_p2wsh(&convert_script.wscript_hash());
-    let convert_witness = Witness::from_slice(&[convert_script.into_bytes()]);
-
-    let convert_input = TxIn {
-      previous_output: prev_outpoint
-        .clone()
-        .map_or(OutPoint::null(), |opa| opa.outpoint),
-      script_sig: ScriptBuf::new(),
-      sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
-      witness: Witness::new(),
-    };
-
     let mut fee_for_input = 0;
     if prev_outpoint != None {
-      let input_vb = convert_input.segwit_weight() / 4 + 1; // round up for segwit marker
+      let input_vb = 68; // size of p2wpkh input
       fee_for_input = fee_rate.fee(input_vb).to_sat();
     }
 
@@ -308,8 +294,8 @@ impl Convert {
           value: 0,
         },
         TxOut {
-          script_pubkey: convert_script_pubkey,
-          value: 330 + fee_for_input,
+          script_pubkey: Self::get_convert_script(),
+          value: 294 + fee_for_input,
         },
         TxOut {
           script_pubkey: wallet.get_change_address()?.script_pubkey(),
@@ -328,7 +314,7 @@ impl Convert {
       Some(Artifact::Runestone(runestone)),
     );
 
-    let mut unsigned_psbt: Psbt;
+    let unsigned_psbt: Psbt;
     if let Some(prev_outpoint) = prev_outpoint {
       // Deduct fee for input (used solely for fee calculation during funding)
       unsigned_transaction.output[1].value -= fee_for_input;
@@ -336,16 +322,39 @@ impl Convert {
       let outputs = unsigned_transaction.output.len();
       unsigned_transaction.output[outputs - 1].value += prev_outpoint.output.value;
       // Insert conversion input
+      let convert_input = TxIn {
+        previous_output: prev_outpoint.outpoint,
+        script_sig: ScriptBuf::new(),
+        sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
+        witness: Witness::new(),
+      };
       unsigned_transaction.input.insert(0, convert_input);
-      // Add data for conversion input necessary to finalize psbt
-      unsigned_psbt = Psbt::from_unsigned_tx(unsigned_transaction.clone())?;
-      unsigned_psbt.inputs[0].final_script_witness = Some(convert_witness);
-      unsigned_psbt.inputs[0].witness_utxo = Some(prev_outpoint.output);
+      unsigned_psbt = Self::get_psbt_with_signed_conversion_input(
+        unsigned_transaction.clone(),
+        prev_outpoint.output,
+      )?;
     } else {
       unsigned_psbt = Psbt::from_unsigned_tx(unsigned_transaction.clone())?;
     }
 
     Ok((unsigned_transaction, unsigned_psbt))
+  }
+
+  fn get_psbt_with_signed_conversion_input(tx: Transaction, input_utxo: TxOut) -> Result<Psbt> {
+    let secp = Secp256k1::new();
+    let privkey = Self::get_convert_script_private_key();
+    let pubkey = privkey.public_key(&secp);
+    let mut sighash_cache = SighashCache::new(tx.clone());
+    let mut psbt = Psbt::from_unsigned_tx(tx.clone())?;
+    psbt.inputs[0].witness_utxo = Some(input_utxo);
+    let (msg, sighash_ty) = psbt.sighash_ecdsa(0, &mut sighash_cache)?;
+    let sig = ecdsa::Signature {
+      sig: secp.sign_ecdsa(&msg, &privkey.inner),
+      hash_ty: sighash_ty,
+    };
+    psbt.inputs[0].partial_sigs.insert(pubkey, sig);
+
+    Ok(psbt)
   }
 
   fn create_best_unsigned_convert_runes_transaction(
@@ -495,15 +504,14 @@ impl Convert {
     };
 
     // modify transaction using `best_outpoint`
-    let convert_script = ScriptBuf::from_bytes(Vec::from(&[0x51]));
-    let convert_witness = Witness::from_slice(&[convert_script.into_bytes()]);
     let outputs = unsigned_transaction.output.len();
     unsigned_transaction.output[outputs - 1].value -= prev_outpoint.output.value;
     unsigned_transaction.output[outputs - 1].value += best_outpoint.output.value;
     unsigned_transaction.input[0].previous_output = best_outpoint.outpoint;
-    unsigned_psbt = Psbt::from_unsigned_tx(unsigned_transaction.clone())?;
-    unsigned_psbt.inputs[0].final_script_witness = Some(convert_witness);
-    unsigned_psbt.inputs[0].witness_utxo = Some(prev_outpoint.output);
+    unsigned_psbt = Self::get_psbt_with_signed_conversion_input(
+      unsigned_transaction.clone(),
+      prev_outpoint.output,
+    )?;
 
     Ok((unsigned_transaction, unsigned_psbt, fee))
   }
@@ -603,13 +611,19 @@ impl Convert {
     }
 
     // Recursively lookup chain of conversion transactions
-    Self::find_conversion_chain(wallet, prev_outpoint, potential_spenders)
+    Self::find_conversion_chain(
+      wallet,
+      prev_outpoint,
+      potential_spenders,
+      Self::get_convert_script(),
+    )
   }
 
   fn find_conversion_chain(
     wallet: &Wallet,
     outpoint: OutPointTxOut,
     potential_spenders: Vec<Txid>,
+    convert_script_pubkey: ScriptBuf,
   ) -> Result<(
     Vec<Transaction>,
     Vec<GetMempoolEntryResult>,
@@ -632,10 +646,6 @@ impl Convert {
       return Ok((vec![], vec![], vec![outpoint]));
     };
 
-    // OP_TRUE (anyone can spend immediately)
-    let convert_script = ScriptBuf::from_bytes(Vec::from(&[0x51]));
-    let convert_script_pubkey = ScriptBuf::new_v0_p2wsh(&convert_script.wscript_hash());
-
     let next_outpoint = spending_tx
       .output
       .iter()
@@ -654,8 +664,9 @@ impl Convert {
       .get_mempool_entry(&spending_tx.txid())?;
 
     if let Some(next_outpoint) = next_outpoint {
+      let next_spent_by = spending_entry.clone().spent_by;
       let (txs, entries, outpoints) =
-        Self::find_conversion_chain(wallet, next_outpoint, spending_entry.clone().spent_by)?;
+        Self::find_conversion_chain(wallet, next_outpoint, next_spent_by, convert_script_pubkey)?;
       return Ok((
         vec![spending_tx].into_iter().chain(txs).collect(),
         vec![spending_entry].into_iter().chain(entries).collect(),
@@ -770,5 +781,16 @@ impl Convert {
     }
 
     return input_supply - (invariant - new_output_sq).sqrt();
+  }
+
+  fn get_convert_script_private_key() -> PrivateKey {
+    PrivateKey::from_slice(&[1; 32], Network::Bitcoin).unwrap()
+  }
+
+  fn get_convert_script() -> ScriptBuf {
+    let secp = Secp256k1::new();
+    let pubkey = Self::get_convert_script_private_key().public_key(&secp);
+    let wpubkey_hash = pubkey.wpubkey_hash().unwrap();
+    ScriptBuf::new_v0_p2wpkh(&wpubkey_hash)
   }
 }

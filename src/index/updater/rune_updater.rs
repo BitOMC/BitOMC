@@ -1,4 +1,4 @@
-use {super::*, num_integer::Roots};
+use {super::*, bitcoin::key::Secp256k1, bitcoin::PrivateKey, num_integer::Roots};
 
 pub(super) struct RuneUpdater<'a, 'tx> {
   pub(super) burned: HashMap<RuneId, Lot>,
@@ -506,9 +506,12 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   fn is_convert_script(&mut self, script: ScriptBuf) -> bool {
-    // Convert script is p2wsh for OP_TRUE (anyone can spend immediately)
-    let convert_script = ScriptBuf::from_bytes(Vec::from(&[0x51]));
-    script == ScriptBuf::new_v0_p2wsh(&convert_script.wscript_hash())
+    // Convert script is p2wpkh for address with private key = 0101...0101
+    let secp = Secp256k1::new();
+    let private_key = PrivateKey::from_slice(&[1; 32], Network::Bitcoin).unwrap();
+    let pub_key = private_key.public_key(&secp);
+    let wpubkey_hash = pub_key.wpubkey_hash().unwrap();
+    script == ScriptBuf::new_v0_p2wpkh(&wpubkey_hash)
   }
 
   fn mint(&mut self, tx: &Transaction, txid: Txid) -> Result<Option<(Lot, Lot)>> {

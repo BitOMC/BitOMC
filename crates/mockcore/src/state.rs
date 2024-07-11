@@ -1,7 +1,7 @@
 use {
   super::*,
   bitcoin::{
-    key::{KeyPair, Secp256k1, XOnlyPublicKey},
+    key::{KeyPair, PrivateKey, Secp256k1, XOnlyPublicKey},
     secp256k1::rand,
     WPubkeyHash,
   },
@@ -198,9 +198,13 @@ impl State {
     // OP_TRUE CHECKSEQUENCEVERIFY (anyone can spend after 1 block)
     let mint_script = ScriptBuf::from_bytes(Vec::from(&[0x51, 0xb2]));
     let mint_script_pubkey = ScriptBuf::new_v0_p2wsh(&mint_script.clone().wscript_hash());
-    // OP_TRUE (anyone can spend immediately)
-    let convert_script = ScriptBuf::from_bytes(Vec::from(&[0x51]));
-    let convert_script_pubkey = ScriptBuf::new_v0_p2wsh(&convert_script.clone().wscript_hash());
+
+    // Anyone-can-spend p2wpkh
+    let secp = Secp256k1::new();
+    let private_key = PrivateKey::from_slice(&[1; 32], Network::Bitcoin).unwrap();
+    let pub_key = private_key.public_key(&secp);
+    let wpubkey_hash = pub_key.wpubkey_hash().unwrap();
+    let convert_script_pubkey = ScriptBuf::new_v0_p2wpkh(&wpubkey_hash);
 
     let mut total_value = 0;
     let mut input = Vec::new();
@@ -219,7 +223,7 @@ impl State {
           previous_output: OutPoint::new(tx.txid(), *vout as u32),
           script_sig: ScriptBuf::new(),
           sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
-          witness: Witness::from_slice(&[convert_script.clone().into_bytes()]),
+          witness: witness.clone(),
         });
       } else {
         input.push(TxIn {
