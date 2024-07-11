@@ -7,6 +7,7 @@ pub(super) struct RuneUpdater<'a, 'tx> {
   pub(super) id_to_entry: &'a mut Table<'tx, RuneIdValue, RuneEntryValue>,
   pub(super) state_change_to_last_outpoint: &'a mut Table<'tx, u8, &'static OutPointValue>,
   pub(super) outpoint_to_balances: &'a mut Table<'tx, &'static OutPointValue, &'static [u8]>,
+  pub(super) require_conversion_outpoint: bool,
 }
 
 impl<'a, 'tx> RuneUpdater<'a, 'tx> {
@@ -441,6 +442,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(());
     }
 
+    if tx.is_coin_base() {
+      return Ok(());
+    }
+
     // Skip if outpoint of last mint is not an input to this transaction
     for input in &tx.input {
       if input.previous_output == last_mint_outpoint {
@@ -448,7 +453,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         if let Some(vout) = tx
           .output
           .iter()
-          .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone())) {
+          .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone()))
+        {
           next_mint_outpoint = OutPoint {
             txid,
             vout: vout as u32,
@@ -467,7 +473,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         if let Some(vout) = tx
           .output
           .iter()
-          .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone())) {
+          .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone()))
+        {
           next_conversion_outpoint = OutPoint {
             txid: tx.txid(),
             vout: vout as u32,
@@ -476,9 +483,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           next_conversion_outpoint = OutPoint::null();
         };
 
-        self
-          .state_change_to_last_outpoint
-          .insert(&StateChange::Convert.key(), &next_conversion_outpoint.store())?;
+        self.state_change_to_last_outpoint.insert(
+          &StateChange::Convert.key(),
+          &next_conversion_outpoint.store(),
+        )?;
       }
     }
 
@@ -504,8 +512,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   fn mint(&mut self, tx: &Transaction, txid: Txid) -> Result<Option<(Lot, Lot)>> {
-    // Every input must signal rbf
-    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
+    // Transaction must signal RBF
+    if !tx.is_explicitly_rbf() {
       return Ok(None);
     }
 
@@ -518,9 +526,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     if last_mint_outpoint == OutPoint::null() {
       // If no saved outpoint, this transaction must create one with a mint script
       let Some(vout) = tx
-          .output
-          .iter()
-          .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone())) else {
+        .output
+        .iter()
+        .position(|tx_out| self.is_mint_script(tx_out.script_pubkey.clone()))
+      else {
         return Ok(None);
       };
       let mint_outpoint = OutPoint {
@@ -593,9 +602,13 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   fn validate_rbf_and_conversion_outpoint(&mut self, tx: &Transaction, txid: Txid) -> Result<bool> {
-    // Every input must signal rbf
-    if tx.input.iter().any(|vin| !vin.sequence.is_rbf()) {
+    // Transaction must signal RBF
+    if !tx.is_explicitly_rbf() {
       return Ok(false);
+    }
+
+    if !self.require_conversion_outpoint {
+      return Ok(true);
     }
 
     let last_conversion_outpoint = self
@@ -607,9 +620,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     if last_conversion_outpoint == OutPoint::null() {
       // If no saved outpoint, this transaction must create one with a mint script
       let Some(vout) = tx
-          .output
-          .iter()
-          .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone())) else {
+        .output
+        .iter()
+        .position(|tx_out| self.is_convert_script(tx_out.script_pubkey.clone()))
+      else {
         return Ok(false);
       };
       let conversion_outpoint = OutPoint {
@@ -620,8 +634,11 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       self
         .state_change_to_last_outpoint
         .insert(&StateChange::Convert.key(), &conversion_outpoint.store())?;
+
+      // Allow unconnected conversions once conversion chain has been broken (only for 1 block)
+      self.require_conversion_outpoint = false;
     }
-    
+
     // Saved outpoint must point to this transaction
     Ok(last_conversion_outpoint.txid == txid || last_conversion_outpoint == OutPoint::null())
   }

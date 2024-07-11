@@ -636,6 +636,7 @@ impl<'index> Updater<'index> {
         id_to_entry: &mut rune_id_to_rune_entry,
         outpoint_to_balances: &mut outpoint_to_rune_balances,
         state_change_to_last_outpoint: &mut state_change_to_last_outpoint,
+        require_conversion_outpoint: true,
       };
 
       for (tx, txid) in block.txdata.iter() {
@@ -845,6 +846,7 @@ impl<'index> Updater<'index> {
       id_to_entry: &mut id_to_entry,
       outpoint_to_balances: &mut outpoint_to_balances,
       state_change_to_last_outpoint: &mut state_change_to_last_outpoint,
+      require_conversion_outpoint: true,
     };
 
     let mut states = Vec::new();
