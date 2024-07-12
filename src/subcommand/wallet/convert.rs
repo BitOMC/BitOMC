@@ -461,7 +461,7 @@ impl Convert {
       // Check if adding this transaction would exceed package limit
       let mut exceeds_package_limit = false;
       for entry in &entries {
-        if entry.descendant_count == DESCENDANT_COUNT_LIMIT
+        if entry.descendant_count >= DESCENDANT_COUNT_LIMIT
           || entry.descendant_size + unsigned_transaction.vsize() as u64 > DESCENDANT_SIZE_LIMIT
         {
           exceeds_package_limit = true;
@@ -470,7 +470,7 @@ impl Convert {
       }
 
       let last_entry = entries[entries.len() - 1].clone();
-      if last_entry.ancestor_count == ANCESTOR_COUNT_LIMIT
+      if last_entry.ancestor_count >= ANCESTOR_COUNT_LIMIT
         || last_entry.ancestor_size + unsigned_transaction.vsize() as u64 > ANCESTOR_SIZE_LIMIT
       {
         exceeds_package_limit = true;
