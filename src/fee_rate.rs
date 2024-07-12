@@ -29,6 +29,10 @@ impl FeeRate {
     Amount::from_sat((self.0 * vsize as f64).round() as u64)
   }
 
+  pub fn vsize(&self, fee: Amount) -> u64 {
+    (fee.to_sat() as f64 / self.0).ceil() as u64
+  }
+
   pub(crate) fn n(&self) -> f64 {
     self.0
   }
