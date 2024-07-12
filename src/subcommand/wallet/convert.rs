@@ -304,26 +304,32 @@ impl Convert {
     Ok(unfunded_transaction)
   }
 
-  fn fund_convert_runes_transaction(
+  fn fund_convert_transaction(
     wallet: &Wallet,
     mut unfunded_transaction: Transaction,
     fee_rate: FeeRate,
     prev_outpoint: Option<OutPointTxOut>,
   ) -> Result<(Transaction, Psbt)> {
-    let convert_input_vb = 68; // max size of p2wpkh input
+    let mut convert_input_vb = 68; // max size of p2wpkh input
+    if unfunded_transaction.input.len() == 0 {
+      convert_input_vb -= 27; // tx requires 27 fewer bytes if no other inputs
+    }
     if prev_outpoint != None {
-      unfunded_transaction.output[1].value += fee_rate.fee(convert_input_vb).to_sat();
+      // Add fee for conversion input (used solely for fee calculation during funding)
+      assert!(unfunded_transaction.output.len() > 0);
+      unfunded_transaction.output[0].value += fee_rate.fee(convert_input_vb).to_sat();
     }
 
     let unsigned_transaction =
       fund_raw_transaction(wallet.bitcoin_client(), fee_rate, &unfunded_transaction)?;
 
-    let mut unsigned_transaction: Transaction = consensus::encode::deserialize(&unsigned_transaction)?;
+    let mut unsigned_transaction: Transaction =
+      consensus::encode::deserialize(&unsigned_transaction)?;
 
     let unsigned_psbt: Psbt;
     if let Some(prev_outpoint) = prev_outpoint {
-      // Deduct fee for input (used solely for fee calculation during funding)
-      unsigned_transaction.output[1].value -= fee_rate.fee(convert_input_vb).to_sat();
+      // Deduct input fee from first output
+      unsigned_transaction.output[0].value -= fee_rate.fee(convert_input_vb).to_sat();
       // Add conversion input amount to last output (change output or runic if no change)
       let outputs = unsigned_transaction.output.len();
       unsigned_transaction.output[outputs - 1].value += prev_outpoint.output.value;
@@ -389,20 +395,14 @@ impl Convert {
     }
 
     let unfunded_transaction =
-      Self::create_unfunded_convert_runes_transaction(
-        &wallet,
-        spaced_rune,
-        decimal,
-        postage,
-      )?;
+      Self::create_unfunded_convert_runes_transaction(&wallet, spaced_rune, decimal, postage)?;
 
-    let (mut unsigned_transaction, mut unsigned_psbt) =
-      Self::fund_convert_runes_transaction(
-        &wallet,
-        unfunded_transaction.clone(),
-        fee_rate,
-        prev_outpoint.clone(),
-      )?;
+    let (mut unsigned_transaction, mut unsigned_psbt) = Self::fund_convert_transaction(
+      &wallet,
+      unfunded_transaction.clone(),
+      fee_rate,
+      prev_outpoint.clone(),
+    )?;
 
     let fee = Self::get_fee(wallet, unsigned_transaction.clone(), prev_outpoint.clone());
 
@@ -412,14 +412,9 @@ impl Convert {
       return Ok((unsigned_transaction, unsigned_psbt, fee));
     };
 
-    let raw_mempool = wallet.bitcoin_client().get_raw_mempool_verbose()?;
     let (txs, entries, outpoints) = Self::find_current_conversion_chain(
       wallet,
-      raw_mempool,
-      unfunded_transaction.clone(),
-      unsigned_psbt.clone(),
       prev_outpoint.clone(),
-      fee,
     )?;
 
     if txs.len() == 0 {
@@ -514,50 +509,74 @@ impl Convert {
     Ok((unsigned_transaction, unsigned_psbt, fee))
   }
 
-  // uses unsigned tx based on last outpoint to construct chain of conversions in mempool
   fn find_current_conversion_chain(
     wallet: &Wallet,
-    raw_mempool: HashMap<Txid, GetMempoolEntryResult>,
-    unfunded_transaction: Transaction,
-    unsigned_psbt: Psbt,
     prev_outpoint: OutPointTxOut,
-    replacement_fee: Amount,
   ) -> Result<(
     Vec<Transaction>,
     Vec<GetMempoolEntryResult>,
     Vec<OutPointTxOut>,
   )> {
-    let psbt = wallet
-      .bitcoin_client()
-      .wallet_process_psbt(
-        &base64::engine::general_purpose::STANDARD.encode(unsigned_psbt.serialize()),
-        Some(true),
-        None,
-        None,
-      )?
-      .psbt;
+    let raw_mempool = wallet.bitcoin_client().get_raw_mempool_verbose()?;
+    let potential_spenders = Self::find_potential_spenders(
+      wallet,
+      prev_outpoint.clone(),
+      raw_mempool,
+      FeeRate::try_from(1.0)?,
+    )?;
+
+    Self::find_conversion_chain(
+      wallet,
+      prev_outpoint.clone(),
+      potential_spenders,
+      Self::get_convert_script(),
+    )
+  }
+
+  // uses unsigned tx based on last outpoint to construct chain of conversions in mempool
+  fn find_potential_spenders(
+    wallet: &Wallet,
+    prev_outpoint: OutPointTxOut,
+    raw_mempool: HashMap<Txid, GetMempoolEntryResult>,
+    test_fee_rate: FeeRate,
+  ) -> Result<Vec<Txid>> {
+    let unfunded_test_transaction = Transaction {
+      version: 2,
+      lock_time: LockTime::ZERO,
+      input: Vec::new(),
+      output: vec![TxOut {
+        script_pubkey: Self::get_convert_script(),
+        value: 294,
+      }],
+    };
+
+    let (funded_tx, _) = Self::fund_convert_transaction(
+      &wallet,
+      unfunded_test_transaction,
+      test_fee_rate,
+      Some(prev_outpoint.clone()),
+    )?;
 
     let signed_tx = wallet
       .bitcoin_client()
-      .finalize_psbt(&psbt, None)?
-      .hex
-      .ok_or_else(|| anyhow!("unable to sign transaction"))?;
-
+      .sign_raw_transaction_with_wallet(&funded_tx, None, None)?
+      .hex;
+    
     // Get conflicting txid
     let test_accept = wallet.bitcoin_client().test_mempool_accept(&[&signed_tx])?[0].clone();
     let Some(reject_reason) = test_accept.reject_reason else {
-      return Ok((vec![], vec![], vec![]));
+      return Ok(vec![]);
     };
     if reject_reason != "insufficient fee" {
-      return Ok((vec![], vec![], vec![]));
+      return Ok(vec![]);
     }
     let Err(JsonRpc(error)) = wallet.bitcoin_client().send_raw_transaction(&signed_tx) else {
-      return Ok((vec![], vec![], vec![]));
+      return Ok(vec![]);
     };
     let error_str = error.to_string();
 
     if !error_str.contains("rejecting replacement") {
-      return Ok((vec![], vec![], vec![]));
+      return Ok(vec![]);
     }
 
     let mut potential_spenders = Vec::new();
@@ -575,29 +594,19 @@ impl Convert {
                 && entry.fees.modified.to_sat() * 1000 / entry.vsize == btc_per_kvb.to_sat()
             })
             .collect();
-          
-          if filtered_mempool.keys().len() > 5 {
-            // Re-run transaction with feerate equal to old feerate + 100 sat per kvb
-            // This will be rejected because the fee difference is insufficient for relay,
-            // but this allows us to filter `potential_spenders` by the original's total fee.
-            let (funded_transaction, funded_psbt) =
-              Self::fund_convert_runes_transaction(
-                &wallet,
-                unfunded_transaction.clone(),
-                FeeRate::try_from((btc_per_kvb.to_sat() as f64 + 100.0) / 1000.0)?,
-                Some(prev_outpoint.clone()),
-              )?;
 
-            return Self::find_current_conversion_chain(
+          if filtered_mempool.keys().len() > 0 {
+            // Re-run test transaction with feerate equal to old feerate + 100 sat per kvb
+            // This will be rejected because the fee difference is insufficient for relay,
+            // but this will filter `potential_spenders` by the original's total fee.
+            return Self::find_potential_spenders(
               wallet,
-              filtered_mempool,
-              unfunded_transaction,
-              funded_psbt,
               prev_outpoint.clone(),
-              Self::get_fee(wallet, funded_transaction, Some(prev_outpoint.clone())),
+              filtered_mempool,
+              FeeRate::try_from((btc_per_kvb.to_sat() as f64 + 100.0) / 1000.0)?,
             );
           } else {
-            potential_spenders = filtered_mempool.into_iter().map(|(txid, _ )| txid).collect();
+            potential_spenders = filtered_mempool.into_iter().map(|(txid, _)| txid).collect();
           }
         }
       }
@@ -619,25 +628,18 @@ impl Convert {
       let re = Regex::new(r" (\d+\.\d+) <").unwrap();
       if let Some(caps) = re.captures(&error_str) {
         if let Some(fee_str) = caps.get(1) {
+          let fee = Self::get_fee(wallet, funded_tx.clone(), Some(prev_outpoint.clone()));
           let fee_difference = Amount::from_str_in(fee_str.as_str(), Denomination::Bitcoin)?;
           potential_spenders = raw_mempool
             .into_iter()
-            .filter(|(_, entry)| entry.fees.descendant + fee_difference == replacement_fee)
+            .filter(|(_, entry)| entry.fees.descendant + fee_difference == fee)
             .map(|(txid, _)| txid)
             .collect();
         }
       }
-    } else {
-      return Ok((vec![], vec![], vec![]));
     }
 
-    // Recursively lookup chain of conversion transactions
-    Self::find_conversion_chain(
-      wallet,
-      prev_outpoint,
-      potential_spenders,
-      Self::get_convert_script(),
-    )
+    Ok(potential_spenders)
   }
 
   fn find_conversion_chain(
@@ -817,7 +819,9 @@ impl Convert {
 
   fn get_fee(wallet: &Wallet, tx: Transaction, prev_outpoint: Option<OutPointTxOut>) -> Amount {
     let mut fee = 0;
-    let previous_outpoint = prev_outpoint.clone().map_or(OutPoint::null(), |prev| prev.outpoint);
+    let previous_outpoint = prev_outpoint
+      .clone()
+      .map_or(OutPoint::null(), |prev| prev.outpoint);
     let unspent_outputs = wallet.utxos();
     for txin in tx.input.iter() {
       if let Some(txout) = unspent_outputs.get(&txin.previous_output) {
