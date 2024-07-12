@@ -98,7 +98,7 @@ impl Convert {
       txid,
       psbt,
       outgoing: self.outgoing,
-      fee,
+      fee: fee.to_sat(),
     })))
   }
 
@@ -369,7 +369,7 @@ impl Convert {
     decimal: Decimal,
     postage: Amount,
     fee_rate: FeeRate,
-  ) -> Result<(Transaction, Psbt, u64)> {
+  ) -> Result<(Transaction, Psbt, Amount)> {
     let (_, _, input_id, _, _, _, input_amount, min_output_amount, initial_state) =
       Self::get_conversion_parameters(wallet, spaced_rune, decimal)?;
 
@@ -404,24 +404,7 @@ impl Convert {
         prev_outpoint.clone(),
       )?;
 
-    let mut fee = 0;
-    let previous_outpoint = prev_outpoint
-      .clone()
-      .map_or(OutPoint::null(), |prev| prev.outpoint);
-    let unspent_outputs = wallet.utxos();
-    for txin in unsigned_transaction.input.iter() {
-      if let Some(txout) = unspent_outputs.get(&txin.previous_output) {
-        fee += txout.value;
-      } else if txin.previous_output == previous_outpoint {
-        fee += prev_outpoint.clone().unwrap().output.value;
-      } else {
-        panic!("input {} not found in utxos", txin.previous_output);
-      }
-    }
-
-    for txout in unsigned_transaction.output.iter() {
-      fee = fee.checked_sub(txout.value).unwrap();
-    }
+    let fee = Self::get_fee(wallet, unsigned_transaction.clone(), prev_outpoint.clone());
 
     let Some(prev_outpoint) = prev_outpoint else {
       // No conversion outpoint exists
@@ -436,7 +419,7 @@ impl Convert {
       unfunded_transaction.clone(),
       unsigned_psbt.clone(),
       prev_outpoint.clone(),
-      Amount::from_sat(fee),
+      fee,
     )?;
 
     if txs.len() == 0 {
@@ -508,7 +491,7 @@ impl Convert {
       input_id,
       input_amount,
       min_output_amount,
-      Amount::from_sat(fee),
+      fee,
       unsigned_transaction.vsize(),
     )?;
 
@@ -605,24 +588,13 @@ impl Convert {
                 Some(prev_outpoint.clone()),
               )?;
 
-            let mut fee = prev_outpoint.output.value;
-            let unspent_outputs = wallet.utxos();
-            for txin in funded_transaction.input.iter() {
-              if let Some(txout) = unspent_outputs.get(&txin.previous_output) {
-                fee += txout.value;
-              }
-            }
-            for txout in funded_transaction.output.iter() {
-              fee = fee.checked_sub(txout.value).unwrap();
-            }
-
             return Self::find_current_conversion_chain(
               wallet,
               filtered_mempool,
               unfunded_transaction,
               funded_psbt,
-              prev_outpoint,
-              Amount::from_sat(fee),
+              prev_outpoint.clone(),
+              Self::get_fee(wallet, funded_transaction, Some(prev_outpoint.clone())),
             );
           } else {
             potential_spenders = filtered_mempool.into_iter().map(|(txid, _ )| txid).collect();
@@ -841,5 +813,26 @@ impl Convert {
     let pubkey = Self::get_convert_script_private_key().public_key(&secp);
     let wpubkey_hash = pubkey.wpubkey_hash().unwrap();
     ScriptBuf::new_v0_p2wpkh(&wpubkey_hash)
+  }
+
+  fn get_fee(wallet: &Wallet, tx: Transaction, prev_outpoint: Option<OutPointTxOut>) -> Amount {
+    let mut fee = 0;
+    let previous_outpoint = prev_outpoint.clone().map_or(OutPoint::null(), |prev| prev.outpoint);
+    let unspent_outputs = wallet.utxos();
+    for txin in tx.input.iter() {
+      if let Some(txout) = unspent_outputs.get(&txin.previous_output) {
+        fee += txout.value;
+      } else if txin.previous_output == previous_outpoint {
+        fee += prev_outpoint.clone().unwrap().output.value;
+      } else {
+        panic!("input {} not found in utxos", txin.previous_output);
+      }
+    }
+
+    for txout in tx.output.iter() {
+      fee = fee.checked_sub(txout.value).unwrap();
+    }
+
+    Amount::from_sat(fee)
   }
 }
