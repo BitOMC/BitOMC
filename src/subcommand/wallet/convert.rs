@@ -160,14 +160,12 @@ impl Convert {
     ))
   }
 
-  fn create_unsigned_convert_runes_transaction(
+  fn create_unfunded_convert_runes_transaction(
     wallet: &Wallet,
     spaced_rune: SpacedRune,
     decimal: Decimal,
     postage: Amount,
-    fee_rate: FeeRate,
-    prev_outpoint: Option<OutPointTxOut>,
-  ) -> Result<(Transaction, Psbt)> {
+  ) -> Result<Transaction> {
     let (input_rune, output_rune, id_in, id_out, rune_entry_in, _, amount, min_output_amt, _) =
       Self::get_conversion_parameters(wallet, spaced_rune, decimal)?;
 
@@ -270,12 +268,6 @@ impl Convert {
       pointer: Some(0),
     };
 
-    let mut fee_for_input = 0;
-    if prev_outpoint != None {
-      let input_vb = 68; // size of p2wpkh input
-      fee_for_input = fee_rate.fee(input_vb).to_sat();
-    }
-
     let unfunded_transaction = Transaction {
       version: 2,
       lock_time: LockTime::ZERO,
@@ -295,7 +287,7 @@ impl Convert {
         },
         TxOut {
           script_pubkey: Self::get_convert_script(),
-          value: 294 + fee_for_input,
+          value: 294,
         },
         TxOut {
           script_pubkey: wallet.get_change_address()?.script_pubkey(),
@@ -304,20 +296,34 @@ impl Convert {
       ],
     };
 
+    assert_eq!(
+      Runestone::decipher(&unfunded_transaction),
+      Some(Artifact::Runestone(runestone)),
+    );
+
+    Ok(unfunded_transaction)
+  }
+
+  fn fund_convert_runes_transaction(
+    wallet: &Wallet,
+    mut unfunded_transaction: Transaction,
+    fee_rate: FeeRate,
+    prev_outpoint: Option<OutPointTxOut>,
+  ) -> Result<(Transaction, Psbt)> {
+    let convert_input_vb = 68; // max size of p2wpkh input
+    if prev_outpoint != None {
+      unfunded_transaction.output[1].value += fee_rate.fee(convert_input_vb).to_sat();
+    }
+
     let unsigned_transaction =
       fund_raw_transaction(wallet.bitcoin_client(), fee_rate, &unfunded_transaction)?;
 
-    let mut unsigned_transaction = consensus::encode::deserialize(&unsigned_transaction)?;
-
-    assert_eq!(
-      Runestone::decipher(&unsigned_transaction),
-      Some(Artifact::Runestone(runestone)),
-    );
+    let mut unsigned_transaction: Transaction = consensus::encode::deserialize(&unsigned_transaction)?;
 
     let unsigned_psbt: Psbt;
     if let Some(prev_outpoint) = prev_outpoint {
       // Deduct fee for input (used solely for fee calculation during funding)
-      unsigned_transaction.output[1].value -= fee_for_input;
+      unsigned_transaction.output[1].value -= fee_rate.fee(convert_input_vb).to_sat();
       // Add conversion input amount to last output (change output or runic if no change)
       let outputs = unsigned_transaction.output.len();
       unsigned_transaction.output[outputs - 1].value += prev_outpoint.output.value;
@@ -329,7 +335,7 @@ impl Convert {
         witness: Witness::new(),
       };
       unsigned_transaction.input.insert(0, convert_input);
-      unsigned_psbt = Self::get_psbt_with_signed_conversion_input(
+      unsigned_psbt = Self::create_psbt_with_signed_conversion_input(
         unsigned_transaction.clone(),
         prev_outpoint.output,
       )?;
@@ -340,7 +346,7 @@ impl Convert {
     Ok((unsigned_transaction, unsigned_psbt))
   }
 
-  fn get_psbt_with_signed_conversion_input(tx: Transaction, input_utxo: TxOut) -> Result<Psbt> {
+  fn create_psbt_with_signed_conversion_input(tx: Transaction, input_utxo: TxOut) -> Result<Psbt> {
     let secp = Secp256k1::new();
     let privkey = Self::get_convert_script_private_key();
     let pubkey = privkey.public_key(&secp);
@@ -382,12 +388,18 @@ impl Convert {
       });
     }
 
-    let (mut unsigned_transaction, mut unsigned_psbt) =
-      Self::create_unsigned_convert_runes_transaction(
+    let unfunded_transaction =
+      Self::create_unfunded_convert_runes_transaction(
         &wallet,
         spaced_rune,
         decimal,
         postage,
+      )?;
+
+    let (mut unsigned_transaction, mut unsigned_psbt) =
+      Self::fund_convert_runes_transaction(
+        &wallet,
+        unfunded_transaction.clone(),
         fee_rate,
         prev_outpoint.clone(),
       )?;
@@ -417,10 +429,13 @@ impl Convert {
       return Ok((unsigned_transaction, unsigned_psbt, fee));
     };
 
+    let raw_mempool = wallet.bitcoin_client().get_raw_mempool_verbose()?;
     let (txs, entries, outpoints) = Self::find_current_conversion_chain(
       wallet,
-      prev_outpoint.clone(),
+      raw_mempool,
+      unfunded_transaction.clone(),
       unsigned_psbt.clone(),
+      prev_outpoint.clone(),
       Amount::from_sat(fee),
     )?;
 
@@ -508,7 +523,7 @@ impl Convert {
     unsigned_transaction.output[outputs - 1].value -= prev_outpoint.output.value;
     unsigned_transaction.output[outputs - 1].value += best_outpoint.output.value;
     unsigned_transaction.input[0].previous_output = best_outpoint.outpoint;
-    unsigned_psbt = Self::get_psbt_with_signed_conversion_input(
+    unsigned_psbt = Self::create_psbt_with_signed_conversion_input(
       unsigned_transaction.clone(),
       prev_outpoint.output,
     )?;
@@ -519,8 +534,10 @@ impl Convert {
   // uses unsigned tx based on last outpoint to construct chain of conversions in mempool
   fn find_current_conversion_chain(
     wallet: &Wallet,
-    prev_outpoint: OutPointTxOut,
+    raw_mempool: HashMap<Txid, GetMempoolEntryResult>,
+    unfunded_transaction: Transaction,
     unsigned_psbt: Psbt,
+    prev_outpoint: OutPointTxOut,
     replacement_fee: Amount,
   ) -> Result<(
     Vec<Transaction>,
@@ -560,8 +577,6 @@ impl Convert {
       return Ok((vec![], vec![], vec![]));
     }
 
-    let raw_mempool = wallet.bitcoin_client().get_raw_mempool_verbose()?;
-
     let mut potential_spenders = Vec::new();
     if error_str.contains("old feerate") {
       // check mempool for entries with this fee rate
@@ -569,15 +584,49 @@ impl Convert {
       if let Some(caps) = re.captures(&error_str) {
         if let Some(fee_rate_str) = caps.get(1) {
           let btc_per_kvb = Amount::from_str_in(fee_rate_str.as_str(), Denomination::Bitcoin)?;
-          potential_spenders = raw_mempool
+          let filtered_mempool: HashMap<Txid, GetMempoolEntryResult> = raw_mempool
             .into_iter()
             .filter(|(_, entry)| {
               entry.depends.is_empty()
                 && entry.vsize > 0
                 && entry.fees.modified.to_sat() * 1000 / entry.vsize == btc_per_kvb.to_sat()
             })
-            .map(|(txid, _)| txid)
             .collect();
+          
+          if filtered_mempool.keys().len() > 5 {
+            // Re-run transaction with feerate equal to old feerate + 100 sat per kvb
+            // This will be rejected because the fee difference is insufficient for relay,
+            // but this allows us to filter `potential_spenders` by the original's total fee.
+            let (funded_transaction, funded_psbt) =
+              Self::fund_convert_runes_transaction(
+                &wallet,
+                unfunded_transaction.clone(),
+                FeeRate::try_from((btc_per_kvb.to_sat() as f64 + 100.0) / 1000.0)?,
+                Some(prev_outpoint.clone()),
+              )?;
+
+            let mut fee = prev_outpoint.output.value;
+            let unspent_outputs = wallet.utxos();
+            for txin in funded_transaction.input.iter() {
+              if let Some(txout) = unspent_outputs.get(&txin.previous_output) {
+                fee += txout.value;
+              }
+            }
+            for txout in funded_transaction.output.iter() {
+              fee = fee.checked_sub(txout.value).unwrap();
+            }
+
+            return Self::find_current_conversion_chain(
+              wallet,
+              filtered_mempool,
+              unfunded_transaction,
+              funded_psbt,
+              prev_outpoint,
+              Amount::from_sat(fee),
+            );
+          } else {
+            potential_spenders = filtered_mempool.into_iter().map(|(txid, _ )| txid).collect();
+          }
         }
       }
     } else if error_str.contains("less fees than conflicting txs") {
