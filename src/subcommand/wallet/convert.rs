@@ -20,14 +20,15 @@ pub(crate) struct Convert {
     help = "Target <AMOUNT> postage with sent inscriptions. [default: 10000 sat]"
   )]
   pub(crate) postage: Option<Amount>,
-  outgoing: Outgoing,
+  input: Outgoing,
+  min_output: Outgoing,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
 pub struct Output {
   pub txid: Txid,
   pub psbt: String,
-  pub outgoing: Outgoing,
+  pub input: Outgoing,
   pub fee: u64,
 }
 
@@ -59,16 +60,16 @@ impl Convert {
 
     wallet.lock_non_cardinal_outputs()?;
 
-    let (unsigned_transaction, unsigned_psbt, fee) = match self.outgoing {
-      Outgoing::Rune { decimal, rune } => Self::create_best_unsigned_convert_runes_transaction(
+    let (unsigned_transaction, unsigned_psbt, fee) = match self.input {
+      Outgoing::Rune { .. } => Self::create_best_unsigned_convert_runes_transaction(
         &wallet,
-        rune,
-        decimal,
+        self.input.clone(),
+        self.min_output,
         self.postage.unwrap_or(TARGET_POSTAGE),
         self.fee_rate,
       )?,
       _ => {
-        panic!("invalid outgoing")
+        panic!("invalid input")
       }
     };
 
@@ -110,7 +111,7 @@ impl Convert {
     Ok(Some(Box::new(Output {
       txid,
       psbt,
-      outgoing: self.outgoing,
+      input: self.input,
       fee: fee.to_sat(),
     })))
   }
@@ -118,24 +119,39 @@ impl Convert {
   // returns (input_id, input_amount, min_output_amount)
   fn get_conversion_parameters(
     wallet: &Wallet,
-    spaced_rune: SpacedRune,
-    decimal: Decimal,
+    is_connected: bool,
+    input: Outgoing,
+    output: Outgoing,
   ) -> Result<(RuneId, RuneEntry, u128, u128)> {
-    let input_rune = spaced_rune.rune;
-    let output_rune = Rune(1 - spaced_rune.rune.n());
+    let Outgoing::Rune { decimal, rune } = input else {
+      bail!("invalid input");
+    };
+
+    let input_rune = rune.rune;
+    let output_rune = Rune(1 - rune.rune.n());
     let Some((input_id, rune_entry_in, _)) = wallet.get_rune(input_rune)? else {
-      bail!("rune has not been etched");
+      bail!("invalid input");
     };
     let Some((_, rune_entry_out, _)) = wallet.get_rune(output_rune)? else {
-      bail!("rune has not been etched");
+      bail!("output has not been etched");
     };
 
     let input_amt = decimal.to_integer(rune_entry_in.divisibility)?;
-    let expected_output_amt =
-      get_expected_output(rune_entry_in.supply, rune_entry_out.supply, input_amt);
+    let mut min_output_amt = if is_connected {
+      1
+    } else {
+      get_expected_output(rune_entry_in.supply, rune_entry_out.supply, input_amt)
+    };
 
-    let allowable_slippage = 20; // 20bps
-    let min_output_amt = expected_output_amt * (10000 - allowable_slippage) / 10000;
+    let Outgoing::Rune { decimal, rune } = output else {
+      bail!("invalid output")
+    };
+    if rune.rune != output_rune {
+      bail!("invalid output");
+    }
+
+    let output_amt = decimal.to_integer(rune_entry_out.divisibility)?;
+    min_output_amt = min_output_amt.max(output_amt);
 
     Ok((input_id, rune_entry_in, input_amt, min_output_amt))
   }
@@ -291,16 +307,16 @@ impl Convert {
 
   fn create_best_unsigned_convert_runes_transaction(
     wallet: &Wallet,
-    spaced_rune: SpacedRune,
-    decimal: Decimal,
+    input: Outgoing,
+    output: Outgoing,
     postage: Amount,
     fee_rate: FeeRate,
   ) -> Result<(Transaction, Psbt, Amount)> {
-    let (input_id, entry_in, input_amt, min_output_amt) =
-      Self::get_conversion_parameters(wallet, spaced_rune, decimal)?;
-
     let mut state_chain = get_conversion_chain(&wallet)?;
     let prev_outpoint = state_chain.first().and_then(|s| s.input.clone());
+
+    let (input_id, entry_in, input_amt, min_output_amt) =
+      Self::get_conversion_parameters(wallet, prev_outpoint.is_some(), input, output)?;
 
     let unfunded_transaction = Self::create_unfunded_convert_transaction(
       &wallet,
@@ -332,16 +348,12 @@ impl Convert {
       .filter_map(|o| o.entry)
       .collect();
 
-    if entries.is_empty() {
-      return Ok((unsigned_transaction, unsigned_psbt, fee));
-    }
-
-    if state_chain[state_chain.len() - 1].txid == None {
+    if !entries.is_empty() && state_chain[state_chain.len() - 1].txid == None {
       // Check if adding a transaction to end of chain would exceed package limit
       let mut exceeds_package_limit = false;
       for entry in &entries {
         if entry.descendant_count >= DESCENDANT_COUNT_LIMIT
-          || entry.descendant_size + unsigned_transaction.vsize() as u64 > DESCENDANT_SIZE_LIMIT
+          || entry.descendant_size + fee_rate.vsize(fee) > DESCENDANT_SIZE_LIMIT
         {
           exceeds_package_limit = true;
           break;
@@ -350,7 +362,7 @@ impl Convert {
 
       let last_entry = entries[entries.len() - 1].clone();
       if last_entry.ancestor_count >= ANCESTOR_COUNT_LIMIT
-        || last_entry.ancestor_size + unsigned_transaction.vsize() as u64 > ANCESTOR_SIZE_LIMIT
+        || last_entry.ancestor_size + fee_rate.vsize(fee) > ANCESTOR_SIZE_LIMIT
       {
         exceeds_package_limit = true;
       }
@@ -372,7 +384,7 @@ impl Convert {
     let Some((best_outpoint, _)) = best_outpoint_and_state else {
       // Every conversion in mempool results in a state where `min_output_amt` is not
       // a satisfied.
-      return Ok((unsigned_transaction, unsigned_psbt, fee));
+      bail!("Insufficient input amount");
     };
 
     // modify transaction using `best_outpoint`
