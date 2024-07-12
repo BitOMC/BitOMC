@@ -160,7 +160,7 @@ impl Convert {
     ))
   }
 
-  fn create_unfunded_convert_runes_transaction(
+  fn create_unfunded_convert_transaction(
     wallet: &Wallet,
     spaced_rune: SpacedRune,
     decimal: Decimal,
@@ -395,7 +395,7 @@ impl Convert {
     }
 
     let unfunded_transaction =
-      Self::create_unfunded_convert_runes_transaction(&wallet, spaced_rune, decimal, postage)?;
+      Self::create_unfunded_convert_transaction(&wallet, spaced_rune, decimal, postage)?;
 
     let (mut unsigned_transaction, mut unsigned_psbt) = Self::fund_convert_transaction(
       &wallet,
@@ -503,7 +503,7 @@ impl Convert {
     unsigned_transaction.input[0].previous_output = best_outpoint.outpoint;
     unsigned_psbt = Self::create_psbt_with_signed_conversion_input(
       unsigned_transaction.clone(),
-      prev_outpoint.output,
+      best_outpoint.output,
     )?;
 
     Ok((unsigned_transaction, unsigned_psbt, fee))
