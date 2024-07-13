@@ -48,8 +48,10 @@ pub(crate) enum Subcommand {
   Batch(batch_command::Batch),
   #[command(about = "List unspent cardinal outputs in wallet")]
   Cardinals,
-  #[command(about = "Convert between tighten and ease")]
-  Convert(convert::Convert),
+  #[command(about = "Convert between tighten and ease using an exact input")]
+  ConvertExactInput(convert::ConvertExactInput),
+  #[command(about = "Convert between tighten and ease using an exact output")]
+  ConvertExactOutput(convert::ConvertExactOutput),
   #[command(about = "Lookup current chain of conversions in mempool")]
   LookupConversionChain,
   #[command(about = "Create new wallet")]
@@ -106,7 +108,8 @@ impl WalletCommand {
       Subcommand::Balance => balance::run(wallet),
       Subcommand::Batch(batch) => batch.run(wallet),
       Subcommand::Cardinals => cardinals::run(wallet),
-      Subcommand::Convert(convert) => convert.run(wallet),
+      Subcommand::ConvertExactInput(convert) => convert.run(wallet),
+      Subcommand::ConvertExactOutput(convert) => convert.run(wallet),
       Subcommand::LookupConversionChain => convert::get_chain(wallet),
       Subcommand::Create(_) | Subcommand::Restore(_) => unreachable!(),
       Subcommand::Dump => dump::run(wallet),

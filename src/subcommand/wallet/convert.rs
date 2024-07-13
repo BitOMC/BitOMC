@@ -10,7 +10,7 @@ use {
 };
 
 #[derive(Debug, Parser)]
-pub(crate) struct Convert {
+pub(crate) struct ConvertExactInput {
   #[arg(long, help = "Don't sign or broadcast transaction")]
   pub(crate) dry_run: bool,
   #[arg(long, help = "Use fee rate of <FEE_RATE> sats/vB")]
@@ -22,6 +22,21 @@ pub(crate) struct Convert {
   pub(crate) postage: Option<Amount>,
   input: Outgoing,
   min_output: Outgoing,
+}
+
+#[derive(Debug, Parser)]
+pub(crate) struct ConvertExactOutput {
+  #[arg(long, help = "Don't sign or broadcast transaction")]
+  pub(crate) dry_run: bool,
+  #[arg(long, help = "Use fee rate of <FEE_RATE> sats/vB")]
+  fee_rate: FeeRate,
+  #[arg(
+    long,
+    help = "Target <AMOUNT> postage with sent inscriptions. [default: 10000 sat]"
+  )]
+  pub(crate) postage: Option<Amount>,
+  output: Outgoing,
+  max_input: Outgoing,
 }
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -51,7 +66,7 @@ pub(crate) fn get_chain(wallet: Wallet) -> SubcommandResult {
   Ok(Some(Box::new(get_conversion_chain(&wallet)?)))
 }
 
-impl Convert {
+impl ConvertExactInput {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
     ensure!(
       wallet.has_rune_index(),
@@ -60,18 +75,15 @@ impl Convert {
 
     wallet.lock_non_cardinal_outputs()?;
 
-    let (unsigned_transaction, unsigned_psbt, fee) = match self.input {
-      Outgoing::Rune { .. } => Self::create_best_unsigned_convert_runes_transaction(
+    let (unsigned_transaction, unsigned_psbt, fee) =
+      create_best_unsigned_convert_runes_transaction(
         &wallet,
+        true,
         self.input.clone(),
         self.min_output,
         self.postage.unwrap_or(TARGET_POSTAGE),
         self.fee_rate,
-      )?,
-      _ => {
-        panic!("invalid input")
-      }
-    };
+      )?;
 
     let (txid, psbt) = if self.dry_run {
       let psbt = wallet
@@ -115,294 +127,443 @@ impl Convert {
       fee: fee.to_sat(),
     })))
   }
+}
 
-  // returns (input_id, input_amount, min_output_amount)
-  fn get_conversion_parameters(
-    wallet: &Wallet,
-    is_connected: bool,
-    input: Outgoing,
-    output: Outgoing,
-  ) -> Result<(RuneId, RuneEntry, u128, u128)> {
-    let Outgoing::Rune { decimal, rune } = input else {
-      bail!("invalid input");
-    };
+impl ConvertExactOutput {
+  pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
+    ensure!(
+      wallet.has_rune_index(),
+      "sending runes with `ord send` requires index created with `--index-runes` flag",
+    );
 
-    let input_rune = rune.rune;
-    let output_rune = Rune(1 - rune.rune.n());
-    let Some((input_id, rune_entry_in, _)) = wallet.get_rune(input_rune)? else {
-      bail!("invalid input");
-    };
-    let Some((_, rune_entry_out, _)) = wallet.get_rune(output_rune)? else {
-      bail!("output has not been etched");
-    };
+    wallet.lock_non_cardinal_outputs()?;
 
-    let input_amt = decimal.to_integer(rune_entry_in.divisibility)?;
-    let mut min_output_amt = if is_connected {
-      1
+    let (unsigned_transaction, unsigned_psbt, fee) =
+      create_best_unsigned_convert_runes_transaction(
+        &wallet,
+        false,
+        self.max_input.clone(),
+        self.output,
+        self.postage.unwrap_or(TARGET_POSTAGE),
+        self.fee_rate,
+      )?;
+
+    let (txid, psbt) = if self.dry_run {
+      let psbt = wallet
+        .bitcoin_client()
+        .wallet_process_psbt(
+          &base64::engine::general_purpose::STANDARD.encode(unsigned_psbt.serialize()),
+          Some(false),
+          None,
+          None,
+        )?
+        .psbt;
+
+      (unsigned_transaction.txid(), psbt)
     } else {
-      get_expected_output(rune_entry_in.supply, rune_entry_out.supply, input_amt)
+      let psbt = wallet
+        .bitcoin_client()
+        .wallet_process_psbt(
+          &base64::engine::general_purpose::STANDARD.encode(unsigned_psbt.serialize()),
+          Some(true),
+          None,
+          None,
+        )?
+        .psbt;
+
+      let signed_tx = wallet
+        .bitcoin_client()
+        .finalize_psbt(&psbt, None)?
+        .hex
+        .ok_or_else(|| anyhow!("unable to sign transaction"))?;
+
+      (
+        wallet.bitcoin_client().send_raw_transaction(&signed_tx)?,
+        psbt,
+      )
     };
 
-    let Outgoing::Rune { decimal, rune } = output else {
-      bail!("invalid output")
-    };
-    if rune.rune != output_rune {
-      bail!("invalid output");
-    }
-
-    let output_amt = decimal.to_integer(rune_entry_out.divisibility)?;
-    min_output_amt = min_output_amt.max(output_amt);
-
-    Ok((input_id, rune_entry_in, input_amt, min_output_amt))
+    Ok(Some(Box::new(Output {
+      txid,
+      psbt,
+      input: self.max_input.clone(),
+      fee: fee.to_sat(),
+    })))
   }
+}
 
-  fn create_unfunded_convert_transaction(
-    wallet: &Wallet,
-    id_in: RuneId,
-    input_entry: RuneEntry,
-    amount: u128,
-    min_output_amt: u128,
-    postage: Amount,
-  ) -> Result<Transaction> {
-    let (input_rune, output_rune, id_out) = if id_in == ID0 {
-      (Rune(0), Rune(1), ID1)
-    } else {
-      (Rune(1), Rune(0), ID0)
-    };
+fn create_best_unsigned_convert_runes_transaction(
+  wallet: &Wallet,
+  is_exact_input: bool,
+  input: Outgoing,
+  output: Outgoing,
+  postage: Amount,
+  fee_rate: FeeRate,
+) -> Result<(Transaction, Psbt, Amount)> {
+  let mut state_chain = get_conversion_chain(&wallet)?;
+  let prev_outpoint = state_chain.first().and_then(|s| s.input.clone());
 
-    let inscribed_outputs = wallet
-      .inscriptions()
-      .keys()
-      .map(|satpoint| satpoint.outpoint)
-      .collect::<HashSet<OutPoint>>();
+  let is_connected = prev_outpoint.is_some();
+  let (input_id, entry_in, max_input, min_output) = get_conversion_parameters(
+    wallet,
+    state_chain.clone(),
+    is_exact_input,
+    is_connected,
+    input,
+    output,
+  )?;
 
-    let balances = wallet
-      .get_runic_outputs()?
-      .into_iter()
-      .filter(|output| !inscribed_outputs.contains(output))
-      .map(|output| {
-        wallet.get_runes_balances_in_output(&output).map(|balance| {
-          (
-            output,
-            balance
-              .into_iter()
-              .map(|(spaced_rune, pile)| (spaced_rune.rune, pile))
-              .collect(),
-          )
-        })
-      })
-      .collect::<Result<BTreeMap<OutPoint, BTreeMap<Rune, Pile>>>>()?;
+  let unfunded_transaction = create_unfunded_convert_transaction(
+    &wallet,
+    is_exact_input,
+    is_connected,
+    input_id,
+    entry_in,
+    max_input,
+    min_output,
+    postage,
+  )?;
 
-    let mut inputs = Vec::new();
-    let mut input_rune_balances: BTreeMap<Rune, u128> = BTreeMap::new();
-    let mut output_rune_balances: BTreeMap<Rune, u128> = BTreeMap::new();
+  let (mut unsigned_transaction, mut unsigned_psbt) = fund_convert_transaction(
+    &wallet,
+    unfunded_transaction.clone(),
+    fee_rate,
+    prev_outpoint.clone(),
+  )?;
 
-    for (output, runes) in balances {
-      if let Some(input_balance) = runes.get(&input_rune) {
-        if input_balance.amount > 0 {
-          *input_rune_balances.entry(input_rune).or_default() += input_balance.amount;
+  let fee = get_fee(wallet, unsigned_transaction.clone(), prev_outpoint.clone());
 
-          inputs.push(output);
-        }
-      }
+  let Some(prev_outpoint) = prev_outpoint else {
+    // No conversion outpoint exists
+    // In the future, throw an error if the fee rate is too low for the next block
+    return Ok((unsigned_transaction, unsigned_psbt, fee));
+  };
 
-      if let Some(output_balance) = runes.get(&output_rune) {
-        if output_balance.amount > 0 {
-          *output_rune_balances.entry(output_rune).or_default() += output_balance.amount;
-        }
-      }
+  let entries: Vec<GetMempoolEntryResult> = state_chain
+    .clone()
+    .into_iter()
+    .filter_map(|o| o.entry)
+    .collect();
 
-      if input_rune_balances
-        .get(&input_rune)
-        .cloned()
-        .unwrap_or_default()
-        >= amount
+  if !entries.is_empty() && state_chain[state_chain.len() - 1].txid == None {
+    // Check if adding a transaction to end of chain would exceed package limit
+    let mut exceeds_package_limit = false;
+    for entry in &entries {
+      if entry.descendant_count >= DESCENDANT_COUNT_LIMIT
+        || entry.descendant_size + fee_rate.vsize(fee) > DESCENDANT_SIZE_LIMIT
       {
+        exceeds_package_limit = true;
         break;
       }
     }
 
-    let input_rune_balance = input_rune_balances
-      .get(&input_rune)
-      .cloned()
-      .unwrap_or_default();
-
-    let output_rune_balance = output_rune_balances
-      .get(&output_rune)
-      .cloned()
-      .unwrap_or_default();
-
-    let needs_runes_change_output = input_rune_balance > amount || input_rune_balances.len() > 1;
-
-    ensure! {
-      input_rune_balance >= amount,
-      "insufficient `{}` balance, only {} in wallet",
-      SpacedRune{ rune: input_rune, spacers: 0 },
-      Pile {
-        amount: input_rune_balance,
-        divisibility: input_entry.divisibility,
-        symbol: input_entry.symbol
-      },
+    let last_entry = entries[entries.len() - 1].clone();
+    if last_entry.ancestor_count >= ANCESTOR_COUNT_LIMIT
+      || last_entry.ancestor_size + fee_rate.vsize(fee) > ANCESTOR_SIZE_LIMIT
+    {
+      exceeds_package_limit = true;
     }
 
-    let runestone = Runestone {
+    if exceeds_package_limit {
+      state_chain.truncate(state_chain.len() - 1);
+    }
+  }
+
+  let best_outpoint_and_state = get_best_outpoint_in_conversion_chain(
+    state_chain,
+    input_id,
+    is_exact_input,
+    max_input,
+    min_output,
+    fee,
+    fee_rate.vsize(fee),
+  )?;
+
+  let Some((best_outpoint, _)) = best_outpoint_and_state else {
+    // Current finalized state cannot satisfy `max_input` and `min_output`, nor can
+    // any state reachable from a conversion in the mempool.
+    bail!("Insufficient input amount");
+  };
+
+  // modify transaction using `best_outpoint`
+  let outputs = unsigned_transaction.output.len();
+  unsigned_transaction.output[outputs - 1].value -= prev_outpoint.output.value;
+  unsigned_transaction.output[outputs - 1].value += best_outpoint.output.value;
+  unsigned_transaction.input[0].previous_output = best_outpoint.outpoint;
+  unsigned_psbt =
+    create_psbt_with_signed_conversion_input(unsigned_transaction.clone(), best_outpoint.output)?;
+
+  Ok((unsigned_transaction, unsigned_psbt, fee))
+}
+
+fn get_conversion_parameters(
+  wallet: &Wallet,
+  state_chain: Vec<ChainStateOutput>,
+  is_exact_input: bool,
+  is_connected: bool,
+  input: Outgoing,
+  output: Outgoing,
+) -> Result<(RuneId, RuneEntry, u128, u128)> {
+  let Outgoing::Rune { decimal, rune } = input else {
+    bail!("invalid input");
+  };
+
+  let input_rune = rune.rune;
+  let output_rune = Rune(1 - rune.rune.n());
+  let Some((input_id, rune_entry_in, _)) = wallet.get_rune(input_rune)? else {
+    bail!("invalid input");
+  };
+  let Some((_, rune_entry_out, _)) = wallet.get_rune(output_rune)? else {
+    bail!("output has not been etched");
+  };
+  let mut input_amt = decimal.to_integer(rune_entry_in.divisibility)?;
+
+  let Outgoing::Rune { decimal, rune } = output else {
+    bail!("invalid output")
+  };
+  ensure! { rune.rune == output_rune, "invalid output" }
+  let mut output_amt = decimal.to_integer(rune_entry_out.divisibility)?;
+
+  if is_exact_input && output_amt == 0 {
+    if !is_connected {
+      let expected_output_amt =
+        get_expected_output(rune_entry_in.supply, rune_entry_out.supply, input_amt);
+      ensure! { expected_output_amt > 0, "excessive input amount" }
+
+      let allowable_slippage = 20; // 20bps
+      output_amt = expected_output_amt * (10000 - allowable_slippage) / 10000;
+    }
+  } else if !is_exact_input && input_amt == 0 {
+    if is_connected {
+      // To efficiently select inputs, we need the required input amount. This will
+      // be based on either the last state in the conversion chain or the second to
+      // last, if adding our transaction exceeds the package limit.
+      if let Some(state) = state_chain.last().and_then(|s| Some(s.prev_state.clone())) {
+        if input_id == ID0 {
+          input_amt = get_required_input(state.supply0, state.supply1, output_amt);
+        } else {
+          input_amt = get_required_input(state.supply1, state.supply0, output_amt);
+        }
+
+        // Lookup required input on second to last state
+        if state_chain.len() > 1 {
+          let input_amt2;
+          let state = state_chain[state_chain.len() - 2].prev_state;
+          if input_id == ID0 {
+            input_amt2 = get_required_input(state.supply0, state.supply1, output_amt);
+          } else {
+            input_amt2 = get_required_input(state.supply1, state.supply0, output_amt);
+          }
+          input_amt = input_amt.max(input_amt2);
+        }
+        ensure! { input_amt < u128::MAX, "excessive output amount" }
+      } else {
+        input_amt = u128::MAX;
+      }
+    } else {
+      let required_input_amt =
+        get_required_input(rune_entry_in.supply, rune_entry_out.supply, output_amt);
+      ensure! { required_input_amt < u128::MAX, "excessive output amount" }
+
+      let allowable_slippage = 20; // 20bps
+      input_amt = required_input_amt * 10000 / (10000 - allowable_slippage);
+    }
+  }
+
+  Ok((input_id, rune_entry_in, input_amt, output_amt))
+}
+
+fn create_unfunded_convert_transaction(
+  wallet: &Wallet,
+  is_exact_input: bool,
+  is_connected: bool,
+  id_in: RuneId,
+  input_entry: RuneEntry,
+  mut max_input: u128,
+  mut min_output: u128,
+  postage: Amount,
+) -> Result<Transaction> {
+  let (input_rune, output_rune, id_out) = if id_in == ID0 {
+    (Rune(0), Rune(1), ID1)
+  } else {
+    (Rune(1), Rune(0), ID0)
+  };
+
+  let inscribed_outputs = wallet
+    .inscriptions()
+    .keys()
+    .map(|satpoint| satpoint.outpoint)
+    .collect::<HashSet<OutPoint>>();
+
+  let balances = wallet
+    .get_runic_outputs()?
+    .into_iter()
+    .filter(|output| !inscribed_outputs.contains(output))
+    .map(|output| {
+      wallet.get_runes_balances_in_output(&output).map(|balance| {
+        (
+          output,
+          balance
+            .into_iter()
+            .map(|(spaced_rune, pile)| (spaced_rune.rune, pile))
+            .collect(),
+        )
+      })
+    })
+    .collect::<Result<BTreeMap<OutPoint, BTreeMap<Rune, Pile>>>>()?;
+
+  let mut inputs = Vec::new();
+  let mut input_rune_balances: BTreeMap<Rune, u128> = BTreeMap::new();
+  let mut output_rune_balances: BTreeMap<Rune, u128> = BTreeMap::new();
+
+  for (output, runes) in balances {
+    if let Some(input_balance) = runes.get(&input_rune) {
+      if input_balance.amount > 0 {
+        *input_rune_balances.entry(input_rune).or_default() += input_balance.amount;
+
+        inputs.push(output);
+      }
+    }
+
+    if let Some(output_balance) = runes.get(&output_rune) {
+      if output_balance.amount > 0 {
+        *output_rune_balances.entry(output_rune).or_default() += output_balance.amount;
+      }
+    }
+
+    if input_rune_balances
+      .get(&input_rune)
+      .cloned()
+      .unwrap_or_default()
+      >= max_input
+    {
+      break;
+    }
+  }
+
+  let mut input_rune_balance = input_rune_balances
+    .get(&input_rune)
+    .cloned()
+    .unwrap_or_default();
+
+  let output_rune_balance = output_rune_balances
+    .get(&output_rune)
+    .cloned()
+    .unwrap_or_default();
+
+  let needs_runes_change_output = input_rune_balance > max_input || input_rune_balances.len() > 1;
+
+  ensure! {
+    input_rune_balance >= max_input,
+    "insufficient `{}` balance, only {} in wallet",
+    SpacedRune{ rune: input_rune, spacers: 0 },
+    Pile {
+      amount: input_rune_balance,
+      divisibility: input_entry.divisibility,
+      symbol: input_entry.symbol
+    },
+  }
+
+  let runestone = if is_exact_input {
+    if is_connected {
+      // Reducing `min_output` to 1 is a more efficient encoding for the same conversion
+      min_output = 1;
+    }
+    Runestone {
       edicts: if needs_runes_change_output {
         vec![
           Edict {
-            amount: input_rune_balance - amount,
+            amount: input_rune_balance - max_input,
             id: id_in,
             output: 2,
           },
           Edict {
-            amount: output_rune_balance + min_output_amt,
+            amount: output_rune_balance + min_output,
             id: id_out,
             output: 2,
           },
         ]
       } else {
         vec![Edict {
-          amount: output_rune_balance + min_output_amt,
+          amount: output_rune_balance + min_output,
           id: id_out,
           output: 2,
         }]
       },
       pointer: Some(0),
-    };
-
-    let unfunded_transaction = Transaction {
-      version: 2,
-      lock_time: LockTime::ZERO,
-      input: inputs
-        .into_iter()
-        .map(|previous_output| TxIn {
-          previous_output,
-          script_sig: ScriptBuf::new(),
-          sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
-          witness: Witness::new(),
-        })
-        .collect(),
-      output: vec![
-        TxOut {
-          script_pubkey: runestone.encipher(),
-          value: 0,
-        },
-        TxOut {
-          script_pubkey: get_convert_script(),
-          value: 294,
-        },
-        TxOut {
-          script_pubkey: wallet.get_change_address()?.script_pubkey(),
-          value: postage.to_sat(),
-        },
-      ],
-    };
-
-    assert_eq!(
-      Runestone::decipher(&unfunded_transaction),
-      Some(Artifact::Runestone(runestone)),
-    );
-
-    Ok(unfunded_transaction)
-  }
-
-  fn create_best_unsigned_convert_runes_transaction(
-    wallet: &Wallet,
-    input: Outgoing,
-    output: Outgoing,
-    postage: Amount,
-    fee_rate: FeeRate,
-  ) -> Result<(Transaction, Psbt, Amount)> {
-    let mut state_chain = get_conversion_chain(&wallet)?;
-    let prev_outpoint = state_chain.first().and_then(|s| s.input.clone());
-
-    let (input_id, entry_in, input_amt, min_output_amt) =
-      Self::get_conversion_parameters(wallet, prev_outpoint.is_some(), input, output)?;
-
-    let byte_minimized_min_output_amt = if prev_outpoint.is_some() {
-      1
-    } else {
-      min_output_amt
-    };
-
-    let unfunded_transaction = Self::create_unfunded_convert_transaction(
-      &wallet,
-      input_id,
-      entry_in,
-      input_amt,
-      byte_minimized_min_output_amt,
-      postage,
-    )?;
-
-    let (mut unsigned_transaction, mut unsigned_psbt) = fund_convert_transaction(
-      &wallet,
-      unfunded_transaction.clone(),
-      fee_rate,
-      prev_outpoint.clone(),
-    )?;
-
-    let fee = get_fee(wallet, unsigned_transaction.clone(), prev_outpoint.clone());
-
-    let Some(prev_outpoint) = prev_outpoint else {
-      // No conversion outpoint exists
-      // In the future, throw an error if the fee rate is too low for the next block
-      return Ok((unsigned_transaction, unsigned_psbt, fee));
-    };
-
-    let entries: Vec<GetMempoolEntryResult> = state_chain
-      .clone()
-      .into_iter()
-      .filter_map(|o| o.entry)
-      .collect();
-
-    if !entries.is_empty() && state_chain[state_chain.len() - 1].txid == None {
-      // Check if adding a transaction to end of chain would exceed package limit
-      let mut exceeds_package_limit = false;
-      for entry in &entries {
-        if entry.descendant_count >= DESCENDANT_COUNT_LIMIT
-          || entry.descendant_size + fee_rate.vsize(fee) > DESCENDANT_SIZE_LIMIT
-        {
-          exceeds_package_limit = true;
-          break;
-        }
-      }
-
-      let last_entry = entries[entries.len() - 1].clone();
-      if last_entry.ancestor_count >= ANCESTOR_COUNT_LIMIT
-        || last_entry.ancestor_size + fee_rate.vsize(fee) > ANCESTOR_SIZE_LIMIT
-      {
-        exceeds_package_limit = true;
-      }
-
-      if exceeds_package_limit {
-        state_chain.truncate(state_chain.len() - 1);
-      }
     }
+  } else {
+    if is_connected {
+      // Reducing input edict amount to 1 is a more efficient encoding for the same conversion
+      input_rune_balance = 1;
+      max_input = 0;
+    }
+    Runestone {
+      edicts: if needs_runes_change_output {
+        vec![
+          Edict {
+            amount: output_rune_balance + min_output,
+            id: id_out,
+            output: 2,
+          },
+          Edict {
+            amount: input_rune_balance - max_input,
+            id: id_in,
+            output: 2,
+          },
+        ]
+      } else {
+        vec![
+          Edict {
+            amount: output_rune_balance + min_output,
+            id: id_out,
+            output: 2,
+          },
+          Edict {
+            amount: input_rune_balance,
+            id: id_in,
+            output: 0,
+          },
+        ]
+      },
+      pointer: Some(0),
+    }
+  };
 
-    let best_outpoint_and_state = get_best_outpoint_in_conversion_chain(
-      state_chain,
-      input_id,
-      input_amt,
-      min_output_amt,
-      fee,
-      fee_rate.vsize(fee),
-    )?;
+  let unfunded_transaction = Transaction {
+    version: 2,
+    lock_time: LockTime::ZERO,
+    input: inputs
+      .into_iter()
+      .map(|previous_output| TxIn {
+        previous_output,
+        script_sig: ScriptBuf::new(),
+        sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
+        witness: Witness::new(),
+      })
+      .collect(),
+    output: vec![
+      TxOut {
+        script_pubkey: runestone.encipher(),
+        value: 0,
+      },
+      TxOut {
+        script_pubkey: get_convert_script(),
+        value: 294,
+      },
+      TxOut {
+        script_pubkey: wallet.get_change_address()?.script_pubkey(),
+        value: postage.to_sat(),
+      },
+    ],
+  };
 
-    let Some((best_outpoint, _)) = best_outpoint_and_state else {
-      // Every conversion in mempool results in a state where `min_output_amt` is not
-      // a satisfied.
-      bail!("Insufficient input amount");
-    };
+  assert_eq!(
+    Runestone::decipher(&unfunded_transaction),
+    Some(Artifact::Runestone(runestone)),
+  );
 
-    // modify transaction using `best_outpoint`
-    let outputs = unsigned_transaction.output.len();
-    unsigned_transaction.output[outputs - 1].value -= prev_outpoint.output.value;
-    unsigned_transaction.output[outputs - 1].value += best_outpoint.output.value;
-    unsigned_transaction.input[0].previous_output = best_outpoint.outpoint;
-    unsigned_psbt =
-      create_psbt_with_signed_conversion_input(unsigned_transaction.clone(), best_outpoint.output)?;
-
-    Ok((unsigned_transaction, unsigned_psbt, fee))
-  }
+  Ok(unfunded_transaction)
 }
 
 fn get_conversion_chain(wallet: &Wallet) -> Result<Vec<ChainStateOutput>> {
@@ -749,7 +910,8 @@ fn get_conversion_chain_with_ancestors_in_topological_order(
 fn get_best_outpoint_in_conversion_chain(
   chain: Vec<ChainStateOutput>,
   input_id: RuneId,
-  input: u128,
+  is_exact_input: bool,
+  max_input: u128,
   min_output: u128,
   fee: Amount,
   size_in_vb: u64,
@@ -778,9 +940,16 @@ fn get_best_outpoint_in_conversion_chain(
       (state.supply1, state.supply0)
     };
 
-    let expected_output = get_expected_output(input_supply, output_supply, input);
-    if min_output < expected_output {
-      best_replacement = Some((chain_state.input.clone().unwrap(), state.clone()));
+    if is_exact_input {
+      let expected_output = get_expected_output(input_supply, output_supply, max_input);
+      if min_output <= expected_output {
+        best_replacement = Some((chain_state.input.clone().unwrap(), state.clone()));
+      }
+    } else {
+      let required_input = get_required_input(input_supply, output_supply, min_output);
+      if required_input <= max_input {
+        best_replacement = Some((chain_state.input.clone().unwrap(), state.clone()));
+      }
     }
   }
 
@@ -894,8 +1063,7 @@ fn get_expected_output(input_supply: u128, output_supply: u128, input: u128) -> 
   return (invariant - new_input_sq).sqrt() - output_supply;
 }
 
-#[allow(unused)]
-fn get_expected_input(input_supply: u128, output_supply: u128, output: u128) -> u128 {
+fn get_required_input(input_supply: u128, output_supply: u128, output: u128) -> u128 {
   let invariant = input_supply * input_supply + output_supply * output_supply;
   let new_output_sq = (output_supply + output) * (output_supply + output);
 
