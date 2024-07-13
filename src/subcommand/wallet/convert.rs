@@ -261,7 +261,7 @@ impl Convert {
         ]
       } else {
         vec![Edict {
-          amount: min_output_amt,
+          amount: output_rune_balance + min_output_amt,
           id: id_out,
           output: 2,
         }]
@@ -318,12 +318,18 @@ impl Convert {
     let (input_id, entry_in, input_amt, min_output_amt) =
       Self::get_conversion_parameters(wallet, prev_outpoint.is_some(), input, output)?;
 
+    let byte_minimized_min_output_amt = if prev_outpoint.is_some() {
+      1
+    } else {
+      min_output_amt
+    };
+
     let unfunded_transaction = Self::create_unfunded_convert_transaction(
       &wallet,
       input_id,
       entry_in,
       input_amt,
-      min_output_amt,
+      byte_minimized_min_output_amt,
       postage,
     )?;
 
