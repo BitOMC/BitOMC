@@ -40,10 +40,22 @@ pub(crate) struct ConvertExactOutput {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
-pub struct Output {
+pub struct OutputForExactInput {
   pub txid: Txid,
   pub psbt: String,
   pub input: Outgoing,
+  pub min_output: Outgoing,
+  pub is_connected: bool,
+  pub fee: u64,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
+pub struct OutputForExactOutput {
+  pub txid: Txid,
+  pub psbt: String,
+  pub output: Outgoing,
+  pub max_input: Outgoing,
+  pub is_connected: bool,
   pub fee: u64,
 }
 
@@ -75,12 +87,12 @@ impl ConvertExactInput {
 
     wallet.lock_non_cardinal_outputs()?;
 
-    let (unsigned_transaction, unsigned_psbt, fee) =
+    let (unsigned_transaction, unsigned_psbt, fee, _, min_output, is_connected) =
       create_best_unsigned_convert_runes_transaction(
         &wallet,
         true,
         self.input.clone(),
-        self.min_output,
+        self.min_output.clone(),
         self.postage.unwrap_or(TARGET_POSTAGE),
         self.fee_rate,
       )?;
@@ -120,10 +132,23 @@ impl ConvertExactInput {
       )
     };
 
-    Ok(Some(Box::new(Output {
+    let Outgoing::Rune { rune, .. } = self.min_output else {
+      bail!("invalid output");
+    };
+    let min_output = Outgoing::Rune {
+      decimal: Decimal {
+        value: min_output,
+        scale: 8,
+      },
+      rune,
+    };
+
+    Ok(Some(Box::new(OutputForExactInput {
       txid,
       psbt,
       input: self.input,
+      min_output,
+      is_connected,
       fee: fee.to_sat(),
     })))
   }
@@ -138,12 +163,12 @@ impl ConvertExactOutput {
 
     wallet.lock_non_cardinal_outputs()?;
 
-    let (unsigned_transaction, unsigned_psbt, fee) =
+    let (unsigned_transaction, unsigned_psbt, fee, max_input, _, is_connected) =
       create_best_unsigned_convert_runes_transaction(
         &wallet,
         false,
         self.max_input.clone(),
-        self.output,
+        self.output.clone(),
         self.postage.unwrap_or(TARGET_POSTAGE),
         self.fee_rate,
       )?;
@@ -183,10 +208,23 @@ impl ConvertExactOutput {
       )
     };
 
-    Ok(Some(Box::new(Output {
+    let Outgoing::Rune { rune, .. } = self.max_input else {
+      bail!("invalid input");
+    };
+    let max_input = Outgoing::Rune {
+      decimal: Decimal {
+        value: max_input,
+        scale: 8,
+      },
+      rune,
+    };
+
+    Ok(Some(Box::new(OutputForExactOutput {
       txid,
       psbt,
-      input: self.max_input.clone(),
+      output: self.output,
+      max_input,
+      is_connected,
       fee: fee.to_sat(),
     })))
   }
@@ -199,7 +237,7 @@ fn create_best_unsigned_convert_runes_transaction(
   output: Outgoing,
   postage: Amount,
   fee_rate: FeeRate,
-) -> Result<(Transaction, Psbt, Amount)> {
+) -> Result<(Transaction, Psbt, Amount, u128, u128, bool)> {
   let mut state_chain = get_conversion_chain(&wallet)?;
   let prev_outpoint = state_chain.first().and_then(|s| s.input.clone());
 
@@ -236,7 +274,14 @@ fn create_best_unsigned_convert_runes_transaction(
   let Some(prev_outpoint) = prev_outpoint else {
     // No conversion outpoint exists
     // In the future, throw an error if the fee rate is too low for the next block
-    return Ok((unsigned_transaction, unsigned_psbt, fee));
+    return Ok((
+      unsigned_transaction,
+      unsigned_psbt,
+      fee,
+      max_input,
+      min_output,
+      false,
+    ));
   };
 
   let entries: Vec<GetMempoolEntryResult> = state_chain
@@ -279,7 +324,7 @@ fn create_best_unsigned_convert_runes_transaction(
     fee_rate.vsize(fee),
   )?;
 
-  let Some((best_outpoint, _)) = best_outpoint_and_state else {
+  let Some((best_outpoint, input, output)) = best_outpoint_and_state else {
     // Current finalized state cannot satisfy `max_input` and `min_output`, nor can
     // any state reachable from a conversion in the mempool.
     bail!("Insufficient input amount");
@@ -293,7 +338,14 @@ fn create_best_unsigned_convert_runes_transaction(
   unsigned_psbt =
     create_psbt_with_signed_conversion_input(unsigned_transaction.clone(), best_outpoint.output)?;
 
-  Ok((unsigned_transaction, unsigned_psbt, fee))
+  Ok((
+    unsigned_transaction,
+    unsigned_psbt,
+    fee,
+    input,
+    output,
+    true,
+  ))
 }
 
 fn get_conversion_parameters(
@@ -379,8 +431,8 @@ fn create_unfunded_convert_transaction(
   is_connected: bool,
   id_in: RuneId,
   input_entry: RuneEntry,
-  mut max_input: u128,
-  mut min_output: u128,
+  max_input: u128,
+  min_output: u128,
   postage: Amount,
 ) -> Result<Transaction> {
   let (input_rune, output_rune, id_out) = if id_in == ID0 {
@@ -441,7 +493,7 @@ fn create_unfunded_convert_transaction(
     }
   }
 
-  let mut input_rune_balance = input_rune_balances
+  let input_rune_balance = input_rune_balances
     .get(&input_rune)
     .cloned()
     .unwrap_or_default();
@@ -465,68 +517,142 @@ fn create_unfunded_convert_transaction(
   }
 
   let runestone = if is_exact_input {
-    if is_connected {
-      // Reducing `min_output` to 1 is a more efficient encoding for the same conversion
-      min_output = 1;
-    }
-    Runestone {
-      edicts: if needs_runes_change_output {
-        vec![
+    if is_connected && needs_runes_change_output && output_rune_balance > 0 {
+      // Exact input, connected, needs change output, and output balance is non-zero
+      Runestone {
+        edicts: vec![
           Edict {
-            amount: input_rune_balance - max_input,
-            id: id_in,
-            output: 2,
-          },
-          Edict {
-            amount: output_rune_balance + min_output,
-            id: id_out,
-            output: 2,
-          },
-        ]
-      } else {
-        vec![Edict {
-          amount: output_rune_balance + min_output,
-          id: id_out,
-          output: 2,
-        }]
-      },
-      pointer: Some(0),
-    }
-  } else {
-    if is_connected {
-      // Reducing input edict amount to 1 is a more efficient encoding for the same conversion
-      input_rune_balance = 1;
-      max_input = 0;
-    }
-    Runestone {
-      edicts: if needs_runes_change_output {
-        vec![
-          Edict {
-            amount: output_rune_balance + min_output,
-            id: id_out,
-            output: 2,
-          },
-          Edict {
-            amount: input_rune_balance - max_input,
-            id: id_in,
-            output: 2,
-          },
-        ]
-      } else {
-        vec![
-          Edict {
-            amount: output_rune_balance + min_output,
-            id: id_out,
-            output: 2,
-          },
-          Edict {
-            amount: input_rune_balance,
+            amount: max_input,
             id: id_in,
             output: 0,
           },
-        ]
-      },
+          Edict {
+            amount: 0,
+            id: id_out,
+            output: 2,
+          },
+          Edict {
+            amount: 1,
+            id: id_out,
+            output: 2,
+          },
+        ],
+        pointer: None,
+      }
+    } else if is_connected && needs_runes_change_output {
+      // Exact input, connected, needs change output, and output balance is zero
+      Runestone {
+        edicts: vec![
+          Edict {
+            amount: max_input,
+            id: id_in,
+            output: 0,
+          },
+          Edict {
+            amount: 1,
+            id: id_out,
+            output: 2,
+          },
+        ],
+        pointer: None,
+      }
+    } else if is_connected && output_rune_balance > 0 {
+      // Exact input, connected, does not need change output, and output balance is non-zero
+      Runestone {
+        edicts: vec![
+          Edict {
+            amount: 0,
+            id: id_out,
+            output: 2,
+          },
+          Edict {
+            amount: 1,
+            id: id_out,
+            output: 2,
+          },
+        ],
+        pointer: Some(0),
+      }
+    } else if is_connected {
+      // Exact input, connected, does not need change output, and output balance is zero
+      Runestone {
+        edicts: vec![Edict {
+          amount: 1,
+          id: id_out,
+          output: 2,
+        }],
+        pointer: Some(0),
+      }
+    } else if needs_runes_change_output {
+      // Exact input, not connected, and needs change output
+      Runestone {
+        edicts: vec![
+          Edict {
+            amount: max_input,
+            id: id_in,
+            output: 0,
+          },
+          Edict {
+            amount: output_rune_balance + min_output,
+            id: id_out,
+            output: 2,
+          },
+        ],
+        pointer: None,
+      }
+    } else {
+      // Exact input, not connected, and does not need change output
+      Runestone {
+        edicts: vec![Edict {
+          amount: output_rune_balance + min_output,
+          id: id_out,
+          output: 2,
+        }],
+        pointer: Some(0),
+      }
+    }
+  } else if needs_runes_change_output {
+    // Exact output and needs change output
+    Runestone {
+      edicts: vec![
+        Edict {
+          amount: output_rune_balance + min_output,
+          id: id_out,
+          output: 2,
+        },
+        Edict {
+          amount: if is_connected {
+            1
+          } else {
+            input_rune_balance - max_input
+          },
+          id: id_in,
+          output: 2,
+        },
+      ],
       pointer: Some(0),
+    }
+  } else {
+    // Exact output and does not need change output
+    Runestone {
+      edicts: vec![
+        Edict {
+          amount: output_rune_balance + min_output,
+          id: id_out,
+          output: 2,
+        },
+        Edict {
+          amount: 0,
+          id: id_in,
+          output: 0,
+        },
+        Edict {
+          amount: 0,
+          id: id_in,
+          output: 2,
+        },
+      ],
+      pointer: None,
     }
   };
 
@@ -915,7 +1041,7 @@ fn get_best_outpoint_in_conversion_chain(
   min_output: u128,
   fee: Amount,
   size_in_vb: u64,
-) -> Result<Option<(OutPointTxOut, SupplyState)>> {
+) -> Result<Option<(OutPointTxOut, u128, u128)>> {
   let sats_per_kvb = fee.to_sat() * 1000 / size_in_vb;
   let replacement_relay_fee_rate = FeeRate::try_from(1.0).unwrap();
   let replacement_relay_fee = replacement_relay_fee_rate.fee(size_in_vb as usize);
@@ -943,12 +1069,20 @@ fn get_best_outpoint_in_conversion_chain(
     if is_exact_input {
       let expected_output = get_expected_output(input_supply, output_supply, max_input);
       if min_output <= expected_output {
-        best_replacement = Some((chain_state.input.clone().unwrap(), state.clone()));
+        best_replacement = Some((
+          chain_state.input.clone().unwrap(),
+          max_input,
+          expected_output,
+        ));
       }
     } else {
       let required_input = get_required_input(input_supply, output_supply, min_output);
       if required_input <= max_input {
-        best_replacement = Some((chain_state.input.clone().unwrap(), state.clone()));
+        best_replacement = Some((
+          chain_state.input.clone().unwrap(),
+          required_input,
+          min_output,
+        ));
       }
     }
   }

@@ -283,8 +283,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
 
       // add burned entry back to input balance
       if burned.entry(input_id).or_default().0 > 0 {
-        // allocate input amount to output of first edict of input_id with valid output
-        for Edict { id, output, .. } in edicts.iter().copied() {
+        // allocate input amount to output of last edict of input_id with valid output
+        for Edict { id, output, .. } in edicts.iter().rev().copied() {
           let output = usize::try_from(output).unwrap();
           if id == input_id {
             // allocate only if output is valid
@@ -292,12 +292,8 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
               *allocated[output].entry(input_id).or_default() +=
                 *burned.entry(input_id).or_default();
               *burned.entry(input_id).or_default() = Lot(0);
+              break;
             }
-            // NOTE: If output equals length, we allocate to first non-OP_RETURN and non-mint output.
-            // Since inputs have been burnt and the first input edict has an output equal to length,
-            // we know the first non-OP_RETURN and non-mint output has a balance.
-            // Therefore, it is safe to break this loop. We will find this output in the next loop.
-            break;
           }
         }
 

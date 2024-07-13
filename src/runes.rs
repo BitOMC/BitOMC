@@ -3044,13 +3044,13 @@ mod tests {
             },
             Edict {
               id: ID0,
-              amount: COIN_VALUE,
-              output: 2,
+              amount: 39 * COIN_VALUE,
+              output: 1,
             },
             Edict {
               id: ID0,
-              amount: 39 * COIN_VALUE,
-              output: 1,
+              amount: COIN_VALUE,
+              output: 2,
             },
           ],
           pointer: Some(2),
