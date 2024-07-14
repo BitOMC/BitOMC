@@ -280,6 +280,91 @@ impl Entry for RuneId {
   }
 }
 
+#[derive(Debug, PartialEq, Clone)]
+pub struct UtilEntry {
+  index: u32,
+  rates: Vec<u128>,
+  bonds_per_sat: u128,
+}
+
+impl UtilEntry {
+  const BASE_VALUE: u128 = 1_000_000_000_000;
+  const BLOCKS_PER_YEAR: u128 = 52_595;
+
+  pub fn new() -> UtilEntry {
+    UtilEntry {
+      index: 0,
+      rates: vec![0; 100],
+      bonds_per_sat: Self::BASE_VALUE,
+    }
+  }
+
+  pub fn update(&mut self, supply0: u128, supply1: u128) {
+    if supply0 > supply1 {
+      let rate = Self::BASE_VALUE * (supply0 - supply1) / (supply0 + supply1);
+      if rate > 0 {
+        self.rates[self.index as usize % 100] = rate;
+        self.index = (self.index + 1) % 100;
+      }
+    }
+
+    self.bonds_per_sat +=
+      self.bonds_per_sat * self.interest_rate() / Self::BASE_VALUE / Self::BLOCKS_PER_YEAR;
+  }
+
+  pub fn interest_rate(&self) -> u128 {
+    let mut non_zero: Vec<u128> = self.rates.clone().into_iter().filter(|&x| x > 0).collect();
+    if non_zero.is_empty() {
+      return Self::BASE_VALUE;
+    }
+
+    non_zero.sort_unstable();
+    let len = non_zero.len();
+
+    if len % 2 == 0 {
+      let mid_right = len / 2;
+      let mid_left = mid_right - 1;
+      (non_zero[mid_left] + non_zero[mid_right]) / 2
+    } else {
+      non_zero[len / 2]
+    }
+  }
+
+  pub fn bonds_per_sat(&self) -> u128 {
+    self.bonds_per_sat
+  }
+
+  pub fn utils_per_bond(&self) -> u128 {
+    Self::BASE_VALUE * Self::BASE_VALUE / self.interest_rate()
+  }
+
+  pub fn utils_per_sat(&self) -> u128 {
+    self.bonds_per_sat * self.utils_per_bond() / Self::BASE_VALUE
+  }
+}
+
+pub(crate) type UtilEntryValue = (
+  u32,       // index
+  Vec<u128>, // rates
+  u128,      // bonds_per_sat
+);
+
+impl Entry for UtilEntry {
+  type Value = UtilEntryValue;
+
+  fn load((index, rates, bonds_per_sat): Self::Value) -> Self {
+    Self {
+      index,
+      rates,
+      bonds_per_sat,
+    }
+  }
+
+  fn store(self) -> Self::Value {
+    (self.index, self.rates, self.bonds_per_sat)
+  }
+}
+
 #[derive(Debug, Eq, PartialEq, Clone)]
 pub struct InscriptionEntry {
   pub charms: u16,

@@ -3,6 +3,7 @@ use {
     entry::{
       Entry, HeaderValue, InscriptionEntry, InscriptionEntryValue, InscriptionIdValue,
       OutPointValue, RuneEntryValue, RuneIdValue, SatPointValue, SatRange, TxOutValue, TxidValue,
+      UtilEntry, UtilEntryValue,
     },
     event::Event,
     lot::Lot,
@@ -73,6 +74,7 @@ define_table! { TRANSACTION_ID_TO_RUNE, &TxidValue, u128 }
 define_table! { TRANSACTION_ID_TO_TRANSACTION, &TxidValue, &[u8] }
 define_table! { WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP, u32, u128 }
 define_table! { STATE_CHANGE_TO_LAST_OUTPOINT, u8, &OutPointValue }
+define_table! { UTIL_ENTRY, u8, UtilEntryValue }
 
 #[derive(Copy, Clone)]
 pub(crate) enum Statistic {
@@ -337,6 +339,8 @@ impl Index {
         tx.open_table(TRANSACTION_ID_TO_RUNE)?;
         tx.open_table(WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP)?;
         tx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
+        tx.open_table(UTIL_ENTRY)?
+          .insert(0, UtilEntry::new().store())?;
 
         {
           let mut outpoint_to_sat_ranges = tx.open_table(OUTPOINT_TO_SAT_RANGES)?;
@@ -638,6 +642,24 @@ impl Index {
     };
 
     Ok(info)
+  }
+
+  pub fn get_util_state(&self) -> Result<api::UtilState> {
+    Ok(
+      self
+        .database
+        .begin_read()?
+        .open_table(UTIL_ENTRY)?
+        .get(0)?
+        .map(|e| UtilEntry::load(e.value()))
+        .map(|u| api::UtilState {
+          bonds_per_sat: u.bonds_per_sat(),
+          utils_per_bond: u.utils_per_bond(),
+          utils_per_sat: u.utils_per_sat(),
+          interest_rate: u.interest_rate(),
+        })
+        .unwrap(),
+    )
   }
 
   pub fn simulate(&self, transactions: Vec<Transaction>) -> Result<Vec<api::SupplyState>> {
@@ -2346,7 +2368,7 @@ impl Index {
 
 #[cfg(test)]
 mod tests {
-  use {super::*, crate::index::testing::Context};
+  use {super::*, crate::index::testing::Context, num_integer::Roots};
 
   #[test]
   fn height_limit() {
@@ -6745,6 +6767,331 @@ mod tests {
         txid: txid2,
         amount: 111,
         rune_id: ID0,
+      }
+    );
+  }
+
+  #[test]
+  fn util_state_updates_each_block() {
+    const TIGHTEN: u128 = 0;
+    const EASE: u128 = 1;
+    const COIN_VALUE: u128 = 100000000;
+    const UTIL_BASE_VALUE: u128 = 1_000_000_000_000;
+    const BLOCKS_PER_YEAR: u128 = 52_595;
+
+    let context = Context::builder().arg("--index-runes").build();
+
+    let interest_rate0 = UTIL_BASE_VALUE;
+    let interest0 = UTIL_BASE_VALUE * interest_rate0 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat0 = UTIL_BASE_VALUE + interest0;
+    let utils_per_bond0 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate0;
+    let utils_per_sat0 = bonds_per_sat0 * utils_per_bond0 / UTIL_BASE_VALUE;
+
+    pretty_assert_eq!(
+      context.index.get_util_state().unwrap(),
+      api::UtilState {
+        bonds_per_sat: bonds_per_sat0,
+        utils_per_bond: utils_per_bond0,
+        utils_per_sat: utils_per_sat0,
+        interest_rate: interest_rate0,
+      }
+    );
+
+    context.mine_blocks(1);
+
+    let interest_rate1 = UTIL_BASE_VALUE;
+    let interest1 = bonds_per_sat0 * interest_rate1 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat1 = bonds_per_sat0 + interest1;
+    let utils_per_bond1 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate1;
+    let utils_per_sat1 = bonds_per_sat1 * utils_per_bond1 / UTIL_BASE_VALUE;
+
+    pretty_assert_eq!(
+      context.index.get_util_state().unwrap(),
+      api::UtilState {
+        bonds_per_sat: bonds_per_sat1,
+        utils_per_bond: utils_per_bond1,
+        utils_per_sat: utils_per_sat1,
+        interest_rate: interest_rate1,
+      }
+    );
+
+    // Mints 40 TIGHTEN and 30 EASE
+    let txid0 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(1, 0, 0, Witness::new())],
+      mint: true,
+      convert: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID0,
+              amount: 40 * COIN_VALUE,
+              output: 1,
+            },
+            Edict {
+              id: ID1,
+              amount: 30 * COIN_VALUE,
+              output: 1,
+            },
+          ],
+          pointer: Some(2),
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 40 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 30 * COIN_VALUE,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid0,
+          vout: 1,
+        },
+        vec![(ID0, 40 * COIN_VALUE), (ID1, 30 * COIN_VALUE)],
+      )],
+    );
+
+    let interest_rate2 = UTIL_BASE_VALUE * (40 - 30) / (40 + 30);
+    let interest2 = bonds_per_sat1 * interest_rate2 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat2 = bonds_per_sat1 + interest2;
+    let utils_per_bond2 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate2;
+    let utils_per_sat2 = bonds_per_sat2 * utils_per_bond2 / UTIL_BASE_VALUE;
+
+    pretty_assert_eq!(
+      context.index.get_util_state().unwrap(),
+      api::UtilState {
+        bonds_per_sat: bonds_per_sat2,
+        utils_per_bond: utils_per_bond2,
+        utils_per_sat: utils_per_sat2,
+        interest_rate: interest_rate2,
+      }
+    );
+
+    let balance0 = (50 * COIN_VALUE * 50 * COIN_VALUE - 100 * COIN_VALUE * COIN_VALUE).sqrt();
+    // Convert 20 EASE to sqrt(50^2 - 10^2) TIGHTEN
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+      ],
+      convert: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID1,
+              amount: 10 * COIN_VALUE,
+              output: 1,
+            },
+            Edict {
+              id: ID0,
+              amount: 0,
+              output: 1,
+            },
+            Edict {
+              id: ID0,
+              amount: 1,
+              output: 1,
+            },
+          ],
+          pointer: Some(2),
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: balance0,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 10 * COIN_VALUE,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid1,
+          vout: 1,
+        },
+        vec![(ID0, balance0), (ID1, 10 * COIN_VALUE)],
+      )],
+    );
+
+    let rate3 = UTIL_BASE_VALUE * (balance0 - 10 * COIN_VALUE) / (balance0 + 10 * COIN_VALUE);
+    let interest_rate3 = (interest_rate2 + rate3) / 2;
+    let interest3 = bonds_per_sat2 * interest_rate3 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat3 = bonds_per_sat2 + interest3;
+    let utils_per_bond3 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate3;
+    let utils_per_sat3 = bonds_per_sat3 * utils_per_bond3 / UTIL_BASE_VALUE;
+
+    pretty_assert_eq!(
+      context.index.get_util_state().unwrap(),
+      api::UtilState {
+        bonds_per_sat: bonds_per_sat3,
+        utils_per_bond: utils_per_bond3,
+        utils_per_sat: utils_per_sat3,
+        interest_rate: interest_rate3,
+      }
+    );
+
+    context.mine_blocks(1);
+
+    let interest_rate4 = rate3;
+    let interest4 = bonds_per_sat3 * interest_rate4 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat4 = bonds_per_sat3 + interest4;
+    let utils_per_bond4 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate4;
+    let utils_per_sat4 = bonds_per_sat4 * utils_per_bond4 / UTIL_BASE_VALUE;
+
+    pretty_assert_eq!(
+      context.index.get_util_state().unwrap(),
+      api::UtilState {
+        bonds_per_sat: bonds_per_sat4,
+        utils_per_bond: utils_per_bond4,
+        utils_per_sat: utils_per_sat4,
+        interest_rate: interest_rate4,
+      }
+    );
+
+    // Convert to 40 EASE and 30 TIGHTEN
+    let balance1 = (balance0 * balance0 + 100 * COIN_VALUE * COIN_VALUE
+      - 30 * 30 * COIN_VALUE * COIN_VALUE)
+      .sqrt();
+    let txid2 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 2, 1, 0, Witness::new()),
+        (context.get_block_count() - 2, 1, 1, Witness::new()),
+      ],
+      convert: true,
+      outputs: 2,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID0,
+              amount: 30 * COIN_VALUE,
+              output: 1,
+            },
+            Edict {
+              id: ID1,
+              amount: 0,
+              output: 1,
+            },
+            Edict {
+              id: ID1,
+              amount: 1,
+              output: 1,
+            },
+          ],
+          pointer: Some(2),
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: 30 * COIN_VALUE,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 1,
+            supply: balance1,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid2,
+          vout: 1,
+        },
+        vec![(ID0, 30 * COIN_VALUE), (ID1, balance1)],
+      )],
+    );
+
+    let interest_rate5 = rate3;
+    let interest5 = bonds_per_sat4 * interest_rate5 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat5 = bonds_per_sat4 + interest5;
+    let utils_per_bond5 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate5;
+    let utils_per_sat5 = bonds_per_sat5 * utils_per_bond5 / UTIL_BASE_VALUE;
+
+    pretty_assert_eq!(
+      context.index.get_util_state().unwrap(),
+      api::UtilState {
+        bonds_per_sat: bonds_per_sat5,
+        utils_per_bond: utils_per_bond5,
+        utils_per_sat: utils_per_sat5,
+        interest_rate: interest_rate5,
       }
     );
   }

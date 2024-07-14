@@ -156,6 +156,14 @@ pub struct SupplyState {
   pub burned1: u128,
 }
 
+#[derive(Debug, PartialEq, Serialize, Deserialize, Copy, Clone)]
+pub struct UtilState {
+  pub bonds_per_sat: u128,
+  pub utils_per_bond: u128,
+  pub utils_per_sat: u128,
+  pub interest_rate: u128,
+}
+
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Output {
   pub address: Option<Address<NetworkUnchecked>>,

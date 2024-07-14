@@ -628,6 +628,7 @@ impl<'index> Updater<'index> {
       let mut outpoint_to_rune_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
       let mut rune_id_to_rune_entry = wtx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
       let mut state_change_to_last_outpoint = wtx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
+      let mut util_entry_table = wtx.open_table(UTIL_ENTRY)?;
 
       let mut rune_updater = RuneUpdater {
         event_sender: self.index.event_sender.as_ref(),
@@ -644,6 +645,12 @@ impl<'index> Updater<'index> {
       }
 
       rune_updater.update()?;
+
+      if let Some(state) = rune_updater.get_state()? {
+        let mut util_entry = UtilEntry::load(util_entry_table.get(0)?.unwrap().value());
+        util_entry.update(state.supply0, state.supply1);
+        util_entry_table.insert(0, util_entry.store())?;
+      }
     }
 
     height_to_block_header.insert(&self.height, &block.header.store())?;
