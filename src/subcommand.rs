@@ -15,6 +15,7 @@ pub mod subsidy;
 pub mod supply;
 pub mod teleburn;
 pub mod traits;
+pub mod util;
 pub mod wallet;
 
 #[derive(Debug, Parser)]
@@ -51,6 +52,8 @@ pub(crate) enum Subcommand {
   Traits(traits::Traits),
   #[command(about = "Wallet commands")]
   Wallet(wallet::WalletCommand),
+  #[command(about = "Display current information about the util")]
+  Util,
 }
 
 impl Subcommand {
@@ -77,6 +80,7 @@ impl Subcommand {
       Self::Teleburn(teleburn) => teleburn.run(),
       Self::Traits(traits) => traits.run(),
       Self::Wallet(wallet) => wallet.run(settings),
+      Self::Util => util::run(settings),
     }
   }
 }
