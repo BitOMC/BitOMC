@@ -39,6 +39,7 @@ fn with_runes() {
   let txid = core.broadcast_tx(TransactionTemplate {
     inputs: &[(1, 0, 0, Witness::new())],
     mint: true,
+    convert: true,
     outputs: 2,
     op_return: Some(
       Runestone {
