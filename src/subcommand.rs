@@ -54,6 +54,10 @@ pub(crate) enum Subcommand {
   Wallet(wallet::WalletCommand),
   #[command(about = "Display current information about the util")]
   Util,
+  #[command(about = "Display utils in terms of sats")]
+  UtilToSat(util::UtilToSatInput),
+  #[command(about = "Display sats in terms of utils")]
+  SatToUtil(util::SatToUtilInput),
 }
 
 impl Subcommand {
@@ -81,6 +85,8 @@ impl Subcommand {
       Self::Traits(traits) => traits.run(),
       Self::Wallet(wallet) => wallet.run(settings),
       Self::Util => util::run(settings),
+      Self::UtilToSat(util_to_sat) => util_to_sat.run(settings),
+      Self::SatToUtil(sat_to_util) => sat_to_util.run(settings),
     }
   }
 }
