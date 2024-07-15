@@ -7,6 +7,7 @@ pub enum Outgoing {
   Rune { decimal: Decimal, rune: SpacedRune },
   Sat(Sat),
   SatPoint(SatPoint),
+  Util(u128),
 }
 
 impl Display for Outgoing {
@@ -17,6 +18,7 @@ impl Display for Outgoing {
       Self::Rune { decimal, rune } => write!(f, "{decimal}:{rune}"),
       Self::Sat(sat) => write!(f, "{}", sat.name()),
       Self::SatPoint(satpoint) => satpoint.fmt(f),
+      Self::Util(utils) => write!(f, "{} util", utils),
     }
   }
 }
@@ -61,6 +63,19 @@ impl FromStr for Outgoing {
         "
       )
       .unwrap();
+      static ref UTIL: Regex = Regex::new(
+        r"(?x)
+        ^
+        (
+          \d+
+        )
+        \ ?
+        (util)
+        (s)?
+        $
+        "
+      )
+      .unwrap();
     }
 
     Ok(if re::SAT_NAME.is_match(s) {
@@ -76,6 +91,8 @@ impl FromStr for Outgoing {
         decimal: captures[1].parse()?,
         rune: captures[2].parse()?,
       }
+    } else if let Some(captures) = UTIL.captures(s) {
+      Self::Util(captures[1].parse()?)
     } else {
       bail!("unrecognized outgoing: {s}");
     })
@@ -166,6 +183,11 @@ mod tests {
         decimal: "1.1".parse().unwrap(),
       },
     );
+
+    case("100 util", Outgoing::Util(100));
+    case("100util", Outgoing::Util(100));
+    case("100 utils", Outgoing::Util(100));
+    case("100utils", Outgoing::Util(100));
   }
 
   #[test]

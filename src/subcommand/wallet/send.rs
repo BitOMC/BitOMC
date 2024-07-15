@@ -70,6 +70,9 @@ impl Send {
         self.fee_rate,
         true,
       )?,
+      Outgoing::Util(utils) => {
+        Self::create_unsigned_send_utils_transaction(&wallet, address, utils, self.fee_rate)?
+      }
     };
 
     let unspent_outputs = wallet.utxos();
@@ -156,6 +159,19 @@ impl Send {
     )?)?;
 
     Ok(unsigned_transaction)
+  }
+
+  fn create_unsigned_send_utils_transaction(
+    wallet: &Wallet,
+    destination: Address,
+    utils: u128,
+    fee_rate: FeeRate,
+  ) -> Result<Transaction> {
+    let state = wallet.get_util_state()?;
+    let base_value = 1_000_000_000_000;
+    let sats = (utils * base_value + state.utils_per_sat - 1) / state.utils_per_sat;
+    let amount = Amount::from_sat(sats as u64);
+    Self::create_unsigned_send_amount_transaction(wallet, destination, amount, fee_rate)
   }
 
   fn create_unsigned_send_satpoint_transaction(

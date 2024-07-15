@@ -296,14 +296,13 @@ impl Wallet {
   pub(crate) fn get_util_state(&self) -> Result<api::UtilState> {
     let response = self
       .ord_client
-      .get(self.rpc_url.join("/status").unwrap())
+      .get(self.rpc_url.join("/util").unwrap())
       .header(reqwest::header::ACCEPT, "application/json")
       .send()?;
 
     if !response.status().is_success() {
       bail!("wallet failed to fetch util state: {}", response.text()?);
     }
-
     Ok(serde_json::from_str::<api::UtilState>(&response.text()?)?)
   }
 
