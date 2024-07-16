@@ -18,7 +18,6 @@ pub mod wallet_constructor;
 pub(crate) struct Wallet {
   bitcoin_client: Client,
   has_rune_index: bool,
-  has_sat_index: bool,
   rpc_url: Url,
   utxos: BTreeMap<OutPoint, TxOut>,
   ord_client: reqwest::blocking::Client,
@@ -29,24 +28,6 @@ pub(crate) struct Wallet {
 }
 
 impl Wallet {
-  pub(crate) fn get_output_sat_ranges(&self) -> Result<Vec<(OutPoint, Vec<(u64, u64)>)>> {
-    ensure!(
-      self.has_sat_index,
-      "ord index must be built with `--index-sats` to use `--sat`"
-    );
-
-    let mut output_sat_ranges = Vec::new();
-    for (output, info) in self.output_info.iter() {
-      if let Some(sat_ranges) = &info.sat_ranges {
-        output_sat_ranges.push((*output, sat_ranges.clone()));
-      } else {
-        bail!("output {output} in wallet but is spent according to ord server");
-      }
-    }
-
-    Ok(output_sat_ranges)
-  }
-
   pub(crate) fn bitcoin_client(&self) -> &Client {
     &self.bitcoin_client
   }

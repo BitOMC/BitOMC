@@ -8,7 +8,6 @@ pub mod balance;
 pub mod convert;
 pub mod create;
 pub mod dump;
-mod label;
 pub mod mint;
 pub mod outputs;
 pub mod receive;
@@ -48,8 +47,6 @@ pub(crate) enum Subcommand {
   Create(create::Create),
   #[command(about = "Dump wallet descriptors")]
   Dump,
-  #[command(about = "Export output labels")]
-  Label,
   #[command(about = "Mint a rune")]
   Mint(mint::Mint),
   #[command(about = "List all unspent outputs in wallet")]
@@ -95,7 +92,6 @@ impl WalletCommand {
       Subcommand::LookupConversionChain => convert::get_chain(wallet),
       Subcommand::Create(_) | Subcommand::Restore(_) => unreachable!(),
       Subcommand::Dump => dump::run(wallet),
-      Subcommand::Label => label::run(wallet),
       Subcommand::Mint(mint) => mint.run(wallet),
       Subcommand::Outputs => outputs::run(wallet),
       Subcommand::Receive(receive) => receive.run(wallet),
