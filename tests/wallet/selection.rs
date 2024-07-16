@@ -73,7 +73,6 @@ fn sending_rune_does_not_send_runic_utxos() {
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 10000,
-      ordinal: 0,
       runic: Some(0),
       runes: Some(BTreeMap::new()),
       total: 10000,
