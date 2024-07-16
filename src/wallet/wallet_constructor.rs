@@ -119,13 +119,7 @@ impl WalletConstructor {
       .into_iter()
       .zip(serde_json::from_str::<Vec<api::Output>>(&response.text()?)?)
       .collect();
-
-    for (output, info) in &output_info {
-      if !info.indexed {
-        bail!("output in wallet but not in ord server: {output}");
-      }
-    }
-
+      
     Ok(output_info)
   }
 

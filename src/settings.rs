@@ -293,7 +293,7 @@ impl Settings {
       hidden: None,
       http_port: None,
       index: None,
-      index_addresses: true,
+      index_addresses: false,
       index_cache_size: None,
       index_runes: true,
       index_sats: false,
