@@ -4,7 +4,7 @@ use {
 };
 
 pub use crate::{
-  subcommand::decode::RawOutput as Decode,
+  subcommand::decode::Output as Decode,
   templates::{
     BlocksHtml as Blocks, RuneHtml as Rune, RunesHtml as Runes, StatusHtml as Status,
     TransactionHtml as Transaction,

@@ -49,7 +49,6 @@ mod expected;
 mod test_server;
 
 mod balances;
-mod decode;
 mod index;
 mod info;
 mod json_api;

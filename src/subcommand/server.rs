@@ -995,12 +995,10 @@ impl Server {
         .get_transaction(txid)?
         .ok_or_not_found(|| format!("transaction {txid}"))?;
 
-      let inscriptions = ParsedEnvelope::from_transaction(&transaction);
       let runestone = Runestone::decipher(&transaction);
 
       Ok(if accept_json {
         Json(api::Decode {
-          inscriptions,
           runestone,
         })
         .into_response()
