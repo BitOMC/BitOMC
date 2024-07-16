@@ -3,7 +3,6 @@ use super::*;
 pub mod balances;
 pub mod decode;
 pub mod env;
-pub mod find;
 pub mod index;
 pub mod runes;
 pub(crate) mod server;

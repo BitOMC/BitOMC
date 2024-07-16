@@ -12,7 +12,7 @@ use {
   },
   super::*,
   crate::{
-    subcommand::{find::FindRangeOutput, server::query},
+    subcommand::server::query,
     templates::StatusHtml,
   },
   bitcoin::block::Header,
@@ -1536,59 +1536,6 @@ impl Index {
     }
 
     Ok(None)
-  }
-
-  pub fn find_range(
-    &self,
-    range_start: Sat,
-    range_end: Sat,
-  ) -> Result<Option<Vec<FindRangeOutput>>> {
-    let range_start = range_start.0;
-    let range_end = range_end.0;
-    let rtx = self.begin_read()?;
-
-    if rtx.block_count()? < Sat(range_end - 1).height().n() + 1 {
-      return Ok(None);
-    }
-
-    let Some(mut remaining_sats) = range_end.checked_sub(range_start) else {
-      return Err(anyhow!("range end is before range start"));
-    };
-
-    let outpoint_to_sat_ranges = rtx.0.open_table(OUTPOINT_TO_SAT_RANGES)?;
-
-    let mut result = Vec::new();
-    for range in outpoint_to_sat_ranges.range::<&[u8; 36]>(&[0; 36]..)? {
-      let (outpoint_entry, sat_ranges_entry) = range?;
-
-      let mut offset = 0;
-      for sat_range in sat_ranges_entry.value().chunks_exact(11) {
-        let (start, end) = SatRange::load(sat_range.try_into().unwrap());
-
-        if end > range_start && start < range_end {
-          let overlap_start = start.max(range_start);
-          let overlap_end = end.min(range_end);
-
-          result.push(FindRangeOutput {
-            start: overlap_start,
-            size: overlap_end - overlap_start,
-            satpoint: SatPoint {
-              outpoint: Entry::load(*outpoint_entry.value()),
-              offset: offset + overlap_start - start,
-            },
-          });
-
-          remaining_sats -= overlap_end - overlap_start;
-
-          if remaining_sats == 0 {
-            break;
-          }
-        }
-        offset += end - start;
-      }
-    }
-
-    Ok(Some(result))
   }
 
   pub fn list(&self, outpoint: OutPoint) -> Result<Option<Vec<(u64, u64)>>> {
