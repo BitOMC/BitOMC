@@ -1,25 +1,19 @@
 use {
   super::*,
-  crate::wallet::{batch, wallet_constructor::WalletConstructor, Wallet},
+  crate::wallet::{wallet_constructor::WalletConstructor, Wallet},
   bitcoincore_rpc::bitcoincore_rpc_json::ListDescriptorsResult,
-  shared_args::SharedArgs,
 };
 
 pub mod balance;
-mod batch_command;
-pub mod cardinals;
 pub mod convert;
 pub mod create;
 pub mod dump;
-pub mod inscribe;
-pub mod inscriptions;
 mod label;
 pub mod mint;
 pub mod outputs;
 pub mod receive;
 pub mod restore;
 pub mod runics;
-pub mod sats;
 pub mod send;
 mod shared_args;
 pub mod transactions;
@@ -44,10 +38,6 @@ pub(crate) struct WalletCommand {
 pub(crate) enum Subcommand {
   #[command(about = "Get wallet balance")]
   Balance,
-  // #[command(about = "Create inscriptions and runes")]
-  // Batch(batch_command::Batch),
-  // #[command(about = "List unspent cardinal outputs in wallet")]
-  // Cardinals,
   #[command(about = "Convert between tighten and ease using an exact input")]
   ConvertExactInput(convert::ConvertExactInput),
   #[command(about = "Convert between tighten and ease using an exact output")]
@@ -58,10 +48,6 @@ pub(crate) enum Subcommand {
   Create(create::Create),
   #[command(about = "Dump wallet descriptors")]
   Dump,
-  // #[command(about = "Create inscription")]
-  // Inscribe(inscribe::Inscribe),
-  // #[command(about = "List wallet inscriptions")]
-  // Inscriptions,
   #[command(about = "Export output labels")]
   Label,
   #[command(about = "Mint a rune")]
@@ -74,8 +60,6 @@ pub(crate) enum Subcommand {
   Restore(restore::Restore),
   #[command(about = "List unspent runic outputs in wallet")]
   Runics,
-  #[command(about = "List wallet satoshis")]
-  Sats(sats::Sats),
   #[command(about = "Send sat or inscription")]
   Send(send::Send),
   #[command(about = "See wallet transactions")]
@@ -106,21 +90,16 @@ impl WalletCommand {
 
     match self.subcommand {
       Subcommand::Balance => balance::run(wallet),
-      // Subcommand::Batch(batch) => batch.run(wallet),
-      // Subcommand::Cardinals => cardinals::run(wallet),
       Subcommand::ConvertExactInput(convert) => convert.run(wallet),
       Subcommand::ConvertExactOutput(convert) => convert.run(wallet),
       Subcommand::LookupConversionChain => convert::get_chain(wallet),
       Subcommand::Create(_) | Subcommand::Restore(_) => unreachable!(),
       Subcommand::Dump => dump::run(wallet),
-      // Subcommand::Inscribe(inscribe) => inscribe.run(wallet),
-      // Subcommand::Inscriptions => inscriptions::run(wallet),
       Subcommand::Label => label::run(wallet),
       Subcommand::Mint(mint) => mint.run(wallet),
       Subcommand::Outputs => outputs::run(wallet),
       Subcommand::Receive(receive) => receive.run(wallet),
       Subcommand::Runics => runics::run(wallet),
-      Subcommand::Sats(sats) => sats.run(wallet),
       Subcommand::Send(send) => send.run(wallet),
       Subcommand::Transactions(transactions) => transactions.run(wallet),
     }

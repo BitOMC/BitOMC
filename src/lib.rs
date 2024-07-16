@@ -17,7 +17,6 @@ use {
     blocktime::Blocktime,
     decimal::Decimal,
     deserialize_from_str::DeserializeFromStr,
-    index::BitcoinCoreRpcResultExt,
     inscriptions::{
       inscription_id,
       media::{self, ImageRendering, Media},
@@ -34,7 +33,7 @@ use {
   bitcoin::{
     address::{Address, NetworkUnchecked},
     blockdata::{
-      constants::{DIFFCHANGE_INTERVAL, MAX_SCRIPT_ELEMENT_SIZE, SUBSIDY_HALVING_INTERVAL},
+      constants::{DIFFCHANGE_INTERVAL, SUBSIDY_HALVING_INTERVAL},
       locktime::absolute::LockTime,
     },
     consensus::{self, Decodable, Encodable},
@@ -51,8 +50,8 @@ use {
   http::HeaderMap,
   lazy_static::lazy_static,
   ordinals::{
-    varint, Artifact, Charm, Edict, Epoch, Etching, Height, Pile, Rarity, Rune, RuneId, Runestone,
-    Sat, SatPoint, SpacedRune, Terms,
+    varint, Artifact, Charm, Edict, Epoch, Height, Pile, Rarity, Rune, RuneId, Runestone, Sat,
+    SatPoint, SpacedRune, Terms,
   },
   regex::Regex,
   reqwest::Url,
@@ -65,7 +64,6 @@ use {
     fmt::{self, Display, Formatter},
     fs,
     io::{self, Cursor, Read},
-    mem,
     net::ToSocketAddrs,
     path::{Path, PathBuf},
     process::{self, Command, Stdio},

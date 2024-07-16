@@ -1,7 +1,4 @@
-use {
-  super::*,
-  bitcoin::BlockHash,
-};
+use {super::*, bitcoin::BlockHash};
 
 #[test]
 fn json_request_fails_when_disabled() {

@@ -1,23 +1,13 @@
 use {
   super::*,
   base64::{self, Engine},
-  batch::ParentInfo,
+  bitcoin::bip32::{ChildNumber, DerivationPath, ExtendedPrivKey, Fingerprint},
   bitcoin::secp256k1::{All, Secp256k1},
-  bitcoin::{
-    bip32::{ChildNumber, DerivationPath, ExtendedPrivKey, Fingerprint},
-    psbt::Psbt,
-  },
   bitcoincore_rpc::bitcoincore_rpc_json::{Descriptor, ImportDescriptors, Timestamp},
-  entry::{EtchingEntry, EtchingEntryValue},
   fee_rate::FeeRate,
   index::entry::Entry,
-  indicatif::{ProgressBar, ProgressStyle},
-  log::log_enabled,
   miniscript::descriptor::{DescriptorSecretKey, DescriptorXKey, Wildcard},
-  redb::{Database, DatabaseError, RepairSession, StorageError, TableDefinition},
   reqwest::header,
-  std::sync::Once,
-  transaction_builder::TransactionBuilder,
 };
 
 pub mod batch;
@@ -25,40 +15,8 @@ pub mod entry;
 pub mod transaction_builder;
 pub mod wallet_constructor;
 
-const SCHEMA_VERSION: u64 = 1;
-
-define_table! { RUNE_TO_ETCHING, u128, EtchingEntryValue }
-define_table! { STATISTICS, u64, u64 }
-
-#[derive(Copy, Clone)]
-pub(crate) enum Statistic {
-  Schema = 0,
-}
-
-impl Statistic {
-  fn key(self) -> u64 {
-    self.into()
-  }
-}
-
-impl From<Statistic> for u64 {
-  fn from(statistic: Statistic) -> Self {
-    statistic as u64
-  }
-}
-
-#[derive(Debug, PartialEq)]
-pub(crate) enum Maturity {
-  BelowMinimumHeight(u64),
-  CommitNotFound,
-  CommitSpent(Txid),
-  ConfirmationsPending(u32),
-  Mature,
-}
-
 pub(crate) struct Wallet {
   bitcoin_client: Client,
-  database: Database,
   has_rune_index: bool,
   has_sat_index: bool,
   rpc_url: Url,
@@ -165,54 +123,6 @@ impl Wallet {
 
   pub(crate) fn inscription_info(&self) -> BTreeMap<InscriptionId, api::Inscription> {
     self.inscription_info.clone()
-  }
-
-  pub(crate) fn inscription_exists(&self, inscription_id: InscriptionId) -> Result<bool> {
-    Ok(
-      !self
-        .ord_client
-        .get(
-          self
-            .rpc_url
-            .join(&format!("/inscription/{inscription_id}"))
-            .unwrap(),
-        )
-        .send()?
-        .status()
-        .is_client_error(),
-    )
-  }
-
-  pub(crate) fn get_parent_info(
-    &self,
-    parent: Option<InscriptionId>,
-  ) -> Result<Option<ParentInfo>> {
-    if let Some(parent_id) = parent {
-      if !self.inscription_exists(parent_id)? {
-        return Err(anyhow!("parent {parent_id} does not exist"));
-      }
-
-      let satpoint = self
-        .inscription_info
-        .get(&parent_id)
-        .ok_or_else(|| anyhow!("parent {parent_id} not in wallet"))?
-        .satpoint;
-
-      let tx_out = self
-        .utxos
-        .get(&satpoint.outpoint)
-        .ok_or_else(|| anyhow!("parent {parent_id} not in wallet"))?
-        .clone();
-
-      Ok(Some(ParentInfo {
-        destination: self.get_change_address()?,
-        id: parent_id,
-        location: satpoint,
-        tx_out,
-      }))
-    } else {
-      Ok(None)
-    }
   }
 
   pub(crate) fn get_runic_outputs(&self) -> Result<BTreeSet<OutPoint>> {
@@ -337,130 +247,12 @@ impl Wallet {
     )
   }
 
-  pub(crate) fn has_sat_index(&self) -> bool {
-    self.has_sat_index
-  }
-
   pub(crate) fn has_rune_index(&self) -> bool {
     self.has_rune_index
   }
 
   pub(crate) fn chain(&self) -> Chain {
     self.settings.chain()
-  }
-
-  pub(crate) fn integration_test(&self) -> bool {
-    self.settings.integration_test()
-  }
-
-  fn is_above_minimum_at_height(&self, rune: Rune) -> Result<bool> {
-    Ok(
-      rune
-        >= Rune::minimum_at_height(
-          self.chain().network(),
-          Height(u32::try_from(self.bitcoin_client().get_block_count()? + 1).unwrap()),
-        ),
-    )
-  }
-
-  pub(crate) fn check_maturity(&self, rune: Rune, commit: &Transaction) -> Result<Maturity> {
-    Ok(
-      if let Some(commit_tx) = self
-        .bitcoin_client()
-        .get_transaction(&commit.txid(), Some(true))
-        .into_option()?
-      {
-        let current_confirmations = u32::try_from(commit_tx.info.confirmations)?;
-        if self
-          .bitcoin_client()
-          .get_tx_out(&commit.txid(), 0, Some(true))?
-          .is_none()
-        {
-          Maturity::CommitSpent(commit_tx.info.txid)
-        } else if !self.is_above_minimum_at_height(rune)? {
-          Maturity::BelowMinimumHeight(self.bitcoin_client().get_block_count()? + 1)
-        } else if current_confirmations + 1 < Runestone::COMMIT_CONFIRMATIONS.into() {
-          Maturity::ConfirmationsPending(
-            u32::from(Runestone::COMMIT_CONFIRMATIONS) - current_confirmations - 1,
-          )
-        } else {
-          Maturity::Mature
-        }
-      } else {
-        Maturity::CommitNotFound
-      },
-    )
-  }
-
-  pub(crate) fn wait_for_maturation(&self, rune: Rune) -> Result<batch::Output> {
-    let Some(entry) = self.load_etching(rune)? else {
-      bail!("no etching found");
-    };
-
-    eprintln!(
-      "Waiting for rune {} commitment {} to mature…",
-      rune,
-      entry.commit.txid()
-    );
-
-    let mut pending_confirmations: u32 = Runestone::COMMIT_CONFIRMATIONS.into();
-
-    let progress = ProgressBar::new(pending_confirmations.into()).with_style(
-      ProgressStyle::default_bar()
-        .template("Maturing in...[{eta}] {spinner:.green} [{bar:40.cyan/blue}] {pos}/{len}")
-        .unwrap()
-        .progress_chars("█▓▒░ "),
-    );
-
-    loop {
-      if SHUTTING_DOWN.load(atomic::Ordering::Relaxed) {
-        eprintln!("Suspending batch. Run `ord wallet resume` to continue.");
-        return Ok(entry.output);
-      }
-
-      match self.check_maturity(rune, &entry.commit)? {
-        Maturity::Mature => {
-          progress.finish_with_message("Rune matured, submitting...");
-          break;
-        }
-        Maturity::ConfirmationsPending(remaining) => {
-          if remaining < pending_confirmations {
-            pending_confirmations = remaining;
-            progress.inc(1);
-          }
-        }
-        Maturity::CommitSpent(txid) => {
-          self.clear_etching(rune)?;
-          bail!("rune commitment {} spent, can't send reveal tx", txid);
-        }
-        _ => {}
-      }
-
-      if !self.integration_test() {
-        thread::sleep(Duration::from_secs(5));
-      }
-    }
-
-    self.send_etching(rune, &entry)
-  }
-
-  pub(crate) fn send_etching(&self, rune: Rune, entry: &EtchingEntry) -> Result<batch::Output> {
-    match self.bitcoin_client().send_raw_transaction(&entry.reveal) {
-      Ok(txid) => txid,
-      Err(err) => {
-        return Err(anyhow!(
-          "Failed to send reveal transaction: {err}\nCommit tx {} will be recovered once mined",
-          entry.commit.txid()
-        ))
-      }
-    };
-
-    self.clear_etching(rune)?;
-
-    Ok(batch::Output {
-      reveal_broadcast: true,
-      ..entry.output.clone()
-    })
   }
 
   fn check_descriptors(wallet_name: &str, descriptors: Vec<Descriptor>) -> Result<Vec<Descriptor>> {
@@ -618,144 +410,5 @@ impl Wallet {
       version % 10000 / 100,
       version % 100
     )
-  }
-
-  pub(crate) fn open_database(wallet_name: &String, settings: &Settings) -> Result<Database> {
-    let path = settings
-      .data_dir()
-      .join("wallets")
-      .join(format!("{wallet_name}.redb"));
-
-    if let Err(err) = fs::create_dir_all(path.parent().unwrap()) {
-      bail!(
-        "failed to create data dir `{}`: {err}",
-        path.parent().unwrap().display()
-      );
-    }
-
-    let db_path = path.clone().to_owned();
-    let once = Once::new();
-    let progress_bar = Mutex::new(None);
-    let integration_test = settings.integration_test();
-
-    let repair_callback = move |progress: &mut RepairSession| {
-      once.call_once(|| {
-        println!(
-          "Wallet database file `{}` needs recovery. This can take some time.",
-          db_path.display()
-        )
-      });
-
-      if !(cfg!(test) || log_enabled!(log::Level::Info) || integration_test) {
-        let mut guard = progress_bar.lock().unwrap();
-
-        let progress_bar = guard.get_or_insert_with(|| {
-          let progress_bar = ProgressBar::new(100);
-          progress_bar.set_style(
-            ProgressStyle::with_template("[repairing database] {wide_bar} {pos}/{len}").unwrap(),
-          );
-          progress_bar
-        });
-
-        #[allow(clippy::cast_possible_truncation, clippy::cast_sign_loss)]
-        progress_bar.set_position((progress.progress() * 100.0) as u64);
-      }
-    };
-
-    let database = match Database::builder()
-      .set_repair_callback(repair_callback)
-      .open(&path)
-    {
-      Ok(database) => {
-        {
-          let schema_version = database
-            .begin_read()?
-            .open_table(STATISTICS)?
-            .get(&Statistic::Schema.key())?
-            .map(|x| x.value())
-            .unwrap_or(0);
-
-          match schema_version.cmp(&SCHEMA_VERSION) {
-            cmp::Ordering::Less =>
-              bail!(
-                "wallet database at `{}` appears to have been built with an older, incompatible version of ord, consider deleting and rebuilding the index: index schema {schema_version}, ord schema {SCHEMA_VERSION}",
-                path.display()
-              ),
-            cmp::Ordering::Greater =>
-              bail!(
-                "wallet database at `{}` appears to have been built with a newer, incompatible version of ord, consider updating ord: index schema {schema_version}, ord schema {SCHEMA_VERSION}",
-                path.display()
-              ),
-            cmp::Ordering::Equal => {
-            }
-          }
-        }
-
-        database
-      }
-      Err(DatabaseError::Storage(StorageError::Io(error)))
-        if error.kind() == io::ErrorKind::NotFound =>
-      {
-        let database = Database::builder().create(&path)?;
-
-        let tx = database.begin_write()?;
-
-        tx.open_table(RUNE_TO_ETCHING)?;
-
-        tx.open_table(STATISTICS)?
-          .insert(&Statistic::Schema.key(), &SCHEMA_VERSION)?;
-
-        tx.commit()?;
-
-        database
-      }
-      Err(error) => bail!("failed to open wallet database: {error}"),
-    };
-
-    Ok(database)
-  }
-
-  pub(crate) fn save_etching(
-    &self,
-    rune: &Rune,
-    commit: &Transaction,
-    reveal: &Transaction,
-    output: batch::Output,
-  ) -> Result {
-    let wtx = self.database.begin_write()?;
-
-    wtx.open_table(RUNE_TO_ETCHING)?.insert(
-      rune.0,
-      EtchingEntry {
-        commit: commit.clone(),
-        reveal: reveal.clone(),
-        output,
-      }
-      .store(),
-    )?;
-
-    wtx.commit()?;
-
-    Ok(())
-  }
-
-  pub(crate) fn load_etching(&self, rune: Rune) -> Result<Option<EtchingEntry>> {
-    let rtx = self.database.begin_read()?;
-
-    Ok(
-      rtx
-        .open_table(RUNE_TO_ETCHING)?
-        .get(rune.0)?
-        .map(|result| EtchingEntry::load(result.value())),
-    )
-  }
-
-  pub(crate) fn clear_etching(&self, rune: Rune) -> Result {
-    let wtx = self.database.begin_write()?;
-
-    wtx.open_table(RUNE_TO_ETCHING)?.remove(rune.0)?;
-    wtx.commit()?;
-
-    Ok(())
   }
 }

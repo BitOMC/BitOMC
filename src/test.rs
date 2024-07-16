@@ -106,22 +106,6 @@ pub(crate) fn inscription_id(n: u32) -> InscriptionId {
   format!("{}i{n}", hex.repeat(64)).parse().unwrap()
 }
 
-pub(crate) fn envelope(payload: &[&[u8]]) -> Witness {
-  let mut builder = script::Builder::new()
-    .push_opcode(opcodes::OP_FALSE)
-    .push_opcode(opcodes::all::OP_IF);
-
-  for data in payload {
-    let mut buf = PushBytesBuf::new();
-    buf.extend_from_slice(data).unwrap();
-    builder = builder.push_slice(buf);
-  }
-
-  let script = builder.push_opcode(opcodes::all::OP_ENDIF).into_script();
-
-  Witness::from_slice(&[script.into_bytes(), Vec::new()])
-}
-
 #[allow(dead_code)]
 pub(crate) fn default_address(chain: Chain) -> Address {
   Address::from_script(

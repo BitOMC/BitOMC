@@ -59,11 +59,6 @@ impl ContextBuilder {
     self
   }
 
-  pub(crate) fn tempdir(mut self, tempdir: TempDir) -> Self {
-    self.tempdir = Some(tempdir);
-    self
-  }
-
   pub(crate) fn event_sender(mut self, sender: tokio::sync::mpsc::Sender<Event>) -> Self {
     self.event_sender = Some(sender);
     self
@@ -99,19 +94,6 @@ impl Context {
       self.index.update().unwrap();
     }
     blocks
-  }
-
-  pub(crate) fn mine_blocks_with_subsidy(&self, n: u64, subsidy: u64) -> Vec<Block> {
-    let blocks = self.core.mine_blocks_with_subsidy(n, subsidy);
-    self.index.update().unwrap();
-    blocks
-  }
-
-  pub(crate) fn configurations() -> Vec<Context> {
-    vec![
-      Context::builder().build(),
-      Context::builder().arg("--index-sats").build(),
-    ]
   }
 
   #[track_caller]

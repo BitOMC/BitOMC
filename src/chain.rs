@@ -33,15 +33,6 @@ impl Chain {
     }
   }
 
-  pub(crate) fn first_inscription_height(self) -> u32 {
-    match self {
-      Self::Mainnet => 767430,
-      Self::Regtest => 0,
-      Self::Signet => 112402,
-      Self::Testnet => 2413343,
-    }
-  }
-
   pub(crate) fn first_rune_height(self) -> u32 {
     Rune::first_rune_height(self.into())
   }

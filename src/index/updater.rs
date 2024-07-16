@@ -165,7 +165,7 @@ impl<'index> Updater<'index> {
 
     let client = index.settings.bitcoin_rpc_client(None)?;
 
-    let first_inscription_height = index.first_inscription_height;
+    let first_rune_height = index.first_rune_height;
 
     thread::spawn(move || loop {
       if let Some(height_limit) = height_limit {
@@ -174,7 +174,7 @@ impl<'index> Updater<'index> {
         }
       }
 
-      match Self::get_block_with_retries(&client, height, index_sats, first_inscription_height) {
+      match Self::get_block_with_retries(&client, height, index_sats, first_rune_height) {
         Ok(Some(block)) => {
           if let Err(err) = tx.send(block.into()) {
             log::info!("Block receiver disconnected: {err}");
@@ -197,7 +197,7 @@ impl<'index> Updater<'index> {
     client: &Client,
     height: u32,
     index_sats: bool,
-    first_inscription_height: u32,
+    first_rune_height: u32,
   ) -> Result<Option<Block>> {
     let mut errors = 0;
     loop {
@@ -207,7 +207,7 @@ impl<'index> Updater<'index> {
         .and_then(|option| {
           option
             .map(|hash| {
-              if index_sats || height >= first_inscription_height {
+              if index_sats || height >= first_rune_height {
                 Ok(client.get_block(&hash)?)
               } else {
                 Ok(Block {
@@ -348,8 +348,8 @@ impl<'index> Updater<'index> {
 
     let mut outpoint_to_txout = wtx.open_table(OUTPOINT_TO_TXOUT)?;
 
-    let index_inscriptions = self.height >= self.index.first_inscription_height
-      && self.index.settings.index_inscriptions();
+    let index_inscriptions =
+      self.height >= self.index.first_rune_height && self.index.settings.index_inscriptions();
 
     // If the receiver still has inputs something went wrong in the last
     // block and we shouldn't recover from this and commit the last block

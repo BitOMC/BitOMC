@@ -247,7 +247,7 @@ impl CommandBuilder {
   fn run(self) -> (TempDir, String) {
     self.spawn().run()
   }
-  
+
   #[track_caller]
   pub(crate) fn run_and_extract_stdout(self) -> String {
     self.run().1

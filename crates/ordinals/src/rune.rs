@@ -44,14 +44,13 @@ impl Rune {
   }
 
   pub fn first_rune_height(network: Network) -> u32 {
-    SUBSIDY_HALVING_INTERVAL
-      * match network {
-        Network::Bitcoin => 4,
-        Network::Regtest => 0,
-        Network::Signet => 0,
-        Network::Testnet => 12,
-        _ => 0,
-      }
+    match network {
+      Network::Bitcoin => 854_000,
+      Network::Regtest => 0,
+      Network::Signet => 0,
+      Network::Testnet => 12 * SUBSIDY_HALVING_INTERVAL,
+      _ => 0,
+    }
   }
 
   pub fn minimum_at_height(chain: Network, height: Height) -> Self {

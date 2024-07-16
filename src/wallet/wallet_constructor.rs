@@ -45,8 +45,6 @@ impl WalletConstructor {
   }
 
   pub(crate) fn build(self) -> Result<Wallet> {
-    let database = Wallet::open_database(&self.name, &self.settings)?;
-
     let bitcoin_client = {
       let client =
         Wallet::check_version(self.settings.bitcoin_rpc_client(Some(self.name.clone()))?)?;
@@ -99,7 +97,6 @@ impl WalletConstructor {
 
     Ok(Wallet {
       bitcoin_client,
-      database,
       has_rune_index: status.rune_index,
       has_sat_index: status.sat_index,
       inscription_info,
