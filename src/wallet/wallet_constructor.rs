@@ -86,19 +86,11 @@ impl WalletConstructor {
 
     let output_info = self.get_output_info(utxos.clone().into_keys().collect())?;
 
-    let inscriptions = output_info
-      .iter()
-      .flat_map(|(_output, info)| info.inscriptions.clone())
-      .collect::<Vec<InscriptionId>>();
-
-    let (inscriptions, _) = self.get_inscriptions(&inscriptions)?;
-
     let status = self.get_server_status()?;
 
     Ok(Wallet {
       bitcoin_client,
       has_rune_index: status.rune_index,
-      inscriptions,
       locked_utxos,
       ord_client: self.ord_client,
       output_info,
@@ -121,33 +113,6 @@ impl WalletConstructor {
       .collect();
       
     Ok(output_info)
-  }
-
-  fn get_inscriptions(
-    &self,
-    inscriptions: &Vec<InscriptionId>,
-  ) -> Result<(
-    BTreeMap<SatPoint, Vec<InscriptionId>>,
-    BTreeMap<InscriptionId, api::Inscription>,
-  )> {
-    let response = self.post("/inscriptions", inscriptions)?;
-
-    if !response.status().is_success() {
-      bail!("wallet failed get inscriptions: {}", response.text()?);
-    }
-
-    let mut inscriptions = BTreeMap::new();
-    let mut inscription_infos = BTreeMap::new();
-    for info in serde_json::from_str::<Vec<api::Inscription>>(&response.text()?)? {
-      inscriptions
-        .entry(info.satpoint)
-        .or_insert_with(Vec::new)
-        .push(info.id);
-
-      inscription_infos.insert(info.id, info);
-    }
-
-    Ok((inscriptions, inscription_infos))
   }
 
   fn get_utxos(bitcoin_client: &Client) -> Result<BTreeMap<OutPoint, TxOut>> {

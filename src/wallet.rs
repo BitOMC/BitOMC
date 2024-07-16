@@ -20,7 +20,6 @@ pub(crate) struct Wallet {
   utxos: BTreeMap<OutPoint, TxOut>,
   ord_client: reqwest::blocking::Client,
   output_info: BTreeMap<OutPoint, api::Output>,
-  inscriptions: BTreeMap<SatPoint, Vec<InscriptionId>>,
   locked_utxos: BTreeMap<OutPoint, TxOut>,
   settings: Settings,
 }
@@ -55,10 +54,6 @@ impl Wallet {
     }
 
     Ok(())
-  }
-
-  pub(crate) fn inscriptions(&self) -> &BTreeMap<SatPoint, Vec<InscriptionId>> {
-    &self.inscriptions
   }
 
   pub(crate) fn get_runic_outputs(&self) -> Result<BTreeSet<OutPoint>> {
