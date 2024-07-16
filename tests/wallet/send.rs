@@ -6,7 +6,7 @@ fn send_on_mainnnet_works_with_wallet_named_foo() {
 
   let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  let txid = core.mine_blocks(1)[0].txdata[0].txid();
+  core.mine_blocks(1);
 
   CommandBuilder::new("wallet --name foo create")
     .core(&core)
@@ -14,7 +14,7 @@ fn send_on_mainnnet_works_with_wallet_named_foo() {
     .run_and_deserialize_output::<Create>();
 
   CommandBuilder::new(format!(
-    "wallet --name foo send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 {txid}:0:0"
+    "wallet --name foo send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
   ))
   .core(&core)
   .ord(&ord)
@@ -29,10 +29,10 @@ fn send_addresses_must_be_valid_for_network() {
 
   create_wallet(&core, &ord);
 
-  let txid = core.mine_blocks_with_subsidy(1, 1_000)[0].txdata[0].txid();
+  core.mine_blocks_with_subsidy(1, 1_000);
 
   CommandBuilder::new(format!(
-    "wallet send --fee-rate 1 tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz {txid}:0:0"
+    "wallet send --fee-rate 1 tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz 1btc"
   ))
   .core(&core)
     .ord(&ord)
@@ -51,10 +51,10 @@ fn send_on_mainnnet_works_with_wallet_named_ord() {
 
   create_wallet(&core, &ord);
 
-  let txid = core.mine_blocks_with_subsidy(1, 1_000_000)[0].txdata[0].txid();
+  core.mine_blocks_with_subsidy(1, 1_000_000);
 
   let output = CommandBuilder::new(format!(
-    "wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 {txid}:0:0"
+    "wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1000sat"
   ))
   .core(&core)
   .ord(&ord)

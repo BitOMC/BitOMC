@@ -91,7 +91,7 @@ impl WalletConstructor {
       .flat_map(|(_output, info)| info.inscriptions.clone())
       .collect::<Vec<InscriptionId>>();
 
-    let (inscriptions, inscription_info) = self.get_inscriptions(&inscriptions)?;
+    let (inscriptions, _) = self.get_inscriptions(&inscriptions)?;
 
     let status = self.get_server_status()?;
 
@@ -99,7 +99,6 @@ impl WalletConstructor {
       bitcoin_client,
       has_rune_index: status.rune_index,
       has_sat_index: status.sat_index,
-      inscription_info,
       inscriptions,
       locked_utxos,
       ord_client: self.ord_client,

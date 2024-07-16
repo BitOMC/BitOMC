@@ -22,7 +22,6 @@ pub(crate) struct Wallet {
   rpc_url: Url,
   utxos: BTreeMap<OutPoint, TxOut>,
   ord_client: reqwest::blocking::Client,
-  inscription_info: BTreeMap<InscriptionId, api::Inscription>,
   output_info: BTreeMap<OutPoint, api::Output>,
   inscriptions: BTreeMap<SatPoint, Vec<InscriptionId>>,
   locked_utxos: BTreeMap<OutPoint, TxOut>,
@@ -46,34 +45,6 @@ impl Wallet {
     }
 
     Ok(output_sat_ranges)
-  }
-
-  pub(crate) fn find_sat_in_outputs(&self, sat: Sat) -> Result<SatPoint> {
-    ensure!(
-      self.has_sat_index,
-      "ord index must be built with `--index-sats` to use `--sat`"
-    );
-
-    for (outpoint, info) in self.output_info.iter() {
-      if let Some(sat_ranges) = &info.sat_ranges {
-        let mut offset = 0;
-        for (start, end) in sat_ranges {
-          if start <= &sat.n() && &sat.n() < end {
-            return Ok(SatPoint {
-              outpoint: *outpoint,
-              offset: offset + sat.n() - start,
-            });
-          }
-          offset += end - start;
-        }
-      } else {
-        continue;
-      }
-    }
-
-    Err(anyhow!(format!(
-      "could not find sat `{sat}` in wallet outputs"
-    )))
   }
 
   pub(crate) fn bitcoin_client(&self) -> &Client {
@@ -119,10 +90,6 @@ impl Wallet {
 
   pub(crate) fn inscriptions(&self) -> &BTreeMap<SatPoint, Vec<InscriptionId>> {
     &self.inscriptions
-  }
-
-  pub(crate) fn inscription_info(&self) -> BTreeMap<InscriptionId, api::Inscription> {
-    self.inscription_info.clone()
   }
 
   pub(crate) fn get_runic_outputs(&self) -> Result<BTreeSet<OutPoint>> {

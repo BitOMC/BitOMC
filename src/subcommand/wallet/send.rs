@@ -42,34 +42,6 @@ impl Send {
         self.postage.unwrap_or(TARGET_POSTAGE),
         self.fee_rate,
       )?,
-      Outgoing::InscriptionId(id) => Self::create_unsigned_send_satpoint_transaction(
-        &wallet,
-        address,
-        wallet
-          .inscription_info()
-          .get(&id)
-          .ok_or_else(|| anyhow!("inscription {id} not found"))?
-          .satpoint,
-        self.postage,
-        self.fee_rate,
-        true,
-      )?,
-      Outgoing::SatPoint(satpoint) => Self::create_unsigned_send_satpoint_transaction(
-        &wallet,
-        address,
-        satpoint,
-        self.postage,
-        self.fee_rate,
-        false,
-      )?,
-      Outgoing::Sat(sat) => Self::create_unsigned_send_satpoint_transaction(
-        &wallet,
-        address,
-        wallet.find_sat_in_outputs(sat)?,
-        self.postage,
-        self.fee_rate,
-        true,
-      )?,
       Outgoing::Util(utils) => {
         Self::create_unsigned_send_utils_transaction(&wallet, address, utils, self.fee_rate)?
       }
@@ -172,53 +144,6 @@ impl Send {
     let sats = (utils * base_value + state.utils_per_sat - 1) / state.utils_per_sat;
     let amount = Amount::from_sat(sats as u64);
     Self::create_unsigned_send_amount_transaction(wallet, destination, amount, fee_rate)
-  }
-
-  fn create_unsigned_send_satpoint_transaction(
-    wallet: &Wallet,
-    destination: Address,
-    satpoint: SatPoint,
-    postage: Option<Amount>,
-    fee_rate: FeeRate,
-    sending_inscription: bool,
-  ) -> Result<Transaction> {
-    if !sending_inscription {
-      for inscription_satpoint in wallet.inscriptions().keys() {
-        if satpoint == *inscription_satpoint {
-          bail!("inscriptions must be sent by inscription ID");
-        }
-      }
-    }
-
-    let runic_outputs = wallet.get_runic_outputs()?;
-
-    ensure!(
-      !runic_outputs.contains(&satpoint.outpoint),
-      "runic outpoints may not be sent by satpoint"
-    );
-
-    let change = [wallet.get_change_address()?, wallet.get_change_address()?];
-
-    let postage = if let Some(postage) = postage {
-      Target::ExactPostage(postage)
-    } else {
-      Target::Postage
-    };
-
-    Ok(
-      TransactionBuilder::new(
-        satpoint,
-        wallet.inscriptions().clone(),
-        wallet.utxos().clone(),
-        wallet.locked_utxos().clone().into_keys().collect(),
-        runic_outputs,
-        destination.clone(),
-        change,
-        fee_rate,
-        postage,
-      )
-      .build_transaction()?,
-    )
   }
 
   fn create_unsigned_send_runes_transaction(

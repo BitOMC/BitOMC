@@ -2160,7 +2160,7 @@ impl Server {
 #[cfg(test)]
 mod tests {
   use {
-    super::*, reqwest::Url, serde::de::DeserializeOwned, std::net::TcpListener, tempfile::TempDir,
+    super::*, reqwest::Url, std::net::TcpListener, tempfile::TempDir,
   };
 
   #[derive(Default)]

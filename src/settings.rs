@@ -515,7 +515,9 @@ impl Settings {
     if self.integration_test {
       0
     } else {
-      self.chain.unwrap().first_rune_height()
+      self
+        .first_rune_height
+        .unwrap_or_else(|| self.chain.unwrap().first_rune_height())
     }
   }
 

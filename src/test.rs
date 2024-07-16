@@ -1,6 +1,6 @@
 pub(crate) use {
   super::*,
-  bitcoin::{blockdata::script::PushBytesBuf, constants::COIN_VALUE, opcodes, WPubkeyHash},
+  bitcoin::{ constants::COIN_VALUE, opcodes, WPubkeyHash},
   mockcore::TransactionTemplate,
   pretty_assertions::assert_eq as pretty_assert_eq,
   std::iter,
