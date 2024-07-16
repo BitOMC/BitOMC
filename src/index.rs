@@ -657,6 +657,7 @@ impl Index {
           utils_per_bond: u.utils_per_bond(),
           utils_per_sat: u.utils_per_sat(),
           interest_rate: u.interest_rate(),
+          decimals: u.decimals(),
         })
         .unwrap(),
     )
@@ -3241,6 +3242,7 @@ mod tests {
         utils_per_bond: utils_per_bond0,
         utils_per_sat: utils_per_sat0,
         interest_rate: interest_rate0,
+        decimals: UTIL_BASE_VALUE,
       }
     );
 
@@ -3259,6 +3261,7 @@ mod tests {
         utils_per_bond: utils_per_bond1,
         utils_per_sat: utils_per_sat1,
         interest_rate: interest_rate1,
+        decimals: UTIL_BASE_VALUE,
       }
     );
 
@@ -3340,6 +3343,7 @@ mod tests {
         utils_per_bond: utils_per_bond2,
         utils_per_sat: utils_per_sat2,
         interest_rate: interest_rate2,
+        decimals: UTIL_BASE_VALUE,
       }
     );
 
@@ -3430,6 +3434,7 @@ mod tests {
         utils_per_bond: utils_per_bond3,
         utils_per_sat: utils_per_sat3,
         interest_rate: interest_rate3,
+        decimals: UTIL_BASE_VALUE,
       }
     );
 
@@ -3448,6 +3453,7 @@ mod tests {
         utils_per_bond: utils_per_bond4,
         utils_per_sat: utils_per_sat4,
         interest_rate: interest_rate4,
+        decimals: UTIL_BASE_VALUE,
       }
     );
 
@@ -3539,6 +3545,7 @@ mod tests {
         utils_per_bond: utils_per_bond5,
         utils_per_sat: utils_per_sat5,
         interest_rate: interest_rate5,
+        decimals: UTIL_BASE_VALUE,
       }
     );
   }

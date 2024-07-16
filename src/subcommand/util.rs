@@ -11,6 +11,15 @@ pub(crate) struct UtilToSatInput {
 }
 
 #[derive(Debug, Serialize, Deserialize)]
+pub struct Output {
+  pub utils_per_sat: Decimal,
+  pub sats_per_util: Decimal,
+  pub interest_rate: Decimal,
+  pub bonds_per_sat: Decimal,
+  pub utils_per_bond: Decimal,
+}
+
+#[derive(Debug, Serialize, Deserialize)]
 pub struct SatToUtilOutput {
   pub utils: u128,
 }
@@ -32,7 +41,28 @@ pub(crate) fn run(settings: Settings) -> SubcommandResult {
 
   let util_state = index.get_util_state()?;
 
-  Ok(Some(Box::new(util_state)))
+  Ok(Some(Box::new(Output {
+    utils_per_sat: Decimal {
+      value: util_state.utils_per_sat,
+      scale: 12,
+    },
+    sats_per_util: Decimal {
+      value: util_state.decimals * util_state.decimals / util_state.utils_per_sat,
+      scale: 12,
+    },
+    interest_rate: Decimal {
+      value: util_state.interest_rate,
+      scale: 12,
+    },
+    bonds_per_sat: Decimal {
+      value: util_state.bonds_per_sat,
+      scale: 12,
+    },
+    utils_per_bond: Decimal {
+      value: util_state.utils_per_bond,
+      scale: 12,
+    },
+  })))
 }
 
 impl SatToUtilInput {
@@ -47,7 +77,7 @@ impl SatToUtilInput {
     index.update()?;
 
     let state = index.get_util_state()?;
-    let utils = self.sats * state.utils_per_sat / 1_000_000_000_000;
+    let utils = self.sats * state.utils_per_sat / state.decimals;
 
     Ok(Some(Box::new(SatToUtilOutput { utils })))
   }
@@ -65,8 +95,7 @@ impl UtilToSatInput {
     index.update()?;
 
     let state = index.get_util_state()?;
-    let base_value = 1_000_000_000_000;
-    let sats = (self.utils * base_value + state.utils_per_sat - 1) / state.utils_per_sat;
+    let sats = (self.utils * state.decimals + state.utils_per_sat - 1) / state.utils_per_sat;
 
     Ok(Some(Box::new(UtilToSatOutput { sats })))
   }

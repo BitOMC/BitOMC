@@ -140,8 +140,7 @@ impl Send {
     fee_rate: FeeRate,
   ) -> Result<Transaction> {
     let state = wallet.get_util_state()?;
-    let base_value = 1_000_000_000_000;
-    let sats = (utils * base_value + state.utils_per_sat - 1) / state.utils_per_sat;
+    let sats = (utils * state.decimals + state.utils_per_sat - 1) / state.utils_per_sat;
     let amount = Amount::from_sat(sats as u64);
     Self::create_unsigned_send_amount_transaction(wallet, destination, amount, fee_rate)
   }

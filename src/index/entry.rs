@@ -341,6 +341,10 @@ impl UtilEntry {
   pub fn utils_per_sat(&self) -> u128 {
     self.bonds_per_sat * self.utils_per_bond() / Self::BASE_VALUE
   }
+
+  pub fn decimals(&self) -> u128 {
+    Self::BASE_VALUE
+  }
 }
 
 pub(crate) type UtilEntryValue = (

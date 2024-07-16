@@ -162,6 +162,7 @@ pub struct UtilState {
   pub utils_per_bond: u128,
   pub utils_per_sat: u128,
   pub interest_rate: u128,
+  pub decimals: u128,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
