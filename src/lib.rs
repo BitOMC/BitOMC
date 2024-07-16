@@ -86,7 +86,6 @@ pub use self::{
   inscriptions::{Envelope, Inscription, InscriptionId},
   object::Object,
   options::Options,
-  wallet::transaction_builder::{Target, TransactionBuilder},
 };
 
 #[cfg(test)]

@@ -36,13 +36,6 @@ pub(crate) fn address() -> Address {
     .assume_checked()
 }
 
-pub(crate) fn recipient() -> Address {
-  "tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz"
-    .parse::<Address<NetworkUnchecked>>()
-    .unwrap()
-    .assume_checked()
-}
-
 pub(crate) fn change(n: u64) -> Address {
   match n {
     0 => "tb1qjsv26lap3ffssj6hfy8mzn0lg5vte6a42j75ww",
@@ -54,15 +47,6 @@ pub(crate) fn change(n: u64) -> Address {
   .parse::<Address<NetworkUnchecked>>()
   .unwrap()
   .assume_checked()
-}
-
-pub(crate) fn tx_in(previous_output: OutPoint) -> TxIn {
-  TxIn {
-    previous_output,
-    script_sig: ScriptBuf::new(),
-    sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
-    witness: Witness::new(),
-  }
 }
 
 pub(crate) fn tx_out(value: u64, address: Address) -> TxOut {

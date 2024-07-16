@@ -4,7 +4,6 @@ use {
   bitcoin::bip32::{ChildNumber, DerivationPath, ExtendedPrivKey, Fingerprint},
   bitcoin::secp256k1::{All, Secp256k1},
   bitcoincore_rpc::bitcoincore_rpc_json::{Descriptor, ImportDescriptors, Timestamp},
-  fee_rate::FeeRate,
   index::entry::Entry,
   miniscript::descriptor::{DescriptorSecretKey, DescriptorXKey, Wildcard},
   reqwest::header,
@@ -12,7 +11,6 @@ use {
 
 pub mod batch;
 pub mod entry;
-pub mod transaction_builder;
 pub mod wallet_constructor;
 
 pub(crate) struct Wallet {
