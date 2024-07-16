@@ -441,16 +441,9 @@ fn create_unfunded_convert_transaction(
     (Rune(1), Rune(0), ID0)
   };
 
-  let inscribed_outputs = wallet
-    .inscriptions()
-    .keys()
-    .map(|satpoint| satpoint.outpoint)
-    .collect::<HashSet<OutPoint>>();
-
   let balances = wallet
     .get_runic_outputs()?
     .into_iter()
-    .filter(|output| !inscribed_outputs.contains(output))
     .map(|output| {
       wallet.get_runes_balances_in_output(&output).map(|balance| {
         (

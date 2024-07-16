@@ -10,18 +10,12 @@ pub struct CardinalUtxo {
 pub(crate) fn run(wallet: Wallet) -> SubcommandResult {
   let unspent_outputs = wallet.utxos();
 
-  let inscribed_utxos = wallet
-    .inscriptions()
-    .keys()
-    .map(|satpoint| satpoint.outpoint)
-    .collect::<BTreeSet<OutPoint>>();
-
   let runic_utxos = wallet.get_runic_outputs()?;
 
   let cardinal_utxos = unspent_outputs
     .iter()
     .filter_map(|(output, txout)| {
-      if inscribed_utxos.contains(output) || runic_utxos.contains(output) {
+      if runic_utxos.contains(output) {
         None
       } else {
         Some(CardinalUtxo {

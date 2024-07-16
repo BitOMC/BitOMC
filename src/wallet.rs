@@ -39,24 +39,14 @@ impl Wallet {
   }
 
   pub(crate) fn lock_non_cardinal_outputs(&self) -> Result {
-    let inscriptions = self
-      .inscriptions()
-      .keys()
-      .map(|satpoint| satpoint.outpoint)
-      .collect::<HashSet<OutPoint>>();
-
     let locked = self
       .locked_utxos()
       .keys()
       .cloned()
       .collect::<HashSet<OutPoint>>();
 
-    let outputs = self
-      .utxos()
-      .keys()
-      .filter(|utxo| inscriptions.contains(utxo))
-      .chain(self.get_runic_outputs()?.iter())
-      .cloned()
+    let outputs = self.get_runic_outputs()?
+      .into_iter()
       .filter(|utxo| !locked.contains(utxo))
       .collect::<Vec<OutPoint>>();
 
