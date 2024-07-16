@@ -14,6 +14,7 @@ pub struct Output {
 }
 
 impl Subsidy {
+  #[allow(dead_code)]
   pub(crate) fn run(self) -> SubcommandResult {
     let first = self.height.starting_sat();
 

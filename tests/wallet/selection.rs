@@ -62,15 +62,7 @@ fn sending_rune_does_not_send_runic_utxos() {
 
   create_wallet(&core, &ord);
 
-  core.mine_blocks_with_subsidy(1, 10000);
-
   let rune = Rune(TIGHTEN);
-
-  CommandBuilder::new("--chain regtest --index-runes wallet inscribe --fee-rate 0 --file foo.txt")
-    .write("foo.txt", "FOO")
-    .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<Batch>();
 
   core.mine_blocks_with_subsidy(1, 10000);
 
@@ -81,10 +73,10 @@ fn sending_rune_does_not_send_runic_utxos() {
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 10000,
-      ordinal: 10000,
+      ordinal: 0,
       runic: Some(0),
       runes: Some(BTreeMap::new()),
-      total: 20000,
+      total: 10000,
     }
   );
 

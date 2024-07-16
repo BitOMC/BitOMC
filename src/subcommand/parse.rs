@@ -12,6 +12,7 @@ pub struct Output {
 }
 
 impl Parse {
+  #[allow(dead_code)]
   pub(crate) fn run(self) -> SubcommandResult {
     Ok(Some(Box::new(Output {
       object: self.object,

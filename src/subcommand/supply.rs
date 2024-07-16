@@ -8,6 +8,7 @@ pub struct Output {
   pub last_mined_in_block: u32,
 }
 
+#[allow(dead_code)]
 pub(crate) fn run() -> SubcommandResult {
   let mut last = 0;
 

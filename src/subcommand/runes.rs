@@ -23,6 +23,7 @@ pub struct RuneInfo {
   pub tx: u32,
 }
 
+#[allow(dead_code)]
 pub(crate) fn run(settings: Settings) -> SubcommandResult {
   let index = Index::open(&settings)?;
 

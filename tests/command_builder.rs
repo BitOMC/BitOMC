@@ -247,12 +247,7 @@ impl CommandBuilder {
   fn run(self) -> (TempDir, String) {
     self.spawn().run()
   }
-
-  pub(crate) fn run_and_extract_file(self, path: impl AsRef<Path>) -> String {
-    let tempdir = self.run().0;
-    fs::read_to_string(tempdir.path().join(path)).unwrap()
-  }
-
+  
   #[track_caller]
   pub(crate) fn run_and_extract_stdout(self) -> String {
     self.run().1

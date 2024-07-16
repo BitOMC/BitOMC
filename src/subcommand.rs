@@ -26,30 +26,12 @@ pub(crate) enum Subcommand {
   Decode(decode::Decode),
   #[command(about = "Start a regtest ord and bitcoind instance")]
   Env(env::Env),
-  #[command(about = "List the first satoshis of each reward epoch")]
-  Epochs,
-  #[command(about = "Find a satoshi's current location")]
-  Find(find::Find),
   #[command(subcommand, about = "Index commands")]
   Index(index::IndexSubcommand),
-  #[command(about = "List the satoshis in an output")]
-  List(list::List),
-  #[command(about = "Parse a satoshi from ordinal notation")]
-  Parse(parse::Parse),
-  #[command(about = "List all runes")]
-  Runes,
   #[command(about = "Run the explorer server")]
   Server(server::Server),
   #[command(about = "Display settings")]
   Settings,
-  #[command(about = "Display information about a block's subsidy")]
-  Subsidy(subsidy::Subsidy),
-  #[command(about = "Display Bitcoin supply information")]
-  Supply,
-  #[command(about = "Generate teleburn addresses")]
-  Teleburn(teleburn::Teleburn),
-  #[command(about = "Display satoshi traits")]
-  Traits(traits::Traits),
   #[command(about = "Wallet commands")]
   Wallet(wallet::WalletCommand),
   #[command(about = "Display current information about the util")]
@@ -66,12 +48,7 @@ impl Subcommand {
       Self::Balances => balances::run(settings),
       Self::Decode(decode) => decode.run(settings),
       Self::Env(env) => env.run(),
-      Self::Epochs => epochs::run(),
-      Self::Find(find) => find.run(settings),
       Self::Index(index) => index.run(settings),
-      Self::List(list) => list.run(settings),
-      Self::Parse(parse) => parse.run(),
-      Self::Runes => runes::run(settings),
       Self::Server(server) => {
         let index = Arc::new(Index::open(&settings)?);
         let handle = axum_server::Handle::new();
@@ -79,10 +56,6 @@ impl Subcommand {
         server.run(settings, index, handle)
       }
       Self::Settings => settings::run(settings),
-      Self::Subsidy(subsidy) => subsidy.run(),
-      Self::Supply => supply::run(),
-      Self::Teleburn(teleburn) => teleburn.run(),
-      Self::Traits(traits) => traits.run(),
       Self::Wallet(wallet) => wallet.run(settings),
       Self::Util => util::run(settings),
       Self::UtilToSat(util_to_sat) => util_to_sat.run(settings),

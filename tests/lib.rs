@@ -5,15 +5,15 @@ use {
   bitcoin::{
     address::{Address, NetworkUnchecked},
     blockdata::constants::COIN_VALUE,
-    Network, OutPoint, Txid, Witness,
+    Network, OutPoint, Witness,
   },
   bitcoincore_rpc::bitcoincore_rpc_json::ListDescriptorsResult,
   chrono::{DateTime, Utc},
   executable_path::executable_path,
   mockcore::TransactionTemplate,
-  ord::{api, chain::Chain, outgoing::Outgoing, InscriptionId, RuneEntry},
+  ord::{api, chain::Chain, outgoing::Outgoing, RuneEntry},
   ordinals::{
-    Artifact, Charm, Edict, Pile, Rarity, Rune, RuneId, Runestone, Sat, SatPoint, SpacedRune,
+    Artifact, Edict, Pile, Rune, RuneId, Runestone, SpacedRune,
   },
   pretty_assertions::assert_eq as pretty_assert_eq,
   regex::Regex,
@@ -28,7 +28,7 @@ use {
     net::TcpListener,
     path::{Path, PathBuf},
     process::{Child, Command, Stdio},
-    str::{self, FromStr},
+    str,
     thread,
     time::Duration,
   },
@@ -53,19 +53,11 @@ mod test_server;
 
 mod balances;
 mod decode;
-mod epochs;
-mod find;
 mod index;
 mod info;
 mod json_api;
-mod list;
-mod parse;
-mod runes;
 mod server;
 mod settings;
-mod subsidy;
-mod supply;
-mod traits;
 mod version;
 mod wallet;
 
@@ -78,11 +70,8 @@ const ID1: RuneId = RuneId { block: 1, tx: 1 };
 const RUNE_COIN_VALUE: u128 = 100000000;
 
 type Balance = ord::subcommand::wallet::balance::Output;
-type Batch = ord::wallet::batch::Output;
 type Create = ord::subcommand::wallet::create::Output;
-type Inscriptions = Vec<ord::subcommand::wallet::inscriptions::Output>;
 type Send = ord::subcommand::wallet::send::Output;
-type Supply = ord::subcommand::supply::Output;
 
 fn create_wallet(core: &mockcore::Handle, ord: &TestServer) {
   CommandBuilder::new(format!("--chain {} wallet create", core.network()))
@@ -90,35 +79,6 @@ fn create_wallet(core: &mockcore::Handle, ord: &TestServer) {
     .ord(ord)
     .stdout_regex(".*")
     .run_and_extract_stdout();
-}
-
-fn sats(
-  core: &mockcore::Handle,
-  ord: &TestServer,
-) -> Vec<ord::subcommand::wallet::sats::OutputRare> {
-  CommandBuilder::new(format!("--chain {} wallet sats", core.network()))
-    .core(core)
-    .ord(ord)
-    .run_and_deserialize_output::<Vec<ord::subcommand::wallet::sats::OutputRare>>()
-}
-
-fn inscribe(core: &mockcore::Handle, ord: &TestServer) -> (InscriptionId, Txid) {
-  core.mine_blocks(1);
-
-  let output = CommandBuilder::new(format!(
-    "--chain {} wallet inscribe --fee-rate 1 --file foo.txt",
-    core.network()
-  ))
-  .write("foo.txt", "FOO")
-  .core(core)
-  .ord(ord)
-  .run_and_deserialize_output::<Batch>();
-
-  core.mine_blocks(1);
-
-  assert_eq!(output.inscriptions.len(), 1);
-
-  (output.inscriptions[0].id, output.reveal)
 }
 
 fn drain(core: &mockcore::Handle, ord: &TestServer) {
@@ -150,24 +110,6 @@ fn drain(core: &mockcore::Handle, ord: &TestServer) {
     .run_and_deserialize_output::<Balance>();
 
   pretty_assert_eq!(balance.cardinal, 0);
-}
-
-fn envelope(payload: &[&[u8]]) -> Witness {
-  let mut builder = bitcoin::script::Builder::new()
-    .push_opcode(bitcoin::opcodes::OP_FALSE)
-    .push_opcode(bitcoin::opcodes::all::OP_IF);
-
-  for data in payload {
-    let mut buf = bitcoin::script::PushBytesBuf::new();
-    buf.extend_from_slice(data).unwrap();
-    builder = builder.push_slice(buf);
-  }
-
-  let script = builder
-    .push_opcode(bitcoin::opcodes::all::OP_ENDIF)
-    .into_script();
-
-  Witness::from_slice(&[script.into_bytes(), Vec::new()])
 }
 
 fn default<T: Default>() -> T {

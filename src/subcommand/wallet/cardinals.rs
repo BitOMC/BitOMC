@@ -6,6 +6,7 @@ pub struct CardinalUtxo {
   pub amount: u64,
 }
 
+#[allow(dead_code)]
 pub(crate) fn run(wallet: Wallet) -> SubcommandResult {
   let unspent_outputs = wallet.utxos();
 

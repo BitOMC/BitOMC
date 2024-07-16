@@ -21,6 +21,7 @@ pub struct FindRangeOutput {
 }
 
 impl Find {
+  #[allow(dead_code)]
   pub(crate) fn run(self, settings: Settings) -> SubcommandResult {
     let index = Index::open(&settings)?;
 

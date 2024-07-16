@@ -44,10 +44,10 @@ pub(crate) struct WalletCommand {
 pub(crate) enum Subcommand {
   #[command(about = "Get wallet balance")]
   Balance,
-  #[command(about = "Create inscriptions and runes")]
-  Batch(batch_command::Batch),
-  #[command(about = "List unspent cardinal outputs in wallet")]
-  Cardinals,
+  // #[command(about = "Create inscriptions and runes")]
+  // Batch(batch_command::Batch),
+  // #[command(about = "List unspent cardinal outputs in wallet")]
+  // Cardinals,
   #[command(about = "Convert between tighten and ease using an exact input")]
   ConvertExactInput(convert::ConvertExactInput),
   #[command(about = "Convert between tighten and ease using an exact output")]
@@ -58,10 +58,10 @@ pub(crate) enum Subcommand {
   Create(create::Create),
   #[command(about = "Dump wallet descriptors")]
   Dump,
-  #[command(about = "Create inscription")]
-  Inscribe(inscribe::Inscribe),
-  #[command(about = "List wallet inscriptions")]
-  Inscriptions,
+  // #[command(about = "Create inscription")]
+  // Inscribe(inscribe::Inscribe),
+  // #[command(about = "List wallet inscriptions")]
+  // Inscriptions,
   #[command(about = "Export output labels")]
   Label,
   #[command(about = "Mint a rune")]
@@ -106,15 +106,15 @@ impl WalletCommand {
 
     match self.subcommand {
       Subcommand::Balance => balance::run(wallet),
-      Subcommand::Batch(batch) => batch.run(wallet),
-      Subcommand::Cardinals => cardinals::run(wallet),
+      // Subcommand::Batch(batch) => batch.run(wallet),
+      // Subcommand::Cardinals => cardinals::run(wallet),
       Subcommand::ConvertExactInput(convert) => convert.run(wallet),
       Subcommand::ConvertExactOutput(convert) => convert.run(wallet),
       Subcommand::LookupConversionChain => convert::get_chain(wallet),
       Subcommand::Create(_) | Subcommand::Restore(_) => unreachable!(),
       Subcommand::Dump => dump::run(wallet),
-      Subcommand::Inscribe(inscribe) => inscribe.run(wallet),
-      Subcommand::Inscriptions => inscriptions::run(wallet),
+      // Subcommand::Inscribe(inscribe) => inscribe.run(wallet),
+      // Subcommand::Inscriptions => inscriptions::run(wallet),
       Subcommand::Label => label::run(wallet),
       Subcommand::Mint(mint) => mint.run(wallet),
       Subcommand::Outputs => outputs::run(wallet),

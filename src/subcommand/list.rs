@@ -29,6 +29,7 @@ pub struct Range {
   pub size: u64,
 }
 
+#[allow(dead_code)]
 impl List {
   pub(crate) fn run(self, settings: Settings) -> SubcommandResult {
     let index = Index::open(&settings)?;

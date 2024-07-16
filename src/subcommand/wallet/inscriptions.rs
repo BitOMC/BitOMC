@@ -8,6 +8,7 @@ pub struct Output {
   pub postage: u64,
 }
 
+#[allow(dead_code)]
 pub(crate) fn run(wallet: Wallet) -> SubcommandResult {
   let explorer = match wallet.chain() {
     Chain::Mainnet => "https://ordinals.com/inscription/",

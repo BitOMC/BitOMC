@@ -21,6 +21,7 @@ pub struct Output {
 }
 
 impl Traits {
+  #[allow(dead_code)]
   pub(crate) fn run(self) -> SubcommandResult {
     Ok(Some(Box::new(Output {
       number: self.sat.n(),

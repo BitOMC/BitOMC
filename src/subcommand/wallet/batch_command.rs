@@ -11,6 +11,7 @@ pub(crate) struct Batch {
   pub(crate) batch: PathBuf,
 }
 
+#[allow(dead_code)]
 impl Batch {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
     let utxos = wallet.utxos();

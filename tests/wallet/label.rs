@@ -10,8 +10,6 @@ fn label() {
 
   core.mine_blocks(2);
 
-  let (inscription, _reveal) = inscribe(&core, &ord);
-
   let output = CommandBuilder::new("wallet label")
     .core(&core)
     .ord(&ord)
@@ -25,6 +23,4 @@ fn label() {
   assert!(
     output.contains(r#"\"name\":\"nvtccadxgaz\",\"number\":10000000000,\"rarity\":\"uncommon\""#)
   );
-
-  assert!(output.contains(&inscription.to_string()));
 }

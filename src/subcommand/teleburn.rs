@@ -12,6 +12,7 @@ pub struct Output {
 }
 
 impl Teleburn {
+  #[allow(dead_code)]
   pub(crate) fn run(self) -> SubcommandResult {
     Ok(Some(Box::new(Output {
       ethereum: self.destination.into(),
