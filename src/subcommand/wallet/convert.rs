@@ -80,11 +80,6 @@ pub(crate) fn get_chain(wallet: Wallet) -> SubcommandResult {
 
 impl ConvertExactInput {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
-    ensure!(
-      wallet.has_rune_index(),
-      "sending runes with `ord send` requires index created with `--index-runes` flag",
-    );
-
     wallet.lock_non_cardinal_outputs()?;
 
     let (unsigned_transaction, unsigned_psbt, fee, _, min_output, is_connected) =
@@ -156,11 +151,6 @@ impl ConvertExactInput {
 
 impl ConvertExactOutput {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
-    ensure!(
-      wallet.has_rune_index(),
-      "sending runes with `ord send` requires index created with `--index-runes` flag",
-    );
-
     wallet.lock_non_cardinal_outputs()?;
 
     let (unsigned_transaction, unsigned_psbt, fee, max_input, _, is_connected) =

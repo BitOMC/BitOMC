@@ -150,7 +150,6 @@ impl Server {
       let server_config = Arc::new(ServerConfig {
         chain: settings.chain(),
         domain: acme_domains.first().cloned(),
-        index_sats: index.has_sat_index(),
         json_api_enabled: !self.disable_json_api,
       });
 
@@ -528,12 +527,6 @@ impl Server {
     AcceptJson(accept_json): AcceptJson,
   ) -> ServerResult {
     task::block_in_place(|| {
-      if !index.has_rune_index() {
-        return Err(ServerError::NotFound(
-          "this server has no rune index".to_string(),
-        ));
-      }
-
       let rune = match rune_query {
         query::Rune::Spaced(spaced_rune) => spaced_rune.rune,
         query::Rune::Id(rune_id) => index
@@ -1193,11 +1186,6 @@ mod tests {
       self
     }
 
-    fn ord_flag(mut self, flag: &str) -> Self {
-      self.ord_args.insert(flag.into(), None);
-      self
-    }
-
     fn server_flag(mut self, flag: &str) -> Self {
       self.server_args.insert(flag.into(), None);
       self
@@ -1329,11 +1317,6 @@ mod tests {
 
     fn https(self) -> Self {
       self.server_flag("--https")
-    }
-
-    #[allow(dead_code)]
-    fn index_runes(self) -> Self {
-      self.ord_flag("--index-runes")
     }
 
     fn redirect_http_to_https(self) -> Self {

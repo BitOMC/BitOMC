@@ -27,10 +27,6 @@ pub struct RuneInfo {
 pub(crate) fn run(settings: Settings) -> SubcommandResult {
   let index = Index::open(&settings)?;
 
-  ensure!(
-    index.has_rune_index(),
-    "`ord runes` requires index created with `--index-runes` flag",
-  );
 
   index.update()?;
 

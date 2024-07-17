@@ -6,7 +6,7 @@ const COIN_VALUE: u128 = 100000000;
 fn no_runes() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let output = CommandBuilder::new("--regtest --index-runes balances")
+  let output = CommandBuilder::new("--regtest balances")
     .core(&core)
     .run_and_deserialize_output::<Output>();
 
@@ -53,11 +53,11 @@ fn with_runes() {
 
   core.mine_blocks(1);
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest", "--index-runes"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
-  let output = CommandBuilder::new("--regtest --index-runes balances")
+  let output = CommandBuilder::new("--regtest balances")
     .core(&core)
     .run_and_deserialize_output::<Output>();
 

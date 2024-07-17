@@ -78,7 +78,7 @@ fn create_wallet(core: &mockcore::Handle, ord: &TestServer) {
 }
 
 fn drain(core: &mockcore::Handle, ord: &TestServer) {
-  let balance = CommandBuilder::new("--regtest --index-runes wallet balance")
+  let balance = CommandBuilder::new("--regtest wallet balance")
     .core(core)
     .ord(ord)
     .run_and_deserialize_output::<Balance>();
@@ -86,7 +86,6 @@ fn drain(core: &mockcore::Handle, ord: &TestServer) {
   CommandBuilder::new(format!(
     "
       --chain regtest
-      --index-runes
       wallet send
       --fee-rate 0
       bcrt1pyrmadgg78e38ewfv0an8c6eppk2fttv5vnuvz04yza60qau5va0saknu8k
@@ -100,7 +99,7 @@ fn drain(core: &mockcore::Handle, ord: &TestServer) {
 
   core.mine_blocks_with_subsidy(1, 0);
 
-  let balance = CommandBuilder::new("--regtest --index-runes wallet balance")
+  let balance = CommandBuilder::new("--regtest wallet balance")
     .core(core)
     .ord(ord)
     .run_and_deserialize_output::<Balance>();

@@ -185,8 +185,6 @@ pub struct Index {
   genesis_block_coinbase_txid: Txid,
   height_limit: Option<u32>,
   index_addresses: bool,
-  index_runes: bool,
-  index_sats: bool,
   index_transactions: bool,
   path: PathBuf,
   settings: Settings,
@@ -321,9 +319,9 @@ impl Index {
           Self::set_statistic(&mut statistics, Statistic::Schema, SCHEMA_VERSION)?;
         }
 
-        if settings.index_runes() {
-          let rune0 = Rune(0); // tighten
-          let rune1 = Rune(1); // ease
+        {
+          let rune0 = Rune(0); // Tighten
+          let rune1 = Rune(1); // Ease
 
           let id0 = RuneId { block: 1, tx: 0 };
           let id1 = RuneId { block: 1, tx: 1 };
@@ -394,8 +392,6 @@ impl Index {
       genesis_block_coinbase_transaction,
       height_limit: settings.height_limit(),
       index_addresses,
-      index_runes: true,
-      index_sats: false,
       index_transactions,
       settings: settings.clone(),
       path,
@@ -422,14 +418,6 @@ impl Index {
 
   pub fn has_address_index(&self) -> bool {
     self.index_addresses
-  }
-
-  pub fn has_rune_index(&self) -> bool {
-    self.index_runes
-  }
-
-  pub fn has_sat_index(&self) -> bool {
-    self.index_sats
   }
 
   pub fn status(&self) -> Result<StatusHtml> {
@@ -462,9 +450,7 @@ impl Index {
       initial_sync_time: Duration::from_micros(initial_sync_time),
       inscriptions: 0,
       lost_sats: 0,
-      rune_index: self.has_rune_index(),
       runes: statistic(Statistic::Runes)?,
-      sat_index: false,
       started: self.started,
       transaction_index: statistic(Statistic::IndexTransactions)? != 0,
       unrecoverably_reorged: self.unrecoverably_reorged.load(atomic::Ordering::Relaxed),
@@ -1230,7 +1216,7 @@ mod tests {
     const EASE: u128 = 1;
     const COIN_VALUE: u128 = 100000000;
 
-    let mut context = Context::builder().arg("--index-runes").build();
+    let mut context = Context::builder().build();
 
     context.index.set_durability(redb::Durability::Immediate);
 
@@ -1362,7 +1348,7 @@ mod tests {
     const EASE: u128 = 1;
     const COIN_VALUE: u128 = 100000000;
 
-    let mut context = Context::builder().arg("--index-runes").build();
+    let mut context = Context::builder().build();
 
     context.index.set_durability(redb::Durability::Immediate);
 
@@ -1502,7 +1488,7 @@ mod tests {
     const EASE: u128 = 1;
     const COIN_VALUE: u128 = 100000000;
 
-    let mut context = Context::builder().arg("--index-runes").build();
+    let mut context = Context::builder().build();
 
     context.index.set_durability(redb::Durability::Immediate);
 
@@ -1790,7 +1776,7 @@ mod tests {
 
     let (event_sender, mut event_receiver) = tokio::sync::mpsc::channel(1024);
     let context = Context::builder()
-      .arg("--index-runes")
+      
       .event_sender(event_sender)
       .build();
 
@@ -1992,7 +1978,7 @@ mod tests {
     const UTIL_BASE_VALUE: u128 = 1_000_000_000_000;
     const BLOCKS_PER_YEAR: u128 = 52_595;
 
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     let interest_rate0 = UTIL_BASE_VALUE;
     let interest0 = UTIL_BASE_VALUE * interest_rate0 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;

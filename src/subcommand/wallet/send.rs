@@ -153,11 +153,6 @@ impl Send {
     postage: Amount,
     fee_rate: FeeRate,
   ) -> Result<Transaction> {
-    ensure!(
-      wallet.has_rune_index(),
-      "sending runes with `ord send` requires index created with `--index-runes` flag",
-    );
-
     wallet.lock_non_cardinal_outputs()?;
 
     let (id, entry, _parent) = wallet

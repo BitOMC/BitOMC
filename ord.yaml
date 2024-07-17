@@ -17,7 +17,6 @@ height_limit: 1000
 index: /var/lib/ord/index.redb
 index_addresses: false
 index_cache_size: 1000000000
-index_runes: true
 index_transactions: false
 integration_test: true
 server_password: bar

@@ -105,7 +105,7 @@ fn get_transaction() {
 fn get_status() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest", "--index-runes"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
   core.mine_blocks(1);
@@ -135,9 +135,7 @@ fn get_status() {
       initial_sync_time: dummy_duration,
       inscriptions: 0,
       lost_sats: 0,
-      rune_index: true,
       runes: 2,
-      sat_index: false,
       started: dummy_started,
       transaction_index: false,
       unrecoverably_reorged: false,
@@ -152,7 +150,7 @@ fn get_status() {
 fn get_runes() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
@@ -221,7 +219,7 @@ fn get_runes() {
 fn get_runes_balances() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 

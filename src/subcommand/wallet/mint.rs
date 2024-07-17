@@ -29,11 +29,6 @@ pub struct Output {
 
 impl Mint {
   pub(crate) fn run(self, wallet: Wallet) -> SubcommandResult {
-    ensure!(
-      wallet.has_rune_index(),
-      "`ord wallet mint` requires index created with `--index-runes` flag",
-    );
-
     let bitcoin_client = wallet.bitcoin_client();
 
     let block_height = bitcoin_client.get_block_count()?;

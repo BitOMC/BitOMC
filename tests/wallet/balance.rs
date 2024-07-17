@@ -71,12 +71,12 @@ fn unsynced_wallet_fails_with_unindexed_output() {
 fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest", "--index-runes"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
   pretty_assert_eq!(
-    CommandBuilder::new("--regtest --index-runes wallet balance")
+    CommandBuilder::new("--regtest wallet balance")
       .core(&core)
       .ord(&ord)
       .run_and_deserialize_output::<Balance>(),
@@ -90,7 +90,7 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
 
   core.mine_blocks(1);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -98,7 +98,7 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
   core.mine_blocks(1);
 
   pretty_assert_eq!(
-    CommandBuilder::new("--regtest --index-runes wallet balance")
+    CommandBuilder::new("--regtest wallet balance")
       .core(&core)
       .ord(&ord)
       .run_and_deserialize_output::<Balance>(),

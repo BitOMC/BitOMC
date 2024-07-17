@@ -86,11 +86,8 @@ impl WalletConstructor {
 
     let output_info = self.get_output_info(utxos.clone().into_keys().collect())?;
 
-    let status = self.get_server_status()?;
-
     Ok(Wallet {
       bitcoin_client,
-      has_rune_index: status.rune_index,
       locked_utxos,
       ord_client: self.ord_client,
       output_info,
@@ -160,16 +157,6 @@ impl WalletConstructor {
     }
 
     Ok(utxos)
-  }
-
-  fn get_server_status(&self) -> Result<api::Status> {
-    let response = self.get("/status")?;
-
-    if !response.status().is_success() {
-      bail!("could not get status: {}", response.text()?)
-    }
-
-    Ok(serde_json::from_str(&response.text()?)?)
   }
 
   pub fn get(&self, path: &str) -> Result<reqwest::blocking::Response> {

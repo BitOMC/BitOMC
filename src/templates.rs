@@ -89,7 +89,6 @@ mod tests {
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Mainnet,
         domain: Some("signet.ordinals.com".into()),
-        index_sats: true,
         ..default()
       }),),
       r"<!doctype html>
@@ -115,7 +114,6 @@ mod tests {
       <a href=/ title=home>Ordinals<sup>alpha</sup></a>
       .*
       <a href=/clock title=clock>.*</a>
-      <a href=/rare.txt title=rare>.*</a>
       .*
       <form action=/search method=get>
         <input type=text .*>
@@ -138,7 +136,6 @@ mod tests {
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Mainnet,
         domain: None,
-        index_sats: true,
         ..default()
       })),
       r".*<nav>\s*<a href=/ title=home>Ordinals<sup>alpha</sup></a>.*"
@@ -151,7 +148,6 @@ mod tests {
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Mainnet,
         domain: None,
-        index_sats: false,
         ..default()
       })),
       r".*<nav>\s*<a href=/ title=home>Ordinals<sup>alpha</sup></a>.*<a href=/clock title=clock>.*</a>\s*<form action=/search.*",
@@ -164,7 +160,6 @@ mod tests {
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Signet,
         domain: None,
-        index_sats: true,
         ..default()
       })),
       r".*<nav>\s*<a href=/ title=home>Ordinals<sup>signet</sup></a>.*"

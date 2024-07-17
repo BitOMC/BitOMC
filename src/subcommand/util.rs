@@ -32,11 +32,6 @@ pub struct UtilToSatOutput {
 pub(crate) fn run(settings: Settings) -> SubcommandResult {
   let index = Index::open(&settings)?;
 
-  ensure!(
-    index.has_rune_index(),
-    "`ord balances` requires index created with `--index-runes` flag",
-  );
-
   index.update()?;
 
   let util_state = index.get_util_state()?;
@@ -69,11 +64,6 @@ impl SatToUtilInput {
   pub(crate) fn run(self, settings: Settings) -> SubcommandResult {
     let index = Index::open(&settings)?;
 
-    ensure!(
-      index.has_rune_index(),
-      "`ord balances` requires index created with `--index-runes` flag",
-    );
-
     index.update()?;
 
     let state = index.get_util_state()?;
@@ -86,11 +76,6 @@ impl SatToUtilInput {
 impl UtilToSatInput {
   pub(crate) fn run(self, settings: Settings) -> SubcommandResult {
     let index = Index::open(&settings)?;
-
-    ensure!(
-      index.has_rune_index(),
-      "`ord balances` requires index created with `--index-runes` flag",
-    );
 
     index.update()?;
 

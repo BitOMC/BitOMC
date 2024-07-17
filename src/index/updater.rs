@@ -388,7 +388,7 @@ impl<'index> Updater<'index> {
 
     let mut height_to_block_header = wtx.open_table(HEIGHT_TO_BLOCK_HEADER)?;
 
-    if self.index.index_runes && self.height >= self.index.settings.first_rune_height() {
+    if self.height >= self.index.settings.first_rune_height() {
       let mut outpoint_to_rune_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
       let mut rune_id_to_rune_entry = wtx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
       let mut state_change_to_last_outpoint = wtx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
@@ -502,7 +502,7 @@ impl<'index> Updater<'index> {
     height: u32,
     transactions: Vec<Transaction>,
   ) -> Result<Vec<api::SupplyState>> {
-    if !index.index_runes && height < index.settings.first_rune_height() {
+    if height < index.settings.first_rune_height() {
       return Ok(Vec::new());
     }
 

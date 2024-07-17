@@ -196,7 +196,7 @@ fn send_dry_run() {
 fn sending_rune_that_has_not_been_etched_is_an_error() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
@@ -205,7 +205,7 @@ fn sending_rune_that_has_not_been_etched_is_an_error() {
 
   core.lock(outpoint);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:FOO")
+  CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:FOO")
     .core(&core)
     .ord(&ord)
     .expected_exit_code(1)
@@ -217,13 +217,13 @@ fn sending_rune_that_has_not_been_etched_is_an_error() {
 fn sending_rune_with_excessive_precision_is_an_error() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -231,7 +231,7 @@ fn sending_rune_with_excessive_precision_is_an_error() {
   core.mine_blocks(1);
 
   CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1.000000001:{}",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1.000000001:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -245,13 +245,13 @@ fn sending_rune_with_excessive_precision_is_an_error() {
 fn sending_rune_with_insufficient_balance_is_an_error() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -259,7 +259,7 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
   core.mine_blocks(1);
 
   CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1000:{}",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1000:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -273,13 +273,13 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
 fn sending_rune_works() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -287,7 +287,7 @@ fn sending_rune_works() {
   core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -296,7 +296,7 @@ fn sending_rune_works() {
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -343,13 +343,13 @@ fn sending_rune_works() {
 fn sending_rune_with_change_works() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -357,7 +357,7 @@ fn sending_rune_with_change_works() {
   core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --postage 1234sat --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
+    "--chain regtest wallet send --postage 1234sat --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -371,7 +371,7 @@ fn sending_rune_with_change_works() {
   assert_eq!(tx.output[1].value, 1234);
   assert_eq!(tx.output[2].value, 1234);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -418,13 +418,13 @@ fn sending_rune_with_change_works() {
 fn sending_spaced_rune_works_with_no_change() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -432,7 +432,7 @@ fn sending_spaced_rune_works_with_no_change() {
   core.mine_blocks(1);
 
   let output = CommandBuilder::new(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 50:TIGHTEN",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 50:TIGHTEN",
   )
   .core(&core)
   .ord(&ord)
@@ -444,7 +444,7 @@ fn sending_spaced_rune_works_with_no_change() {
 
   assert_eq!(tx.output.len(), 1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -478,13 +478,13 @@ fn sending_spaced_rune_works_with_no_change() {
 fn sending_rune_with_divisibility_works() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -492,7 +492,7 @@ fn sending_rune_with_divisibility_works() {
   core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5.5:{}",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5.5:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -501,7 +501,7 @@ fn sending_rune_with_divisibility_works() {
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -548,13 +548,13 @@ fn sending_rune_with_divisibility_works() {
 fn sending_rune_leaves_unspent_runes_in_wallet() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -562,7 +562,7 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
   core.mine_blocks(1);
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 5:{}",
     Rune(TIGHTEN)
   ))
   .core(&core)
@@ -571,7 +571,7 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -624,13 +624,13 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 fn sending_rune_creates_transaction_with_expected_runestone() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -640,7 +640,6 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
   let output = CommandBuilder::new(format!(
     "
       --chain regtest
-      --index-runes
       wallet
       send
       --fee-rate 1
@@ -654,7 +653,7 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -715,13 +714,13 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 fn error_messages_use_spaced_runes() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -729,7 +728,7 @@ fn error_messages_use_spaced_runes() {
   core.mine_blocks(1);
 
   CommandBuilder::new(
-    "--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:TIGHTEN",
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:TIGHTEN",
   )
   .core(&core)
     .ord(&ord)
@@ -737,7 +736,7 @@ fn error_messages_use_spaced_runes() {
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
 
-  CommandBuilder::new("--chain regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO")
+  CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO")
     .core(&core)
     .ord(&ord)
     .expected_exit_code(1)

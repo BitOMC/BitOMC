@@ -4,7 +4,7 @@ use {super::*, ord::subcommand::wallet::mint};
 fn minting_rune_with_destination() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
@@ -15,7 +15,7 @@ fn minting_rune_with_destination() {
     .unwrap();
 
   let output = CommandBuilder::new(format!(
-    "--chain regtest --index-runes wallet mint --fee-rate 1 --destination {}",
+    "--chain regtest wallet mint --fee-rate 1 --destination {}",
     destination.clone().assume_checked()
   ))
   .core(&core)
@@ -47,7 +47,7 @@ fn minting_rune_with_destination() {
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -77,20 +77,20 @@ fn minting_rune_with_destination() {
 fn minting_rune_with_postage() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1 --postage 2222sat")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1 --postage 2222sat")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
-  let balance = CommandBuilder::new("--chain regtest --index-runes wallet balance")
+  let balance = CommandBuilder::new("--chain regtest wallet balance")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::balance::Output>();
@@ -102,13 +102,13 @@ fn minting_rune_with_postage() {
 fn minting_rune_with_postage_dust() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1 --postage 300sat")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1 --postage 300sat")
     .core(&core)
     .ord(&ord)
     .expected_exit_code(1)
@@ -120,20 +120,20 @@ fn minting_rune_with_postage_dust() {
 fn minting_is_allowed_on_first_mint() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  let output = CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  let output = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();
@@ -181,27 +181,27 @@ fn minting_is_allowed_on_first_mint() {
 fn minting_is_allowed_using_output_of_first_mint_as_input() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
   create_wallet(&core, &ord);
 
-  let output0 = CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  let output0 = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
-  let output1 = CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  let output1 = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
-  let balances = CommandBuilder::new("--regtest --index-runes balances")
+  let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::balances::Output>();

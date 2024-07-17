@@ -15,7 +15,6 @@ pub mod wallet_constructor;
 
 pub(crate) struct Wallet {
   bitcoin_client: Client,
-  has_rune_index: bool,
   rpc_url: Url,
   utxos: BTreeMap<OutPoint, TxOut>,
   ord_client: reqwest::blocking::Client,
@@ -177,10 +176,6 @@ impl Wallet {
         .context("could not get change addresses from wallet")?
         .require_network(self.chain().network())?,
     )
-  }
-
-  pub(crate) fn has_rune_index(&self) -> bool {
-    self.has_rune_index
   }
 
   pub(crate) fn chain(&self) -> Chain {

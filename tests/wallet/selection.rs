@@ -4,13 +4,13 @@ use super::*;
 fn send_amount_does_not_select_runic_utxos() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest", "--index-runes"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
   core.mine_blocks(1);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -19,7 +19,7 @@ fn send_amount_does_not_select_runic_utxos() {
 
   drain(&core, &ord);
 
-  CommandBuilder::new("--regtest --index-runes wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 600sat")
+  CommandBuilder::new("--regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 600sat")
     .core(&core)
     .ord(&ord)
     .expected_exit_code(1)
@@ -31,13 +31,13 @@ fn send_amount_does_not_select_runic_utxos() {
 fn mint_does_not_select_runic_utxos() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
   core.mine_blocks(1);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -46,7 +46,7 @@ fn mint_does_not_select_runic_utxos() {
 
   drain(&core, &ord);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 0")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 0")
     .core(&core)
     .ord(&ord)
     .expected_exit_code(1)
@@ -58,7 +58,7 @@ fn mint_does_not_select_runic_utxos() {
 fn sending_rune_does_not_send_runic_utxos() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--index-runes", "--regtest"], &[]);
+  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   create_wallet(&core, &ord);
 
@@ -67,7 +67,7 @@ fn sending_rune_does_not_send_runic_utxos() {
   core.mine_blocks_with_subsidy(1, 10000);
 
   pretty_assert_eq!(
-    CommandBuilder::new("--regtest --index-runes wallet balance")
+    CommandBuilder::new("--regtest wallet balance")
       .core(&core)
       .ord(&ord)
       .run_and_deserialize_output::<Balance>(),
@@ -81,7 +81,7 @@ fn sending_rune_does_not_send_runic_utxos() {
 
   core.mine_blocks(1);
 
-  CommandBuilder::new("--chain regtest --index-runes wallet mint --fee-rate 1")
+  CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
@@ -93,7 +93,6 @@ fn sending_rune_does_not_send_runic_utxos() {
   CommandBuilder::new(format!(
     "
        --chain regtest
-       --index-runes
        wallet send
        --postage 11111sat
        --fee-rate 0

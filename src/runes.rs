@@ -29,7 +29,7 @@ mod tests {
 
   #[test]
   fn index_starts_with_runes() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
     context.assert_runes(
       [
         (
@@ -59,7 +59,7 @@ mod tests {
 
   #[test]
   fn input_runes_may_be_allocated() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -167,7 +167,7 @@ mod tests {
 
   #[test]
   fn unallocated_runes_are_assigned_to_first_non_op_return_output() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -264,7 +264,7 @@ mod tests {
 
   #[test]
   fn unallocated_runes_are_burned_if_no_non_op_return_output_is_present() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -357,7 +357,7 @@ mod tests {
 
   #[test]
   fn unallocated_runes_are_assigned_to_default_output() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -461,7 +461,7 @@ mod tests {
 
   #[test]
   fn unallocated_runes_are_burned_if_default_output_is_op_return() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -561,7 +561,7 @@ mod tests {
   #[test]
   fn unallocated_runes_in_transactions_with_no_runestone_are_assigned_to_first_non_op_return_output(
   ) {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -658,7 +658,7 @@ mod tests {
 
   #[test]
   fn convert_exact_input() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -858,7 +858,7 @@ mod tests {
 
   #[test]
   fn convert_exact_output() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -982,7 +982,7 @@ mod tests {
 
   #[test]
   fn convert_exact_input_and_split() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -1115,7 +1115,7 @@ mod tests {
 
   #[test]
   fn convert_exact_input_and_split_with_remainder_assigned_to_first_conversion_output() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -1251,7 +1251,7 @@ mod tests {
 
   #[test]
   fn convert_even_if_output_is_provided_as_an_input() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -1449,7 +1449,7 @@ mod tests {
 
   #[test]
   fn convert_even_if_output_is_provided_as_an_input_and_split() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -1647,7 +1647,7 @@ mod tests {
 
   #[test]
   fn convert_and_burn_if_conversion_output_is_op_return() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -1771,7 +1771,7 @@ mod tests {
 
   #[test]
   fn convert_undo_burn_input_if_min_output_not_met() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -1893,7 +1893,7 @@ mod tests {
 
   #[test]
   fn convert_undo_burn_input_if_desired_output_exceeds_max_output() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2013,7 +2013,7 @@ mod tests {
 
   #[test]
   fn convert_undo_burn_input_if_last_conversion_outpoint_is_not_an_input() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2201,7 +2201,7 @@ mod tests {
 
   #[test]
   fn convert_undo_burn_input_if_conversion_outpoint_missing() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2392,7 +2392,7 @@ mod tests {
 
   #[test]
   fn convert_undo_burn_input_if_input_exceeds_max_input() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2512,7 +2512,7 @@ mod tests {
 
   #[test]
   fn convert_undo_burn_input_if_min_output_not_met_and_missing_output_with_input_id() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2626,7 +2626,7 @@ mod tests {
   #[test]
   fn convert_undo_burn_input_if_min_output_not_met_and_missing_output_with_input_id_and_output_id_invalid(
   ) {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2739,7 +2739,7 @@ mod tests {
 
   #[test]
   fn convert_burn_input_if_min_output_not_met_and_no_output_exists() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -2846,7 +2846,7 @@ mod tests {
 
   #[test]
   fn mint_after_conversion() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3019,7 +3019,7 @@ mod tests {
 
   #[test]
   fn mint_receives_burnt_runes() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3152,7 +3152,7 @@ mod tests {
 
   #[test]
   fn mint_receives_missed_mints() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3264,7 +3264,7 @@ mod tests {
 
   #[test]
   fn multiple_input_runes_on_different_inputs_may_be_allocated() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3472,7 +3472,7 @@ mod tests {
   #[test]
   fn unallocated_runes_are_assigned_to_first_non_op_return_output_when_op_return_is_not_last_output(
   ) {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3574,7 +3574,7 @@ mod tests {
 
   #[test]
   fn edicts_over_max_inputs_are_ignored() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3682,7 +3682,7 @@ mod tests {
 
   #[test]
   fn split() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3799,7 +3799,7 @@ mod tests {
 
   #[test]
   fn split_with_preceding_edict() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -3923,7 +3923,7 @@ mod tests {
 
   #[test]
   fn split_with_following_edict() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4047,7 +4047,7 @@ mod tests {
 
   #[test]
   fn split_with_amount() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4164,7 +4164,7 @@ mod tests {
 
   #[test]
   fn split_with_amount_with_preceding_edict() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4288,7 +4288,7 @@ mod tests {
 
   #[test]
   fn split_with_amount_with_following_edict() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4426,7 +4426,7 @@ mod tests {
 
   #[test]
   fn allocate_all_remaining_runes_in_inputs() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4534,7 +4534,7 @@ mod tests {
 
   #[test]
   fn rune_can_be_minted_without_edict() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4581,7 +4581,7 @@ mod tests {
 
   #[test]
   fn rune_cannot_be_minted_if_previous_mint_is_not_an_input() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4680,7 +4680,7 @@ mod tests {
 
   #[test]
   fn rune_can_be_minted_if_previous_mint_output_is_an_input() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4782,7 +4782,7 @@ mod tests {
 
   #[test]
   fn rune_can_be_minted_if_previous_mint_output_is_spent() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4933,7 +4933,7 @@ mod tests {
 
   #[test]
   fn rune_cannot_be_minted_less_than_limit_amount() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -4990,7 +4990,7 @@ mod tests {
 
   #[test]
   fn open_mint_claims_can_use_split() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -5064,7 +5064,7 @@ mod tests {
 
   #[test]
   fn transactions_cannot_claim_more_than_mint_amount() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -5147,7 +5147,7 @@ mod tests {
 
   #[test]
   fn multiple_edicts_in_one_transaction_may_claim_open_mint() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -5242,7 +5242,7 @@ mod tests {
 
   #[test]
   fn edict_with_amount_zero_and_no_destinations_is_ignored() {
-    let context = Context::builder().arg("--index-runes").build();
+    let context = Context::builder().build();
 
     context.mine_blocks(1);
 
@@ -5323,7 +5323,7 @@ mod tests {
 
     Context::builder()
       .chain(Chain::Mainnet)
-      .arg("--index-runes")
+      
       .build()
       .assert_runes(
         [

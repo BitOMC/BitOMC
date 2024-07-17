@@ -51,11 +51,6 @@ pub struct Options {
     help = "Set index cache size to <INDEX_CACHE_SIZE> bytes. [default: 1/4 available RAM]"
   )]
   pub(crate) index_cache_size: Option<usize>,
-  #[arg(
-    long,
-    help = "Track location of runes. RUNES ARE IN AN UNFINISHED PRE-ALPHA STATE AND SUBJECT TO CHANGE AT ANY TIME."
-  )]
-  pub(crate) index_runes: bool,
   #[arg(long, help = "Store transactions in index.")]
   pub(crate) index_transactions: bool,
   #[arg(long, help = "Run in integration test mode.")]
