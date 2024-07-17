@@ -95,7 +95,7 @@ fn minting_rune_with_postage() {
     .ord(&ord)
     .run_and_deserialize_output::<ord::subcommand::wallet::balance::Output>();
 
-  assert_eq!(balance.runic.unwrap(), 2222);
+  assert_eq!(balance.runic, 2222);
 }
 
 #[test]

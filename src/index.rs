@@ -77,11 +77,10 @@ define_table! { UTIL_ENTRY, u8, UtilEntryValue }
 pub(crate) enum Statistic {
   Schema = 0,
   Commits = 1,
-  IndexRunes = 2,
-  Runes = 3,
-  IndexTransactions = 4,
-  InitialSyncTime = 5,
-  IndexAddresses = 6,
+  Runes = 2,
+  IndexTransactions = 3,
+  InitialSyncTime = 4,
+  IndexAddresses = 5,
 }
 
 impl Statistic {
@@ -346,12 +345,6 @@ impl Index {
 
           Self::set_statistic(
             &mut statistics,
-            Statistic::IndexRunes,
-            u64::from(settings.index_runes()),
-          )?;
-
-          Self::set_statistic(
-            &mut statistics,
             Statistic::IndexTransactions,
             u64::from(settings.index_transactions()),
           )?;
@@ -410,14 +403,12 @@ impl Index {
     };
 
     let index_addresses;
-    let index_runes;
     let index_transactions;
 
     {
       let tx = database.begin_read()?;
       let statistics = tx.open_table(STATISTIC_TO_COUNT)?;
       index_addresses = Self::is_statistic_set(&statistics, Statistic::IndexAddresses)?;
-      index_runes = Self::is_statistic_set(&statistics, Statistic::IndexRunes)?;
       index_transactions = Self::is_statistic_set(&statistics, Statistic::IndexTransactions)?;
     }
 
@@ -434,7 +425,7 @@ impl Index {
       genesis_block_coinbase_transaction,
       height_limit: settings.height_limit(),
       index_addresses,
-      index_runes,
+      index_runes: true,
       index_sats: false,
       index_transactions,
       settings: settings.clone(),

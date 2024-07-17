@@ -26,8 +26,8 @@ fn wallet_balance() {
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE,
-      runic: None,
-      runes: None,
+      runic: 0,
+      runes: BTreeMap::new(),
       total: 50 * COIN_VALUE,
     }
   );
@@ -49,8 +49,8 @@ fn unsynced_wallet_fails_with_unindexed_output() {
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE,
-      runic: None,
-      runes: None,
+      runic: 0,
+      runes: BTreeMap::new(),
       total: 50 * COIN_VALUE,
     }
   );
@@ -82,8 +82,8 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 0,
-      runic: Some(0),
-      runes: Some(BTreeMap::new()),
+      runic: 0,
+      runes: BTreeMap::new(),
       total: 0,
     }
   );
@@ -104,21 +104,19 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE * 2 - 10_000 - 330,
-      runic: Some(10_000),
-      runes: Some(
-        vec![(
-          SpacedRune {
-            rune: Rune(TIGHTEN),
-            spacers: 0
-          },
-          Decimal {
-            value: 50,
-            scale: 0,
-          }
-        )]
-        .into_iter()
-        .collect()
-      ),
+      runic: 10_000,
+      runes: vec![(
+        SpacedRune {
+          rune: Rune(TIGHTEN),
+          spacers: 0
+        },
+        Decimal {
+          value: 50,
+          scale: 0,
+        }
+      )]
+      .into_iter()
+      .collect(),
       total: 50 * COIN_VALUE * 2 - 330,
     }
   );

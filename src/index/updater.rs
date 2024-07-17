@@ -1,5 +1,5 @@
 use {
-  self::{rune_updater::RuneUpdater},
+  self::rune_updater::RuneUpdater,
   super::{fetcher::Fetcher, *},
   futures::future::try_join_all,
   tokio::sync::{
@@ -235,10 +235,7 @@ impl<'index> Updater<'index> {
 
   fn spawn_fetcher(
     settings: &Settings,
-  ) -> Result<(
-    mpsc::Sender<OutPoint>,
-    Option<broadcast::Receiver<TxOut>>,
-  )> {
+  ) -> Result<(mpsc::Sender<OutPoint>, Option<broadcast::Receiver<TxOut>>)> {
     let fetcher = Fetcher::new(settings)?;
 
     // A block probably has no more than 20k inputs

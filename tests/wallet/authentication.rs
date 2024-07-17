@@ -30,8 +30,8 @@ fn authentication() {
       .run_and_deserialize_output::<Output>(),
     Output {
       cardinal: 50 * COIN_VALUE,
-      runic: None,
-      runes: None,
+      runic: 0,
+      runes: BTreeMap::new(),
       total: 50 * COIN_VALUE,
     }
   );

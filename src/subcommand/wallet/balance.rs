@@ -3,10 +3,8 @@ use super::*;
 #[derive(Serialize, Deserialize, Debug, PartialEq)]
 pub struct Output {
   pub cardinal: u64,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub runes: Option<BTreeMap<SpacedRune, Decimal>>,
-  #[serde(default, skip_serializing_if = "Option::is_none")]
-  pub runic: Option<u64>,
+  pub runes: BTreeMap<SpacedRune, Decimal>,
+  pub runic: u64,
   pub total: u64,
 }
 
@@ -45,8 +43,8 @@ pub(crate) fn run(wallet: Wallet) -> SubcommandResult {
 
   Ok(Some(Box::new(Output {
     cardinal,
-    runes: wallet.has_rune_index().then_some(runes),
-    runic: wallet.has_rune_index().then_some(runic),
+    runes,
+    runic,
     total: cardinal + runic,
   })))
 }
@@ -60,12 +58,12 @@ mod tests {
     assert_eq!(
       serde_json::to_string(&Output {
         cardinal: 0,
-        runes: None,
-        runic: None,
+        runes: BTreeMap::new(),
+        runic: 0,
         total: 0
       })
       .unwrap(),
-      r#"{"cardinal":0,"total":0}"#
+      r#"{"cardinal":0,"runes":{},"runic":0,"total":0}"#
     );
   }
 }
