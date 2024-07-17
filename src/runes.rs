@@ -3525,7 +3525,7 @@ mod tests {
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       op_return: Some(
-        script::Builder::new()
+        bitcoin::script::Builder::new()
           .push_opcode(opcodes::all::OP_RETURN)
           .into_script(),
       ),

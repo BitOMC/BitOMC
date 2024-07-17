@@ -22,20 +22,6 @@ pub(crate) fn outpoint(n: u64) -> OutPoint {
   format!("{}:{}", txid(n), n).parse().unwrap()
 }
 
-pub(crate) fn satpoint(n: u64, offset: u64) -> SatPoint {
-  SatPoint {
-    outpoint: outpoint(n),
-    offset,
-  }
-}
-
-pub(crate) fn address() -> Address {
-  "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4"
-    .parse::<Address<NetworkUnchecked>>()
-    .unwrap()
-    .assume_checked()
-}
-
 pub(crate) fn change(n: u64) -> Address {
   match n {
     0 => "tb1qjsv26lap3ffssj6hfy8mzn0lg5vte6a42j75ww",
@@ -47,13 +33,6 @@ pub(crate) fn change(n: u64) -> Address {
   .parse::<Address<NetworkUnchecked>>()
   .unwrap()
   .assume_checked()
-}
-
-pub(crate) fn tx_out(value: u64, address: Address) -> TxOut {
-  TxOut {
-    value,
-    script_pubkey: address.script_pubkey(),
-  }
 }
 
 #[derive(Default, Debug)]
@@ -69,14 +48,6 @@ impl From<InscriptionTemplate> for Inscription {
       pointer: template.pointer.map(Inscription::pointer_value),
       ..default()
     }
-  }
-}
-
-pub(crate) fn inscription(content_type: &str, body: impl AsRef<[u8]>) -> Inscription {
-  Inscription {
-    content_type: Some(content_type.into()),
-    body: Some(body.as_ref().into()),
-    ..default()
   }
 }
 

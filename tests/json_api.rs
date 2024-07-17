@@ -4,8 +4,8 @@ use {super::*, bitcoin::BlockHash};
 fn json_request_fails_when_disabled() {
   let core = mockcore::spawn();
 
-  let response = TestServer::spawn_with_server_args(&core, &[], &["--disable-json-api"])
-    .json_request("/sat/2099999997689999");
+  let response =
+    TestServer::spawn_with_server_args(&core, &[], &["--disable-json-api"]).json_request("/util");
 
   assert_eq!(response.status(), StatusCode::NOT_ACCEPTABLE);
 }

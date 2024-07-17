@@ -1,28 +1,8 @@
 use {super::*, boilerplate::Boilerplate};
 
 pub(crate) use {
-  crate::subcommand::server::ServerConfig,
-  address::AddressHtml,
-  block::BlockHtml,
-  children::ChildrenHtml,
-  clock::ClockSvg,
-  collections::CollectionsHtml,
-  home::HomeHtml,
-  iframe::Iframe,
-  input::InputHtml,
-  inscription::InscriptionHtml,
-  inscriptions::InscriptionsHtml,
-  inscriptions_block::InscriptionsBlockHtml,
-  metadata::MetadataHtml,
-  output::OutputHtml,
-  parents::ParentsHtml,
-  preview::{
-    PreviewAudioHtml, PreviewCodeHtml, PreviewFontHtml, PreviewImageHtml, PreviewMarkdownHtml,
-    PreviewModelHtml, PreviewPdfHtml, PreviewTextHtml, PreviewUnknownHtml, PreviewVideoHtml,
-  },
-  range::RangeHtml,
-  rare::RareTxt,
-  sat::SatHtml,
+  crate::subcommand::server::ServerConfig, address::AddressHtml, block::BlockHtml, clock::ClockSvg,
+  home::HomeHtml, iframe::Iframe, input::InputHtml, output::OutputHtml,
 };
 
 pub use {
@@ -33,24 +13,13 @@ pub use {
 pub mod address;
 pub mod block;
 pub mod blocks;
-mod children;
 mod clock;
-pub mod collections;
 mod home;
 mod iframe;
 mod input;
-pub mod inscription;
-pub mod inscriptions;
-mod inscriptions_block;
-mod metadata;
 pub mod output;
-mod parents;
-mod preview;
-mod range;
-mod rare;
 pub mod rune;
 pub mod runes;
-pub mod sat;
 pub mod status;
 pub mod transaction;
 
@@ -119,7 +88,6 @@ mod tests {
     assert_regex_match!(
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Mainnet,
-        csp_origin: Some("https://signet.ordinals.com".into()),
         domain: Some("signet.ordinals.com".into()),
         index_sats: true,
         ..default()
@@ -169,7 +137,6 @@ mod tests {
     assert_regex_match!(
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Mainnet,
-        csp_origin: None,
         domain: None,
         index_sats: true,
         ..default()
@@ -183,7 +150,6 @@ mod tests {
     assert_regex_match!(
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Mainnet,
-        csp_origin: None,
         domain: None,
         index_sats: false,
         ..default()
@@ -197,7 +163,6 @@ mod tests {
     assert_regex_match!(
       Foo.page(Arc::new(ServerConfig {
         chain: Chain::Signet,
-        csp_origin: None,
         domain: None,
         index_sats: true,
         ..default()

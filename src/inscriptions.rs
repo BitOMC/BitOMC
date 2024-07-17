@@ -2,7 +2,7 @@ use super::*;
 
 use tag::Tag;
 
-pub(crate) use self::{envelope::ParsedEnvelope, media::Media};
+pub(crate) use self::media::Media;
 
 pub use self::{envelope::Envelope, inscription::Inscription, inscription_id::InscriptionId};
 

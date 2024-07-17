@@ -12,13 +12,6 @@ impl Iframe {
       thumbnail: true,
     })
   }
-
-  pub(crate) fn main(inscription_id: InscriptionId) -> Trusted<Self> {
-    Trusted(Self {
-      inscription_id,
-      thumbnail: false,
-    })
-  }
 }
 
 impl Display for Iframe {
@@ -51,14 +44,6 @@ mod tests {
       Iframe::thumbnail(inscription_id(1))
       .0.to_string(),
       "<a href=/inscription/1{64}i1><iframe sandbox=allow-scripts scrolling=no loading=lazy src=/preview/1{64}i1></iframe></a>",
-    );
-  }
-
-  #[test]
-  fn main() {
-    assert_regex_match!(
-      Iframe::main(inscription_id(1)).0.to_string(),
-      "<iframe sandbox=allow-scripts scrolling=no loading=lazy src=/preview/1{64}i1></iframe>",
     );
   }
 }

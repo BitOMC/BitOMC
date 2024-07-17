@@ -64,16 +64,6 @@ fn address_page_shows_outputs_and_sat_balance() {
 }
 
 #[test]
-fn expected_sat_time_is_rounded() {
-  let core = mockcore::spawn();
-
-  TestServer::spawn_with_args(&core, &[]).assert_response_regex(
-    "/sat/2099999997689999",
-    r".*<dt>timestamp</dt><dd><time>.* \d+:\d+:\d+ UTC</time> \(expected\)</dd>.*",
-  );
-}
-
-#[test]
 fn missing_credentials() {
   let core = mockcore::spawn();
 
