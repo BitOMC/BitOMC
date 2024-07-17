@@ -11,10 +11,7 @@ use {
     updater::Updater,
   },
   super::*,
-  crate::{
-    subcommand::server::query,
-    templates::StatusHtml,
-  },
+  crate::{subcommand::server::query, templates::StatusHtml},
   bitcoin::block::Header,
   bitcoincore_rpc::{
     json::{GetBlockHeaderResult, GetBlockStatsResult},
@@ -658,6 +655,22 @@ impl Index {
           utils_per_sat: u.utils_per_sat(),
           interest_rate: u.interest_rate(),
           decimals: u.decimals(),
+        })
+        .unwrap(),
+    )
+  }
+
+  pub fn get_rate_history(&self) -> Result<api::RateHistory> {
+    Ok(
+      self
+        .database
+        .begin_read()?
+        .open_table(UTIL_ENTRY)?
+        .get(0)?
+        .map(|e| UtilEntry::load(e.value()))
+        .map(|u| api::RateHistory {
+          median_interest_rate: u.interest_rate(),
+          history: u.history(),
         })
         .unwrap(),
     )

@@ -166,6 +166,12 @@ pub struct UtilState {
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize)]
+pub struct RateHistory {
+  pub median_interest_rate: u128,
+  pub history: Vec<u128>,
+}
+
+#[derive(Debug, PartialEq, Serialize, Deserialize)]
 pub struct Output {
   pub address: Option<Address<NetworkUnchecked>>,
   pub indexed: bool,

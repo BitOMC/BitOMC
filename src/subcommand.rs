@@ -3,6 +3,7 @@ use super::*;
 pub mod balances;
 pub mod decode;
 pub mod env;
+pub mod history;
 pub mod index;
 pub mod runes;
 pub(crate) mod server;
@@ -18,8 +19,6 @@ pub(crate) enum Subcommand {
   Decode(decode::Decode),
   #[command(about = "Start a regtest ord and bitcoind instance")]
   Env(env::Env),
-  #[command(about = "Display current monetary policy")]
-  MonetaryPolicy,
   #[command(subcommand, about = "Index commands")]
   Index(index::IndexSubcommand),
   #[command(about = "Run the explorer server")]
@@ -28,6 +27,10 @@ pub(crate) enum Subcommand {
   Settings,
   #[command(about = "Wallet commands")]
   Wallet(wallet::WalletCommand),
+  #[command(about = "Display current monetary policy")]
+  MonetaryPolicy,
+  #[command(about = "Display recent interest rates")]
+  RateHistory,
   #[command(about = "Display utils in terms of sats")]
   UtilToSat(util::UtilToSatInput),
   #[command(about = "Display sats in terms of utils")]
@@ -50,6 +53,7 @@ impl Subcommand {
       Self::Settings => settings::run(settings),
       Self::Wallet(wallet) => wallet.run(settings),
       Self::MonetaryPolicy => util::run(settings),
+      Self::RateHistory => history::run(settings),
       Self::UtilToSat(util_to_sat) => util_to_sat.run(settings),
       Self::SatToUtil(sat_to_util) => sat_to_util.run(settings),
     }

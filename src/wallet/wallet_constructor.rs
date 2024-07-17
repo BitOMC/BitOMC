@@ -111,7 +111,7 @@ impl WalletConstructor {
       .into_iter()
       .zip(serde_json::from_str::<Vec<api::Output>>(&response.text()?)?)
       .collect();
-      
+
     Ok(output_info)
   }
 

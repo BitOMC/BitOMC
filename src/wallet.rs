@@ -44,7 +44,8 @@ impl Wallet {
       .cloned()
       .collect::<HashSet<OutPoint>>();
 
-    let outputs = self.get_runic_outputs()?
+    let outputs = self
+      .get_runic_outputs()?
       .into_iter()
       .filter(|utxo| !locked.contains(utxo))
       .collect::<Vec<OutPoint>>();

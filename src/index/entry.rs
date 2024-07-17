@@ -345,6 +345,15 @@ impl UtilEntry {
   pub fn decimals(&self) -> u128 {
     Self::BASE_VALUE
   }
+
+  pub fn history(&self) -> Vec<u128> {
+    let i = self.index as usize;
+
+    (0..self.rates.len())
+      .map(|j| self.rates[(self.rates.len() + i - j - 1) % self.rates.len()])
+      .filter(|&x| x != 0)
+      .collect()
+  }
 }
 
 pub(crate) type UtilEntryValue = (

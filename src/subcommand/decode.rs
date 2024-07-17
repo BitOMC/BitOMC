@@ -31,8 +31,6 @@ impl Decode {
 
     let runestone = Runestone::decipher(&transaction);
 
-    Ok(Some(Box::new(Output {
-      runestone,
-    })))
+    Ok(Some(Box::new(Output { runestone })))
   }
 }

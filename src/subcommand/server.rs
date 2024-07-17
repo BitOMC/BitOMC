@@ -270,6 +270,7 @@ impl Server {
         )
         .route("/range/:start/:end", get(Self::range))
         .route("/rare.txt", get(Self::rare_txt))
+        .route("/ratehistory", get(Self::rate_history))
         .route("/rune/:rune", get(Self::rune))
         .route("/runes", get(Self::runes))
         .route("/runes/:page", get(Self::runes_paginated))
@@ -998,10 +999,7 @@ impl Server {
       let runestone = Runestone::decipher(&transaction);
 
       Ok(if accept_json {
-        Json(api::Decode {
-          runestone,
-        })
-        .into_response()
+        Json(api::Decode { runestone }).into_response()
       } else {
         StatusCode::NOT_FOUND.into_response()
       })
@@ -1029,6 +1027,19 @@ impl Server {
     task::block_in_place(|| {
       Ok(if accept_json {
         Json(index.get_util_state()?).into_response()
+      } else {
+        StatusCode::NOT_FOUND.into_response()
+      })
+    })
+  }
+
+  async fn rate_history(
+    Extension(index): Extension<Arc<Index>>,
+    AcceptJson(accept_json): AcceptJson,
+  ) -> ServerResult {
+    task::block_in_place(|| {
+      Ok(if accept_json {
+        Json(index.get_rate_history()?).into_response()
       } else {
         StatusCode::NOT_FOUND.into_response()
       })
@@ -2157,9 +2168,7 @@ impl Server {
 
 #[cfg(test)]
 mod tests {
-  use {
-    super::*, reqwest::Url, std::net::TcpListener, tempfile::TempDir,
-  };
+  use {super::*, reqwest::Url, std::net::TcpListener, tempfile::TempDir};
 
   #[derive(Default)]
   struct Builder {
