@@ -56,7 +56,6 @@ define_table! { HEIGHT_TO_LAST_SEQUENCE_NUMBER, u32, u32 }
 define_table! { INSCRIPTION_ID_TO_SEQUENCE_NUMBER, InscriptionIdValue, u32 }
 define_table! { INSCRIPTION_NUMBER_TO_SEQUENCE_NUMBER, i32, u32 }
 define_table! { OUTPOINT_TO_RUNE_BALANCES, &OutPointValue, &[u8] }
-define_table! { OUTPOINT_TO_SAT_RANGES, &OutPointValue, &[u8] }
 define_table! { OUTPOINT_TO_TXOUT, &OutPointValue, TxOutValue }
 define_table! { RUNE_ID_TO_RUNE_ENTRY, RuneIdValue, RuneEntryValue }
 define_table! { RUNE_TO_RUNE_ID, u128, RuneIdValue }
@@ -326,12 +325,7 @@ impl Index {
           .insert(0, UtilEntry::new().store())?;
 
         {
-          let mut outpoint_to_sat_ranges = tx.open_table(OUTPOINT_TO_SAT_RANGES)?;
           let mut statistics = tx.open_table(STATISTIC_TO_COUNT)?;
-
-          if settings.index_sats() {
-            outpoint_to_sat_ranges.insert(&OutPoint::null().store(), [].as_slice())?;
-          }
 
           Self::set_statistic(
             &mut statistics,
@@ -574,7 +568,10 @@ impl Index {
           })
           .collect(),
         tree_height: stats.tree_height(),
-        utxos_indexed: rtx.open_table(OUTPOINT_TO_SAT_RANGES)?.len()?,
+        utxos_indexed: rtx
+          .open_table(OUTPOINT_TO_TXOUT)?
+          .len()?
+          .max(rtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?.len()?),
       }
     };
 
@@ -644,8 +641,6 @@ impl Index {
           .unwrap_or(0),
         index: self,
         outputs_cached: 0,
-        outputs_inserted_since_flush: 0,
-        range_cache: HashMap::new(),
       };
 
       match updater.update_index(wtx) {
@@ -1821,10 +1816,7 @@ mod tests {
 
   #[test]
   fn output_addresses_are_updated() {
-    let context = Context::builder()
-      .arg("--index-addresses")
-      .arg("--index-sats")
-      .build();
+    let context = Context::builder().arg("--index-addresses").build();
 
     context.mine_blocks(2);
 

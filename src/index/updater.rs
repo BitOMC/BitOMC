@@ -35,8 +35,6 @@ pub(crate) struct Updater<'index> {
   pub(super) height: u32,
   pub(super) index: &'index Index,
   pub(super) outputs_cached: u64,
-  pub(super) outputs_inserted_since_flush: u64,
-  pub(super) range_cache: HashMap<OutPointValue, Vec<u8>>,
 }
 
 impl<'index> Updater<'index> {
@@ -475,28 +473,10 @@ impl<'index> Updater<'index> {
 
   fn commit(&mut self, wtx: WriteTransaction, utxo_cache: HashMap<OutPoint, TxOut>) -> Result {
     log::info!(
-      "Committing at block height {}, {} in map, {} outputs cached",
+      "Committing at block height {}, {} outputs cached",
       self.height,
-      self.range_cache.len(),
       self.outputs_cached
     );
-
-    if self.index.index_sats {
-      log::info!(
-        "Flushing {} entries ({:.1}% resulting from {} insertions) from memory to database",
-        self.range_cache.len(),
-        self.range_cache.len() as f64 / self.outputs_inserted_since_flush as f64 * 100.,
-        self.outputs_inserted_since_flush,
-      );
-
-      let mut outpoint_to_sat_ranges = wtx.open_table(OUTPOINT_TO_SAT_RANGES)?;
-
-      for (outpoint, sat_ranges) in self.range_cache.drain() {
-        outpoint_to_sat_ranges.insert(&outpoint, sat_ranges.as_slice())?;
-      }
-
-      self.outputs_inserted_since_flush = 0;
-    }
 
     {
       log::info!("Flushing utxo cache with {} entries", utxo_cache.len());

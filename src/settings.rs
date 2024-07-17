@@ -21,11 +21,8 @@ pub struct Settings {
   index_addresses: bool,
   index_cache_size: Option<usize>,
   index_runes: bool,
-  index_sats: bool,
-  index_spent_sats: bool,
   index_transactions: bool,
   integration_test: bool,
-  no_index_inscriptions: bool,
   server_password: Option<String>,
   server_url: Option<String>,
   server_username: Option<String>,
@@ -127,11 +124,8 @@ impl Settings {
       index_addresses: self.index_addresses || source.index_addresses,
       index_cache_size: self.index_cache_size.or(source.index_cache_size),
       index_runes: self.index_runes || source.index_runes,
-      index_sats: self.index_sats || source.index_sats,
-      index_spent_sats: self.index_spent_sats || source.index_spent_sats,
       index_transactions: self.index_transactions || source.index_transactions,
       integration_test: self.integration_test || source.integration_test,
-      no_index_inscriptions: self.no_index_inscriptions || source.no_index_inscriptions,
       server_password: self.server_password.or(source.server_password),
       server_url: self.server_url.or(source.server_url),
       server_username: self.server_username.or(source.server_username),
@@ -163,11 +157,8 @@ impl Settings {
       index_addresses: options.index_addresses,
       index_cache_size: options.index_cache_size,
       index_runes: options.index_runes,
-      index_sats: options.index_sats,
-      index_spent_sats: options.index_spent_sats,
       index_transactions: options.index_transactions,
       integration_test: options.integration_test,
-      no_index_inscriptions: options.no_index_inscriptions,
       server_password: options.server_password,
       server_url: None,
       server_username: options.server_username,
@@ -237,11 +228,8 @@ impl Settings {
       index_addresses: get_bool("INDEX_ADDRESSES"),
       index_cache_size: get_usize("INDEX_CACHE_SIZE")?,
       index_runes: get_bool("INDEX_RUNES"),
-      index_sats: get_bool("INDEX_SATS"),
-      index_spent_sats: get_bool("INDEX_SPENT_SATS"),
       index_transactions: get_bool("INDEX_TRANSACTIONS"),
       integration_test: get_bool("INTEGRATION_TEST"),
-      no_index_inscriptions: get_bool("NO_INDEX_INSCRIPTIONS"),
       server_password: get_string("SERVER_PASSWORD"),
       server_url: get_string("SERVER_URL"),
       server_username: get_string("SERVER_USERNAME"),
@@ -268,11 +256,8 @@ impl Settings {
       index_addresses: false,
       index_cache_size: None,
       index_runes: true,
-      index_sats: false,
-      index_spent_sats: false,
       index_transactions: false,
       integration_test: false,
-      no_index_inscriptions: true,
       server_password: None,
       server_url: Some(server_url.into()),
       server_username: None,
@@ -349,11 +334,8 @@ impl Settings {
         }
       }),
       index_runes: self.index_runes,
-      index_sats: self.index_sats,
-      index_spent_sats: self.index_spent_sats,
       index_transactions: self.index_transactions,
       integration_test: self.integration_test,
-      no_index_inscriptions: self.no_index_inscriptions,
       server_password: self.server_password,
       server_url: self.server_url,
       server_username: self.server_username,
@@ -504,24 +486,12 @@ impl Settings {
     self.index_addresses
   }
 
-  pub fn index_inscriptions(&self) -> bool {
-    !self.no_index_inscriptions
-  }
-
   pub fn index_runes(&self) -> bool {
     self.index_runes
   }
 
   pub fn index_cache_size(&self) -> usize {
     self.index_cache_size.unwrap()
-  }
-
-  pub fn index_sats(&self) -> bool {
-    self.index_sats
-  }
-
-  pub fn index_spent_sats(&self) -> bool {
-    self.index_spent_sats
   }
 
   pub fn index_transactions(&self) -> bool {
@@ -1023,11 +993,8 @@ mod tests {
         index_addresses: true,
         index_cache_size: Some(4),
         index_runes: true,
-        index_sats: true,
-        index_spent_sats: true,
         index_transactions: true,
         integration_test: true,
-        no_index_inscriptions: true,
         server_password: Some("server password".into()),
         server_url: Some("server url".into()),
         server_username: Some("server username".into()),
@@ -1057,12 +1024,9 @@ mod tests {
           "--index-addresses",
           "--index-cache-size=4",
           "--index-runes",
-          "--index-sats",
-          "--index-spent-sats",
           "--index-transactions",
           "--index=index",
           "--integration-test",
-          "--no-index-inscriptions",
           "--server-password=server password",
           "--server-username=server username",
         ])
@@ -1087,11 +1051,8 @@ mod tests {
         index_addresses: true,
         index_cache_size: Some(4),
         index_runes: true,
-        index_sats: true,
-        index_spent_sats: true,
         index_transactions: true,
         integration_test: true,
-        no_index_inscriptions: true,
         server_password: Some("server password".into()),
         server_url: None,
         server_username: Some("server username".into()),

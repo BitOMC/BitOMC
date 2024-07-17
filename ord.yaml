@@ -18,11 +18,8 @@ index: /var/lib/ord/index.redb
 index_addresses: false
 index_cache_size: 1000000000
 index_runes: true
-index_sats: false
-index_spent_sats: false
 index_transactions: false
 integration_test: true
-no_index_inscriptions: true
 server_password: bar
 server_url: http://localhost:8888
 server_username: foo

@@ -24,11 +24,8 @@ fn default() {
   "index_addresses": false,
   "index_cache_size": \d+,
   "index_runes": false,
-  "index_sats": false,
-  "index_spent_sats": false,
   "index_transactions": false,
   "integration_test": false,
-  "no_index_inscriptions": false,
   "server_password": null,
   "server_url": null,
   "server_username": null
