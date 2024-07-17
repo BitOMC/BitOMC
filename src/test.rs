@@ -35,22 +35,6 @@ pub(crate) fn change(n: u64) -> Address {
   .assume_checked()
 }
 
-#[derive(Default, Debug)]
-pub(crate) struct InscriptionTemplate {
-  pub(crate) parents: Vec<InscriptionId>,
-  pub(crate) pointer: Option<u64>,
-}
-
-impl From<InscriptionTemplate> for Inscription {
-  fn from(template: InscriptionTemplate) -> Self {
-    Self {
-      parents: template.parents.into_iter().map(|id| id.value()).collect(),
-      pointer: template.pointer.map(Inscription::pointer_value),
-      ..default()
-    }
-  }
-}
-
 pub(crate) fn inscription_id(n: u32) -> InscriptionId {
   let hex = format!("{n:x}");
 
