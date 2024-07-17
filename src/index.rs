@@ -47,22 +47,12 @@ pub(crate) mod testing;
 
 const SCHEMA_VERSION: u64 = 26;
 
-define_multimap_table! { SATPOINT_TO_SEQUENCE_NUMBER, &SatPointValue, u32 }
-define_multimap_table! { SAT_TO_SEQUENCE_NUMBER, u64, u32 }
-define_multimap_table! { SEQUENCE_NUMBER_TO_CHILDREN, u32, u32 }
 define_multimap_table! { SCRIPT_PUBKEY_TO_OUTPOINT, &[u8], OutPointValue }
 define_table! { HEIGHT_TO_BLOCK_HEADER, u32, &HeaderValue }
-define_table! { HEIGHT_TO_LAST_SEQUENCE_NUMBER, u32, u32 }
-define_table! { INSCRIPTION_ID_TO_SEQUENCE_NUMBER, InscriptionIdValue, u32 }
-define_table! { INSCRIPTION_NUMBER_TO_SEQUENCE_NUMBER, i32, u32 }
 define_table! { OUTPOINT_TO_RUNE_BALANCES, &OutPointValue, &[u8] }
 define_table! { OUTPOINT_TO_TXOUT, &OutPointValue, TxOutValue }
 define_table! { RUNE_ID_TO_RUNE_ENTRY, RuneIdValue, RuneEntryValue }
 define_table! { RUNE_TO_RUNE_ID, u128, RuneIdValue }
-define_table! { SAT_TO_SATPOINT, u64, &SatPointValue }
-define_table! { SEQUENCE_NUMBER_TO_INSCRIPTION_ENTRY, u32, InscriptionEntryValue }
-define_table! { SEQUENCE_NUMBER_TO_RUNE_ID, u32, RuneIdValue }
-define_table! { SEQUENCE_NUMBER_TO_SATPOINT, u32, &SatPointValue }
 define_table! { STATISTIC_TO_COUNT, u64, u64 }
 define_table! { TRANSACTION_ID_TO_RUNE, &TxidValue, u128 }
 define_table! { TRANSACTION_ID_TO_TRANSACTION, &TxidValue, &[u8] }
@@ -302,22 +292,12 @@ impl Index {
 
         tx.set_durability(durability);
 
-        tx.open_multimap_table(SATPOINT_TO_SEQUENCE_NUMBER)?;
-        tx.open_multimap_table(SAT_TO_SEQUENCE_NUMBER)?;
         tx.open_multimap_table(SCRIPT_PUBKEY_TO_OUTPOINT)?;
-        tx.open_multimap_table(SEQUENCE_NUMBER_TO_CHILDREN)?;
         tx.open_table(HEIGHT_TO_BLOCK_HEADER)?;
-        tx.open_table(HEIGHT_TO_LAST_SEQUENCE_NUMBER)?;
-        tx.open_table(INSCRIPTION_ID_TO_SEQUENCE_NUMBER)?;
-        tx.open_table(INSCRIPTION_NUMBER_TO_SEQUENCE_NUMBER)?;
         tx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
         tx.open_table(OUTPOINT_TO_TXOUT)?;
         tx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
         tx.open_table(RUNE_TO_RUNE_ID)?;
-        tx.open_table(SAT_TO_SATPOINT)?;
-        tx.open_table(SEQUENCE_NUMBER_TO_INSCRIPTION_ENTRY)?;
-        tx.open_table(SEQUENCE_NUMBER_TO_RUNE_ID)?;
-        tx.open_table(SEQUENCE_NUMBER_TO_SATPOINT)?;
         tx.open_table(TRANSACTION_ID_TO_RUNE)?;
         tx.open_table(WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP)?;
         tx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
@@ -665,74 +645,6 @@ impl Index {
     }
   }
 
-  pub fn export(&self, filename: &String, include_addresses: bool) -> Result {
-    let mut writer = BufWriter::new(fs::File::create(filename)?);
-    let rtx = self.database.begin_read()?;
-
-    let blocks_indexed = rtx
-      .open_table(HEIGHT_TO_BLOCK_HEADER)?
-      .range(0..)?
-      .next_back()
-      .transpose()?
-      .map(|(height, _header)| height.value() + 1)
-      .unwrap_or(0);
-
-    writeln!(writer, "# export at block height {}", blocks_indexed)?;
-
-    log::info!("exporting database tables to {filename}");
-
-    let sequence_number_to_satpoint = rtx.open_table(SEQUENCE_NUMBER_TO_SATPOINT)?;
-
-    for result in rtx
-      .open_table(SEQUENCE_NUMBER_TO_INSCRIPTION_ENTRY)?
-      .iter()?
-    {
-      let entry = result?;
-      let sequence_number = entry.0.value();
-      let entry = InscriptionEntry::load(entry.1.value());
-      let satpoint = SatPoint::load(
-        *sequence_number_to_satpoint
-          .get(sequence_number)?
-          .unwrap()
-          .value(),
-      );
-
-      write!(
-        writer,
-        "{}\t{}\t{}",
-        entry.inscription_number, entry.id, satpoint
-      )?;
-
-      if include_addresses {
-        let address = if satpoint.outpoint == unbound_outpoint() {
-          "unbound".to_string()
-        } else {
-          let output = self
-            .get_transaction(satpoint.outpoint.txid)?
-            .unwrap()
-            .output
-            .into_iter()
-            .nth(satpoint.outpoint.vout.try_into().unwrap())
-            .unwrap();
-          self
-            .settings
-            .chain()
-            .address_from_script(&output.script_pubkey)
-            .map(|address| address.to_string())
-            .unwrap_or_else(|e| e.to_string())
-        };
-        write!(writer, "\t{}", address)?;
-      }
-      writeln!(writer)?;
-
-      if SHUTTING_DOWN.load(atomic::Ordering::Relaxed) {
-        break;
-      }
-    }
-    writer.flush()?;
-    Ok(())
-  }
-
   fn begin_read(&self) -> Result<rtx::Rtx> {
     Ok(rtx::Rtx(self.database.begin_read()?))
   }
@@ -882,18 +794,7 @@ impl Index {
         .value(),
     );
 
-    let parent = InscriptionId {
-      txid: entry.etching,
-      index: 0,
-    };
-
-    let parent = rtx
-      .open_table(INSCRIPTION_ID_TO_SEQUENCE_NUMBER)?
-      .get(&parent.store())?
-      .is_some()
-      .then_some(parent);
-
-    Ok(Some((RuneId::load(id), entry, parent)))
+    Ok(Some((RuneId::load(id), entry, None)))
   }
 
   pub fn runes(&self) -> Result<Vec<(RuneId, RuneEntry)>> {
