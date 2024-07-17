@@ -1,8 +1,8 @@
 use {
   self::{
     entry::{
-      Entry, HeaderValue, InscriptionEntry, InscriptionEntryValue, InscriptionIdValue,
-      OutPointValue, RuneEntryValue, RuneIdValue, SatPointValue, TxOutValue, TxidValue, UtilEntry,
+      Entry, HeaderValue,
+      OutPointValue, RuneEntryValue, RuneIdValue, TxOutValue, TxidValue, UtilEntry,
       UtilEntryValue,
     },
     event::Event,
@@ -27,7 +27,6 @@ use {
   },
   std::{
     collections::HashMap,
-    io::{BufWriter, Write},
     sync::Once,
   },
 };
@@ -458,10 +457,7 @@ impl Index {
 
     Ok(StatusHtml {
       address_index: self.has_address_index(),
-      blessed_inscriptions: 0,
       chain: self.settings.chain(),
-      content_type_counts: vec![],
-      cursed_inscriptions: 0,
       height,
       initial_sync_time: Duration::from_micros(initial_sync_time),
       inscriptions: 0,
@@ -775,7 +771,7 @@ impl Index {
     }
   }
 
-  pub fn rune(&self, rune: Rune) -> Result<Option<(RuneId, RuneEntry, Option<InscriptionId>)>> {
+  pub fn rune(&self, rune: Rune) -> Result<Option<(RuneId, RuneEntry)>> {
     let rtx = self.database.begin_read()?;
 
     let Some(id) = rtx
@@ -794,7 +790,7 @@ impl Index {
         .value(),
     );
 
-    Ok(Some((RuneId::load(id), entry, None)))
+    Ok(Some((RuneId::load(id), entry)))
   }
 
   pub fn runes(&self) -> Result<Vec<(RuneId, RuneEntry)>> {

@@ -130,10 +130,7 @@ fn get_status() {
     status_json,
     api::Status {
       address_index: false,
-      blessed_inscriptions: 0,
       chain: Chain::Regtest,
-      content_type_counts: vec![],
-      cursed_inscriptions: 0,
       height: Some(1),
       initial_sync_time: dummy_duration,
       inscriptions: 0,

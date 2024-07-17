@@ -544,7 +544,7 @@ impl Server {
           .ok_or_not_found(|| format!("rune number {number}"))?,
       };
 
-      let (id, entry, parent) = index
+      let (id, entry) = index
         .rune(rune)?
         .ok_or_not_found(|| format!("rune {rune}"))?;
 
@@ -555,7 +555,7 @@ impl Server {
           entry,
           id,
           mintable,
-          parent,
+          parent: None,
         })
         .into_response()
       } else {
@@ -563,7 +563,7 @@ impl Server {
           entry,
           id,
           mintable,
-          parent,
+          parent: None,
         }
         .page(server_config)
         .into_response()

@@ -6,12 +6,6 @@
   <dt>height</dt>
   <dd><a href=/block/{{ height }}>{{ height }}</a></dd>
 %% }
-  <dt>inscriptions</dt>
-  <dd><a href=/inscriptions>{{ self.inscriptions }}</a></dd>
-  <dt>blessed inscriptions</dt>
-  <dd>{{ self.blessed_inscriptions }}</dd>
-  <dt>cursed inscriptions</dt>
-  <dd>{{ self.cursed_inscriptions }}</dd>
   <dt>runes</dt>
   <dd><a href=/runes>{{ self.runes }}</a></dd>
   <dt>lost sats</dt>
@@ -46,17 +40,4 @@
     </a>
   </dd>
 %% }
-  <dt>inscription content types</dt>
-  <dd>
-    <dl>
-%% for (content_type, count) in &self.content_type_counts {
-%% if let Some(content_type) = content_type {
-      <dt>{{String::from_utf8_lossy(&content_type)}}</dt>
-%% } else {
-      <dt><em>none</em></dt>
-%% }
-      <dd>{{count}}</dt>
-%% }
-    </dl>
-  </dd>
 </dl>
