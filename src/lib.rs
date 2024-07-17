@@ -39,7 +39,6 @@ use {
   },
   bitcoincore_rpc::{Client, RpcApi},
   chrono::{DateTime, TimeZone, Utc},
-  ciborium::Value,
   clap::{ArgGroup, Parser},
   html_escaper::{Escape, Trusted},
   http::HeaderMap,

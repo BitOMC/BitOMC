@@ -26,13 +26,6 @@ impl Chain {
     }
   }
 
-  pub(crate) fn inscription_content_size_limit(self) -> Option<usize> {
-    match self {
-      Self::Mainnet | Self::Regtest => None,
-      Self::Testnet | Self::Signet => Some(1024),
-    }
-  }
-
   pub(crate) fn first_rune_height(self) -> u32 {
     Rune::first_rune_height(self.into())
   }

@@ -17,25 +17,6 @@ impl Default for InscriptionId {
   }
 }
 
-impl InscriptionId {
-  pub(crate) fn value(self) -> Vec<u8> {
-    let index = self.index.to_le_bytes();
-    let mut index_slice = index.as_slice();
-
-    while index_slice.last().copied() == Some(0) {
-      index_slice = &index_slice[0..index_slice.len() - 1];
-    }
-
-    self
-      .txid
-      .to_byte_array()
-      .iter()
-      .chain(index_slice)
-      .copied()
-      .collect()
-  }
-}
-
 impl Display for InscriptionId {
   fn fmt(&self, f: &mut Formatter) -> fmt::Result {
     write!(f, "{}i{}", self.txid, self.index)
