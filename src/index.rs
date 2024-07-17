@@ -76,12 +76,12 @@ define_table! { UTIL_ENTRY, u8, UtilEntryValue }
 #[derive(Copy, Clone)]
 pub(crate) enum Statistic {
   Schema = 0,
-  Commits = 2,
-  IndexRunes = 4,
-  Runes = 8,
-  IndexTransactions = 11,
-  InitialSyncTime = 13,
-  IndexAddresses = 14,
+  Commits = 1,
+  IndexRunes = 2,
+  Runes = 3,
+  IndexTransactions = 4,
+  InitialSyncTime = 5,
+  IndexAddresses = 6,
 }
 
 impl Statistic {
