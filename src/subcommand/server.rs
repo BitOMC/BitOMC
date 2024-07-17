@@ -2410,12 +2410,6 @@ mod tests {
       self.index.update().unwrap();
       blocks
     }
-
-    fn mine_blocks_with_subsidy(&self, n: u64, subsidy: u64) -> Vec<Block> {
-      let blocks = self.core.mine_blocks_with_subsidy(n, subsidy);
-      self.index.update().unwrap();
-      blocks
-    }
   }
 
   impl Drop for TestServer {
@@ -2938,31 +2932,6 @@ mod tests {
   }
 
   #[test]
-  fn output_with_sat_index() {
-    let txid = "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b";
-    TestServer::builder()
-      .index_sats()
-      .build()
-      .assert_response_regex(
-        format!("/output/{txid}:0"),
-        StatusCode::OK,
-        format!(
-          ".*<title>Output {txid}:0</title>.*<h1>Output <span class=monospace>{txid}:0</span></h1>
-<dl>
-  <dt>value</dt><dd>5000000000</dd>
-  <dt>script pubkey</dt><dd class=monospace>OP_PUSHBYTES_65 [[:xdigit:]]{{130}} OP_CHECKSIG</dd>
-  <dt>transaction</dt><dd><a class=monospace href=/tx/{txid}>{txid}</a></dd>
-  <dt>spent</dt><dd>false</dd>
-</dl>
-<h2>1 Sat Range</h2>
-<ul class=monospace>
-  <li><a href=/range/0/5000000000 class=mythic>0–5000000000</a></li>
-</ul>.*"
-        ),
-      );
-  }
-
-  #[test]
   fn output_without_sat_index() {
     let txid = "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b";
     TestServer::new().assert_response_regex(
@@ -2996,33 +2965,6 @@ mod tests {
 </dl>
 <h2>0 Sat Ranges</h2>
 <ul class=monospace>
-</ul>.*"
-      ),
-    );
-  }
-
-  #[test]
-  fn null_output_receives_lost_sats() {
-    let server = TestServer::builder().index_sats().build();
-
-    server.mine_blocks_with_subsidy(1, 0);
-
-    let txid = "0000000000000000000000000000000000000000000000000000000000000000";
-
-    server.assert_response_regex(
-      format!("/output/{txid}:4294967295"),
-      StatusCode::OK,
-      format!(
-        ".*<title>Output {txid}:4294967295</title>.*<h1>Output <span class=monospace>{txid}:4294967295</span></h1>
-<dl>
-  <dt>value</dt><dd>5000000000</dd>
-  <dt>script pubkey</dt><dd class=monospace></dd>
-  <dt>transaction</dt><dd><a class=monospace href=/tx/{txid}>{txid}</a></dd>
-  <dt>spent</dt><dd>false</dd>
-</dl>
-<h2>1 Sat Range</h2>
-<ul class=monospace>
-  <li><a href=/range/5000000000/10000000000 class=uncommon>5000000000–10000000000</a></li>
 </ul>.*"
       ),
     );

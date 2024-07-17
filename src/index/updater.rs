@@ -1,5 +1,5 @@
 use {
-  self::{inscription_updater::InscriptionUpdater, rune_updater::RuneUpdater},
+  self::{rune_updater::RuneUpdater},
   super::{fetcher::Fetcher, *},
   futures::future::try_join_all,
   tokio::sync::{
@@ -8,7 +8,6 @@ use {
   },
 };
 
-mod inscription_updater;
 mod rune_updater;
 
 pub(crate) struct BlockData {
@@ -37,9 +36,7 @@ pub(crate) struct Updater<'index> {
   pub(super) index: &'index Index,
   pub(super) outputs_cached: u64,
   pub(super) outputs_inserted_since_flush: u64,
-  pub(super) outputs_traversed: u64,
   pub(super) range_cache: HashMap<OutPointValue, Vec<u8>>,
-  pub(super) sat_ranges_since_flush: u64,
 }
 
 impl<'index> Updater<'index> {
@@ -73,9 +70,9 @@ impl<'index> Updater<'index> {
       Some(progress_bar)
     };
 
-    let rx = Self::fetch_blocks_from(self.index, self.height, self.index.index_sats)?;
+    let rx = Self::fetch_blocks_from(self.index, self.height)?;
 
-    let (mut output_sender, mut txout_receiver, mut address_txout_receiver) =
+    let (mut output_sender, mut address_txout_receiver) =
       Self::spawn_fetcher(&self.index.settings)?;
 
     let mut uncommitted = 0;
@@ -84,7 +81,6 @@ impl<'index> Updater<'index> {
       self.index_block(
         &mut output_sender,
         &mut address_txout_receiver,
-        &mut txout_receiver,
         &mut wtx,
         block,
         &mut utxo_cache,
@@ -157,7 +153,6 @@ impl<'index> Updater<'index> {
   fn fetch_blocks_from(
     index: &Index,
     mut height: u32,
-    index_sats: bool,
   ) -> Result<std::sync::mpsc::Receiver<BlockData>> {
     let (tx, rx) = std::sync::mpsc::sync_channel(32);
 
@@ -174,7 +169,7 @@ impl<'index> Updater<'index> {
         }
       }
 
-      match Self::get_block_with_retries(&client, height, index_sats, first_rune_height) {
+      match Self::get_block_with_retries(&client, height, first_rune_height) {
         Ok(Some(block)) => {
           if let Err(err) = tx.send(block.into()) {
             log::info!("Block receiver disconnected: {err}");
@@ -196,7 +191,6 @@ impl<'index> Updater<'index> {
   fn get_block_with_retries(
     client: &Client,
     height: u32,
-    index_sats: bool,
     first_rune_height: u32,
   ) -> Result<Option<Block>> {
     let mut errors = 0;
@@ -207,7 +201,7 @@ impl<'index> Updater<'index> {
         .and_then(|option| {
           option
             .map(|hash| {
-              if index_sats || height >= first_rune_height {
+              if height >= first_rune_height {
                 Ok(client.get_block(&hash)?)
               } else {
                 Ok(Block {
@@ -243,7 +237,6 @@ impl<'index> Updater<'index> {
     settings: &Settings,
   ) -> Result<(
     mpsc::Sender<OutPoint>,
-    broadcast::Receiver<TxOut>,
     Option<broadcast::Receiver<TxOut>>,
   )> {
     let fetcher = Fetcher::new(settings)?;
@@ -256,7 +249,7 @@ impl<'index> Updater<'index> {
 
     let (outpoint_sender, mut outpoint_receiver) = mpsc::channel::<OutPoint>(CHANNEL_BUFFER_SIZE);
 
-    let (txout_sender, txout_receiver) = broadcast::channel::<TxOut>(CHANNEL_BUFFER_SIZE);
+    let (txout_sender, _) = broadcast::channel::<TxOut>(CHANNEL_BUFFER_SIZE);
 
     let address_txout_receiver = if settings.index_addresses() {
       Some(txout_sender.subscribe())
@@ -321,23 +314,18 @@ impl<'index> Updater<'index> {
       })
     });
 
-    Ok((outpoint_sender, txout_receiver, address_txout_receiver))
+    Ok((outpoint_sender, address_txout_receiver))
   }
 
   fn index_block(
     &mut self,
     output_sender: &mut mpsc::Sender<OutPoint>,
     address_txout_receiver: &mut Option<broadcast::Receiver<TxOut>>,
-    txout_receiver: &mut broadcast::Receiver<TxOut>,
     wtx: &mut WriteTransaction,
     block: BlockData,
     utxo_cache: &mut HashMap<OutPoint, TxOut>,
   ) -> Result<()> {
     Reorg::detect_reorg(&block, self.height, self.index)?;
-
-    let start = Instant::now();
-    let mut sat_ranges_written = 0;
-    let mut outputs_in_block = 0;
 
     log::info!(
       "Block {} at {} with {} transactions…",
@@ -348,18 +336,6 @@ impl<'index> Updater<'index> {
 
     let mut outpoint_to_txout = wtx.open_table(OUTPOINT_TO_TXOUT)?;
 
-    let index_inscriptions =
-      self.height >= self.index.first_rune_height && self.index.settings.index_inscriptions();
-
-    // If the receiver still has inputs something went wrong in the last
-    // block and we shouldn't recover from this and commit the last block
-    if index_inscriptions {
-      assert!(
-        matches!(txout_receiver.try_recv(), Err(TryRecvError::Empty)),
-        "Previous block did not consume all inputs"
-      );
-    }
-
     if let Some(receiver) = address_txout_receiver {
       assert!(
         matches!(receiver.try_recv(), Err(TryRecvError::Empty)),
@@ -367,7 +343,7 @@ impl<'index> Updater<'index> {
       );
     }
 
-    if index_inscriptions || self.index.index_addresses {
+    if self.index.index_addresses {
       // Send all missing input outpoints to be fetched
       let txids = block
         .txdata
@@ -411,218 +387,11 @@ impl<'index> Updater<'index> {
           utxo_cache,
           &mut script_pubkey_to_outpoint,
           &mut outpoint_to_txout,
-          index_inscriptions,
         )?;
       }
     };
 
-    let mut content_type_to_count = wtx.open_table(CONTENT_TYPE_TO_COUNT)?;
     let mut height_to_block_header = wtx.open_table(HEIGHT_TO_BLOCK_HEADER)?;
-    let mut height_to_last_sequence_number = wtx.open_table(HEIGHT_TO_LAST_SEQUENCE_NUMBER)?;
-    let mut home_inscriptions = wtx.open_table(HOME_INSCRIPTIONS)?;
-    let mut inscription_id_to_sequence_number =
-      wtx.open_table(INSCRIPTION_ID_TO_SEQUENCE_NUMBER)?;
-    let mut inscription_number_to_sequence_number =
-      wtx.open_table(INSCRIPTION_NUMBER_TO_SEQUENCE_NUMBER)?;
-    let mut sat_to_sequence_number = wtx.open_multimap_table(SAT_TO_SEQUENCE_NUMBER)?;
-    let mut satpoint_to_sequence_number = wtx.open_multimap_table(SATPOINT_TO_SEQUENCE_NUMBER)?;
-    let mut sequence_number_to_children = wtx.open_multimap_table(SEQUENCE_NUMBER_TO_CHILDREN)?;
-    let mut sequence_number_to_inscription_entry =
-      wtx.open_table(SEQUENCE_NUMBER_TO_INSCRIPTION_ENTRY)?;
-    let mut sequence_number_to_satpoint = wtx.open_table(SEQUENCE_NUMBER_TO_SATPOINT)?;
-    let mut statistic_to_count = wtx.open_table(STATISTIC_TO_COUNT)?;
-    let mut transaction_id_to_transaction = wtx.open_table(TRANSACTION_ID_TO_TRANSACTION)?;
-
-    let mut lost_sats = statistic_to_count
-      .get(&Statistic::LostSats.key())?
-      .map(|lost_sats| lost_sats.value())
-      .unwrap_or(0);
-
-    let cursed_inscription_count = statistic_to_count
-      .get(&Statistic::CursedInscriptions.key())?
-      .map(|count| count.value())
-      .unwrap_or(0);
-
-    let blessed_inscription_count = statistic_to_count
-      .get(&Statistic::BlessedInscriptions.key())?
-      .map(|count| count.value())
-      .unwrap_or(0);
-
-    let unbound_inscriptions = statistic_to_count
-      .get(&Statistic::UnboundInscriptions.key())?
-      .map(|unbound_inscriptions| unbound_inscriptions.value())
-      .unwrap_or(0);
-
-    let next_sequence_number = sequence_number_to_inscription_entry
-      .iter()?
-      .next_back()
-      .transpose()?
-      .map(|(number, _id)| number.value() + 1)
-      .unwrap_or(0);
-
-    let home_inscription_count = home_inscriptions.len()?;
-
-    let mut inscription_updater = InscriptionUpdater {
-      blessed_inscription_count,
-      chain: self.index.settings.chain(),
-      content_type_to_count: &mut content_type_to_count,
-      cursed_inscription_count,
-      event_sender: self.index.event_sender.as_ref(),
-      flotsam: Vec::new(),
-      height: self.height,
-      home_inscription_count,
-      home_inscriptions: &mut home_inscriptions,
-      id_to_sequence_number: &mut inscription_id_to_sequence_number,
-      index_transactions: self.index.index_transactions,
-      inscription_number_to_sequence_number: &mut inscription_number_to_sequence_number,
-      lost_sats,
-      next_sequence_number,
-      outpoint_to_txout: &mut outpoint_to_txout,
-      reward: Height(self.height).subsidy(),
-      sat_to_sequence_number: &mut sat_to_sequence_number,
-      satpoint_to_sequence_number: &mut satpoint_to_sequence_number,
-      sequence_number_to_children: &mut sequence_number_to_children,
-      sequence_number_to_entry: &mut sequence_number_to_inscription_entry,
-      sequence_number_to_satpoint: &mut sequence_number_to_satpoint,
-      timestamp: block.header.time,
-      transaction_buffer: Vec::new(),
-      transaction_id_to_transaction: &mut transaction_id_to_transaction,
-      unbound_inscriptions,
-      utxo_cache,
-      txout_receiver,
-    };
-
-    if self.index.index_sats {
-      let mut sat_to_satpoint = wtx.open_table(SAT_TO_SATPOINT)?;
-      let mut outpoint_to_sat_ranges = wtx.open_table(OUTPOINT_TO_SAT_RANGES)?;
-
-      let mut coinbase_inputs = VecDeque::new();
-
-      let h = Height(self.height);
-      if h.subsidy() > 0 {
-        let start = h.starting_sat();
-        coinbase_inputs.push_front((start.n(), (start + h.subsidy()).n()));
-        self.sat_ranges_since_flush += 1;
-      }
-
-      for (tx_offset, (tx, txid)) in block.txdata.iter().enumerate().skip(1) {
-        log::trace!("Indexing transaction {tx_offset}…");
-
-        let mut input_sat_ranges = VecDeque::new();
-
-        for input in &tx.input {
-          let key = input.previous_output.store();
-
-          let sat_ranges = match if self.index.index_spent_sats {
-            self.range_cache.get(&key).cloned()
-          } else {
-            self.range_cache.remove(&key)
-          } {
-            Some(sat_ranges) => {
-              self.outputs_cached += 1;
-              sat_ranges
-            }
-            None => if self.index.index_spent_sats {
-              outpoint_to_sat_ranges.get(&key)?
-            } else {
-              outpoint_to_sat_ranges.remove(&key)?
-            }
-            .ok_or_else(|| anyhow!("Could not find outpoint {} in index", input.previous_output))?
-            .value()
-            .to_vec(),
-          };
-
-          for chunk in sat_ranges.chunks_exact(11) {
-            input_sat_ranges.push_back(SatRange::load(chunk.try_into().unwrap()));
-          }
-        }
-
-        self.index_transaction_sats(
-          tx,
-          *txid,
-          &mut sat_to_satpoint,
-          &mut input_sat_ranges,
-          &mut sat_ranges_written,
-          &mut outputs_in_block,
-          &mut inscription_updater,
-          index_inscriptions,
-        )?;
-
-        coinbase_inputs.extend(input_sat_ranges);
-      }
-
-      if let Some((tx, txid)) = block.txdata.first() {
-        self.index_transaction_sats(
-          tx,
-          *txid,
-          &mut sat_to_satpoint,
-          &mut coinbase_inputs,
-          &mut sat_ranges_written,
-          &mut outputs_in_block,
-          &mut inscription_updater,
-          index_inscriptions,
-        )?;
-      }
-
-      if !coinbase_inputs.is_empty() {
-        let mut lost_sat_ranges = outpoint_to_sat_ranges
-          .remove(&OutPoint::null().store())?
-          .map(|ranges| ranges.value().to_vec())
-          .unwrap_or_default();
-
-        for (start, end) in coinbase_inputs {
-          if !Sat(start).common() {
-            sat_to_satpoint.insert(
-              &start,
-              &SatPoint {
-                outpoint: OutPoint::null(),
-                offset: lost_sats,
-              }
-              .store(),
-            )?;
-          }
-
-          lost_sat_ranges.extend_from_slice(&(start, end).store());
-
-          lost_sats += end - start;
-        }
-
-        outpoint_to_sat_ranges.insert(&OutPoint::null().store(), lost_sat_ranges.as_slice())?;
-      }
-    } else if index_inscriptions {
-      for (tx, txid) in block.txdata.iter().skip(1).chain(block.txdata.first()) {
-        inscription_updater.index_inscriptions(tx, *txid, None)?;
-      }
-    }
-
-    if index_inscriptions {
-      height_to_last_sequence_number
-        .insert(&self.height, inscription_updater.next_sequence_number)?;
-    }
-
-    statistic_to_count.insert(
-      &Statistic::LostSats.key(),
-      &if self.index.index_sats {
-        lost_sats
-      } else {
-        inscription_updater.lost_sats
-      },
-    )?;
-
-    statistic_to_count.insert(
-      &Statistic::CursedInscriptions.key(),
-      &inscription_updater.cursed_inscription_count,
-    )?;
-
-    statistic_to_count.insert(
-      &Statistic::BlessedInscriptions.key(),
-      &inscription_updater.blessed_inscription_count,
-    )?;
-
-    statistic_to_count.insert(
-      &Statistic::UnboundInscriptions.key(),
-      &inscription_updater.unbound_inscriptions,
-    )?;
 
     if self.index.index_runes && self.height >= self.index.settings.first_rune_height() {
       let mut outpoint_to_rune_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
@@ -656,12 +425,6 @@ impl<'index> Updater<'index> {
     height_to_block_header.insert(&self.height, &block.header.store())?;
 
     self.height += 1;
-    self.outputs_traversed += outputs_in_block;
-
-    log::info!(
-      "Wrote {sat_ranges_written} sat ranges from {outputs_in_block} outputs in {} ms",
-      (Instant::now() - start).as_millis(),
-    );
 
     Ok(())
   }
@@ -674,7 +437,6 @@ impl<'index> Updater<'index> {
     utxo_cache: &mut HashMap<OutPoint, TxOut>,
     script_pubkey_to_outpoint: &mut MultimapTable<&[u8], OutPointValue>,
     outpoint_to_txout: &mut Table<&OutPointValue, TxOutValue>,
-    index_inscriptions: bool,
   ) -> Result {
     for txin in &tx.input {
       let output = txin.previous_output;
@@ -696,12 +458,8 @@ impl<'index> Updater<'index> {
         })?
       };
 
-      // If we are indexing inscriptions, the InscriptionUpdater will remove these
-      if !index_inscriptions {
-        utxo_cache.remove(&output);
-        outpoint_to_txout.remove(&output.store())?;
-      }
-
+      utxo_cache.remove(&output);
+      outpoint_to_txout.remove(&output.store())?;
       script_pubkey_to_outpoint.remove(&txout.script_pubkey.as_bytes(), output.store())?;
     }
 
@@ -718,77 +476,10 @@ impl<'index> Updater<'index> {
     Ok(())
   }
 
-  fn index_transaction_sats(
-    &mut self,
-    tx: &Transaction,
-    txid: Txid,
-    sat_to_satpoint: &mut Table<u64, &SatPointValue>,
-    input_sat_ranges: &mut VecDeque<(u64, u64)>,
-    sat_ranges_written: &mut u64,
-    outputs_traversed: &mut u64,
-    inscription_updater: &mut InscriptionUpdater,
-    index_inscriptions: bool,
-  ) -> Result {
-    if index_inscriptions {
-      inscription_updater.index_inscriptions(tx, txid, Some(input_sat_ranges))?;
-    }
-
-    for (vout, output) in tx.output.iter().enumerate() {
-      let outpoint = OutPoint {
-        vout: vout.try_into().unwrap(),
-        txid,
-      };
-      let mut sats = Vec::new();
-
-      let mut remaining = output.value;
-      while remaining > 0 {
-        let range = input_sat_ranges
-          .pop_front()
-          .ok_or_else(|| anyhow!("insufficient inputs for transaction outputs"))?;
-
-        if !Sat(range.0).common() {
-          sat_to_satpoint.insert(
-            &range.0,
-            &SatPoint {
-              outpoint,
-              offset: output.value - remaining,
-            }
-            .store(),
-          )?;
-        }
-
-        let count = range.1 - range.0;
-
-        let assigned = if count > remaining {
-          self.sat_ranges_since_flush += 1;
-          let middle = range.0 + remaining;
-          input_sat_ranges.push_front((middle, range.1));
-          (range.0, middle)
-        } else {
-          range
-        };
-
-        sats.extend_from_slice(&assigned.store());
-
-        remaining -= assigned.1 - assigned.0;
-
-        *sat_ranges_written += 1;
-      }
-
-      *outputs_traversed += 1;
-
-      self.range_cache.insert(outpoint.store(), sats);
-      self.outputs_inserted_since_flush += 1;
-    }
-
-    Ok(())
-  }
-
   fn commit(&mut self, wtx: WriteTransaction, utxo_cache: HashMap<OutPoint, TxOut>) -> Result {
     log::info!(
-      "Committing at block height {}, {} outputs traversed, {} in map, {} cached",
+      "Committing at block height {}, {} in map, {} outputs cached",
       self.height,
-      self.outputs_traversed,
       self.range_cache.len(),
       self.outputs_cached
     );
@@ -820,10 +511,6 @@ impl<'index> Updater<'index> {
       }
     }
 
-    Index::increment_statistic(&wtx, Statistic::OutputsTraversed, self.outputs_traversed)?;
-    self.outputs_traversed = 0;
-    Index::increment_statistic(&wtx, Statistic::SatRanges, self.sat_ranges_since_flush)?;
-    self.sat_ranges_since_flush = 0;
     Index::increment_statistic(&wtx, Statistic::Commits, 1)?;
     wtx.commit()?;
 

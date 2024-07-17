@@ -141,7 +141,7 @@ fn get_status() {
       lost_sats: 0,
       rune_index: true,
       runes: 2,
-      sat_index: true,
+      sat_index: false,
       started: dummy_started,
       transaction_index: false,
       unrecoverably_reorged: false,

@@ -76,18 +76,10 @@ define_table! { UTIL_ENTRY, u8, UtilEntryValue }
 #[derive(Copy, Clone)]
 pub(crate) enum Statistic {
   Schema = 0,
-  BlessedInscriptions = 1,
   Commits = 2,
-  CursedInscriptions = 3,
   IndexRunes = 4,
-  IndexSats = 5,
-  LostSats = 6,
-  OutputsTraversed = 7,
   Runes = 8,
-  SatRanges = 9,
-  UnboundInscriptions = 10,
   IndexTransactions = 11,
-  IndexSpentSats = 12,
   InitialSyncTime = 13,
   IndexAddresses = 14,
 }
@@ -210,7 +202,6 @@ pub struct Index {
   index_addresses: bool,
   index_runes: bool,
   index_sats: bool,
-  index_spent_sats: bool,
   index_transactions: bool,
   path: PathBuf,
   settings: Settings,
@@ -361,18 +352,6 @@ impl Index {
 
           Self::set_statistic(
             &mut statistics,
-            Statistic::IndexSats,
-            u64::from(settings.index_sats() || settings.index_spent_sats()),
-          )?;
-
-          Self::set_statistic(
-            &mut statistics,
-            Statistic::IndexSpentSats,
-            u64::from(settings.index_spent_sats()),
-          )?;
-
-          Self::set_statistic(
-            &mut statistics,
             Statistic::IndexTransactions,
             u64::from(settings.index_transactions()),
           )?;
@@ -432,8 +411,6 @@ impl Index {
 
     let index_addresses;
     let index_runes;
-    let index_sats;
-    let index_spent_sats;
     let index_transactions;
 
     {
@@ -441,8 +418,6 @@ impl Index {
       let statistics = tx.open_table(STATISTIC_TO_COUNT)?;
       index_addresses = Self::is_statistic_set(&statistics, Statistic::IndexAddresses)?;
       index_runes = Self::is_statistic_set(&statistics, Statistic::IndexRunes)?;
-      index_sats = Self::is_statistic_set(&statistics, Statistic::IndexSats)?;
-      index_spent_sats = Self::is_statistic_set(&statistics, Statistic::IndexSpentSats)?;
       index_transactions = Self::is_statistic_set(&statistics, Statistic::IndexTransactions)?;
     }
 
@@ -460,8 +435,7 @@ impl Index {
       height_limit: settings.height_limit(),
       index_addresses,
       index_runes,
-      index_sats,
-      index_spent_sats,
+      index_sats: false,
       index_transactions,
       settings: settings.clone(),
       path,
@@ -519,8 +493,6 @@ impl Index {
       .transpose()?
       .map(|(height, _header)| height.value());
 
-    let blessed_inscriptions = statistic(Statistic::BlessedInscriptions)?;
-    let cursed_inscriptions = statistic(Statistic::CursedInscriptions)?;
     let initial_sync_time = statistic(Statistic::InitialSyncTime)?;
 
     let mut content_type_counts = rtx
@@ -535,17 +507,17 @@ impl Index {
 
     Ok(StatusHtml {
       address_index: self.has_address_index(),
-      blessed_inscriptions,
+      blessed_inscriptions: 0,
       chain: self.settings.chain(),
       content_type_counts,
-      cursed_inscriptions,
+      cursed_inscriptions: 0,
       height,
       initial_sync_time: Duration::from_micros(initial_sync_time),
-      inscriptions: blessed_inscriptions + cursed_inscriptions,
-      lost_sats: statistic(Statistic::LostSats)?,
+      inscriptions: 0,
+      lost_sats: 0,
       rune_index: self.has_rune_index(),
       runes: statistic(Statistic::Runes)?,
-      sat_index: self.has_sat_index(),
+      sat_index: false,
       started: self.started,
       transaction_index: statistic(Statistic::IndexTransactions)? != 0,
       unrecoverably_reorged: self.unrecoverably_reorged.load(atomic::Ordering::Relaxed),
@@ -592,15 +564,6 @@ impl Index {
     });
 
     let info = {
-      let statistic_to_count = rtx.open_table(STATISTIC_TO_COUNT)?;
-      let sat_ranges = statistic_to_count
-        .get(&Statistic::SatRanges.key())?
-        .map(|x| x.value())
-        .unwrap_or(0);
-      let outputs_traversed = statistic_to_count
-        .get(&Statistic::OutputsTraversed.key())?
-        .map(|x| x.value())
-        .unwrap_or(0);
       Info {
         index_path: self.path.clone(),
         blocks_indexed: rtx
@@ -615,8 +578,8 @@ impl Index {
         index_file_size: fs::metadata(&self.path)?.len(),
         leaf_pages: stats.leaf_pages(),
         metadata_bytes: stats.metadata_bytes(),
-        sat_ranges,
-        outputs_traversed,
+        sat_ranges: 0,
+        outputs_traversed: 0,
         page_size: stats.page_size(),
         stored_bytes: stats.stored_bytes(),
         total_bytes,
@@ -705,9 +668,7 @@ impl Index {
         index: self,
         outputs_cached: 0,
         outputs_inserted_since_flush: 0,
-        outputs_traversed: 0,
         range_cache: HashMap::new(),
-        sat_ranges_since_flush: 0,
       };
 
       match updater.update_index(wtx) {
@@ -2176,297 +2137,6 @@ mod tests {
       assert_eq!(context.index.block_height().unwrap(), Some(Height(1)));
       assert_eq!(context.index.block_count().unwrap(), 2);
     }
-  }
-
-  #[test]
-  fn list_first_coinbase_transaction() {
-    let context = Context::builder().arg("--index-sats").build();
-    assert_eq!(
-      context
-        .index
-        .list(
-          "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0"
-            .parse()
-            .unwrap()
-        )
-        .unwrap()
-        .unwrap(),
-      &[(0, 50 * COIN_VALUE)],
-    )
-  }
-
-  #[test]
-  fn list_second_coinbase_transaction() {
-    let context = Context::builder().arg("--index-sats").build();
-    let txid = context.mine_blocks(1)[0].txdata[0].txid();
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 0)).unwrap().unwrap(),
-      &[(50 * COIN_VALUE, 100 * COIN_VALUE)],
-    )
-  }
-
-  #[test]
-  fn list_split_ranges_are_tracked_correctly() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    context.mine_blocks(1);
-    let split_coinbase_output = TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      outputs: 2,
-      fee: 0,
-      ..default()
-    };
-    let txid = context.core.broadcast_tx(split_coinbase_output);
-
-    context.mine_blocks(1);
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 0)).unwrap().unwrap(),
-      &[(50 * COIN_VALUE, 75 * COIN_VALUE)],
-    );
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 1)).unwrap().unwrap(),
-      &[(75 * COIN_VALUE, 100 * COIN_VALUE)],
-    );
-  }
-
-  #[test]
-  fn list_merge_ranges_are_tracked_correctly() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    context.mine_blocks(2);
-    let merge_coinbase_outputs = TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default()), (2, 0, 0, Default::default())],
-      fee: 0,
-      ..default()
-    };
-
-    let txid = context.core.broadcast_tx(merge_coinbase_outputs);
-    context.mine_blocks(1);
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 0)).unwrap().unwrap(),
-      &[
-        (50 * COIN_VALUE, 100 * COIN_VALUE),
-        (100 * COIN_VALUE, 150 * COIN_VALUE)
-      ],
-    );
-  }
-
-  #[test]
-  fn list_fee_paying_transaction_range() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    context.mine_blocks(1);
-    let fee_paying_tx = TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      outputs: 2,
-      fee: 10,
-      ..default()
-    };
-    let txid = context.core.broadcast_tx(fee_paying_tx);
-    let coinbase_txid = context.mine_blocks(1)[0].txdata[0].txid();
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 0)).unwrap().unwrap(),
-      &[(50 * COIN_VALUE, 7499999995)],
-    );
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 1)).unwrap().unwrap(),
-      &[(7499999995, 9999999990)],
-    );
-
-    assert_eq!(
-      context
-        .index
-        .list(OutPoint::new(coinbase_txid, 0))
-        .unwrap()
-        .unwrap(),
-      &[(10000000000, 15000000000), (9999999990, 10000000000)],
-    );
-  }
-
-  #[test]
-  fn list_two_fee_paying_transaction_range() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    context.mine_blocks(2);
-    let first_fee_paying_tx = TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      fee: 10,
-      ..default()
-    };
-    let second_fee_paying_tx = TransactionTemplate {
-      inputs: &[(2, 0, 0, Default::default())],
-      fee: 10,
-      ..default()
-    };
-    context.core.broadcast_tx(first_fee_paying_tx);
-    context.core.broadcast_tx(second_fee_paying_tx);
-
-    let coinbase_txid = context.mine_blocks(1)[0].txdata[0].txid();
-
-    assert_eq!(
-      context
-        .index
-        .list(OutPoint::new(coinbase_txid, 0))
-        .unwrap()
-        .unwrap(),
-      &[
-        (15000000000, 20000000000),
-        (9999999990, 10000000000),
-        (14999999990, 15000000000)
-      ],
-    );
-  }
-
-  #[test]
-  fn list_null_output() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    context.mine_blocks(1);
-    let no_value_output = TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      fee: 50 * COIN_VALUE,
-      ..default()
-    };
-    let txid = context.core.broadcast_tx(no_value_output);
-    context.mine_blocks(1);
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 0)).unwrap().unwrap(),
-      &[],
-    );
-  }
-
-  #[test]
-  fn list_null_input() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    context.mine_blocks(1);
-    let no_value_output = TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      fee: 50 * COIN_VALUE,
-      ..default()
-    };
-    context.core.broadcast_tx(no_value_output);
-    context.mine_blocks(1);
-
-    let no_value_input = TransactionTemplate {
-      inputs: &[(2, 1, 0, Default::default())],
-      fee: 0,
-      ..default()
-    };
-    let txid = context.core.broadcast_tx(no_value_input);
-    context.mine_blocks(1);
-
-    assert_eq!(
-      context.index.list(OutPoint::new(txid, 0)).unwrap().unwrap(),
-      &[],
-    );
-  }
-
-  #[test]
-  fn list_spent_output() {
-    let context = Context::builder().arg("--index-sats").build();
-    context.mine_blocks(1);
-    context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      fee: 0,
-      ..default()
-    });
-    context.mine_blocks(1);
-    let txid = context.core.tx(1, 0).txid();
-    assert_matches!(context.index.list(OutPoint::new(txid, 0)).unwrap(), None);
-  }
-
-  #[test]
-  fn list_unknown_output() {
-    let context = Context::builder().arg("--index-sats").build();
-
-    assert_eq!(
-      context
-        .index
-        .list(
-          "0000000000000000000000000000000000000000000000000000000000000000:0"
-            .parse()
-            .unwrap()
-        )
-        .unwrap(),
-      None
-    );
-  }
-
-  #[test]
-  fn find_first_sat() {
-    let context = Context::builder().arg("--index-sats").build();
-    assert_eq!(
-      context.index.find(Sat(0)).unwrap().unwrap(),
-      SatPoint {
-        outpoint: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0"
-          .parse()
-          .unwrap(),
-        offset: 0,
-      }
-    )
-  }
-
-  #[test]
-  fn find_second_sat() {
-    let context = Context::builder().arg("--index-sats").build();
-    assert_eq!(
-      context.index.find(Sat(1)).unwrap().unwrap(),
-      SatPoint {
-        outpoint: "4a5e1e4baab89f3a32518a88c31bc87f618f76673e2cc77ab2127b7afdeda33b:0"
-          .parse()
-          .unwrap(),
-        offset: 1,
-      }
-    )
-  }
-
-  #[test]
-  fn find_first_sat_of_second_block() {
-    let context = Context::builder().arg("--index-sats").build();
-    context.mine_blocks(1);
-    let tx = context.core.tx(1, 0);
-    assert_eq!(
-      context.index.find(Sat(50 * COIN_VALUE)).unwrap().unwrap(),
-      SatPoint {
-        outpoint: OutPoint {
-          txid: tx.txid(),
-          vout: 0,
-        },
-        offset: 0,
-      }
-    )
-  }
-
-  #[test]
-  fn find_unmined_sat() {
-    let context = Context::builder().arg("--index-sats").build();
-    assert_eq!(context.index.find(Sat(50 * COIN_VALUE)).unwrap(), None);
-  }
-
-  #[test]
-  fn find_first_sat_spent_in_second_block() {
-    let context = Context::builder().arg("--index-sats").build();
-    context.mine_blocks(1);
-    let spend_txid = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Default::default())],
-      fee: 0,
-      ..default()
-    });
-    context.mine_blocks(1);
-    assert_eq!(
-      context.index.find(Sat(50 * COIN_VALUE)).unwrap().unwrap(),
-      SatPoint {
-        outpoint: OutPoint::new(spend_txid, 0),
-        offset: 0,
-      }
-    )
   }
 
   #[test]
