@@ -33,7 +33,6 @@ fn get_block() {
         .unwrap(),
       best_height: 1,
       height: 0,
-      inscriptions: Vec::new(),
       runes: Vec::new(),
       transactions: block_json.transactions.clone(),
     }

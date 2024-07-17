@@ -470,7 +470,6 @@ impl Server {
       } else {
         OutputHtml {
           chain: server_config.chain,
-          inscriptions: output_info.inscriptions,
           outpoint,
           output: txout,
           runes: output_info.runes,
@@ -750,7 +749,6 @@ impl Server {
           block,
           Height(height),
           Self::index_height(&index)?,
-          vec![],
           runes,
         ))
         .into_response()

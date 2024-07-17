@@ -1,13 +1,5 @@
 <h1>Output <span class=monospace>{{self.outpoint}}</span></h1>
 <dl>
-%% if !self.inscriptions.is_empty() {
-  <dt>inscriptions</dt>
-  <dd class=thumbnails>
-%% for inscription in &self.inscriptions {
-    {{Iframe::thumbnail(*inscription)}}
-%% }
-  </dd>
-%% }
 %% if !self.runes.is_empty() {
   <dt>runes</dt>
   <dd>

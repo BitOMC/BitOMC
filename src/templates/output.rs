@@ -3,7 +3,6 @@ use super::*;
 #[derive(Boilerplate)]
 pub(crate) struct OutputHtml {
   pub(crate) chain: Chain,
-  pub(crate) inscriptions: Vec<InscriptionId>,
   pub(crate) outpoint: OutPoint,
   pub(crate) output: TxOut,
   pub(crate) runes: BTreeMap<SpacedRune, Pile>,
@@ -29,7 +28,6 @@ mod tests {
     assert_regex_match!(
       OutputHtml {
         chain: Chain::Mainnet,
-        inscriptions: Vec::new(),
         outpoint: outpoint(1),
         output: TxOut { value: 3, script_pubkey: ScriptBuf::new_p2pkh(&PubkeyHash::all_zeros()), },
         runes: BTreeMap::new(),
@@ -60,7 +58,6 @@ mod tests {
     assert_regex_match!(
       OutputHtml {
         chain: Chain::Mainnet,
-        inscriptions: Vec::new(),
         outpoint: outpoint(1),
         output: TxOut {
           value: 1,
@@ -88,7 +85,6 @@ mod tests {
     assert_regex_match!(
       OutputHtml {
         chain: Chain::Mainnet,
-        inscriptions: Vec::new(),
         outpoint: outpoint(1),
         output: TxOut { value: 3, script_pubkey: ScriptBuf::new_p2pkh(&PubkeyHash::all_zeros()), },
         runes: BTreeMap::new(),
@@ -119,7 +115,6 @@ mod tests {
     assert_regex_match!(
       OutputHtml {
         chain: Chain::Mainnet,
-        inscriptions: Vec::new(),
         outpoint: outpoint(1),
         output: TxOut { value: 3, script_pubkey: ScriptBuf::new_p2pkh(&PubkeyHash::all_zeros()), },
         runes: BTreeMap::new(),
@@ -135,35 +130,6 @@ mod tests {
           <dt>address</dt><dd class=monospace><a href=/address/1111111111111111111114oLvT2>1111111111111111111114oLvT2</a></dd>
           <dt>transaction</dt><dd><a class=monospace href=/tx/1{64}>1{64}</a></dd>
           <dt>spent</dt><dd>false</dd>
-        </dl>
-      "
-      .unindent()
-    );
-  }
-
-  #[test]
-  fn with_inscriptions() {
-    assert_regex_match!(
-      OutputHtml {
-        chain: Chain::Mainnet,
-        inscriptions: vec![inscription_id(1)],
-        outpoint: outpoint(1),
-        output: TxOut {
-          value: 3,
-          script_pubkey: ScriptBuf::new_p2pkh(&PubkeyHash::all_zeros()),
-        },
-        runes: BTreeMap::new(),
-        sat_ranges: None,
-        spent: false,
-      },
-      "
-        <h1>Output <span class=monospace>1{64}:1</span></h1>
-        <dl>
-          <dt>inscriptions</dt>
-          <dd class=thumbnails>
-            <a href=/inscription/1{64}i1><iframe .* src=/preview/1{64}i1></iframe></a>
-          </dd>
-          .*
         </dl>
       "
       .unindent()

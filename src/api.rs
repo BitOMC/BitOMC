@@ -16,7 +16,6 @@ pub struct Block {
   pub best_height: u32,
   pub hash: BlockHash,
   pub height: u32,
-  pub inscriptions: Vec<InscriptionId>,
   pub runes: Vec<SpacedRune>,
   pub target: BlockHash,
   pub transactions: Vec<bitcoin::blockdata::transaction::Transaction>,
@@ -27,7 +26,6 @@ impl Block {
     block: bitcoin::Block,
     height: Height,
     best_height: Height,
-    inscriptions: Vec<InscriptionId>,
     runes: Vec<SpacedRune>,
   ) -> Self {
     Self {
@@ -35,7 +33,6 @@ impl Block {
       target: target_as_block_hash(block.header.target()),
       height: height.0,
       best_height: best_height.0,
-      inscriptions,
       runes,
       transactions: block.txdata,
     }
@@ -73,79 +70,6 @@ pub struct BlockInfo {
   pub total_weight: usize,
   pub transaction_count: u64,
   pub version: u32,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Children {
-  pub ids: Vec<InscriptionId>,
-  pub more: bool,
-  pub page: usize,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChildInscriptions {
-  pub children: Vec<ChildInscriptionRecursive>,
-  pub more: bool,
-  pub page: usize,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize, Clone)]
-pub struct Inscription {
-  pub address: Option<String>,
-  pub charms: Vec<Charm>,
-  pub children: Vec<InscriptionId>,
-  pub content_length: Option<usize>,
-  pub content_type: Option<String>,
-  pub effective_content_type: Option<String>,
-  pub fee: u64,
-  pub height: u32,
-  pub id: InscriptionId,
-  pub next: Option<InscriptionId>,
-  pub number: i32,
-  pub parents: Vec<InscriptionId>,
-  pub previous: Option<InscriptionId>,
-  pub rune: Option<SpacedRune>,
-  pub sat: Option<ordinals::Sat>,
-  pub satpoint: SatPoint,
-  pub timestamp: i64,
-  pub value: Option<u64>,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct InscriptionRecursive {
-  pub charms: Vec<Charm>,
-  pub content_type: Option<String>,
-  pub content_length: Option<usize>,
-  pub delegate: Option<InscriptionId>,
-  pub fee: u64,
-  pub height: u32,
-  pub id: InscriptionId,
-  pub number: i32,
-  pub output: OutPoint,
-  pub sat: Option<ordinals::Sat>,
-  pub satpoint: SatPoint,
-  pub timestamp: i64,
-  pub value: Option<u64>,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct ChildInscriptionRecursive {
-  pub charms: Vec<Charm>,
-  pub fee: u64,
-  pub height: u32,
-  pub id: InscriptionId,
-  pub number: i32,
-  pub output: OutPoint,
-  pub sat: Option<ordinals::Sat>,
-  pub satpoint: SatPoint,
-  pub timestamp: i64,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct Inscriptions {
-  pub ids: Vec<InscriptionId>,
-  pub more: bool,
-  pub page_index: u32,
 }
 
 #[derive(Debug, PartialEq, Serialize, Deserialize, Copy, Clone)]
@@ -229,16 +153,4 @@ pub struct Sat {
   pub rarity: Rarity,
   pub satpoint: Option<SatPoint>,
   pub timestamp: i64,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct SatInscription {
-  pub id: Option<InscriptionId>,
-}
-
-#[derive(Debug, PartialEq, Serialize, Deserialize)]
-pub struct SatInscriptions {
-  pub ids: Vec<InscriptionId>,
-  pub more: bool,
-  pub page: u64,
 }
