@@ -17,7 +17,6 @@ use {
     blocktime::Blocktime,
     decimal::Decimal,
     deserialize_from_str::DeserializeFromStr,
-    inscriptions::inscription_id,
     into_usize::IntoUsize,
     representation::Representation,
     settings::Settings,

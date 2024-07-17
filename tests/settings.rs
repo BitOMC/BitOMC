@@ -19,7 +19,6 @@ fn default() {
   "data_dir": ".*",
   "first_rune_height": 854000,
   "height_limit": null,
-  "hidden": \[\],
   "http_port": null,
   "index": ".*index\.redb",
   "index_addresses": false,
