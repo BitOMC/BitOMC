@@ -1241,8 +1241,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 6,
+            supply: 300 * COIN_VALUE,
+            burned: 250 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1253,7 +1254,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 6,
             supply: 0,
             ..default()
           },
@@ -1320,8 +1321,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 8,
+            supply: 400 * COIN_VALUE,
+            burned: 350 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1332,7 +1334,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 8,
             supply: 0,
             ..default()
           },
@@ -1373,8 +1375,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 10,
+            supply: 500 * COIN_VALUE,
+            burned: 450 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1385,7 +1388,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 10,
             supply: 0,
             ..default()
           },
@@ -1460,8 +1463,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 13,
+            supply: 650 * COIN_VALUE,
+            burned: 600 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1472,7 +1476,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 13,
             supply: 0,
             ..default()
           },
@@ -1513,8 +1517,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 10,
+            supply: 500 * COIN_VALUE,
+            burned: 450 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1525,7 +1530,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 10,
             supply: 0,
             ..default()
           },
@@ -1553,8 +1558,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 11,
-            supply: 550 * COIN_VALUE,
+            mints: 17,
+            supply: 850 * COIN_VALUE,
+            burned: 300 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1565,7 +1571,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 11,
+            mints: 17,
             supply: 0,
             ..default()
           },
@@ -1598,8 +1604,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 19,
+            supply: 950 * COIN_VALUE,
+            burned: 900 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1610,7 +1617,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 19,
             supply: 0,
             ..default()
           },
@@ -1858,8 +1865,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 100 * COIN_VALUE,
+            burned: 50 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1870,7 +1878,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -1925,13 +1933,13 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            burned: 111,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 3,
+            supply: 150 * COIN_VALUE,
+            burned: 111 + 100 * COIN_VALUE,
             ..default()
           },
         ),
@@ -1942,7 +1950,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 3,
             supply: 0,
             ..default()
           },
@@ -1975,6 +1983,7 @@ mod tests {
     const TIGHTEN: u128 = 0;
     const EASE: u128 = 1;
     const COIN_VALUE: u128 = 100000000;
+    const REWARD: u128 = 50 * COIN_VALUE;
     const UTIL_BASE_VALUE: u128 = 1_000_000_000_000;
     const BLOCKS_PER_YEAR: u128 = 52_595;
 
@@ -2021,22 +2030,22 @@ mod tests {
       inputs: &[(1, 0, 0, Witness::new())],
       mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: 40 * COIN_VALUE,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: 30 * COIN_VALUE,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2075,7 +2084,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid0,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, 40 * COIN_VALUE), (ID1, 30 * COIN_VALUE)],
       )],
@@ -2098,35 +2107,38 @@ mod tests {
       }
     );
 
-    let balance0 = (50 * COIN_VALUE * 50 * COIN_VALUE - 100 * COIN_VALUE * COIN_VALUE).sqrt();
-    // Convert 20 EASE to sqrt(50^2 - 10^2) TIGHTEN
+    // Convert 50 EASE to sqrt(100^2 - 10^2) TIGHTEN
+    let balance1 = 10 * COIN_VALUE;
+    let balance0 = (4 * REWARD * REWARD - 100 * COIN_VALUE * COIN_VALUE).sqrt();
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
         (context.get_block_count() - 1, 1, 0, Witness::new()),
         (context.get_block_count() - 1, 1, 1, Witness::new()),
+        (context.get_block_count() - 1, 1, 2, Witness::new()),
       ],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID1,
-              amount: 10 * COIN_VALUE,
-              output: 1,
+              amount: balance1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: 0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: 1,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2144,7 +2156,7 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: balance0,
             ..default()
           },
@@ -2156,8 +2168,8 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
-            supply: 10 * COIN_VALUE,
+            mints: 2,
+            supply: balance1,
             ..default()
           },
         ),
@@ -2165,7 +2177,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, balance0), (ID1, 10 * COIN_VALUE)],
       )],
@@ -2191,7 +2203,47 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let interest_rate4 = rate3;
+    let balance0_2 = balance0 + REWARD * balance0 / (balance0 * balance0 + balance1 * balance1).sqrt();
+    let balance1_2 = balance1 + REWARD * balance1 / (balance0 * balance0 + balance1 * balance1).sqrt();
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 3,
+            supply: balance0_2,
+            burned: balance0_2 - balance0,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 3,
+            supply: balance1_2,
+            burned: balance1_2 - balance1,
+            ..default()
+          },
+        ),
+      ],
+      [(
+        OutPoint {
+          txid: txid1,
+          vout: 2,
+        },
+        vec![(ID0, balance0), (ID1, 10 * COIN_VALUE)],
+      )],
+    );
+
+    let interest_rate4 = UTIL_BASE_VALUE * (balance0_2 - balance1_2) / (balance0_2 + balance1_2);
     let interest4 = bonds_per_sat3 * interest_rate4 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
     let bonds_per_sat4 = bonds_per_sat3 + interest4;
     let utils_per_bond4 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate4;
@@ -2208,37 +2260,44 @@ mod tests {
       }
     );
 
-    // Convert to 40 EASE and 30 TIGHTEN
-    let balance1 = (balance0 * balance0 + 100 * COIN_VALUE * COIN_VALUE
-      - 30 * 30 * COIN_VALUE * COIN_VALUE)
+    let invariant = (balance0_2 * balance0_2 + balance1_2 * balance1_2).sqrt();
+    let balance0_3 = balance0_2 + REWARD * balance0_2 / invariant;
+    let balance1_3 = balance1_2 + REWARD * balance1_2 / invariant;
+
+    // Convert to 120 EASE and 90 TIGHTEN
+    let balance0_4 = 90 * COIN_VALUE;
+    let balance1_4 = (balance0_3 * balance0_3 + balance1_3 * balance1_3
+      - balance0_4 * balance0_4)
       .sqrt();
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
         (context.get_block_count() - 2, 1, 0, Witness::new()),
         (context.get_block_count() - 2, 1, 1, Witness::new()),
+        (context.get_block_count() - 2, 1, 2, Witness::new()),
       ],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
-              amount: 30 * COIN_VALUE,
-              output: 1,
+              amount: balance0_4,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: 0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: 1,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2256,8 +2315,8 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 30 * COIN_VALUE,
+            mints: 4,
+            supply: balance0_4,
             ..default()
           },
         ),
@@ -2268,8 +2327,8 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
-            supply: balance1,
+            mints: 4,
+            supply: balance1_4,
             ..default()
           },
         ),
@@ -2277,13 +2336,13 @@ mod tests {
       [(
         OutPoint {
           txid: txid2,
-          vout: 1,
+          vout: 2,
         },
-        vec![(ID0, 30 * COIN_VALUE), (ID1, balance1)],
+        vec![(ID0, balance0_4), (ID1, balance1_4)],
       )],
     );
 
-    let interest_rate5 = rate3;
+    let interest_rate5 = interest_rate4;
     let interest5 = bonds_per_sat4 * interest_rate5 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
     let bonds_per_sat5 = bonds_per_sat4 + interest5;
     let utils_per_bond5 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate5;

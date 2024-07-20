@@ -25,7 +25,9 @@ mod tests {
 
   const TIGHTEN: u128 = 0;
   const EASE: u128 = 1;
-  const COIN_VALUE: u128 = 100000000;
+  const COIN_VALUE: u128 = 100_000_000;
+
+  const REWARD: u128 = 50 * COIN_VALUE;
 
   #[test]
   fn index_starts_with_runes() {
@@ -137,8 +139,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -149,7 +152,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -234,8 +237,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -246,7 +250,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -288,7 +292,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 50 * COIN_VALUE,
+            supply: REWARD,
             ..default()
           },
         ),
@@ -310,7 +314,7 @@ mod tests {
           txid: txid0,
           vout: 1,
         },
-        vec![(ID0, 50 * COIN_VALUE)],
+        vec![(ID0, REWARD)],
       )],
     );
 
@@ -328,13 +332,13 @@ mod tests {
         (
           ID0,
           RuneEntry {
-            burned: 50 * COIN_VALUE,
+            burned: 2 * REWARD,
             spaced_rune: SpacedRune {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
             ..default()
           },
         ),
@@ -345,7 +349,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -361,58 +365,13 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 2,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 3,
       op_return: Some(
         Runestone {
-          pointer: Some(1),
+          pointer: Some(2),
           ..default()
         }
         .encipher(),
@@ -452,7 +411,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, 50 * COIN_VALUE)],
       )],
@@ -465,58 +424,13 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 2,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 3,
       op_return: Some(
         Runestone {
-          pointer: Some(2),
+          pointer: Some(3),
           ..default()
         }
         .encipher(),
@@ -628,8 +542,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -640,7 +555,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -682,7 +597,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 50 * COIN_VALUE,
+            supply: REWARD,
             ..default()
           },
         ),
@@ -704,17 +619,18 @@ mod tests {
           txid: txid0,
           vout: 1,
         },
-        vec![(ID0, 50 * COIN_VALUE)],
+        vec![(ID0, REWARD)],
       )],
     );
 
-    // Convert 20 TIGHTEN to at least 30 EASE (expect 40 EASE)
-    let supply0 = 50 * COIN_VALUE;
+    // Convert 20 TIGHTEN to at least 50 EASE (expect 60 EASE)
+    let supply0 = REWARD + REWARD;
     let input_amt = 20 * COIN_VALUE;
-    let min_output_amt = 30 * COIN_VALUE;
+    let min_output_amt = 50 * COIN_VALUE;
 
-    let expected_balance0 = supply0 - input_amt;
-    let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
+    let expected_balance0 = REWARD - input_amt;
+    let expected_supply0 = supply0 - input_amt;
+    let expected_balance1 = (supply0 * supply0 - expected_supply0 * expected_supply0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
@@ -752,8 +668,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance0,
+            mints: 2,
+            supply: expected_supply0,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -764,7 +681,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_balance1,
             ..default()
           },
@@ -783,11 +700,20 @@ mod tests {
     let input_amt_2 = 10 * COIN_VALUE;
     let min_output_amt_2 = 5 * COIN_VALUE;
 
+    let reward0_2 = REWARD * expected_supply0 / (2 * REWARD);
+    let reward1_2 = REWARD * expected_balance1 / (2 * REWARD);
+    let burned0_2 = REWARD + reward0_2;
+    let burned1_2 = reward1_2;
+    let supply0_2 = expected_supply0 + reward0_2;
+    let supply1_2 = expected_balance1 + reward1_2;
+
     let expected_balance1_2 = expected_balance1 - input_amt_2;
-    let expected_balance0_2 = (expected_balance0 * expected_balance0
-      + expected_balance1 * expected_balance1
-      - expected_balance1_2 * expected_balance1_2)
+    let expected_supply1_2 = supply1_2 - input_amt_2;
+    let expected_supply0_2 = (supply0_2 * supply0_2
+      + supply1_2 * supply1_2
+      - expected_supply1_2 * expected_supply1_2)
       .sqrt();
+    let expected_balance0_2 = expected_supply0_2 - burned0_2;
 
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
@@ -828,8 +754,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance0_2,
+            mints: 3,
+            supply: expected_supply0_2,
+            burned: burned0_2,
             ..default()
           },
         ),
@@ -840,8 +767,9 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance1_2,
+            mints: 3,
+            supply: expected_supply1_2,
+            burned: burned1_2,
             ..default()
           },
         ),
@@ -908,33 +836,37 @@ mod tests {
       )],
     );
 
-    // Convert to exactly 30 EASE with at most 20 TIGHTEN (expect 10 TIGHTEN)
-    let supply0 = 50 * COIN_VALUE;
-    let max_input_amt = 20 * COIN_VALUE;
-    let output_amt = 30 * COIN_VALUE;
+    // Convert to exactly 60 EASE with at most 30 TIGHTEN (expect 20 TIGHTEN)
+    let supply0 = REWARD + REWARD;
+    let max_input_amt = 30 * COIN_VALUE;
+    let output_amt = 60 * COIN_VALUE;
 
     let expected_balance1 = output_amt;
     let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new())
+      ],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID1,
               amount: expected_balance1,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: supply0 - max_input_amt,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -952,7 +884,7 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_balance0,
             ..default()
           },
@@ -964,7 +896,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_balance1,
             ..default()
           },
@@ -973,7 +905,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, expected_balance0), (ID1, expected_balance1)],
       )],
@@ -1028,12 +960,12 @@ mod tests {
           txid: txid0,
           vout: 1,
         },
-        vec![(ID0, 50 * COIN_VALUE)],
+        vec![(ID0, REWARD)],
       )],
     );
 
-    // Convert 20 TIGHTEN to 40 EASE
-    let supply0 = 50 * COIN_VALUE;
+    // Convert 20 TIGHTEN to 60 EASE
+    let supply0 = REWARD + REWARD;
     let input_amt = 20 * COIN_VALUE;
 
     let expected_supply0 = supply0 - input_amt;
@@ -1041,24 +973,28 @@ mod tests {
     let expected_supply1 = min_output_amt;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+      ],
+      mint: true,
       convert: true,
-      outputs: 3,
+      outputs: 4,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: expected_supply0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: expected_supply1 / 2,
-              output: 4,
+              output: 5,
             },
           ],
-          pointer: Some(3),
+          pointer: Some(4),
         }
         .encipher(),
       ),
@@ -1076,7 +1012,7 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_supply0,
             ..default()
           },
@@ -1088,7 +1024,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_supply1,
             ..default()
           },
@@ -1098,14 +1034,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, expected_supply0), (ID1, expected_supply1 / 2)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 2,
+            vout: 3,
           },
           vec![(ID1, expected_supply1 / 2)],
         ),
@@ -1161,37 +1097,41 @@ mod tests {
           txid: txid0,
           vout: 1,
         },
-        vec![(ID0, 50 * COIN_VALUE)],
+        vec![(ID0, REWARD)],
       )],
     );
 
-    // Convert 20 TIGHTEN to at least 30 EASE (expect 40 EASE)
-    let supply0 = 50 * COIN_VALUE;
-    let input_amt = 20 * COIN_VALUE;
-    let min_output_amt = 30 * COIN_VALUE;
+    // Convert 40 TIGHTEN to at least 60 EASE (expect 80 EASE)
+    let supply0 = REWARD + REWARD;
+    let input_amt = 40 * COIN_VALUE;
+    let min_output_amt = 60 * COIN_VALUE;
 
     let expected_supply0 = supply0 - input_amt;
     let expected_supply1 = (supply0 * supply0 - expected_supply0 * expected_supply0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new())
+      ],
+      mint: true,
       convert: true,
-      outputs: 3,
+      outputs: 4,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: expected_supply0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: min_output_amt / 2,
-              output: 4,
+              output: 5,
             },
           ],
-          pointer: Some(3),
+          pointer: Some(4),
         }
         .encipher(),
       ),
@@ -1209,7 +1149,7 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_supply0,
             ..default()
           },
@@ -1221,7 +1161,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: expected_supply1,
             ..default()
           },
@@ -1231,7 +1171,7 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![
             (ID0, expected_supply0),
@@ -1241,7 +1181,7 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 2,
+            vout: 3,
           },
           vec![(ID1, min_output_amt / 2)],
         ),
@@ -1255,251 +1195,7 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
-    // Convert 10 TIGHTEN to 30 EASE)
-    let supply0 = 50 * COIN_VALUE;
-    let input_amt = 20 * COIN_VALUE;
-
-    let expected_balance0 = supply0 - input_amt;
-    let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
-
-    let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      convert: true,
-      outputs: 2,
-      op_return: Some(
-        Runestone {
-          edicts: vec![
-            Edict {
-              id: ID0,
-              amount: expected_balance0,
-              output: 1,
-            },
-            Edict {
-              id: ID1,
-              amount: expected_balance1,
-              output: 1,
-            },
-          ],
-          pointer: Some(2),
-        }
-        .encipher(),
-      ),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: expected_balance0,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: expected_balance1,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid1,
-          vout: 1,
-        },
-        vec![(ID0, expected_balance0), (ID1, expected_balance1)],
-      )],
-    );
-
-    // Transfer 10 EASE and convert 10 TIGHTEN to 10 EASE
-    let input_amt_2 = 10 * COIN_VALUE;
-
-    let expected_balance0_2 = expected_balance0 - input_amt_2;
-    let expected_balance1_2 = (expected_balance0 * expected_balance0
-      + expected_balance1 * expected_balance1
-      - expected_balance0_2 * expected_balance0_2)
-      .sqrt();
-
-    let txid2 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[
-        (context.get_block_count() - 1, 1, 0, Witness::new()),
-        (context.get_block_count() - 1, 1, 1, Witness::new()),
-      ],
-      convert: true,
-      outputs: 2,
-      op_return: Some(
-        Runestone {
-          edicts: vec![
-            Edict {
-              id: ID0,
-              amount: expected_balance0_2,
-              output: 1,
-            },
-            Edict {
-              id: ID1,
-              amount: expected_balance1_2,
-              output: 1,
-            },
-          ],
-          pointer: Some(2),
-        }
-        .encipher(),
-      ),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: expected_balance0_2,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: expected_balance1_2,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid2,
-          vout: 1,
-        },
-        vec![(ID0, expected_balance0_2), (ID1, expected_balance1_2)],
-      )],
-    );
-  }
-
-  #[test]
-  fn convert_even_if_output_is_provided_as_an_input_and_split() {
-    let context = Context::builder().build();
-
-    context.mine_blocks(1);
-
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
-    // Convert 10 TIGHTEN to 30 EASE)
+    // Mint 50 TIGHTEN and convert 10 TIGHTEN to 30 EASE
     let supply0 = 50 * COIN_VALUE;
     let input_amt = 10 * COIN_VALUE;
 
@@ -1507,96 +1203,22 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      convert: true,
-      outputs: 2,
-      op_return: Some(
-        Runestone {
-          edicts: vec![
-            Edict {
-              id: ID0,
-              amount: expected_balance0,
-              output: 1,
-            },
-            Edict {
-              id: ID1,
-              amount: expected_balance1,
-              output: 1,
-            },
-          ],
-          pointer: Some(2),
-        }
-        .encipher(),
-      ),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: expected_balance0,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: expected_balance1,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid1,
-          vout: 1,
-        },
-        vec![(ID0, expected_balance0), (ID1, expected_balance1)],
-      )],
-    );
-
-    // Transfer EASE balance and convert 10 TIGHTEN to 10 EASE
-    let input_amt_2 = 10 * COIN_VALUE;
-
-    let expected_balance0_2 = expected_balance0 - input_amt_2;
-    let expected_balance1_2 = (expected_balance0 * expected_balance0
-      + expected_balance1 * expected_balance1
-      - expected_balance0_2 * expected_balance0_2)
-      .sqrt();
-
-    let txid2 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[
-        (context.get_block_count() - 1, 1, 0, Witness::new()),
-        (context.get_block_count() - 1, 1, 1, Witness::new()),
-      ],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
       outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
-              id: ID1,
-              amount: expected_balance1_2,
-              output: 4,
+              id: ID0,
+              amount: expected_balance0,
+              output: 2,
             },
             Edict {
-              id: ID0,
-              amount: expected_balance0_2,
-              output: 1,
+              id: ID1,
+              amount: expected_balance1,
+              output: 2,
             },
           ],
           pointer: Some(3),
@@ -1618,7 +1240,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: expected_balance0_2,
+            supply: expected_balance0,
             ..default()
           },
         ),
@@ -1630,32 +1252,138 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: expected_balance1_2,
+            supply: expected_balance1,
             ..default()
           },
         ),
       ],
       [(
         OutPoint {
-          txid: txid2,
-          vout: 1,
+          txid: txid1,
+          vout: 2,
         },
-        vec![(ID0, expected_balance0_2), (ID1, expected_balance1_2)],
+        vec![(ID0, expected_balance0), (ID1, expected_balance1)],
       )],
+    );
+
+    // Transfer EASE balance and convert 20 TIGHTEN to 20 EASE
+    let supply0_2 = 2 * expected_balance0;
+    let supply1_2 = 2 * expected_balance1;
+    let input_amt_2 = 20 * COIN_VALUE;
+
+    let expected_balance0_2 = supply0_2 - input_amt_2;
+    let expected_balance1_2 = (supply0_2 * supply0_2
+      + supply1_2 * supply1_2
+      - expected_balance0_2 * expected_balance0_2)
+      .sqrt();
+
+    let txid2 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+        (context.get_block_count() - 1, 1, 2, Witness::new()),
+      ],
+      mint: true,
+      convert: true,
+      outputs: 3,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID0,
+              amount: expected_balance0_2,
+              output: 2,
+            },
+            Edict {
+              id: ID1,
+              amount: expected_balance1_2,
+              output: 2,
+            },
+          ],
+          pointer: Some(3),
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: expected_balance0_2,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: expected_balance1_2,
+            ..default()
+          },
+        ),
+      ],
+      [
+        (
+          OutPoint {
+            txid: txid2,
+            vout: 2,
+          },
+          vec![(ID0, expected_balance0_2), (ID1, expected_balance1_2)],
+        )
+      ],
     );
   }
 
   #[test]
-  fn convert_and_burn_if_conversion_output_is_op_return() {
+  fn convert_even_if_output_is_provided_as_an_input_and_split() {
     let context = Context::builder().build();
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
+    // Mint 50 TIGHTEN and convert 10 TIGHTEN to 30 EASE
+    let supply0 = 50 * COIN_VALUE;
+    let input_amt = 10 * COIN_VALUE;
+
+    let expected_balance0 = supply0 - input_amt;
+    let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
       mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
+      convert: true,
+      outputs: 3,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID0,
+              amount: expected_balance0,
+              output: 2,
+            },
+            Edict {
+              id: ID1,
+              amount: expected_balance1,
+              output: 2,
+            },
+          ],
+          pointer: Some(3),
+        }
+        .encipher(),
+      ),
       ..default()
     });
 
@@ -1671,7 +1399,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 50 * COIN_VALUE,
+            supply: expected_balance0,
             ..default()
           },
         ),
@@ -1683,19 +1411,114 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 0,
+            supply: expected_balance1,
             ..default()
           },
         ),
       ],
       [(
         OutPoint {
-          txid: txid0,
-          vout: 1,
+          txid: txid1,
+          vout: 2,
         },
-        vec![(ID0, 50 * COIN_VALUE)],
+        vec![(ID0, expected_balance0), (ID1, expected_balance1)],
       )],
     );
+
+    // Transfer EASE balance and convert 20 TIGHTEN to 20 EASE
+    let supply0_2 = 2 * expected_balance0;
+    let supply1_2 = 2 * expected_balance1;
+    let input_amt_2 = 20 * COIN_VALUE;
+
+    let expected_balance0_2 = supply0_2 - input_amt_2;
+    let expected_balance1_2 = (supply0_2 * supply0_2
+      + supply1_2 * supply1_2
+      - expected_balance0_2 * expected_balance0_2)
+      .sqrt();
+
+    let txid2 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[
+        (context.get_block_count() - 1, 1, 0, Witness::new()),
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
+        (context.get_block_count() - 1, 1, 2, Witness::new()),
+      ],
+      mint: true,
+      convert: true,
+      outputs: 4,
+      op_return: Some(
+        Runestone {
+          edicts: vec![
+            Edict {
+              id: ID1,
+              amount: expected_balance1_2 / 2,
+              output: 5,
+            },
+            Edict {
+              id: ID0,
+              amount: expected_balance0_2,
+              output: 2,
+            },
+          ],
+          pointer: Some(4),
+        }
+        .encipher(),
+      ),
+      ..default()
+    });
+
+    context.mine_blocks(1);
+
+    context.assert_runes(
+      [
+        (
+          ID0,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(TIGHTEN),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: expected_balance0_2,
+            ..default()
+          },
+        ),
+        (
+          ID1,
+          RuneEntry {
+            spaced_rune: SpacedRune {
+              rune: Rune(EASE),
+              spacers: 0,
+            },
+            mints: 2,
+            supply: expected_balance1_2,
+            ..default()
+          },
+        ),
+      ],
+      [
+        (
+          OutPoint {
+            txid: txid2,
+            vout: 2,
+          },
+          vec![(ID0, expected_balance0_2), (ID1, expected_balance1_2 / 2)],
+        ),
+        (
+          OutPoint {
+            txid: txid2,
+            vout: 3,
+          },
+          vec![(ID1, expected_balance1_2 / 2)],
+        )
+      ],
+    );
+  }
+
+  #[test]
+  fn convert_and_burn_if_conversion_output_is_op_return() {
+    let context = Context::builder().build();
+
+    context.mine_blocks(1);
 
     // Convert 10 TIGHTEN to 30 EASE
     let supply0 = 50 * COIN_VALUE;
@@ -1705,7 +1528,8 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
       outputs: 2,
       op_return: Some(
@@ -1775,52 +1599,6 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     // Convert 10 TIGHTEN to and require 80 EASE
     let supply0 = 50 * COIN_VALUE;
     let input_amt = 10 * COIN_VALUE;
@@ -1829,24 +1607,25 @@ mod tests {
     let min_output1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt() * 2;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: expected_balance0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: min_output1,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -1884,7 +1663,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, supply0)],
       )],
@@ -1897,76 +1676,31 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     // Convert at most 10 TIGHTEN to 100 EASE
     let supply0 = 50 * COIN_VALUE;
     let max_input_amt = 10 * COIN_VALUE;
     let output_amt = 100 * COIN_VALUE;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: supply0 - max_input_amt,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: output_amt,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2004,7 +1738,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, supply0)],
       )],
@@ -2017,52 +1751,6 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     // Convert to exactly 30 EASE with at most 20 TIGHTEN (expect 10 TIGHTEN)
     let supply0 = 50 * COIN_VALUE;
     let max_input_amt = 20 * COIN_VALUE;
@@ -2072,24 +1760,25 @@ mod tests {
     let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID1,
               amount: expected_balance1,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: supply0 - max_input_amt,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2128,7 +1817,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, expected_balance0), (ID1, expected_balance1)],
       )],
@@ -2136,7 +1825,7 @@ mod tests {
 
     // Convert without necessary input
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 1, 2, Witness::new())],
       convert: true,
       outputs: 2,
       op_return: Some(
@@ -2149,7 +1838,7 @@ mod tests {
             },
             Edict {
               id: ID1,
-              amount: (supply0 * supply0 - expected_balance0 * expected_balance0 / 4).sqrt(),
+              amount: expected_balance1 + 1,
               output: 1,
             },
           ],
@@ -2171,8 +1860,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance0,
+            mints: 2,
+            supply: 2 * expected_balance0,
+            burned: expected_balance0,
             ..default()
           },
         ),
@@ -2183,8 +1873,9 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance1,
+            mints: 2,
+            supply: 2 * expected_balance1,
+            burned: expected_balance1,
             ..default()
           },
         ),
@@ -2205,53 +1896,7 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
-    // Convert to exactly 30 EASE with at most 20 TIGHTEN (expect 10 TIGHTEN)
+    // Mint and convert to exactly 30 EASE with at most 20 TIGHTEN (expect 10 TIGHTEN)
     let supply0 = 50 * COIN_VALUE;
     let max_input_amt = 20 * COIN_VALUE;
     let output_amt = 30 * COIN_VALUE;
@@ -2260,24 +1905,25 @@ mod tests {
     let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID1,
               amount: expected_balance1,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID0,
               amount: supply0 - max_input_amt,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2316,17 +1962,17 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, expected_balance0), (ID1, expected_balance1)],
       )],
     );
 
-    // Convert without necessary input
+    // Convert without necessary output
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
-        (context.get_block_count() - 1, 1, 0, Witness::new()),
         (context.get_block_count() - 1, 1, 1, Witness::new()),
+        (context.get_block_count() - 1, 1, 2, Witness::new()),
       ],
       convert: false,
       outputs: 2,
@@ -2340,7 +1986,7 @@ mod tests {
             },
             Edict {
               id: ID1,
-              amount: (supply0 * supply0 - expected_balance0 * expected_balance0 / 4).sqrt(),
+              amount: expected_balance1 + 1,
               output: 1,
             },
           ],
@@ -2362,8 +2008,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance0,
+            mints: 2,
+            supply: expected_balance0 * 2,
+            burned: expected_balance0,
             ..default()
           },
         ),
@@ -2374,8 +2021,9 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance1,
+            mints: 2,
+            supply: expected_balance1 * 2,
+            burned: expected_balance1,
             ..default()
           },
         ),
@@ -2396,76 +2044,31 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
-    // Convert at most 10 TIGHTEN to 100 EASE
+    // Convert at most 10 TIGHTEN to 40 EASE
     let supply0 = 50 * COIN_VALUE;
     let max_input_amt = 10 * COIN_VALUE;
     let output_amt = 40 * COIN_VALUE;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: supply0 - max_input_amt,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: output_amt,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2503,7 +2106,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, supply0)],
       )],
@@ -2516,172 +2119,13 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     // Convert 50 TIGHTEN and require 100 EASE
     let supply0 = 50 * COIN_VALUE;
     let min_output1 = supply0 * 2;
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      convert: true,
-      outputs: 2,
-      op_return: Some(
-        Runestone {
-          edicts: vec![Edict {
-            id: ID1,
-            amount: min_output1,
-            output: 1,
-          }],
-          pointer: Some(2),
-        }
-        .encipher(),
-      ),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: supply0,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            supply: 0,
-            mints: 1,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid1,
-          vout: 1,
-        },
-        vec![(ID0, supply0)],
-      )],
-    );
-  }
-
-  #[test]
-  fn convert_undo_burn_input_if_min_output_not_met_and_missing_output_with_input_id_and_output_id_invalid(
-  ) {
-    let context = Context::builder().build();
-
-    context.mine_blocks(1);
-
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
       mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
-    // Convert 50 TIGHTEN and require 100 EASE
-    let supply0 = 50 * COIN_VALUE;
-    let min_output1 = supply0 * 2;
-
-    let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
       convert: true,
       outputs: 3,
       op_return: Some(
@@ -2689,7 +2133,7 @@ mod tests {
           edicts: vec![Edict {
             id: ID1,
             amount: min_output1,
-            output: 4,
+            output: 2,
           }],
           pointer: Some(3),
         }
@@ -2730,7 +2174,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, supply0)],
       )],
@@ -2738,16 +2182,32 @@ mod tests {
   }
 
   #[test]
-  fn convert_burn_input_if_min_output_not_met_and_no_output_exists() {
+  fn convert_undo_burn_input_if_min_output_not_met_and_missing_output_with_input_id_and_output_is_split(
+  ) {
     let context = Context::builder().build();
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
+    // Convert 50 TIGHTEN and require 100 EASE
+    let supply0 = 50 * COIN_VALUE;
+    let min_output1 = supply0 * 2;
+
+    let txid1 = context.core.broadcast_tx(TransactionTemplate {
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
       mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
+      convert: true,
+      outputs: 4,
+      op_return: Some(
+        Runestone {
+          edicts: vec![Edict {
+            id: ID1,
+            amount: min_output1 / 2,
+            output: 5,
+          }],
+          pointer: Some(4),
+        }
+        .encipher(),
+      ),
       ..default()
     });
 
@@ -2763,7 +2223,7 @@ mod tests {
               spacers: 0,
             },
             mints: 1,
-            supply: 50 * COIN_VALUE,
+            supply: supply0,
             ..default()
           },
         ),
@@ -2774,27 +2234,35 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
             supply: 0,
+            mints: 1,
             ..default()
           },
         ),
       ],
       [(
         OutPoint {
-          txid: txid0,
-          vout: 1,
+          txid: txid1,
+          vout: 2,
         },
-        vec![(ID0, 50 * COIN_VALUE)],
+        vec![(ID0, supply0)],
       )],
     );
+  }
+
+  #[test]
+  fn convert_burn_input_if_min_output_not_met_and_no_output_exists() {
+    let context = Context::builder().build();
+
+    context.mine_blocks(1);
 
     // Convert 50 TIGHTEN and require 100 EASE
     let supply0 = 50 * COIN_VALUE;
     let min_output1 = supply0 * 2;
 
     context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
       outputs: 0,
       op_return: Some(
@@ -2850,52 +2318,6 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     // Convert 10 TIGHTEN to 30 EASE
     let supply0 = 50 * COIN_VALUE;
     let output_amt = 30 * COIN_VALUE;
@@ -2904,24 +2326,25 @@ mod tests {
     let expected_balance0 = (supply0 * supply0 - expected_balance1 * expected_balance1).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 2,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: expected_balance0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: expected_balance1,
-              output: 1,
+              output: 2,
             },
           ],
-          pointer: Some(2),
+          pointer: Some(3),
         }
         .encipher(),
       ),
@@ -2960,7 +2383,7 @@ mod tests {
       [(
         OutPoint {
           txid: txid1,
-          vout: 1,
+          vout: 2,
         },
         vec![(ID0, expected_balance0), (ID1, expected_balance1)],
       )],
@@ -2968,9 +2391,9 @@ mod tests {
 
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
-        (context.get_block_count() - 2, 1, 0, Witness::new()),
         (context.get_block_count() - 1, 1, 0, Witness::new()),
         (context.get_block_count() - 1, 1, 1, Witness::new()),
+        (context.get_block_count() - 1, 1, 2, Witness::new()),
       ],
       mint: true,
       outputs: 2,
@@ -2989,8 +2412,8 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 3,
-            supply: expected_balance0 * 3,
+            mints: 2,
+            supply: expected_balance0 * 2,
             ..default()
           },
         ),
@@ -3001,8 +2424,8 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 3,
-            supply: expected_balance1 * 3,
+            mints: 2,
+            supply: expected_balance1 * 2,
             ..default()
           },
         ),
@@ -3012,7 +2435,7 @@ mod tests {
           txid: txid2,
           vout: 1,
         },
-        vec![(ID0, expected_balance0 * 3), (ID1, expected_balance1 * 3)],
+        vec![(ID0, expected_balance0 * 2), (ID1, expected_balance1 * 2)],
       )],
     );
   }
@@ -3268,52 +2691,6 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     // Convert 20 TIGHTEN to at least 30 EASE (expect 40 EASE)
     let supply0 = 50 * COIN_VALUE;
     let input_amt = 20 * COIN_VALUE;
@@ -3323,24 +2700,25 @@ mod tests {
     let expected_balance1 = (supply0 * supply0 - expected_balance0 * expected_balance0).sqrt();
 
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
       convert: true,
-      outputs: 3,
+      outputs: 4,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: expected_balance0,
-              output: 1,
+              output: 2,
             },
             Edict {
               id: ID1,
               amount: min_output_amt,
-              output: 2,
+              output: 3,
             },
           ],
-          pointer: Some(3),
+          pointer: Some(4),
         }
         .encipher(),
       ),
@@ -3380,14 +2758,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, expected_balance0)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 2,
+            vout: 3,
           },
           vec![(ID1, expected_balance1)],
         ),
@@ -3396,8 +2774,8 @@ mod tests {
 
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
-        (context.get_block_count() - 1, 1, 1, Witness::new()),
         (context.get_block_count() - 1, 1, 2, Witness::new()),
+        (context.get_block_count() - 1, 1, 3, Witness::new()),
       ],
       outputs: 2,
       op_return: Some(
@@ -3432,8 +2810,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance0,
+            mints: 2,
+            supply: expected_balance0 * 2,
+            burned: expected_balance0,
             ..default()
           },
         ),
@@ -3444,8 +2823,9 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
-            supply: expected_balance1,
+            mints: 2,
+            supply: expected_balance1 * 2,
+            burned: expected_balance1,
             ..default()
           },
         ),
@@ -3544,8 +2924,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -3556,7 +2937,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -3652,8 +3033,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -3664,7 +3046,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -3686,61 +3068,16 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 2,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![Edict {
             id: ID0,
             amount: 0,
-            output: 3,
+            output: 4,
           }],
           ..default()
         }
@@ -3782,14 +3119,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 0,
+            vout: 1,
           },
           vec![(ID0, 25 * COIN_VALUE)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, 25 * COIN_VALUE)],
         ),
@@ -3803,67 +3140,22 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 2,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: 1001,
-              output: 0,
+              output: 1,
             },
             Edict {
               id: ID0,
               amount: 0,
-              output: 3,
+              output: 4,
             },
           ],
           ..default()
@@ -3906,14 +3198,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 0,
+            vout: 1,
           },
           vec![(ID0, 1001 + (50 * COIN_VALUE - 1001) / 2 + 1)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, (50 * COIN_VALUE - 1001) / 2)],
         ),
@@ -3927,67 +3219,22 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 2,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: 0,
-              output: 3,
+              output: 4,
             },
             Edict {
               id: ID0,
               amount: 1000,
-              output: 0,
+              output: 1,
             },
           ],
           ..default()
@@ -4030,14 +3277,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 0,
+            vout: 1,
           },
           vec![(ID0, 25 * COIN_VALUE)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, 25 * COIN_VALUE)],
         ),
@@ -4051,61 +3298,16 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 2,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 3,
       op_return: Some(
         Runestone {
           edicts: vec![Edict {
             id: ID0,
             amount: 1000,
-            output: 3,
+            output: 4,
           }],
           ..default()
         }
@@ -4147,14 +3349,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 0,
+            vout: 1,
           },
           vec![(ID0, 50 * COIN_VALUE - 1000)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, 1000)],
         ),
@@ -4168,67 +3370,22 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 4,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 5,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: 50 * COIN_VALUE - 2000,
-              output: 0,
+              output: 1,
             },
             Edict {
               id: ID0,
               amount: 1000,
-              output: 5,
+              output: 6,
             },
           ],
           ..default()
@@ -4271,14 +3428,14 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 0,
+            vout: 1,
           },
           vec![(ID0, 50 * COIN_VALUE - 2000 + 1000)],
         ),
         (
           OutPoint {
             txid: txid1,
-            vout: 1,
+            vout: 2,
           },
           vec![(ID0, 1000)],
         ),
@@ -4292,67 +3449,22 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let txid0 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(1, 0, 0, Witness::new())],
-      mint: true,
-      outputs: 2,
-      op_return: Some(Runestone { ..default() }.encipher()),
-      ..default()
-    });
-
-    context.mine_blocks(1);
-
-    context.assert_runes(
-      [
-        (
-          ID0,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(TIGHTEN),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
-            ..default()
-          },
-        ),
-        (
-          ID1,
-          RuneEntry {
-            spaced_rune: SpacedRune {
-              rune: Rune(EASE),
-              spacers: 0,
-            },
-            mints: 1,
-            supply: 0,
-            ..default()
-          },
-        ),
-      ],
-      [(
-        OutPoint {
-          txid: txid0,
-          vout: 1,
-        },
-        vec![(ID0, 50 * COIN_VALUE)],
-      )],
-    );
-
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
-      inputs: &[(context.get_block_count() - 1, 1, 1, Witness::new())],
-      outputs: 4,
+      inputs: &[(context.get_block_count() - 1, 0, 0, Witness::new())],
+      mint: true,
+      outputs: 5,
       op_return: Some(
         Runestone {
           edicts: vec![
             Edict {
               id: ID0,
               amount: 1000,
-              output: 5,
+              output: 6,
             },
             Edict {
               id: ID0,
               amount: u128::MAX,
-              output: 0,
+              output: 2,
             },
           ],
           ..default()
@@ -4395,13 +3507,6 @@ mod tests {
         (
           OutPoint {
             txid: txid1,
-            vout: 0,
-          },
-          vec![(ID0, 50 * COIN_VALUE - 4000 + 1000)],
-        ),
-        (
-          OutPoint {
-            txid: txid1,
             vout: 1,
           },
           vec![(ID0, 1000)],
@@ -4411,12 +3516,19 @@ mod tests {
             txid: txid1,
             vout: 2,
           },
-          vec![(ID0, 1000)],
+          vec![(ID0, 50 * COIN_VALUE - 4000 + 1000)],
         ),
         (
           OutPoint {
             txid: txid1,
             vout: 3,
+          },
+          vec![(ID0, 1000)],
+        ),
+        (
+          OutPoint {
+            txid: txid1,
+            vout: 4,
           },
           vec![(ID0, 1000)],
         ),
@@ -4504,8 +3616,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -4516,7 +3629,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -4650,8 +3763,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -4662,7 +3776,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -4848,8 +3962,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
-            mints: 1,
-            supply: 50 * COIN_VALUE,
+            mints: 2,
+            supply: 2 * REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -4860,7 +3975,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
-            mints: 1,
+            mints: 2,
             supply: 0,
             ..default()
           },
@@ -4895,7 +4010,7 @@ mod tests {
               spacers: 0,
             },
             mints: 3,
-            supply: 150 * COIN_VALUE,
+            supply: 3 * REWARD,
             ..default()
           },
         ),
@@ -4918,14 +4033,14 @@ mod tests {
             txid: txid0,
             vout: 1,
           },
-          vec![(ID0, 50 * COIN_VALUE)],
+          vec![(ID0, REWARD)],
         ),
         (
           OutPoint {
             txid: txid1,
             vout: 1,
           },
-          vec![(ID0, 100 * COIN_VALUE)],
+          vec![(ID0, 2 * REWARD)],
         ),
       ],
     );
@@ -5299,6 +4414,9 @@ mod tests {
               rune: Rune(TIGHTEN),
               spacers: 0,
             },
+            mints: 1,
+            supply: REWARD,
+            burned: REWARD,
             ..default()
           },
         ),
@@ -5309,6 +4427,7 @@ mod tests {
               rune: Rune(EASE),
               spacers: 0,
             },
+            mints: 1,
             ..default()
           },
         ),

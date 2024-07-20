@@ -404,11 +404,13 @@ impl<'index> Updater<'index> {
         require_conversion_outpoint: true,
       };
 
+      rune_updater.update_supply()?;
+
       for (tx, txid) in block.txdata.iter() {
         rune_updater.index_runes(tx, *txid)?;
       }
 
-      rune_updater.update()?;
+      rune_updater.update_burned()?;
 
       if let Some(state) = rune_updater.get_state()? {
         let mut util_entry = UtilEntry::load(util_entry_table.get(0)?.unwrap().value());
@@ -520,10 +522,20 @@ impl<'index> Updater<'index> {
       require_conversion_outpoint: true,
     };
 
+    rune_updater.update_supply()?;
+
     let mut states = Vec::new();
-    for tx in transactions {
+    for tx in &transactions {
       rune_updater.index_runes(&tx, tx.txid())?;
 
+      rune_updater.update_burned()?;
+
+      if let Some(state) = rune_updater.get_state()? {
+        states.push(state);
+      }
+    }
+
+    if transactions.is_empty() {
       if let Some(state) = rune_updater.get_state()? {
         states.push(state);
       }

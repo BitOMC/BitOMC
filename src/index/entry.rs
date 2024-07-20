@@ -57,21 +57,12 @@ pub struct RuneEntry {
 }
 
 impl RuneEntry {
-  pub fn mintable(&self, height: u64) -> u128 {
-    if height < self.block {
+  pub fn reward(&self, height: u128) -> u128 {
+    if height < self.block as u128 {
       return 0;
     }
 
-    // Mintable amount is running sum of available amount since last mint
-    let mut amount = 0;
-    for mint in self.mints..((height as u128) - (self.block as u128) + 1) {
-      amount += self.reward(mint);
-    }
-    amount
-  }
-
-  fn reward(&self, height: u128) -> u128 {
-    let halvings = height / 210000;
+    let halvings = (height - self.block as u128) / 210000;
     // Force reward to zero when right shift is undefined
     if halvings >= 128 {
       return 0;

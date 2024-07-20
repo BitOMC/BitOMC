@@ -44,21 +44,20 @@ impl Mint {
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
     let p2wsh_dust = self.dust.unwrap_or(TARGET_P2WSH_DUST);
 
-    let reward = rune_entry0.mintable(block_height + 1);
+    let reward = rune_entry0.reward(block_height as u128 + 1);
 
     let sum_of_sq =
       rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
-    let amount0;
-    let amount1;
+    let mut amount0 = rune_entry0.burned;
+    let mut amount1 = rune_entry1.burned;
     if sum_of_sq == 0 {
       // Assign entire reward to amount0
-      amount0 = reward;
-      amount1 = 0;
+      amount0 += reward;
     } else {
       // Split reward between runes such that converted supply increases by `reward`
       let k = sum_of_sq.sqrt();
-      amount0 = rune_entry0.supply * reward / k;
-      amount1 = rune_entry1.supply * reward / k;
+      amount0 += rune_entry0.supply * reward / k;
+      amount1 += rune_entry1.supply * reward / k;
     }
 
     let chain = wallet.chain();

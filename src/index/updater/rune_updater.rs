@@ -119,7 +119,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
               } else {
                 // if amount is non-zero, distribute amount to eligible outputs
                 for output in destinations {
-                  if *balance > 0 && amount > *balance {
+                  if amount > *balance {
                     // if amount exceeds balance, add remaining amount to (potential) conversion output amount
                     *converted.entry(id).or_default() += amount - *balance;
                     *allocated_conversion[output].entry(id).or_default() += amount - *balance;
@@ -403,7 +403,47 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     Ok(())
   }
 
-  pub(super) fn update(&mut self) -> Result {
+  pub(super) fn update_supply(&mut self) -> Result {
+    let mut entry0 = RuneEntry::load(self.id_to_entry.get(&ID0.store())?.unwrap().value());
+    let mut entry1 = RuneEntry::load(self.id_to_entry.get(&ID1.store())?.unwrap().value());
+
+    // Reward must be non-zero
+    let reward = entry0.reward(self.height.into());
+    if reward == 0 {
+      return Ok(());
+    }
+
+    let sum_of_sq =
+      entry0.supply * entry0.supply + entry1.supply * entry1.supply;
+    let amount0;
+    let amount1;
+    if sum_of_sq == 0 {
+      // Assign entire reward to amount0
+      amount0 = reward;
+      amount1 = 0;
+    } else {
+      // Split reward between runes such that converted supply increases by `reward`
+      let k = sum_of_sq.sqrt();
+      amount0 = entry0.supply * reward / k;
+      amount1 = entry1.supply * reward / k;
+    }
+
+    entry0.mints += 1;
+    entry1.mints += 1;
+
+    entry0.supply += amount0;
+    entry1.supply += amount1;
+
+    entry0.burned += amount0;
+    entry1.burned += amount1;
+
+    self.id_to_entry.insert(&ID0.store(), entry0.store())?;
+    self.id_to_entry.insert(&ID1.store(), entry1.store())?;
+
+    Ok(())
+  }
+
+  pub(super) fn update_burned(&mut self) -> Result {
     for (rune_id, burned) in &self.burned {
       let mut entry = RuneEntry::load(self.id_to_entry.get(&rune_id.store())?.unwrap().value());
       entry.burned = entry.burned.checked_add(burned.n()).unwrap();
@@ -543,59 +583,18 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(None);
     }
 
-    let Some(entry0) = self.id_to_entry.get(&ID0.store())? else {
-      return Ok(None);
-    };
-    let Some(entry1) = self.id_to_entry.get(&ID1.store())? else {
-      return Ok(None);
-    };
+    let mut entry0 = RuneEntry::load(self.id_to_entry.get(&ID0.store())?.unwrap().value());
+    let mut entry1 = RuneEntry::load(self.id_to_entry.get(&ID1.store())?.unwrap().value());
 
-    let mut rune_entry0 = RuneEntry::load(entry0.value());
-    let mut rune_entry1 = RuneEntry::load(entry1.value());
+    let amount0 = entry0.burned + self.burned.entry(ID0).or_default().n();
+    let amount1 = entry1.burned + self.burned.entry(ID1).or_default().n();
 
-    // Reward must be non-zero
-    let reward = rune_entry0.mintable(self.height.into());
-    if reward == 0 {
-      return Ok(None);
-    }
-
-    let sum_of_sq =
-      rune_entry0.supply * rune_entry0.supply + rune_entry1.supply * rune_entry1.supply;
-    let mut amount0;
-    let mut amount1;
-    if sum_of_sq == 0 {
-      // Assign entire reward to amount0
-      amount0 = reward;
-      amount1 = 0;
-    } else {
-      // Split reward between runes such that converted supply increases by `reward`
-      let k = sum_of_sq.sqrt();
-      amount0 = rune_entry0.supply * reward / k;
-      amount1 = rune_entry1.supply * reward / k;
-    }
-
-    drop(entry0);
-    drop(entry1);
-
-    rune_entry0.mints = (self.height as u128) + 1 - (rune_entry0.block as u128);
-    rune_entry1.mints = rune_entry0.mints;
-
-    rune_entry0.supply += amount0;
-    rune_entry1.supply += amount1;
-
-    // Assign any burned amounts
-    if rune_entry0.burned > 0 {
-      amount0 += rune_entry0.burned + self.burned.entry(ID0).or_default().n();
-      rune_entry0.burned = 0;
-    }
-    if rune_entry1.burned > 0 {
-      amount1 += rune_entry1.burned + self.burned.entry(ID1).or_default().n();
-      rune_entry1.burned = 0;
-    }
+    entry0.burned = 0;
+    entry1.burned = 0;
     self.burned = HashMap::new();
 
-    self.id_to_entry.insert(&ID0.store(), rune_entry0.store())?;
-    self.id_to_entry.insert(&ID1.store(), rune_entry1.store())?;
+    self.id_to_entry.insert(&ID0.store(), entry0.store())?;
+    self.id_to_entry.insert(&ID1.store(), entry1.store())?;
 
     Ok(Some((Lot(amount0), Lot(amount1))))
   }
@@ -772,8 +771,6 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
   }
 
   pub(super) fn get_state(&mut self) -> Result<Option<api::SupplyState>> {
-    self.update()?;
-
     let (Some(entry0), Some(entry1)) = (
       self
         .id_to_entry
