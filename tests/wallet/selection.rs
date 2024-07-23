@@ -12,7 +12,7 @@ fn send_amount_does_not_select_runic_utxos() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -21,7 +21,7 @@ fn send_amount_does_not_select_runic_utxos() {
 
   CommandBuilder::new("--regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 600sat")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: not enough cardinal utxos\n")
     .run_and_extract_stdout();
@@ -39,7 +39,7 @@ fn mint_does_not_select_runic_utxos() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -48,7 +48,7 @@ fn mint_does_not_select_runic_utxos() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 0")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: not enough cardinal utxos\n")
     .run_and_extract_stdout();
@@ -69,7 +69,7 @@ fn sending_rune_does_not_send_runic_utxos() {
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 10000,
@@ -83,7 +83,7 @@ fn sending_rune_does_not_send_runic_utxos() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -101,7 +101,7 @@ fn sending_rune_does_not_send_runic_utxos() {
      ",
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: not enough cardinal utxos\n")
   .run_and_extract_stdout();

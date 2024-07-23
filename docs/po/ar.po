@@ -659,7 +659,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -2257,8 +2257,8 @@ msgid "The `bitomc` wallet supports transferring specific satoshis. You can also
 msgstr "محفظة `bitomc` تدعم نقل الساتوشيات الخاصة. يمكنك أيضًا استخدام أوامر `bitcoin-cli` مثل `createrawtransaction` و `signrawtransactionwithwallet` و `sendrawtransaction` للقيام بذلك، وكيفية القيام بذلك هو معقد وخارج نطاق هذا الدليل."
 
 #: src\guides/collecting.md:4
-msgid "Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet supporting sat-control and sat-selection, which are required to safely store and send rare sats and inscriptions, hereafter ordinals."
-msgstr "حالياً، يعتبر [ord](https://github.com/BitOMC/BitOMC/) هو المحفظة الوحيدة التي تدعم التحكم في الساتوشيات واختيارها، واللذين يُعتبران ضروريين لتخزين وإرسال الساتوشيات والأشياء الرقمية النادرة بأمان، والتي ستُعرف فيما بعد بـ أوردينال."
+msgid "Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet supporting sat-control and sat-selection, which are required to safely store and send rare sats and inscriptions, hereafter ordinals."
+msgstr "حالياً، يعتبر [bitomc](https://github.com/BitOMC/BitOMC/) هو المحفظة الوحيدة التي تدعم التحكم في الساتوشيات واختيارها، واللذين يُعتبران ضروريين لتخزين وإرسال الساتوشيات والأشياء الرقمية النادرة بأمان، والتي ستُعرف فيما بعد بـ أوردينال."
 
 #: src\guides/collecting.md:8
 msgid "The recommended way to send, receive, and store ordinals is with `bitomc`, but if you are careful, it is possible to safely store, and in some cases send, ordinals with other wallets."
@@ -2285,7 +2285,7 @@ msgid "Collecting Inscriptions and Ordinals with Sparrow Wallet"
 msgstr "جمع أوردينالس و الإنسكريبشين باستخدام محفظة Sparrow"
 
 #: src\guides/collecting/sparrow-wallet.md:4
-msgid "Users who cannot or have not yet set up the [ord](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative bitcoin wallets, as long as they are _very_ careful about how they spend from that wallet."
+msgid "Users who cannot or have not yet set up the [bitomc](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative bitcoin wallets, as long as they are _very_ careful about how they spend from that wallet."
 msgstr "المستخدمون الذين لا يستطيعون أو لم ينشئوا محفظة bitomc بعد يمكنهم تلقي أوردينالس والأرقام السرية باستخدام محافظ البيتكوين البديلة، طالما أنهم يكونون حذرين جداً في كيفية إنفاق من تلك المحفظة."
 
 #: src\guides/collecting/sparrow-wallet.md:6
@@ -2910,8 +2910,8 @@ msgid "`ordinals.com`"
 msgstr ""
 
 #: src\guides/moderation.md:40
-msgid "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
-msgstr "تستخدم `ordinals.com` لتشغيل خدمة `bitomc server`، والتي تسمى `bitomc`، باستخدام ملف تكوين يقع في المسار `var/lib/ord/bitomc.yaml/`."
+msgid "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
+msgstr "تستخدم `ordinals.com` لتشغيل خدمة `bitomc server`، والتي تسمى `bitomc`، باستخدام ملف تكوين يقع في المسار `var/lib/bitomc/bitomc.yaml/`."
 
 #: src\guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -2922,8 +2922,8 @@ msgid "SSH into the server"
 msgstr "اتصل بخادم SSH"
 
 #: src\guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr "أضف معرف إنسكريبشين إلى `var/lib/ord/bitomc.yaml/`"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr "أضف معرف إنسكريبشين إلى `var/lib/bitomc/bitomc.yaml/`"
 
 #: src\guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -2942,7 +2942,7 @@ msgid "Sometimes the `bitomc` database must be reindexed, which means deleting t
 msgstr "أحيانًا يجب إعادة فهرسة قاعدة البيانات `bitomc`، مما يعني حذف قاعدة البيانات وإعادة بدء عملية الفهرسة مرة أخرى باستخدام إما `bitomc index run` أو `bitomc server`. الأسباب التي تستدعي القيام بعملية إعادة الفهرسة تشمل:"
 
 #: src\guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
+msgid "A new major release of bitomc, which changes the database scheme"
 msgstr "صدور إصدار جديد رئيسي لـ bitomc والذي يغير مخطط قاعدة البيانات"
 
 #: src\guides/reindexing.md:9
@@ -2966,11 +2966,11 @@ msgid "Linux"
 msgstr ""
 
 #: src\guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
 msgstr ""
 
 #: src\guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
 msgstr ""
 
 #: src\guides/reindexing.md:18
@@ -2978,11 +2978,11 @@ msgid "macOS"
 msgstr ""
 
 #: src\guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
 msgstr ""
 
 #: src\guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
 msgstr ""
 
 #: src\guides/reindexing.md:19
@@ -2990,11 +2990,11 @@ msgid "Windows"
 msgstr ""
 
 #: src\guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 msgstr ""
 
 #: src\guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 msgstr ""
 
 #: src\guides/reindexing.md:21
@@ -3004,7 +3004,7 @@ msgstr "لحذف قاعدة البيانات وإعادة فهرستها على 
 #: src\guides/reindexing.md:24
 msgid ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index run\n"
 "```"
 msgstr ""

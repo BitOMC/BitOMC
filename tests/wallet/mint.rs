@@ -19,7 +19,7 @@ fn minting_rune_with_destination() {
     destination.clone().assume_checked()
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<mint::Output>();
 
   pretty_assert_eq!(
@@ -49,7 +49,7 @@ fn minting_rune_with_destination() {
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
@@ -85,14 +85,14 @@ fn minting_rune_with_postage() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1 --postage 2222sat")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
   let balance = CommandBuilder::new("--chain regtest wallet balance")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::balance::Output>();
 
   assert_eq!(balance.runic, 2222);
@@ -110,7 +110,7 @@ fn minting_rune_with_postage_dust() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1 --postage 300sat")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: postage below dust limit of 330sat\n")
     .run_and_extract_stdout();
@@ -128,14 +128,14 @@ fn minting_is_allowed_on_first_mint() {
 
   let output = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
@@ -189,21 +189,21 @@ fn minting_is_allowed_using_output_of_first_mint_as_input() {
 
   let output0 = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
   let output1 = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<mint::Output>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(

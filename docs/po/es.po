@@ -1098,7 +1098,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1109,7 +1109,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1418,7 +1418,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -1432,7 +1432,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -3064,7 +3064,7 @@ msgstr ""
 
 #: src/guides/inscriptions.md:88
 msgid "Installing `bitomc`"
-msgstr "Instalación de ord"
+msgstr "Instalación de bitomc"
 
 #: src/guides/inscriptions.md:91
 msgid ""
@@ -3894,11 +3894,11 @@ msgstr ""
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"Actualmente, [ord](https://github.com/BitOMC/BitOMC/) es el único monedero que "
+"Actualmente, [bitomc](https://github.com/BitOMC/BitOMC/) es el único monedero que "
 "tiene la funcionalidad de control de sat (sat-control) y selección de sat (sat-selection), funciones indispensables para almacenar y enviar de forma segura sats raros e inscripciones, ahora conocidos como ordinals."
 
 #: src/guides/collecting.md:8
@@ -3946,11 +3946,11 @@ msgstr "Coleccionando Inscripciones y Ordinals con Sparrow"
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
 "Users who cannot or have not yet set up the "
-"[ord](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and "
+"[bitomc](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and "
 "ordinals with alternative bitcoin wallets, as long as they are _very_ "
 "careful about how they spend from that wallet."
 msgstr ""
-"Los usuarios que no pueden o no han configurado aún el monedero [ord](https://github.com/BitOMC/BitOMC) pueden "
+"Los usuarios que no pueden o no han configurado aún el monedero [bitomc](https://github.com/BitOMC/BitOMC) pueden "
 "recibir inscripciones y ordinals usando monederos alternativos de bitcoin, siempre y cuando sean _muy_ cautelosos a la hora de realizar gastos desde ese monedero."
 
 #: src/guides/collecting/sparrow-wallet.md:6
@@ -4185,7 +4185,7 @@ msgid ""
 "For details on setting up Bitcoin Core and the `bitomc` wallet check out the "
 "[Inscriptions Guide](../inscriptions.md)"
 msgstr ""
-"Para detalles sobre configurar Bitcoin Core y el monedero ord, revisa la "
+"Para detalles sobre configurar Bitcoin Core y el monedero bitomc, revisa la "
 "[Guía de Inscripciones Ordinal](../inscriptions.md)."
 
 #: src/guides/collecting/sparrow-wallet.md:83
@@ -4932,11 +4932,11 @@ msgstr "`ordinals.com`"
 #: src/guides/moderation.md:40
 msgid ""
 "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
-"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+"which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
 "Las instancias de `ordinals.com` utilizan `systemd` para ejecutar el servicio "
 "del `servidor bitomc`, el cual se llama `bitomc`, con un archivo de configuración situado "
-"en `/var/lib/ord/bitomc.yaml`."
+"en `/var/lib/bitomc/bitomc.yaml`."
 
 #: src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4947,8 +4947,8 @@ msgid "SSH into the server"
 msgstr "Ingresa al servidor a través de SSH"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr "Añade el ID de la inscripción a `/var/lib/ord/bitomc.yaml`"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr "Añade el ID de la inscripción a `/var/lib/bitomc/bitomc.yaml`"
 
 #: src/guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -4977,8 +4977,8 @@ msgstr ""
 "`bitomc index update` u `bitomc server`. Las razones para reindexar son:"
 
 #: src/guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
-msgstr "Un nuevo lanzamiento grande de ord, que modifica el esquema de la base de datos"
+msgid "A new major release of bitomc, which changes the database scheme"
+msgstr "Un nuevo lanzamiento grande de bitomc, que modifica el esquema de la base de datos"
 
 #: src/guides/reindexing.md:9
 msgid "The database got corrupted somehow"
@@ -5008,11 +5008,11 @@ msgid "Linux"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:18
@@ -5020,11 +5020,11 @@ msgid "macOS"
 msgstr ""
 
 #: src/guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:19
@@ -5032,11 +5032,11 @@ msgid "Windows"
 msgstr ""
 
 #: src/guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:21
@@ -5050,12 +5050,12 @@ msgstr ""
 #: src/guides/reindexing.md:24
 msgid ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index update\n"
 "```"
 msgstr ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index update\n"
 "```"
 
@@ -5097,7 +5097,7 @@ msgstr ""
 "Para obtener más información sobre la teoría ordinal, visita la sección de "
 "[preguntas frecuentes](./faq.md) para obtener una visión general, "
 "el [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) para los detalles "
-"técnicos, y el [repositorio de ord](https://github.com/BitOMC/BitOMC) para "
+"técnicos, y el [repositorio de bitomc](https://github.com/BitOMC/BitOMC) para "
 "conocer más sobre el monedero y el explorador de bloques de `bitomc`."
 
 #: src/bounties.md:14

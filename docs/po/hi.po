@@ -1061,7 +1061,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1356,7 +1356,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -3698,7 +3698,7 @@ msgstr ""
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
@@ -3754,7 +3754,7 @@ msgstr "स्पैरो वॉलेट के साथ इंस्‍क�
 
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
-"Users who cannot or have not yet set up the [ord](https://github.com/"
+"Users who cannot or have not yet set up the [bitomc](https://github.com/"
 "BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
@@ -4738,9 +4738,9 @@ msgstr ""
 #: src/guides/moderation.md:40
 msgid ""
 "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
-"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+"which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
-"`Ordinals.com` घटनाएं `bitomc server` सेवा संचालित करने के लिए `/var/lib/ord/bitomc.yaml` "
+"`Ordinals.com` घटनाएं `bitomc server` सेवा संचालित करने के लिए `/var/lib/bitomc/bitomc.yaml` "
 "पर स्थित कॉन्फिगर फ़ाइल के साथ `systemd` का उपयोग करते हैं, जिन्‍हें ऑर्ड कहते हैं।" 
 
 #: src/guides/moderation.md:43
@@ -4752,8 +4752,8 @@ msgid "SSH into the server"
 msgstr "सर्वर के भीतर SSH"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr " इंस्‍क्रीप्‍शंस (डिजिटल अभिलेख) आईडी को `/var/lib/ord/bitomc.yaml` में जोड़ें"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr " इंस्‍क्रीप्‍शंस (डिजिटल अभिलेख) आईडी को `/var/lib/bitomc/bitomc.yaml` में जोड़ें"
 
 #: src/guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -4781,7 +4781,7 @@ msgstr ""
 "पुनः अनुक्रमणिका करने के निम्‍न कारण हैं:"
 
 #: src/guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
+msgid "A new major release of bitomc, which changes the database scheme"
 msgstr ""
 "ऑर्ड का एक नया प्रमुख संस्‍करण, जो डेटाबेस की योजना को बदल देता है"
 
@@ -4813,11 +4813,11 @@ msgid "Linux"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:18
@@ -4825,11 +4825,11 @@ msgid "macOS"
 msgstr ""
 
 #: src/guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:19
@@ -4837,11 +4837,11 @@ msgid "Windows"
 msgstr ""
 
 #: src/guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:21
@@ -4855,7 +4855,7 @@ msgstr ""
 #: src/guides/reindexing.md:24
 msgid ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index update\n"
 "```"
 msgstr ""

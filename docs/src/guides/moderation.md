@@ -38,12 +38,12 @@ subcommand.
 --------------
 
 The `ordinals.com` instances use `systemd` to run the `bitomc server` service,
-which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`.
+which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`.
 
 To hide an inscription on `ordinals.com`:
 
 1. SSH into the server
-2. Add the inscription ID to `/var/lib/ord/bitomc.yaml`
+2. Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`
 3. Restart the service with `systemctl restart bitomc`
 4. Monitor the restart with `journalctl -u bitomc`
 

@@ -25,7 +25,7 @@ These can be extracted into shell commands using `jq`:
 bitcoin=`jq -r '.bitcoin_cli_command | join(" ")' env/env.json`
 $bitcoin listunspent
 
-ord=`jq -r '.ord_wallet_command | join(" ")' env/env.json`
+bitomc=`jq -r '.ord_wallet_command | join(" ")' env/env.json`
 $bitomc outputs
 ```
 

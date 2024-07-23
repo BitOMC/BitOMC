@@ -925,7 +925,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -936,7 +936,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH “ord”\n"
+"  OP_PUSH “bitomc”\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH “text/plain;charset=utf-8”\n"
 "  OP_PUSH 0\n"
@@ -1253,7 +1253,7 @@ msgstr ""
 #| "```\n"
 #| "OP_FALSE\n"
 #| "OP_IF\n"
-#| "  OP_PUSH \"ord\"\n"
+#| "  OP_PUSH \"bitomc\"\n"
 #| "  OP_PUSH 1\n"
 #| "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 #| "  OP_PUSH 0\n"
@@ -1350,7 +1350,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -1364,7 +1364,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH “ord”\n"
+"  OP_PUSH “bitomc”\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH “text/plain;charset=utf-8”\n"
 "  OP_PUSH 3\n"
@@ -2510,7 +2510,7 @@ msgid ""
 "Donations received will go towards funding maintenance and development of "
 "`bitomc`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
 msgstr ""
-"받은 기부금은 'ord'의 유지 및 개발 자금과 [ordinals.com](https://ordinals."
+"받은 기부금은 'bitomc'의 유지 및 개발 자금과 [ordinals.com](https://ordinals."
 "com)의 호스팅 비용으로 사용된다."
 
 #: /workspaces/ord_ko/docs/src/donate.md:20
@@ -3139,7 +3139,7 @@ msgid ""
 "`bitomc` uses Bitcoin Core to manage private keys, sign transactions, and "
 "broadcast transactions to the Bitcoin network."
 msgstr ""
-"'ord'는 비트코인 코어를 사용해 개인 키를 관리하고, 트랜잭션에 서명하고, 비트"
+"'bitomc'는 비트코인 코어를 사용해 개인 키를 관리하고, 트랜잭션에 서명하고, 비트"
 "코인 네트워크로 트랜잭션을 브로드캐스트한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:166
@@ -3748,12 +3748,12 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
 "현재 희귀한 SAT 및 인스크립션(이하 오디널)을 안전하게 보관하고 전송하는 데에 "
-"필수인 SAT콘트롤 및 SAT선택을 지원하는 지갑은 [ord](https://github.com/"
+"필수인 SAT콘트롤 및 SAT선택을 지원하는 지갑은 [bitomc](https://github.com/"
 "BitOMC/BitOMC/)가 유일하다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting.md:8
@@ -3805,12 +3805,12 @@ msgstr "스패로우 월렛으로 인스크립션과 오디널 수집하기"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:4
 msgid ""
-"Users who cannot or have not yet set up the [ord](https://github.com/"
+"Users who cannot or have not yet set up the [bitomc](https://github.com/"
 "BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
-"[ord](https://github.com/BitOMC/BitOMC) 지갑을 설정할 수 없거나 아직 설정하지 "
+"[bitomc](https://github.com/BitOMC/BitOMC) 지갑을 설정할 수 없거나 아직 설정하지 "
 "않은 사용자는 해당 지갑에서 지출하는 방식에 _매우_ 주의를 기울인다면 대체 비"
 "트코인 지갑으로 인스크립션과 오디널을 받을 수 있다."
 
@@ -4648,7 +4648,7 @@ msgid ""
 "The suggested name for `bitomc` config files is `bitomc.yaml`, but any filename "
 "can be used."
 msgstr ""
-"'ord' 구성 파일의 권장 이름은 'bitomc.yaml'이지만 어떤 파일 이름도 사용할 수 있"
+"'bitomc' 구성 파일의 권장 이름은 'bitomc.yaml'이지만 어떤 파일 이름도 사용할 수 있"
 "다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:28
@@ -4678,10 +4678,10 @@ msgstr "`ordinals.com`"
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:40
 msgid ""
 "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
-"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+"which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
 "`ordinals.com` 인스턴스는 `systemd`를 사용하여 `bitomc`라고 하는 `bitomc server` 서"
-"비스를 실행하며, 구성 파일은 `/var/lib/ord/bitomc.yaml`에 있다."
+"비스를 실행하며, 구성 파일은 `/var/lib/bitomc/bitomc.yaml`에 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4692,8 +4692,8 @@ msgid "SSH into the server"
 msgstr "SSH 사용하여 서버에 접속한다"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr "인스크립션 ID를 `/var/lib/ord/bitomc.yaml`에 추가한다"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr "인스크립션 ID를 `/var/lib/bitomc/bitomc.yaml`에 추가한다"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -4722,7 +4722,7 @@ msgstr ""
 "를 다시 시작해야 함을 의미한다. 재인덱싱해야 하는 이유는 다음과 같다:"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
+msgid "A new major release of bitomc, which changes the database scheme"
 msgstr "데이터베이스 체계를 변경하는 ord의 새로운 주요 릴리스"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:9
@@ -4752,36 +4752,36 @@ msgid "Linux"
 msgstr "Linux"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/bitomc 또는 `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
+msgstr "`$XDG_DATA_HOME`/bitomc 또는 `$HOME`/.local/share/bitomc"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
-msgstr "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
+msgstr "/home/alice/.local/share/bitomc"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:18
 msgid "macOS"
 msgstr "macOS"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
-msgstr "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
+msgstr "`$HOME`/Library/Application Support/bitomc"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
-msgstr "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
+msgstr "/Users/Alice/Library/Application Support/bitomc"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:19
 msgid "Windows"
 msgstr "Windows"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
-msgstr "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
+msgstr "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
-msgstr "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
+msgstr "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:21
 msgid ""

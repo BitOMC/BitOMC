@@ -1,7 +1,7 @@
 Collecting Inscriptions and Ordinals with Sparrow Wallet
 =====================
 
-Users who cannot or have not yet set up the [ord](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative bitcoin wallets, as long as they are _very_ careful about how they spend from that wallet.
+Users who cannot or have not yet set up the [bitomc](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative bitcoin wallets, as long as they are _very_ careful about how they spend from that wallet.
 
 This guide gives some basic steps on how to create a wallet with [Sparrow Wallet](https://sparrowwallet.com/) which is compatible with `bitomc` and can be later imported into `bitomc`
 

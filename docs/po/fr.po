@@ -963,7 +963,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -974,7 +974,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1445,7 +1445,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -1459,7 +1459,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -4052,11 +4052,11 @@ msgstr ""
 
 #: src\guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"Actuellement, [ord](https://github.com/BitOMC/BitOMC/) est le seul "
+"Actuellement, [bitomc](https://github.com/BitOMC/BitOMC/) est le seul "
 "portefeuille qui prend en charge le contrôle et la sélection des sats, ce "
 "qui est indispensable pour stocker et envoyer en toute sécurité des sats et "
 "des inscriptions rares, ci-après dénommés « ordinals »."
@@ -4116,13 +4116,13 @@ msgstr ""
 
 #: src\guides/collecting/sparrow-wallet.md:4
 msgid ""
-"Users who cannot or have not yet set up the [ord](https://github.com/"
+"Users who cannot or have not yet set up the [bitomc](https://github.com/"
 "BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
 "Les utilisateurs qui ne peuvent pas ou n’ont pas encore mis en place le "
-"portefeuille [ord](https://github.com/BitOMC/BitOMC)peuvent recevoir des "
+"portefeuille [bitomc](https://github.com/BitOMC/BitOMC)peuvent recevoir des "
 "inscriptions et des ordinals en utilisant d’autres portefeuilles Bitcoin, à "
 "condition qu’ils soient _très_ prudents à la manière dont ils dépensent "
 "l’argent de ce portefeuille."
@@ -5071,11 +5071,11 @@ msgstr "`ordinals.com`"
 #: src\guides/moderation.md:40
 msgid ""
 "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
-"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+"which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
 "Les instances de `ordinals.com` utilisent `systemd` pour exécuter le service "
 "`bitomc server`, appelé `bitomc`, avec un fichier de configuration situé dans `/"
-"var/lib/ord/bitomc.yaml`."
+"var/lib/bitomc/bitomc.yaml`."
 
 #: src\guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -5086,8 +5086,8 @@ msgid "SSH into the server"
 msgstr "Connectez-vous en SSH au serveur"
 
 #: src\guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr "Ajoutez l'identifiant de l'inscription à `/var/lib/ord/bitomc.yaml`"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr "Ajoutez l'identifiant de l'inscription à `/var/lib/bitomc/bitomc.yaml`"
 
 #: src\guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -5117,9 +5117,9 @@ msgstr ""
 "justifient la réindexation sont les suivantes :"
 
 #: src\guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
+msgid "A new major release of bitomc, which changes the database scheme"
 msgstr ""
-"Il existe une nouvelle version importante d’ord, qui modifie le schéma de la "
+"Il existe une nouvelle version importante d’bitomc, qui modifie le schéma de la "
 "base de données"
 
 #: src\guides/reindexing.md:9
@@ -5150,36 +5150,36 @@ msgid "Linux"
 msgstr "Linux"
 
 #: src\guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/bitomc ou `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
+msgstr "`$XDG_DATA_HOME`/bitomc ou `$HOME`/.local/share/bitomc"
 
 #: src\guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
-msgstr "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
+msgstr "/home/alice/.local/share/bitomc"
 
 #: src\guides/reindexing.md:18
 msgid "macOS"
 msgstr "macOS"
 
 #: src\guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
-msgstr "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
+msgstr "`$HOME`/Library/Application Support/bitomc"
 
 #: src\guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
-msgstr "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
+msgstr "/Users/Alice/Library/Application Support/bitomc"
 
 #: src\guides/reindexing.md:19
 msgid "Windows"
 msgstr "Windows"
 
 #: src\guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
-msgstr "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
+msgstr "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 
 #: src\guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
-msgstr "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
+msgstr "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 
 #: src\guides/reindexing.md:21
 msgid ""
@@ -5224,7 +5224,7 @@ msgstr ""
 "Pour plus d'informations sur la théorie ordinale, consultez la section [FAQ]"
 "(./faq.md) pour une vue d'ensemble, le [BIP](https://github.com/BitOMC/BitOMC/"
 "blob/master/bip.mediawiki) pour les détails techniques, et le [référentiel "
-"ord](https://github.com/BitOMC/BitOMC) pour le portefeuille `bitomc` et "
+"bitomc](https://github.com/BitOMC/BitOMC) pour le portefeuille `bitomc` et "
 "l'explorateur de blocs."
 
 #: src\bounties.md:14
@@ -5476,7 +5476,7 @@ msgid ""
 msgstr ""
 "Pour rechercher des sats dans un portefeuille `bitomc` dont le nom figure dans "
 "`frequency.tsv`, utilisez la commande [`bitomc`](https://github.com/BitOMC/"
-"ord) suivante :"
+"bitomc) suivante :"
 
 #: src\bounty/3.md:39
 msgid ""

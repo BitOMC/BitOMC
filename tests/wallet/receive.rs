@@ -9,7 +9,7 @@ fn receive() {
 
   let output = CommandBuilder::new("wallet receive")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<receive::Output>();
 
   assert!(output

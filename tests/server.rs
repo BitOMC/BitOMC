@@ -46,7 +46,7 @@ fn address_page_shows_outputs_and_sat_balance() {
 
   let send = CommandBuilder::new(format!("wallet send --fee-rate 13.3 {address} 2btc"))
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);

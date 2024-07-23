@@ -1088,7 +1088,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1099,7 +1099,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -2518,8 +2518,8 @@ msgid ""
 "entirely funded by donations. If you can, please consider donating!"
 msgstr ""
 "Ordinals ist Open Source und wird von die community finanziert. Der aktuelle "
-"Hauptbetreuer von \"ord\" ist [raphjaph](https://github.com/raphjaph/). "
-"Raphs Arbeit an \"ord\" wird ausschließlich durch Spenden finanziert. Wenn "
+"Hauptbetreuer von \"bitomc\" ist [raphjaph](https://github.com/raphjaph/). "
+"Raphs Arbeit an \"bitomc\" wird ausschließlich durch Spenden finanziert. Wenn "
 "möglich, erwägen Sie bitte eine Spende!"
 
 #: src\donate.md:8
@@ -2851,7 +2851,7 @@ msgstr ""
 "Wenn Sie nicht weiterkommen, versuchen Sie, um Hilfe auf dem [Ordinals "
 "Discord Server](https://discord.com/invite/87cjuz4FYg) zu fragen, oder "
 "überprüfen Sie GitHub nach relevanten [Issues](https://github.com/BitOMC/"
-"ord/issues) und [Diskussionen](https://github.com/BitOMC/BitOMC/discussions)."
+"bitomc/issues) und [Diskussionen](https://github.com/BitOMC/BitOMC/discussions)."
 
 #: src\guides/inscriptions.md:42
 msgid ""
@@ -2962,7 +2962,7 @@ msgid ""
 "github.com/BitOMC/BitOMC). Pre-built binaries are available on the [releases "
 "page](https://github.com/BitOMC/BitOMC/releases)."
 msgstr ""
-"Das Dienstprogramm \"ord\" ist in Rust geschrieben und kann aus [Quelle]"
+"Das Dienstprogramm \"bitomc\" ist in Rust geschrieben und kann aus [Quelle]"
 "(https://github.com/BitOMC/BitOMC) erstellt werden. Vorgefertigte "
 "Binärdateien sind auf der [Releases-Seite](https://github.com/BitOMC/BitOMC/"
 "releases) verfügbar."
@@ -3853,11 +3853,11 @@ msgstr ""
 
 #: src\guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"Derzeit ist [ord](https://github.com/BitOMC/BitOMC/) die einzige Wallet, die "
+"Derzeit ist [bitomc](https://github.com/BitOMC/BitOMC/) die einzige Wallet, die "
 "Sat-Kontrolle und Sat-Auswahl unterstützt, die erforderlich sind, um seltene "
 "Sats und inscriptions, im Folgenden Ordinals genannt, sicher zu speichern "
 "und zu senden."
@@ -3915,12 +3915,12 @@ msgstr "Sammeln von Inscriptions und Ordinals mit Sparrow Wallet"
 
 #: src\guides/collecting/sparrow-wallet.md:4
 msgid ""
-"Users who cannot or have not yet set up the [ord](https://github.com/"
+"Users who cannot or have not yet set up the [bitomc](https://github.com/"
 "BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
-"Benutzer, die das [ord](https://github.com/BitOMC/BitOMC) nicht einrichten "
+"Benutzer, die das [bitomc](https://github.com/BitOMC/BitOMC) nicht einrichten "
 "können oder noch nicht eingerichtet haben, können inscriptions und Ordinals "
 "mit alternativen Bitcoin-Wallets empfangen, solange sie _sehr_ vorsichtig "
 "sind, wie sie aus diesem Wallet ausgeben."
@@ -4980,11 +4980,11 @@ msgstr "`ordinals.com`"
 #: src\guides/moderation.md:40
 msgid ""
 "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
-"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+"which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
 "Die `ordinals.com`-Instanzen verwenden `systemd`, um den Dienst `bitomc server` "
 "auszuführen, der `bitomc` genannt wird und eine Konfigurationsdatei unter `/var/"
-"lib/ord/bitomc.yaml`."
+"lib/bitomc/bitomc.yaml`."
 
 #: src\guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4995,8 +4995,8 @@ msgid "SSH into the server"
 msgstr "SSH in den Server"
 
 #: src\guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr "Fügen Sie die inscription-ID zu `/var/lib/ord/bitomc.yaml`"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr "Fügen Sie die inscription-ID zu `/var/lib/bitomc/bitomc.yaml`"
 
 #: src\guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -5026,8 +5026,8 @@ msgstr ""
 "können sein:"
 
 #: src\guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
-msgstr "Eine neue Hauptversion von ord, die das Datenbankschema ändert"
+msgid "A new major release of bitomc, which changes the database scheme"
+msgstr "Eine neue Hauptversion von bitomc, die das Datenbankschema ändert"
 
 #: src\guides/reindexing.md:9
 msgid "The database got corrupted somehow"
@@ -5057,36 +5057,36 @@ msgid "Linux"
 msgstr "Linux"
 
 #: src\guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
+msgstr "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
 
 #: src\guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
-msgstr "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
+msgstr "/home/alice/.local/share/bitomc"
 
 #: src\guides/reindexing.md:18
 msgid "macOS"
 msgstr "macOS"
 
 #: src\guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
-msgstr "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
+msgstr "`$HOME`/Library/Application Support/bitomc"
 
 #: src\guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
-msgstr "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
+msgstr "/Users/Alice/Library/Application Support/bitomc"
 
 #: src\guides/reindexing.md:19
 msgid "Windows"
 msgstr "Windows"
 
 #: src\guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
-msgstr "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
+msgstr "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 
 #: src\guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
-msgstr "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
+msgstr "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 
 #: src\guides/reindexing.md:21
 msgid ""
@@ -5099,12 +5099,12 @@ msgstr ""
 #: src\guides/reindexing.md:24
 msgid ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index run\n"
 "```"
 msgstr ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index run\n"
 "```"
 
@@ -5143,7 +5143,7 @@ msgid ""
 msgstr ""
 "Für weitere Informationen zur ordinaltheorie sieh dir das [FAQ](./faq.md) "
 "für einen Überblick, das [BIP](https://github.com/xaz1234567890abc/master/"
-"bip.mediawiki) für die technischen Details und das [ord-Repository](https://"
+"bip.mediawiki) für die technischen Details und das [bitomc-Repository](https://"
 "github.com/BitOMC/BitOMC) für die `bitomc` Wallet und den Block-Explorer an."
 
 #: src\bounties.md:14

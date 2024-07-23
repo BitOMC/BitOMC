@@ -11,7 +11,7 @@ fn transactions() {
 
   CommandBuilder::new("wallet transactions")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(core.loaded_wallets().len(), 1);
@@ -21,7 +21,7 @@ fn transactions() {
 
   let output = CommandBuilder::new("wallet transactions")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].confirmations, 1);
@@ -36,7 +36,7 @@ fn transactions_with_limit() {
 
   CommandBuilder::new("wallet transactions")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .stdout_regex(".*")
     .run_and_extract_stdout();
 
@@ -44,7 +44,7 @@ fn transactions_with_limit() {
 
   let output = CommandBuilder::new("wallet transactions")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output.len(), 1);
@@ -53,14 +53,14 @@ fn transactions_with_limit() {
 
   let output = CommandBuilder::new("wallet transactions")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output.len(), 2);
 
   let output = CommandBuilder::new("wallet transactions --limit 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output.len(), 1);

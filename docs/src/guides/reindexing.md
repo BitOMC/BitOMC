@@ -5,7 +5,7 @@ Sometimes the `bitomc` database must be reindexed, which means deleting the
 database and restarting the indexing process with either `bitomc index update` or
 `bitomc server`. Reasons to reindex are:
 
-1. A new major release of ord, which changes the database scheme
+1. A new major release of bitomc, which changes the database scheme
 2. The database got corrupted somehow
 
 The database `bitomc` uses is called [redb](https://github.com/cberner/redb),
@@ -22,7 +22,7 @@ So to delete the database and reindex on MacOS you would have to run the followi
 commands in the terminal:
 
 ```bash
-rm ~/Library/Application Support/ord/index.redb
+rm ~/Library/Application Support/bitomc/index.redb
 bitomc index update
 ```
 

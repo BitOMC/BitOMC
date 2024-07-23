@@ -15,7 +15,7 @@ fn authentication() {
   assert_eq!(
     CommandBuilder::new("--server-username foo --server-password bar wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Output>()
       .cardinal,
     0
@@ -26,7 +26,7 @@ fn authentication() {
   assert_eq!(
     CommandBuilder::new("--server-username foo --server-password bar wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Output>(),
     Output {
       cardinal: 50 * COIN_VALUE,

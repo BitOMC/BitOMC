@@ -117,9 +117,9 @@ impl CommandBuilder {
     }
   }
 
-  pub(crate) fn ord(self, ord: &TestServer) -> Self {
+  pub(crate) fn bitomc(self, bitomc: &TestServer) -> Self {
     Self {
-      ord_url: Some(ord.url()),
+      ord_url: Some(bitomc.url()),
       ..self
     }
   }

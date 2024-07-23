@@ -64,14 +64,14 @@ fn restore_to_existing_wallet_fails() {
 
   let output = CommandBuilder::new("wallet dump")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .stderr_regex(".*")
     .run_and_deserialize_output::<ListDescriptorsResult>();
 
   CommandBuilder::new("wallet restore --from descriptor")
     .stdin(serde_json::to_string(&output).unwrap().as_bytes().to_vec())
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: wallet `bitomc` already exists\n")
     .run_and_extract_stdout();
@@ -189,7 +189,7 @@ fn passphrase_conflicts_with_descriptor() {
   ])
   .stdin("".into())
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: descriptor does not take a passphrase\n")
   .run_and_extract_stdout();

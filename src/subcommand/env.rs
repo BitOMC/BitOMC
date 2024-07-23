@@ -132,7 +132,7 @@ rpcport={bitcoind_port}
 
     thread::sleep(Duration::from_millis(250));
 
-    if !absolute.join("regtest/wallets/ord").try_exists()? {
+    if !absolute.join("regtest/wallets/bitomc").try_exists()? {
       let status = Command::new(&bitomc)
         .arg("--datadir")
         .arg(&absolute)

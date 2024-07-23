@@ -14,7 +14,7 @@ fn outputs() {
 
   let output = CommandBuilder::new("wallet outputs")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].output, outpoint);
@@ -37,7 +37,7 @@ fn outputs_includes_locked_outputs() {
 
   let output = CommandBuilder::new("wallet outputs")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].output, outpoint);
@@ -60,7 +60,7 @@ fn outputs_includes_unbound_outputs() {
 
   let output = CommandBuilder::new("wallet outputs")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].output, outpoint);

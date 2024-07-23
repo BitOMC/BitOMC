@@ -10,14 +10,14 @@ fn send_on_mainnnet_works_with_wallet_named_foo() {
 
   CommandBuilder::new("wallet --name foo create")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<Create>();
 
   CommandBuilder::new(format!(
     "wallet --name foo send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 }
 
@@ -35,7 +35,7 @@ fn send_addresses_must_be_valid_for_network() {
     "wallet send --fee-rate 1 tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz 1btc"
   ))
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .expected_stderr(
     "error: address tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz belongs to network testnet which is different from required bitcoin\n",
   )
@@ -57,7 +57,7 @@ fn send_on_mainnnet_works_with_wallet_named_ord() {
     "wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1000sat"
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   assert_eq!(core.mempool()[0].txid(), output.txid);
@@ -75,7 +75,7 @@ fn send_btc_fails_if_lock_unspent_fails() {
 
   CommandBuilder::new("wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_stderr("error: failed to lock UTXOs\n")
     .expected_exit_code(1)
     .run_and_extract_stdout();
@@ -95,7 +95,7 @@ fn wallet_send_with_fee_rate() {
     "wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc --fee-rate 2.0"
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   let tx = &core.mempool()[0];
@@ -129,7 +129,7 @@ fn user_must_provide_fee_rate_to_send() {
     "wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .expected_exit_code(2)
   .stderr_regex(
     ".*error: the following required arguments were not provided:
@@ -153,7 +153,7 @@ fn send_btc_does_not_send_locked_utxos() {
 
   CommandBuilder::new("wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .stderr_regex("error:.*")
     .run_and_extract_stdout();
@@ -173,7 +173,7 @@ fn send_dry_run() {
     "wallet send --fee-rate 1 bc1qcqgs2pps4u4yedfyl5pysdjjncs8et5utseepv --dry-run 100sats",
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   assert!(core.mempool().is_empty());
@@ -207,7 +207,7 @@ fn sending_rune_that_has_not_been_etched_is_an_error() {
 
   CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:FOO")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: rune `FOO` has not been etched\n")
     .run_and_extract_stdout();
@@ -225,7 +225,7 @@ fn sending_rune_with_excessive_precision_is_an_error() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -235,7 +235,7 @@ fn sending_rune_with_excessive_precision_is_an_error() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: excessive precision\n")
   .run_and_extract_stdout();
@@ -253,7 +253,7 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -263,7 +263,7 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
@@ -281,7 +281,7 @@ fn sending_rune_works() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -291,14 +291,14 @@ fn sending_rune_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
@@ -351,7 +351,7 @@ fn sending_rune_with_change_works() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -361,7 +361,7 @@ fn sending_rune_with_change_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -373,7 +373,7 @@ fn sending_rune_with_change_works() {
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
@@ -426,7 +426,7 @@ fn sending_spaced_rune_works_with_no_change() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -435,7 +435,7 @@ fn sending_spaced_rune_works_with_no_change() {
     "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 50:TIGHTEN",
   )
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -446,7 +446,7 @@ fn sending_spaced_rune_works_with_no_change() {
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   assert_eq!(
@@ -486,7 +486,7 @@ fn sending_rune_with_divisibility_works() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -496,14 +496,14 @@ fn sending_rune_with_divisibility_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
@@ -556,7 +556,7 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -566,14 +566,14 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   assert_eq!(
@@ -632,7 +632,7 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -648,14 +648,14 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
     Rune(TIGHTEN),
   ))
   .core(&core)
-  .ord(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   assert_eq!(
@@ -722,7 +722,7 @@ fn error_messages_use_spaced_runes() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -731,14 +731,14 @@ fn error_messages_use_spaced_runes() {
     "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:TIGHTEN",
   )
   .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
 
   CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: rune `FOO` has not been etched\n")
     .run_and_extract_stdout();

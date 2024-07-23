@@ -838,7 +838,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -849,7 +849,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1076,7 +1076,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -1089,7 +1089,7 @@ msgstr ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -3097,10 +3097,10 @@ msgstr ""
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet supporting sat-control and sat-selection, which are required to safely store and send "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet supporting sat-control and sat-selection, which are required to safely store and send "
 "rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"В настоящее время, [ord](https://github.com/BitOMC/BitOMC/) является единственным кошельком, поддерживающим функции sat-control и sat-selection, необходимые для "
+"В настоящее время, [bitomc](https://github.com/BitOMC/BitOMC/) является единственным кошельком, поддерживающим функции sat-control и sat-selection, необходимые для "
 "безопасного хранения и отправки редких сатов и надписей, далее ordinals."
 
 #: src/guides/collecting.md:8
@@ -3142,10 +3142,10 @@ msgstr "Коллекционирование надписей и Ordinals с п�
 
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
-"Users who cannot or have not yet set up the [ord](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative bitcoin "
+"Users who cannot or have not yet set up the [bitomc](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative bitcoin "
 "wallets, as long as they are _very_ careful about how they spend from that wallet."
 msgstr ""
-"Пользователи, которые не могут или не успели создать кошелек [ord](https://github.com/BitOMC/BitOMC), могут получать надписи и ordinals с помощью альтернативных "
+"Пользователи, которые не могут или не успели создать кошелек [bitomc](https://github.com/BitOMC/BitOMC), могут получать надписи и ordinals с помощью альтернативных "
 "биткоин-кошельков, при условии, что они _очень_ внимательно относятся к тому, как тратят средства с этого кошелька."
 
 #: src/guides/collecting/sparrow-wallet.md:6
@@ -3909,10 +3909,10 @@ msgid "`ordinals.com`"
 msgstr "`ordinals.com`"
 
 #: src/guides/moderation.md:40
-msgid "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+msgid "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
 "Экземпляры `ordinals.com` используют `systemd` для запуска службы `bitomc server`, которая называется `bitomc`, с файлом конфига, расположенным по адресу `/var/lib/"
-"ord/bitomc.yaml`."
+"bitomc/bitomc.yaml`."
 
 #: src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -3923,8 +3923,8 @@ msgid "SSH into the server"
 msgstr "SSH на сервер"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr "Добавьте ID надписи в `/var/lib/ord/bitomc.yaml`"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr "Добавьте ID надписи в `/var/lib/bitomc/bitomc.yaml`"
 
 #: src/guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -3947,8 +3947,8 @@ msgstr ""
 "или `bitomc server`. Причинами для переиндексации являются:"
 
 #: src/guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
-msgstr "Новый основной релиз ord, в котором изменена схема базы данных"
+msgid "A new major release of bitomc, which changes the database scheme"
+msgstr "Новый основной релиз bitomc, в котором изменена схема базы данных"
 
 #: src/guides/reindexing.md:9
 msgid "The database got corrupted somehow"
@@ -3975,36 +3975,36 @@ msgid "Linux"
 msgstr "Linux"
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
+msgstr "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
 
 #: src/guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
-msgstr "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
+msgstr "/home/alice/.local/share/bitomc"
 
 #: src/guides/reindexing.md:18
 msgid "macOS"
 msgstr "macOS"
 
 #: src/guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
-msgstr "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
+msgstr "`$HOME`/Library/Application Support/bitomc"
 
 #: src/guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
-msgstr "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
+msgstr "/Users/Alice/Library/Application Support/bitomc"
 
 #: src/guides/reindexing.md:19
 msgid "Windows"
 msgstr "Windows"
 
 #: src/guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
-msgstr "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
+msgstr "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 
 #: src/guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
-msgstr "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
+msgstr "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 
 #: src/guides/reindexing.md:21
 msgid "So to delete the database and reindex on MacOS you would have to run the following commands in the terminal:"
@@ -4013,12 +4013,12 @@ msgstr "Поэтому для удаления базы данных и повт
 #: src/guides/reindexing.md:24
 msgid ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index run\n"
 "```"
 msgstr ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index run\n"
 "```"
 

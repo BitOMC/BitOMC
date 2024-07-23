@@ -11,7 +11,7 @@ fn wallet_balance() {
   assert_eq!(
     CommandBuilder::new("wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Balance>()
       .cardinal,
     0
@@ -22,7 +22,7 @@ fn wallet_balance() {
   assert_eq!(
     CommandBuilder::new("wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE,
@@ -44,7 +44,7 @@ fn unsynced_wallet_fails_with_unindexed_output() {
 
   assert_eq!(
     CommandBuilder::new("wallet balance")
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .core(&core)
       .run_and_deserialize_output::<Balance>(),
     Balance {
@@ -60,7 +60,7 @@ fn unsynced_wallet_fails_with_unindexed_output() {
   // inscribe(&core, &bitomc);
 
   CommandBuilder::new("wallet balance")
-    .ord(&no_sync_ord)
+    .bitomc(&no_sync_ord)
     .core(&core)
     .expected_exit_code(1)
     .expected_stderr("error: wallet failed to synchronize with `bitomc server` after 20 attempts\n")
@@ -78,7 +78,7 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 0,
@@ -92,7 +92,7 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -100,7 +100,7 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet balance")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE * 2 - 10_000 - 330,

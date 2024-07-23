@@ -1055,7 +1055,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 0\n"
@@ -1069,7 +1069,7 @@ msgid ""
 "First the string `bitomc` is pushed, to disambiguate inscriptions from other "
 "uses of envelopes."
 msgstr ""
-"まず文字列'ord'がプッシュされ、銘文と封筒の他の用途との曖昧さを解消します。"
+"まず文字列'bitomc'がプッシュされ、銘文と封筒の他の用途との曖昧さを解消します。"
 
 #: src/inscriptions.md:56
 msgid ""
@@ -1342,7 +1342,7 @@ msgid ""
 "```\n"
 "OP_FALSE\n"
 "OP_IF\n"
-"  OP_PUSH \"ord\"\n"
+"  OP_PUSH \"bitomc\"\n"
 "  OP_PUSH 1\n"
 "  OP_PUSH \"text/plain;charset=utf-8\"\n"
 "  OP_PUSH 3\n"
@@ -2523,8 +2523,8 @@ msgid ""
 "entirely funded by donations. If you can, please consider donating!"
 msgstr ""
 "Ordinals序数はオープンソースで、コミュニティが資金を提供するプロジェクトで"
-"す。現在の『ord』のチーフメンテナンス担当者は[raphjaph](https://github.com/"
-"raphjaph/).「Raphの『ord』でのメンテナンスはすべて寄付金で行われました。よろ"
+"す。現在の『bitomc』のチーフメンテナンス担当者は[raphjaph](https://github.com/"
+"raphjaph/).「Raphの『bitomc』でのメンテナンスはすべて寄付金で行われました。よろ"
 "しければ、寄付を検討してください！！"
 
 #: src/donate.md:8
@@ -2563,7 +2563,7 @@ msgid ""
 "Donations received will go towards funding maintenance and development of "
 "`bitomc`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
 msgstr ""
-"受け取った寄付金は『ord』の維持と更なる開発に資金を提供するために使われます。"
+"受け取った寄付金は『bitomc』の維持と更なる開発に資金を提供するために使われます。"
 "は同時に[ordinals.com]（https://ordinals.com)のホスト費用を支払います。"
 
 #: src/donate.md:20
@@ -2785,7 +2785,7 @@ msgid ""
 "`bitomc` doesn't implement its own wallet, so `bitomc wallet` subcommands interact "
 "with Bitcoin Core wallets."
 msgstr ""
-"これには['ord'](https://github.com/BitOMC/BitOMC),序数ユーティリティ。'ord'は"
+"これには['bitomc'](https://github.com/BitOMC/BitOMC),序数ユーティリティ。'bitomc'は"
 "自分のウォレットを持っていないので、'bitomc wallet'サブコマンドはBitcoin Core"
 "ウォレットと対話します。"
 
@@ -2921,7 +2921,7 @@ msgid ""
 msgstr ""
 "ブロックチェーンブラウザのように[the mempool.space block explorer]（https://"
 "mempool.space/)のようにブロックを記述する...`bitomc`は'bitcoind'と相互作用するの"
-"で、'ord'を使用するときは'bitcoind'をバックグラウンドで実行する必要がありま"
+"で、'bitomc'を使用するときは'bitcoind'をバックグラウンドで実行する必要がありま"
 "す。"
 
 #: src/guides/inscriptions.md:88
@@ -2954,7 +2954,7 @@ msgstr ""
 
 #: src/guides/inscriptions.md:101
 msgid "Once `bitomc` is installed, you should be able to run:"
-msgstr "'ord'が正常にインストールされた後、あなたは実行することができます :"
+msgstr "'bitomc'が正常にインストールされた後、あなたは実行することができます :"
 
 #: src/guides/inscriptions.md:103
 msgid ""
@@ -2965,11 +2965,11 @@ msgstr ""
 
 #: src/guides/inscriptions.md:107
 msgid "Which prints out `bitomc`'s version number."
-msgstr "これにより、「ord」のバージョン番号が出力されます。"
+msgstr "これにより、「bitomc」のバージョン番号が出力されます。"
 
 #: src/guides/inscriptions.md:109
 msgid "Creating a Bitcoin Core Wallet"
-msgstr "『ord』という名前のBitcoin Coreウォレットを作成します。"
+msgstr "『bitomc』という名前のBitcoin Coreウォレットを作成します。"
 
 #: src/guides/inscriptions.md:112
 msgid ""
@@ -2981,7 +2981,7 @@ msgstr ""
 
 #: src/guides/inscriptions.md:115
 msgid "To create a Bitcoin Core wallet named `bitomc` for use with `bitomc`, run:"
-msgstr "『ord』という名前のBitcoin Coreウォレットを作成し、運行します:"
+msgstr "『bitomc』という名前のBitcoin Coreウォレットを作成し、運行します:"
 
 #: src/guides/inscriptions.md:117
 msgid ""
@@ -3005,7 +3005,7 @@ msgstr ""
 
 #: src/guides/inscriptions.md:127
 msgid "Get a new address from your `bitomc` wallet by running:"
-msgstr "'ord'ウォレットの新しいアドレスを作成して、実行します::"
+msgstr "'bitomc'ウォレットの新しいアドレスを作成して、実行します::"
 
 #: src/guides/inscriptions.md:129 src/guides/inscriptions.md:201
 #: src/guides/inscriptions.md:229
@@ -3048,8 +3048,8 @@ msgid ""
 "Sats can be inscribed with any kind of content, but the `bitomc` wallet only "
 "supports content types that can be displayed by the `bitomc` block explorer."
 msgstr ""
-"聡の上ではあらゆる種類のコンテンツを書き込むことができますが、'ord'ウォレット"
-"は'ord'ブロックブラウザで表示できる種類のコンテンツしかサポートしていません。"
+"聡の上ではあらゆる種類のコンテンツを書き込むことができますが、'bitomc'ウォレット"
+"は'bitomc'ブロックブラウザで表示できる種類のコンテンツしかサポートしていません。"
 
 #: src/guides/inscriptions.md:150
 msgid ""
@@ -3218,9 +3218,9 @@ msgid ""
 "supplied. Additionally, `bitomc` now has a built-in wallet that wraps a Bitcoin "
 "Core wallet. See `bitomc wallet --help`._"
 msgstr ""
-"_このガイドは時代遅れです。書かれて以来、'ord'インストールファイルが変更され"
+"_このガイドは時代遅れです。書かれて以来、'bitomc'インストールファイルが変更され"
 "ました。「--index-sats」フラグが指定されている場合にのみ、完全なスマートイン"
-"デックスが作成されます。さらに「ord」には現在、ビットコインのコアウォレットを"
+"デックスが作成されます。さらに「bitomc」には現在、ビットコインのコアウォレットを"
 "含むウォレットが内蔵されていて、bitomc wallet --help`を参照してください。_"
 
 #: src/guides/sat-hunting.md:9
@@ -3620,11 +3620,11 @@ msgstr ""
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
+"Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"現在、[ord](https://github.com/BitOMC/BitOMC/)はsat-controlとsat-selectionをサ"
+"現在、[bitomc](https://github.com/BitOMC/BitOMC/)はsat-controlとsat-selectionをサ"
 "ポートする唯一のものですの財布、これは希少なsatsと銘文（以下、序数と略称す"
 "る）を安全に保存して送るために必要です。"
 
@@ -3634,7 +3634,7 @@ msgid ""
 "if you are careful, it is possible to safely store, and in some cases send, "
 "ordinals with other wallets."
 msgstr ""
-"送信、受信、シーケンス番号の格納方法としては、'ord'を用いることが推奨される。"
+"送信、受信、シーケンス番号の格納方法としては、'bitomc'を用いることが推奨される。"
 "しかし、注意すれば安全に保管できます。場合によっては、別のウォレットを使用し"
 "てシリアル番号を送信します。"
 
@@ -3658,7 +3658,7 @@ msgid ""
 "wallet with [Sparrow Wallet](https://sparrowwallet.com/), is available in "
 "this handbook."
 msgstr ""
-"このマニュアルでは、[Sparrow Wallet](https://sparrowwallet.com/)作成'ord'と互"
+"このマニュアルでは、[Sparrow Wallet](https://sparrowwallet.com/)作成'bitomc'と互"
 "換性のある財布の[ガイド](./collecting/sparrow-wallet.md).。"
 
 #: src/guides/collecting.md:21
@@ -3676,12 +3676,12 @@ msgstr "スズメのSparrow財布を使って銘文をコレクションしま�
 
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
-"Users who cannot or have not yet set up the [ord](https://github.com/"
+"Users who cannot or have not yet set up the [bitomc](https://github.com/"
 "BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
-"それらの生きていられないまだ設定されていない[ord](https://github.com/"
+"それらの生きていられないまだ設定されていない[bitomc](https://github.com/"
 "BitOMC/BitOMC)ウォレットのユーザーは、ウォレットを使用する際に細心の注意を払っ"
 "ていれば、他のビットコインウォレットを使用して銘文と序数を受け取ることができ"
 "ます。。"
@@ -3693,7 +3693,7 @@ msgid ""
 "be later imported into `bitomc`"
 msgstr ""
 "このガイドでは、[Sparrow Wallet](https://sparrowwallet.com/)の使用方法を説明"
-"します。'ord'と互換性のあるウォレットを作成し、後で'ord'にインポートできま"
+"します。'bitomc'と互換性のあるウォレットを作成し、後で'bitomc'にインポートできま"
 "す。`"
 
 #: src/guides/collecting/sparrow-wallet.md:8
@@ -3733,7 +3733,7 @@ msgstr ""
 #: src/guides/collecting/sparrow-wallet.md:17
 msgid "Select `File -> New Wallet` and create a new wallet called `bitomc`."
 msgstr ""
-"『File->New Wallet』を選択し、『ord』という名前の新しいウォレットを作成しま"
+"『File->New Wallet』を選択し、『bitomc』という名前の新しいウォレットを作成しま"
 "す。"
 
 #: src/guides/collecting/sparrow-wallet.md:19
@@ -3821,7 +3821,7 @@ msgid ""
 "into `bitomc` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
 "click on the `Receive` tab and copy a new address."
 msgstr ""
-"今、BIP 39シードフレーズを使って'ord'にインポートできる'ord'互換のウォレット"
+"今、BIP 39シードフレーズを使って'bitomc'にインポートできる'bitomc'互換のウォレット"
 "を持っています。序数や銘文を受け取るには、'Receive'タブをクリックし、新しいア"
 "ドレスをコピーします"
 
@@ -3948,7 +3948,7 @@ msgid ""
 "For details on setting up Bitcoin Core and the `bitomc` wallet check out the "
 "[Inscriptions Guide](../inscriptions.md)"
 msgstr ""
-"ビットコインコアと'ord'ウォレットの設定の詳細については、[銘文ガイド](../"
+"ビットコインコアと'bitomc'ウォレットの設定の詳細については、[銘文ガイド](../"
 "inscriptions.md)をご覧ください。"
 
 #: src/guides/collecting/sparrow-wallet.md:83
@@ -3958,7 +3958,7 @@ msgid ""
 "restore \"BIP39 SEED PHRASE\"` using the seed phrase you generated with "
 "Sparrow Wallet."
 msgstr ""
-"'ord'を設定するときは、'bitomc wallet restore\"BIP 39 SE ED PHRASE\"'コマンドと"
+"'bitomc'を設定するときは、'bitomc wallet restore\"BIP 39 SE ED PHRASE\"'コマンドと"
 "Sparrow Walletで生成されたシードフレーズを使用して、'bitomc wallet create'を実行"
 "する代わりに、既存のウォレットをインポートします。は新しい財布を作ります。"
 
@@ -3989,9 +3989,9 @@ msgid ""
 "imported wallet a different name. You can use the `--wallet` parameter in "
 "all `bitomc` commands to reference a different wallet, eg:"
 msgstr ""
-"前にウォレットを'ord'で作成したことがある場合は、デフォルトの名前のウォレット"
+"前にウォレットを'bitomc'で作成したことがある場合は、デフォルトの名前のウォレット"
 "を既に持っていることに注意してください。はあなたが導入した財布に違う名前を付"
-"ける必要があります。すべての'ord'コマンドで'--wallet'引数を使用できます異なる"
+"ける必要があります。すべての'bitomc'コマンドで'--wallet'引数を使用できます異なる"
 "財布を引用するために、例えば："
 
 #: src/guides/collecting/sparrow-wallet.md:92
@@ -4022,7 +4022,7 @@ msgid ""
 "recommended, and you should only do this if you fully understand what you "
 "are doing."
 msgstr ""
-"ビットコインコアノードを設定し、'ord'ソフトウェアを実行することを強くお勧めし"
+"ビットコインコアノードを設定し、'bitomc'ソフトウェアを実行することを強くお勧めし"
 "ますが、いくつかの安全な方法でSparrowウォレットに銘文をお送りします。これはお"
 "勧めではないことに注意してください。あなたが何をしているのか完全に理解してい"
 "る場合にのみ、そうすることができます。"
@@ -4033,7 +4033,7 @@ msgid ""
 "describing here, as it is able to automatically and safely handle sending "
 "inscriptions in an easy way."
 msgstr ""
-"『ord』ソフトウェアを使用すると、ここで説明した複雑さが大幅に簡素化されます。"
+"『bitomc』ソフトウェアを使用すると、ここで説明した複雑さが大幅に簡素化されます。"
 "それは、簡単な方法で自動的かつ安全に碑文の送信を処理できるからです。"
 
 #: src/guides/collecting/sparrow-wallet.md:105
@@ -4245,7 +4245,7 @@ msgid ""
 msgstr ""
 "取引がこれとは異なるように見える場合、例えば複数の入力や複数の出力がある場"
 "合、これは安全な碑文の転送方法ではないかもしれません。あなたがよりよく知って"
-"いるか、'ord'ウォレットにインポートすることができるまで、送信を断念する必要が"
+"いるか、'bitomc'ウォレットにインポートすることができるまで、送信を断念する必要が"
 "あります。"
 
 #: src/guides/collecting/sparrow-wallet.md:149
@@ -4384,7 +4384,7 @@ msgid ""
 "Most `bitomc` commands in [inscriptions](inscriptions.md) and [explorer]"
 "(explorer.md) can be run with the following network flags:"
 msgstr ""
-"[銘文](inscriptions.md)および[ブラウザ](explorer.md)内のほとんどの'ord'コマン"
+"[銘文](inscriptions.md)および[ブラウザ](explorer.md)内のほとんどの'bitomc'コマン"
 "ドは、次のネットワークフラグを使用して実行できます："
 
 #: src/guides/testing.md:10
@@ -4593,7 +4593,7 @@ msgid ""
 "instance, they can be included in a YAML config file, which is loaded with "
 "the `--config` option."
 msgstr ""
-"特定の銘文が'ord'インスタンスに表示されないようにするには、YAML設定ファイルに"
+"特定の銘文が'bitomc'インスタンスに表示されないようにするには、YAML設定ファイルに"
 "含めることができます。'--config'オプションを使用してファイルをロードします。"
 
 #: src/guides/moderation.md:17
@@ -4617,7 +4617,7 @@ msgid ""
 "The suggested name for `bitomc` config files is `bitomc.yaml`, but any filename "
 "can be used."
 msgstr ""
-"'ord'設定ファイルの推奨名は'bitomc.yaml'です。ただし、任意のファイル名を使用でき"
+"'bitomc'設定ファイルの推奨名は'bitomc.yaml'です。ただし、任意のファイル名を使用でき"
 "ます。"
 
 #: src/guides/moderation.md:28
@@ -4633,13 +4633,13 @@ msgid ""
 "Note that the `--config` option comes after `bitomc` but before the `server` "
 "subcommand."
 msgstr ""
-"注意してください。 『--config'オプションは'ord'の後で'server'サブコマンドの前"
+"注意してください。 『--config'オプションは'bitomc'の後で'server'サブコマンドの前"
 "にあります。"
 
 #: src/guides/moderation.md:35
 msgid "`bitomc` must be restarted in to load changes to the config file."
 msgstr ""
-"'ord'は、設定ファイルの変更をロードするために再起動する必要があります。"
+"'bitomc'は、設定ファイルの変更をロードするために再起動する必要があります。"
 
 #: src/guides/moderation.md:37
 msgid "`ordinals.com`"
@@ -4648,10 +4648,10 @@ msgstr ""
 #: src/guides/moderation.md:40
 msgid ""
 "The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
-"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
+"which is called `bitomc`, with a config file located at `/var/lib/bitomc/bitomc.yaml`."
 msgstr ""
-"ordinals.com'インスタンスは'systemd'を使用して'ord'という名前の'bitomc "
-"server'サービスを実行しています。設定ファイルは『/var/lib/ord/bitomc.yaml'."
+"ordinals.com'インスタンスは'systemd'を使用して'bitomc'という名前の'bitomc "
+"server'サービスを実行しています。設定ファイルは『/var/lib/bitomc/bitomc.yaml'."
 
 #: src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4662,8 +4662,8 @@ msgid "SSH into the server"
 msgstr "SSHでサーバを登録します。"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
-msgstr " `/var/lib/ord/bitomc.yaml`中で銘文を増やしますID"
+msgid "Add the inscription ID to `/var/lib/bitomc/bitomc.yaml`"
+msgstr " `/var/lib/bitomc/bitomc.yaml`中で銘文を増やしますID"
 
 #: src/guides/moderation.md:47
 msgid "Restart the service with `systemctl restart bitomc`"
@@ -4687,13 +4687,13 @@ msgid ""
 "database and restarting the indexing process with either `bitomc index update` or "
 "`bitomc server`. Reasons to reindex are:"
 msgstr ""
-"「ord」データベースを再インデックスする必要がある場合があります。これは、デー"
+"「bitomc」データベースを再インデックスする必要がある場合があります。これは、デー"
 "タベースを削除し、「bitomc index update」または「bitomc server」を使用することを意味し"
 "ます。を使用してデータベースを再インデックス化します。再インデックスを作成す"
 "る理由は次のとおりです。："
 
 #: src/guides/reindexing.md:8
-msgid "A new major release of ord, which changes the database scheme"
+msgid "A new major release of bitomc, which changes the database scheme"
 msgstr ""
 "bitomc 发布新的主要版本，更改了数据库架构　新たなメインバージョンをリリースし"
 "て、データベースのスキーマを変更されました。"
@@ -4725,11 +4725,11 @@ msgid "Linux"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "/home/alice/.local/share/ord"
+msgid "/home/alice/.local/share/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:18
@@ -4737,11 +4737,11 @@ msgid "macOS"
 msgstr ""
 
 #: src/guides/reindexing.md:18
-msgid "`$HOME`/Library/Application Support/ord"
+msgid "`$HOME`/Library/Application Support/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:18
-msgid "/Users/Alice/Library/Application Support/ord"
+msgid "/Users/Alice/Library/Application Support/bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:19
@@ -4749,11 +4749,11 @@ msgid "Windows"
 msgstr ""
 
 #: src/guides/reindexing.md:19
-msgid "`{FOLDERID_RoamingAppData}`\\\\ord"
+msgid "`{FOLDERID_RoamingAppData}`\\\\bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:19
-msgid "C:\\Users\\Alice\\AppData\\Roaming\\ord"
+msgid "C:\\Users\\Alice\\AppData\\Roaming\\bitomc"
 msgstr ""
 
 #: src/guides/reindexing.md:21
@@ -4767,7 +4767,7 @@ msgstr ""
 #: src/guides/reindexing.md:24
 msgid ""
 "```bash\n"
-"rm ~/Library/Application Support/ord/index.redb\n"
+"rm ~/Library/Application Support/bitomc/index.redb\n"
 "bitomc index update\n"
 "```"
 msgstr ""

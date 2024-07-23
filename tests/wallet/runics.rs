@@ -14,7 +14,7 @@ fn wallet_runics() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&bitomc)
+    .bitomc(&bitomc)
     .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
@@ -22,7 +22,7 @@ fn wallet_runics() {
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet runics")
       .core(&core)
-      .ord(&bitomc)
+      .bitomc(&bitomc)
       .run_and_deserialize_output::<Vec<RunicUtxo>>()
       .first()
       .unwrap()

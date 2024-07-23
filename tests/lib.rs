@@ -69,18 +69,18 @@ type Balance = bitomc::subcommand::wallet::balance::Output;
 type Create = bitomc::subcommand::wallet::create::Output;
 type Send = bitomc::subcommand::wallet::send::Output;
 
-fn create_wallet(core: &mockcore::Handle, ord: &TestServer) {
+fn create_wallet(core: &mockcore::Handle, bitomc: &TestServer) {
   CommandBuilder::new(format!("--chain {} wallet create", core.network()))
     .core(core)
-    .ord(ord)
+    .bitomc(bitomc)
     .stdout_regex(".*")
     .run_and_extract_stdout();
 }
 
-fn drain(core: &mockcore::Handle, ord: &TestServer) {
+fn drain(core: &mockcore::Handle, bitomc: &TestServer) {
   let balance = CommandBuilder::new("--regtest wallet balance")
     .core(core)
-    .ord(ord)
+    .bitomc(bitomc)
     .run_and_deserialize_output::<Balance>();
 
   CommandBuilder::new(format!(
@@ -94,14 +94,14 @@ fn drain(core: &mockcore::Handle, ord: &TestServer) {
     balance.cardinal
   ))
   .core(core)
-  .ord(ord)
+  .bitomc(bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks_with_subsidy(1, 0);
 
   let balance = CommandBuilder::new("--regtest wallet balance")
     .core(core)
-    .ord(ord)
+    .bitomc(bitomc)
     .run_and_deserialize_output::<Balance>();
 
   pretty_assert_eq!(balance.cardinal, 0);

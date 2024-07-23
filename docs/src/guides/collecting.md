@@ -1,7 +1,7 @@
 Collecting
 ==========
 
-Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet supporting
+Currently, [bitomc](https://github.com/BitOMC/BitOMC/) is the only wallet supporting
 sat-control and sat-selection, which are required to safely store and send rare
 sats and inscriptions, hereafter ordinals.
 
