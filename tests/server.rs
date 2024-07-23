@@ -37,21 +37,21 @@ fn run() {
 #[test]
 fn address_page_shows_outputs_and_sat_balance() {
   let core = mockcore::spawn();
-  let ord = TestServer::spawn_with_args(&core, &["--index-addresses"]);
+  let bitomc = TestServer::spawn_with_args(&core, &["--index-addresses"]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
   core.mine_blocks(1);
 
   let address = "bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4";
 
   let send = CommandBuilder::new(format!("wallet send --fee-rate 13.3 {address} 2btc"))
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
-  ord.assert_response_regex(
+  bitomc.assert_response_regex(
     format!("/address/{address}"),
     format!(
       ".*<h1>Address {address}</h1>.*<dd>200000000</dd>.*<a class=monospace href=/output/{}.*",

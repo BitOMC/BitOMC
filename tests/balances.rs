@@ -1,4 +1,4 @@
-use {super::*, ord::subcommand::balances::Output};
+use {super::*, bitomc::subcommand::balances::Output};
 
 const COIN_VALUE: u128 = 100000000;
 
@@ -53,9 +53,9 @@ fn with_runes() {
 
   core.mine_blocks(1);
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let output = CommandBuilder::new("--regtest balances")
     .core(&core)

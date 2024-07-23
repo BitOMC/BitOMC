@@ -194,12 +194,12 @@ msgid "Links"
 msgstr "Mga Link"
 
 #: src/introduction.md:38
-msgid "[GitHub](https://github.com/ordinals/ord/)"
-msgstr "[GitHub](https://github.com/ordinals/ord/)"
+msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
+msgstr "[GitHub](https://github.com/BitOMC/BitOMC/)"
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -276,10 +276,10 @@ msgstr ""
 
 #: src/overview.md:13
 msgid ""
-"Technical details are available in [the BIP](https://github.com/ordinals/ord/"
+"Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/"
 "blob/master/bip.mediawiki)."
 msgstr ""
-"Ang mga teknikal na detalye ay makikita sa [BIP](https://github.com/ordinals/"
+"Ang mga teknikal na detalye ay makikita sa [BIP](https://github.com/BitOMC/"
 "ord/blob/master/bip.mediawiki)."
 
 #: src/overview.md:16
@@ -354,7 +354,7 @@ msgstr ""
 #: src/overview.md:45
 msgid ""
 "Ordinals is an open-source project, developed [on GitHub](https://github.com/"
-"ordinals/ord). The project consists of a BIP describing the ordinal scheme, "
+"BitOMC/BitOMC). The project consists of a BIP describing the ordinal scheme, "
 "an index that communicates with a Bitcoin Core node to track the location of "
 "all satoshis, a wallet that allows making ordinal-aware transactions, a "
 "block explorer for interactive exploration of the blockchain, functionality "
@@ -969,10 +969,10 @@ msgstr ""
 
 #: src/inscriptions.md:53
 msgid ""
-"First the string `ord` is pushed, to disambiguate inscriptions from other "
+"First the string `bitomc` is pushed, to disambiguate inscriptions from other "
 "uses of envelopes."
 msgstr ""
-"Una ang string na `ord` ay pushed, upang i-dismbiguate ang mga inskripsiyon "
+"Una ang string na `bitomc` ay pushed, upang i-dismbiguate ang mga inskripsiyon "
 "mula sa iba pang gamit ng envelopes."
 
 #: src/inscriptions.md:56
@@ -1252,12 +1252,12 @@ msgid ""
 "CBOR is a complex spec with many different data types, and multiple ways of "
 "representing the same data. Exotic data types, such as tags, floats, and "
 "bignums, and encoding such as indefinite values, may fail to display "
-"correctly or at all. Contributions to `ord` to remedy this are welcome."
+"correctly or at all. Contributions to `bitomc` to remedy this are welcome."
 msgstr ""
 "Ang CBOR ay isang kumplikadong spec na may maraming iba't ibang uri ng data, at maraming paraan ng "
 "na kumakatawan sa parehong data. Mga kakaibang uri ng data, gaya ng mga tag, float, at "
 "Ang mga bignum, at pag-encode tulad ng mga hindi tiyak na halaga, ay maaaring mabigong ipakita "
-"tama o sa lahat. Ang mga kontribusyon sa `ord` upang malunasan ito ay malugod na tinatanggap."
+"tama o sa lahat. Ang mga kontribusyon sa `bitomc` upang malunasan ito ay malugod na tinatanggap."
 
 #: src/inscriptions/metadata.md:30 src/inscriptions/provenance.md:27
 #: src/guides/testing.md:18 src/guides/reindexing.md:15
@@ -1479,12 +1479,12 @@ msgstr "Tandaan"
 msgid ""
 "The tag `3` is used because it is the first available odd tag. Unrecognized "
 "odd tags do not make an inscription unbound, so child inscriptions would be "
-"recognized and tracked by old versions of `ord`."
+"recognized and tracked by old versions of `bitomc`."
 msgstr ""
 "`3` Ginagamit ang tag dahil ito ang unang available na odd tag. Ang mga "
 "hindi kilalang odd tag ay hindi gumagawa ng isang inskripsiyon na unbound, "
 "kaya ang mga child inscription ay makikilala at masusubaybayan ng mga lumang "
-"bersyon ng ord."
+"bersyon ng bitomc."
 
 #: src/inscriptions/provenance.md:81
 msgid ""
@@ -1498,12 +1498,12 @@ msgstr ""
 #: src/inscriptions/recursion.md:4
 msgid ""
 "An important exception to [sandboxing](../inscriptions.md#sandboxing) is "
-"recursion: access to `ord`'s `/content` endpoint is permitted, allowing "
+"recursion: access to `bitomc`'s `/content` endpoint is permitted, allowing "
 "inscriptions to access the content of other inscriptions by requesting `/"
 "content/<INSCRIPTION_ID>`."
 msgstr ""
 "Ang isang eksepsyon sa [sandboxing](../inscriptions.md#sandboxing) ay ang "
-"recursion: pinahihintulutan ang pag-access sa endpoint ng `ord’s` `/"
+"recursion: pinahihintulutan ang pag-access sa endpoint ng `bitomc’s` `/"
 "content`, na nagdudulot sa mga inskripsiyon na ma-access ang nilalaman ng "
 "iba pang mga inskripsiyon sa pamamagitan ng paggamit ng `/content/"
 "<INSCRIPTION_ID>`."
@@ -1746,14 +1746,14 @@ msgstr " ay wala nang slot sa output:"
 #: src/faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/ordinals/ord/blob/master/bip.mediawiki) has the details, but in "
+"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
 "this:"
 msgstr ""
 "Kaya't bumalik sila sa miner na nagmimina ng block bilang bayad. Para sa "
-"detalyeng kaalaman, mabuting bisitahin ang [BIP](https://github.com/ordinals/"
+"detalyeng kaalaman, mabuting bisitahin ang [BIP](https://github.com/BitOMC/"
 "ord/blob/master/bip.mediawiki), ngunit sa kabuuan, ang mga bayarin na "
 "binayaran ng mga transaksyon ay itinuturing bilang karagdagang mga entry sa "
 "transaksyon ng coinbase, at ordered sa parehong paraan tulad ng mga "
@@ -1765,9 +1765,9 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "Saan ko mahahanap ang pinakatiyak na mga detalye?"
 
 #: src/faq.md:92
-msgid "[The BIP!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 msgstr ""
-"Dito sa [The BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+"Dito sa [The BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: src/faq.md:94
 msgid ""
@@ -2399,8 +2399,8 @@ msgstr ""
 "desentralisadong model sa sangkatauhan."
 
 #: src/contributing.md:1
-msgid "Contributing to `ord`"
-msgstr "Mag-ambag sa `ord`"
+msgid "Contributing to `bitomc`"
+msgstr "Mag-ambag sa `bitomc`"
 
 #: src/contributing.md:4
 msgid "Suggested Steps"
@@ -2614,14 +2614,14 @@ msgstr ""
 #: src/donate.md:4
 msgid ""
 "Ordinals is open-source and community funded. The current lead maintainer of "
-"`ord` is [raphjaph](https://github.com/raphjaph/). Raph's work on `ord` is "
+"`bitomc` is [raphjaph](https://github.com/raphjaph/). Raph's work on `bitomc` is "
 "entirely funded by donations. If you can, please consider donating!"
 msgstr ""
 "Ang Ordinals ay open-source na software na pinondohan ng komunidad. Ang "
-"kasalukuyang maintainer ng `ord` ay si [raphjaph](https://github.com/"
-"raphjaph/). Ang trabaho ni Raph sa `ord` ay ganap na pinondohan ng mga "
+"kasalukuyang maintainer ng `bitomc` ay si [raphjaph](https://github.com/"
+"raphjaph/). Ang trabaho ni Raph sa `bitomc` ay ganap na pinondohan ng mga "
 "donasyon. Maari kang magbigay ng donasyon kung gusto mo suportahan ang "
-"development ng `ord`."
+"development ng `bitomc`."
 
 #: src/donate.md:8
 msgid ""
@@ -2658,10 +2658,10 @@ msgstr ""
 #: src/donate.md:17
 msgid ""
 "Donations received will go towards funding maintenance and development of "
-"`ord`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
+"`bitomc`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
 msgstr ""
 "Ang mga natanggap na donasyon ay gagamitin upang tustusan ang pagpapanatili "
-"at pagpapaunlad ng `ord`, gayundin ang mga gastos sa pagho-host ng [ordinals."
+"at pagpapaunlad ng `bitomc`, gayundin ang mga gastos sa pagho-host ng [ordinals."
 "com](https://ordinals.com)."
 
 #: src/donate.md:20
@@ -2686,11 +2686,11 @@ msgstr "Ordinal Explorer"
 
 #: src/guides/explorer.md:4
 msgid ""
-"The `ord` binary includes a block explorer. We host a instance of the block "
+"The `bitomc` binary includes a block explorer. We host a instance of the block "
 "explorer on mainnet at [ordinals.com](https://ordinals.com), and on signet "
 "at [signet.ordinals.com](https://signet.ordinals.com)."
 msgstr ""
-"Ang `ord` binary ay may kasamang block explorer. Nagho-host kami ng block "
+"Ang `bitomc` binary ay may kasamang block explorer. Nagho-host kami ng block "
 "explorer sa mainnet ng [ordinals.com](https://ordinals.com), at sa signet sa "
 "[signet.ordinals.com](https://signet.ordinals.com)."
 
@@ -2703,16 +2703,16 @@ msgid "The server can be run locally with:"
 msgstr "Ang server ay maaring i-run sa iyong computer gamit ang:"
 
 #: src/guides/explorer.md:11
-msgid "`ord server`"
-msgstr "`ord server`"
+msgid "`bitomc server`"
+msgstr "`bitomc server`"
 
 #: src/guides/explorer.md:13
 msgid "To specify a port add the `--http-port` flag:"
 msgstr "Para mag specify ng port i-add ang `--http-port` na flag:"
 
 #: src/guides/explorer.md:15
-msgid "`ord server --http-port 8080`"
-msgstr "`ord server --http-port 8080`"
+msgid "`bitomc server --http-port 8080`"
+msgstr "`bitomc server --http-port 8080`"
 
 #: src/guides/explorer.md:17
 msgid ""
@@ -2723,16 +2723,16 @@ msgstr ""
 "flag (tingnan [sa](#json-api) para karagdagang impormasyon):"
 
 #: src/guides/explorer.md:20
-msgid "`ord --enable-json-api server`"
-msgstr "`ord --enable-json-api server`"
+msgid "`bitomc --enable-json-api server`"
+msgstr "`bitomc --enable-json-api server`"
 
 #: src/guides/explorer.md:22
 msgid "To test how your inscriptions will look you can run:"
 msgstr "Maaring i-test ang iyong inscriptions gamit naman ang:"
 
 #: src/guides/explorer.md:24
-msgid "`ord preview <FILE1> <FILE2> ...`"
-msgstr "`ord preview <FILE1> <FILE2> ...`"
+msgid "`bitomc preview <FILE1> <FILE2> ...`"
+msgstr "`bitomc preview <FILE1> <FILE2> ...`"
 
 #: src/guides/explorer.md:26
 msgid "Search"
@@ -2874,12 +2874,12 @@ msgstr "JSON-API"
 
 #: src/guides/explorer.md:79
 msgid ""
-"You can run `ord` with the `--enable-json-api` flag to access endpoints that "
+"You can run `bitomc` with the `--enable-json-api` flag to access endpoints that "
 "return JSON instead of HTML if you set the HTTP `Accept: application/json` "
 "header. The structure of theses objects closely follows what is shown in the "
 "HTML. These endpoints are:"
 msgstr ""
-"Maaari mong patakbuhin ang `ord` gamit ang `--enable-json-api` flag upang ma-"
+"Maaari mong patakbuhin ang `bitomc` gamit ang `--enable-json-api` flag upang ma-"
 "access ang mga endpoint na ibalik ang JSON sa halip na HTML kung na-set mo "
 "ang HTTP `Accept: application/json` header. Ang istraktura ng mga bagay na "
 "ito ay malapit na sumusunod sa kung ano ang ipinapakita sa HTML. Ang mga "
@@ -3031,13 +3031,13 @@ msgstr ""
 
 #: src/guides/inscriptions.md:17
 msgid ""
-"This requires [`ord`](https://github.com/ordinals/ord), the ordinal utility. "
-"`ord` doesn't implement its own wallet, so `ord wallet` subcommands interact "
+"This requires [`bitomc`](https://github.com/BitOMC/BitOMC), the ordinal utility. "
+"`bitomc` doesn't implement its own wallet, so `bitomc wallet` subcommands interact "
 "with Bitcoin Core wallets."
 msgstr ""
-"Nangangailangan ito ng [`ord`](https://github.com/ordinals/ord), ang ordinal "
-"utility. Hindi nagpapatupad ang `ord` ng sarili nitong wallet, kaya ang mga "
-"subcommand ng ord wallet ay nakikipag-ugnayan sa mga wallet ng Bitcoin Core."
+"Nangangailangan ito ng [`bitomc`](https://github.com/BitOMC/BitOMC), ang ordinal "
+"utility. Hindi nagpapatupad ang `bitomc` ng sarili nitong wallet, kaya ang mga "
+"subcommand ng bitomc wallet ay nakikipag-ugnayan sa mga wallet ng Bitcoin Core."
 
 #: src/guides/inscriptions.md:21
 msgid "This guide covers:"
@@ -3056,20 +3056,20 @@ msgid "Creating a Bitcoin Core wallet"
 msgstr "Gumawa ng Bitcoin Core wallet"
 
 #: src/guides/inscriptions.md:26
-msgid "Using `ord wallet receive` to receive sats"
-msgstr "Gamitin ang `ord wallet receive` para makatanggap ng sats"
+msgid "Using `bitomc wallet receive` to receive sats"
+msgstr "Gamitin ang `bitomc wallet receive` para makatanggap ng sats"
 
 #: src/guides/inscriptions.md:27
-msgid "Creating inscriptions with `ord wallet inscribe`"
-msgstr "Gumawa ng inscriptions gamit ang `ord wallet inscribe`"
+msgid "Creating inscriptions with `bitomc wallet inscribe`"
+msgstr "Gumawa ng inscriptions gamit ang `bitomc wallet inscribe`"
 
 #: src/guides/inscriptions.md:28
-msgid "Sending inscriptions with `ord wallet send`"
-msgstr "Magpadala ng inscriptions gamit ang `ord wallet send`"
+msgid "Sending inscriptions with `bitomc wallet send`"
+msgstr "Magpadala ng inscriptions gamit ang `bitomc wallet send`"
 
 #: src/guides/inscriptions.md:29
-msgid "Receiving inscriptions with `ord wallet receive`"
-msgstr "Pagtanggap ng inscriptions gamit ang `ord wallet receive`"
+msgid "Receiving inscriptions with `bitomc wallet receive`"
+msgstr "Pagtanggap ng inscriptions gamit ang `bitomc wallet receive`"
 
 #: src/guides/inscriptions.md:31
 msgid "Getting Help"
@@ -3079,13 +3079,13 @@ msgstr "Kumuha ng tulong"
 msgid ""
 "If you get stuck, try asking for help on the [Ordinals Discord Server]"
 "(https://discord.com/invite/87cjuz4FYg), or checking GitHub for relevant "
-"[issues](https://github.com/ordinals/ord/issues) and [discussions](https://"
-"github.com/ordinals/ord/discussions)."
+"[issues](https://github.com/BitOMC/BitOMC/issues) and [discussions](https://"
+"github.com/BitOMC/BitOMC/discussions)."
 msgstr ""
 "Kung natigil ka, subukang humingi ng tulong sa server ng [Ordinals Discord]"
 "(https://discord.com/invite/87cjuz4FYg), o tingnan ang GitHub para sa mga "
-"[isyu](https://github.com/ordinals/ord/issues) at [discussions](https://"
-"github.com/ordinals/ord/discussions)."
+"[isyu](https://github.com/BitOMC/BitOMC/issues) at [discussions](https://"
+"github.com/BitOMC/BitOMC/discussions)."
 
 #: src/guides/inscriptions.md:42
 msgid ""
@@ -3114,8 +3114,8 @@ msgid "Configuring Bitcoin Core"
 msgstr "Bitcoin Core Setup"
 
 #: src/guides/inscriptions.md:54
-msgid "`ord` requires Bitcoin Core's transaction index and rest interface."
-msgstr "Ang `ord` ay nangangailangan ng index ng transaksyon at rest interface ng Bitcoin Core."
+msgid "`bitomc` requires Bitcoin Core's transaction index and rest interface."
+msgstr "Ang `bitomc` ay nangangailangan ng index ng transaksyon at rest interface ng Bitcoin Core."
 
 #: src/guides/inscriptions.md:56
 msgid ""
@@ -3152,14 +3152,14 @@ msgstr "…at hayaan itong tumakbo hanggang sa `getblockcount`:"
 #: src/guides/inscriptions.md:87
 msgid ""
 "agrees with the block count on a block explorer like [the mempool.space "
-"block explorer](https://mempool.space/). `ord` interacts with `bitcoind`, so "
+"block explorer](https://mempool.space/). `bitomc` interacts with `bitcoind`, so "
 "you should leave `bitcoind` running in the background when you're using "
-"`ord`."
+"`bitomc`."
 msgstr ""
 "tumutugma sa bilang ng mga bloke tulad nalamang ng [mempool.space block "
-"explorer](https://mempool.space/). Nakikipag-ugnayan ang `ord` sa "
+"explorer](https://mempool.space/). Nakikipag-ugnayan ang `bitomc` sa "
 "`bitcoind`, kaya dapat mong iwanan ang `bitcoind` na tumatakbo sa background "
-"kapag gumagamit ng `ord`."
+"kapag gumagamit ng `bitomc`."
 
 #: src/guides/inscriptions.md:91
 msgid ""
@@ -3167,13 +3167,13 @@ msgid ""
 "drive you want to store blocks on, use the configuration option "
 "`blocksdir=<external_drive_path>`. This is much simpler than using the "
 "`datadir` option because the cookie file will still be in the default "
-"location for `bitcoin-cli` and `ord` to find."
+"location for `bitcoin-cli` and `bitomc` to find."
 msgstr ""
 "Ang blockchain ay humigit-kumulang 600GB disk space. Kung mayroon kang external "
 "drive na gamitin para mag-store ng blocks, gamitin ang configuration option "
 "`blocksdir=<external_drive_path>`. Ito ay mas simple kaysa sa paggamit ng "
 "`datadir` na opsyon dahil ang cookie file ay nasa default pa ring "
-"lokasyon para mahanap ang `bitcoin-cli` at `ord`."
+"lokasyon para mahanap ang `bitcoin-cli` at `bitomc`."
 
 #: src/guides/inscriptions.md:97 src/guides/collecting/sparrow-wallet.md:173
 msgid "Troubleshooting"
@@ -3198,11 +3198,11 @@ msgstr ""
 #: src/guides/inscriptions.md:106
 msgid ""
 "Make sure `rpcuser`, `rpcpassword`, or `rpcauth` are _NOT_ set in your "
-"`bitcoin.conf` file. `ord` requires using cookie authentication. Make sure "
+"`bitcoin.conf` file. `bitomc` requires using cookie authentication. Make sure "
 "there is a file `.cookie` in your bitcoin data directory."
 msgstr ""
 "Tiyaking `rpcuser`, `rpcpassword`, o `rpcauth` ay _HINDI_ naka-set sa iyong "
-"`bitcoin.conf` file. Ang `ord` ay nangangailangan ng paggamit ng cookie authentication. Tiyaking "
+"`bitcoin.conf` file. Ang `bitomc` ay nangangailangan ng paggamit ng cookie authentication. Tiyaking "
 "may file na `.cookie` sa iyong bitcoin data directory."
 
 #: src/guides/inscriptions.md:110
@@ -3211,25 +3211,25 @@ msgid ""
 "you must specify the cookie file location. If you are using a custom data "
 "directory (specifying the `datadir` option), then you must specify the "
 "cookie location like `bitcoin-cli -rpccookiefile=<your_bitcoin_datadir>/."
-"cookie -getinfo`. When running `ord` you must specify the cookie file "
+"cookie -getinfo`. When running `bitomc` you must specify the cookie file "
 "location with `--cookie-file=<your_bitcoin_datadir>/.cookie`."
 msgstr ""
 "Kung ibabalik ng `bitcoin-cli -getinfo` ang `Could not locate RPC credentials`, kung gayon "
 "dapat mong tukuyin ang lokasyon ng cookie file. Kung gumagamit ka ng custom na data "
 "directory (tumutukoy sa `datadir`), dapat mong tukuyin ang "
 "lokasyon ng cookie tulad ng `bitcoin-cli -rpccookiefile=<your_bitcoin_datadir>/."
-"cookie -getinfo`. Kapag nagpapatakbo ng `ord` dapat mong tukuyin ang cookie file "
+"cookie -getinfo`. Kapag nagpapatakbo ng `bitomc` dapat mong tukuyin ang cookie file "
 "location na may `--cookie-file=<your_bitcoin_datadir>/.cookie`."
 
 #: src/guides/inscriptions.md:118
 msgid ""
 "Make sure you do _NOT_ have `disablewallet=1` in your `bitcoin.conf` file. "
 "If `bitcoin-cli listwallets` returns `Method not found` then the wallet is "
-"disabled and you won't be able to use `ord`."
+"disabled and you won't be able to use `bitomc`."
 msgstr ""
 "Tiyaking _WALA_ kang `disablewallet=1` sa iyong `bitcoin.conf` file."
 "Kung ibabalik ng `bitcoin-cli listwallet` ang `Method not found` ang wallet ay "
-"naka-disable at hindi mo magagamit ang `ord`."
+"naka-disable at hindi mo magagamit ang `bitomc`."
 
 #: src/guides/inscriptions.md:122
 msgid ""
@@ -3263,33 +3263,33 @@ msgstr ""
 msgid ""
 "If it only returns `{}`, `txindex` is not set. If it returns `\"synced\": "
 "false`, `bitcoind` is still creating the `txindex`. Wait until `\"synced\": "
-"true` before using `ord`."
+"true` before using `bitomc`."
 msgstr ""
 "Kung ibinabalik nito ang `{}`, hindi naka-set ang `txindex`. Kung ibinabalik nito ang `\"naka-sync\": "
 "false`, ginagawa pa rin ng `bitcoind` ang `txindex`. Maghintay ang `\"synced\": "
-"true` bago gamitin ang `ord`."
+"true` bago gamitin ang `bitomc`."
 
 #: src/guides/inscriptions.md:136
 msgid ""
 "If you have `maxuploadtarget` set it can interfere with fetching blocks for "
-"`ord` index. Either remove it or set `whitebind=127.0.0.1:8333`."
+"`bitomc` index. Either remove it or set `whitebind=127.0.0.1:8333`."
 msgstr ""
 "Kung mayroon kang naka-set na `maxuploadtarget` maaari itong makagambala sa pagkuha ng mga bloke para sa "
-"index ng `ord`. Alisin ito o i-set ang `whitebind=127.0.0.1:8333`."
+"index ng `bitomc`. Alisin ito o i-set ang `whitebind=127.0.0.1:8333`."
 
 #: src/guides/inscriptions.md:139
-msgid "Installing `ord`"
-msgstr "Pag-install ng `ord`"
+msgid "Installing `bitomc`"
+msgstr "Pag-install ng `bitomc`"
 
 #: src/guides/inscriptions.md:142
 msgid ""
-"The `ord` utility is written in Rust and can be built from [source](https://"
-"github.com/ordinals/ord). Pre-built binaries are available on the [releases "
-"page](https://github.com/ordinals/ord/releases)."
+"The `bitomc` utility is written in Rust and can be built from [source](https://"
+"github.com/BitOMC/BitOMC). Pre-built binaries are available on the [releases "
+"page](https://github.com/BitOMC/BitOMC/releases)."
 msgstr ""
-"Ang `ord` utility ay nakasulat sa Rust at maaaring i-compile mula sa [source]"
-"(https://github.com/ordinals/ord). Available ang mga pre-built na binary sa "
-"page ng mga [release page](https://github.com/ordinals/ord/releases)."
+"Ang `bitomc` utility ay nakasulat sa Rust at maaaring i-compile mula sa [source]"
+"(https://github.com/BitOMC/BitOMC). Available ang mga pre-built na binary sa "
+"page ng mga [release page](https://github.com/BitOMC/BitOMC/releases)."
 
 #: src/guides/inscriptions.md:146
 msgid "You can install the latest pre-built binary from the command line with:"
@@ -3310,12 +3310,12 @@ msgstr ""
 "```"
 
 #: src/guides/inscriptions.md:152
-msgid "Once `ord` is installed, you should be able to run:"
+msgid "Once `bitomc` is installed, you should be able to run:"
 msgstr "Kapag na-install na ang ord, dapat mong patakbuhin ang:"
 
 #: src/guides/inscriptions.md:158
-msgid "Which prints out `ord`'s version number."
-msgstr "na magpapakita ng numero ng bersyon ng `ord`."
+msgid "Which prints out `bitomc`'s version number."
+msgstr "na magpapakita ng numero ng bersyon ng `bitomc`."
 
 #: src/guides/inscriptions.md:160
 msgid "Creating a Bitcoin Core Wallet"
@@ -3323,18 +3323,18 @@ msgstr "Paglikha ng Bitcoin Core Wallet"
 
 #: src/guides/inscriptions.md:163
 msgid ""
-"`ord` uses Bitcoin Core to manage private keys, sign transactions, and "
+"`bitomc` uses Bitcoin Core to manage private keys, sign transactions, and "
 "broadcast transactions to the Bitcoin network."
 msgstr ""
-"Ang `ord` ay gumagamit ng Bitcoin Core upang pamahalaan ang mga private key, "
+"Ang `bitomc` ay gumagamit ng Bitcoin Core upang pamahalaan ang mga private key, "
 "lagdaan ang mga transaksyon, at i-broadcast ang mga ito sa network ng "
 "Bitcoin."
 
 #: src/guides/inscriptions.md:166
-msgid "To create a Bitcoin Core wallet named `ord` for use with `ord`, run:"
+msgid "To create a Bitcoin Core wallet named `bitomc` for use with `bitomc`, run:"
 msgstr ""
-"Para gumawa ng Bitcoin Core wallet na ang pangalan ay `ord` para gamitin sa "
-"`ord`, patakbuhin ang:"
+"Para gumawa ng Bitcoin Core wallet na ang pangalan ay `bitomc` para gamitin sa "
+"`bitomc`, patakbuhin ang:"
 
 #: src/guides/inscriptions.md:172
 msgid "Receiving Sats"
@@ -3350,8 +3350,8 @@ msgstr ""
 "iyong wallet ay mangangailangan ng mga sats."
 
 #: src/guides/inscriptions.md:178
-msgid "Get a new address from your `ord` wallet by running:"
-msgstr "Kumuha ng bagong address mula sa iyong ord wallet sa pamamagitan ng:"
+msgid "Get a new address from your `bitomc` wallet by running:"
+msgstr "Kumuha ng bagong address mula sa iyong bitomc wallet sa pamamagitan ng:"
 
 #: src/guides/inscriptions.md:184
 msgid "And send it some funds."
@@ -3364,10 +3364,10 @@ msgstr "Maaari mong tingnan ang mga kasalukuyang transaksyon gamit ang:"
 #: src/guides/inscriptions.md:192
 msgid ""
 "Once the transaction confirms, you should be able to see the transactions "
-"outputs with `ord wallet outputs`."
+"outputs with `bitomc wallet outputs`."
 msgstr ""
 "Kapag nakumpirma na ang transaksyon, dapat mong makita ang mga resulta ng "
-"transaksyon sa mga`ord wallet outputs`."
+"transaksyon sa mga`bitomc wallet outputs`."
 
 #: src/guides/inscriptions.md:195
 msgid "Creating Inscription Content"
@@ -3375,12 +3375,12 @@ msgstr "Lumikha ng Inscription Content"
 
 #: src/guides/inscriptions.md:198
 msgid ""
-"Sats can be inscribed with any kind of content, but the `ord` wallet only "
-"supports content types that can be displayed by the `ord` block explorer."
+"Sats can be inscribed with any kind of content, but the `bitomc` wallet only "
+"supports content types that can be displayed by the `bitomc` block explorer."
 msgstr ""
 "Maaaring i-inscribe ang Sats sa anumang uri ng content, ngunit "
-"sinusuportahan lamang ng ord wallet ang mga uri ng content na maaaring i-"
-"display ng `ord` block explorer."
+"sinusuportahan lamang ng bitomc wallet ang mga uri ng content na maaaring i-"
+"display ng `bitomc` block explorer."
 
 #: src/guides/inscriptions.md:201
 msgid ""
@@ -3486,7 +3486,7 @@ msgstr ""
 #: src/guides/inscriptions.md:250
 msgid ""
 "To make an inscription a child of another, the parent inscription has to be "
-"inscribed and present in the wallet. To choose a parent run `ord wallet "
+"inscribed and present in the wallet. To choose a parent run `bitomc wallet "
 "inscriptions` and copy the inscription id (`<PARENT_INSCRIPTION_ID>`)."
 msgstr ""
 
@@ -3546,15 +3546,15 @@ msgstr ""
 
 #: src/guides/sat-hunting.md:4
 msgid ""
-"_This guide is out of date. Since it was written, the `ord` binary was "
+"_This guide is out of date. Since it was written, the `bitomc` binary was "
 "changed to only build the full satoshi index when the `--index-sats` flag is "
-"supplied. Additionally, `ord` now has a built-in wallet that wraps a Bitcoin "
-"Core wallet. See `ord wallet --help`._"
+"supplied. Additionally, `bitomc` now has a built-in wallet that wraps a Bitcoin "
+"Core wallet. See `bitomc wallet --help`._"
 msgstr ""
-"Ang gabay na ito ay hindi na napapanahon. Ang `ord` binary ay binago upang "
+"Ang gabay na ito ay hindi na napapanahon. Ang `bitomc` binary ay binago upang "
 "bumuo lamang ng buong satoshi index kapag ang `--index-sats` na opsyon ay "
-"ibinigay. Bukod pa rito, mayroon na ngayong built-in na wallet ang `ord` na "
-"nakapaloob sa isang Bitcoin Core wallet. Tingnan ang `ord wallet --help` na "
+"ibinigay. Bukod pa rito, mayroon na ngayong built-in na wallet ang `bitomc` na "
+"nakapaloob sa isang Bitcoin Core wallet. Tingnan ang `bitomc wallet --help` na "
 "command."
 
 #: src/guides/sat-hunting.md:9
@@ -3609,20 +3609,20 @@ msgstr ""
 "sumusunod na command ay dapat mag-print ng kasalukuyang taas ng bloke:"
 
 #: src/guides/sat-hunting.md:41
-msgid "Second, you'll need a synced `ord` index."
-msgstr "Pangalawa, kakailanganin mo ng naka-sync na `ord` index."
+msgid "Second, you'll need a synced `bitomc` index."
+msgstr "Pangalawa, kakailanganin mo ng naka-sync na `bitomc` index."
 
 #: src/guides/sat-hunting.md:43
-msgid "Get a copy of `ord` from [the repo](https://github.com/ordinals/ord/)."
+msgid "Get a copy of `bitomc` from [the repo](https://github.com/BitOMC/BitOMC/)."
 msgstr ""
-"Kumuha ng kopya ng `ord` mula sa [repo](https://github.com/ordinals/ord/)."
+"Kumuha ng kopya ng `bitomc` mula sa [repo](https://github.com/BitOMC/BitOMC/)."
 
 #: src/guides/sat-hunting.md:45
 msgid ""
-"Run `RUST_LOG=info ord index`. It should connect to your bitcoin core node "
+"Run `RUST_LOG=info bitomc index`. It should connect to your bitcoin core node "
 "and start indexing."
 msgstr ""
-"I-run ang `RUST_LOG=info ord index`. Dapat itong kumonekta sa iyong bitcoin "
+"I-run ang `RUST_LOG=info bitomc index`. Dapat itong kumonekta sa iyong bitcoin "
 "core node at simulan ang pag-index."
 
 #: src/guides/sat-hunting.md:48
@@ -3644,11 +3644,11 @@ msgstr "Paghahanap ng Rare Ordinals sa isang Bitcoin Core Wallet"
 
 #: src/guides/sat-hunting.md:57
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "searching for rare ordinals in a Bitcoin Core wallet is Easy. Assuming your "
 "wallet is named `foo`:"
 msgstr ""
-"Ang command na `ord wallet` ay isang wrapper lamang sa RPC API ng Bitcoin "
+"Ang command na `bitomc wallet` ay isang wrapper lamang sa RPC API ng Bitcoin "
 "Core, kaya madali ang paghahanap ng mga rare ordinals sa isang Bitcoin Core "
 "wallet. Ipagpalagay na ang iyong wallet ay pinangalanang `foo`:"
 
@@ -3666,11 +3666,11 @@ msgstr "Paghahanap ng Rare Ordinals sa Non-Bitcoin Core Wallet"
 
 #: src/guides/sat-hunting.md:75
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "to search for rare ordinals in a non-Bitcoin Core wallet, you'll need to "
 "import your wallet's descriptors into Bitcoin Core."
 msgstr ""
-"Ang command na `ord wallet` ay isang wrapper lamang sa RPC API ng Bitcoin "
+"Ang command na `bitomc wallet` ay isang wrapper lamang sa RPC API ng Bitcoin "
 "Core, kaya upang maghanap ng mga rate ordinals sa isang wallet na hindi "
 "Bitcoin Core, kakailanganin mong i-import ang mga descriptor ng iyong wallet "
 "sa Bitcoin Core."
@@ -3952,12 +3952,12 @@ msgstr "Pag-transfer ng Ordinals"
 
 #: src/guides/sat-hunting.md:246
 msgid ""
-"The `ord` wallet supports transferring specific satoshis. You can also use "
+"The `bitomc` wallet supports transferring specific satoshis. You can also use "
 "`bitcoin-cli` commands `createrawtransaction`, "
 "`signrawtransactionwithwallet`, and `sendrawtransaction`, how to do so is "
 "complex and outside the scope of this guide."
 msgstr ""
-"Sinusuportahan ng `ord` wallet ang pag-transfer ng mga partikular na "
+"Sinusuportahan ng `bitomc` wallet ang pag-transfer ng mga partikular na "
 "satoshi. Maaari mo ring gamitin ang `bitcoin-cli` commands "
 "`createrawtransaction`,`signrawtransactionwithwallet`, at "
 "`sendrawtransaction`, kung paano gawin ito ay kumplikado at sa labas ng "
@@ -3965,23 +3965,23 @@ msgstr ""
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/ordinals/ord/) is the only wallet "
+"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"Sa kasalukuyan, ang [ord](https://github.com/ordinals/ord/) ay ang tanging "
+"Sa kasalukuyan, ang [ord](https://github.com/BitOMC/BitOMC/) ay ang tanging "
 "wallet na sumusuporta sa sat control at selection, na kinakailangan upang "
 "ligtas na mag-store at magpadala ng mga rare sats at inscription, pagkatapos "
 "ay tinutukoy bilang mga ordinal."
 
 #: src/guides/collecting.md:8
 msgid ""
-"The recommended way to send, receive, and store ordinals is with `ord`, but "
+"The recommended way to send, receive, and store ordinals is with `bitomc`, but "
 "if you are careful, it is possible to safely store, and in some cases send, "
 "ordinals with other wallets."
 msgstr ""
 "Inirerekomenda na magpadala, tumanggap at mag-imbak ng mga ordinal na may "
-"`ord`, ngunit kung ikaw ay maingat, posible na mag-store, at sa ilang mga "
+"`bitomc`, ngunit kung ikaw ay maingat, posible na mag-store, at sa ilang mga "
 "kaso, magpadala ng mga ordinal nang ligtas kasama ng iba pang mga wallet."
 
 #: src/guides/collecting.md:12
@@ -4002,11 +4002,11 @@ msgstr ""
 
 #: src/guides/collecting.md:18
 msgid ""
-"A [guide](./collecting/sparrow-wallet.md) to creating an `ord`\\-compatible "
+"A [guide](./collecting/sparrow-wallet.md) to creating an `bitomc`\\-compatible "
 "wallet with [Sparrow Wallet](https://sparrowwallet.com/), is available in "
 "this handbook."
 msgstr ""
-"Ang [gabay](./collecting/sparrow-wallet.md) sa paggawa ng `ord`\\-compatible "
+"Ang [gabay](./collecting/sparrow-wallet.md) sa paggawa ng `bitomc`\\-compatible "
 "na wallet na [Sparrow Wallet](https://sparrowwallet.com/), ay available sa "
 "handbook na ito."
 
@@ -4027,24 +4027,24 @@ msgstr "Pagkolekta ng mga Inscription at Ordinal gamit ang Sparrow Wallet"
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
 "Users who cannot or have not yet set up the [ord](https://github.com/"
-"ordinals/ord) wallet can receive inscriptions and ordinals with alternative "
+"BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
 "Ang mga user na hindi o hindi pa nakakapag-set up ng [ord](https://github."
-"com/ordinals/ord) wallet ay maaaring makatanggap ng mga inscription at "
+"com/BitOMC/BitOMC) wallet ay maaaring makatanggap ng mga inscription at "
 "ordinal sa iba pang bitcoin wallet, basta't _maingat_ sila kung paano nila "
 "ginagastos ang pera mula sa wallet na iyon."
 
 #: src/guides/collecting/sparrow-wallet.md:6
 msgid ""
 "This guide gives some basic steps on how to create a wallet with [Sparrow "
-"Wallet](https://sparrowwallet.com/) which is compatible with `ord` and can "
-"be later imported into `ord`"
+"Wallet](https://sparrowwallet.com/) which is compatible with `bitomc` and can "
+"be later imported into `bitomc`"
 msgstr ""
 "Nagbibigay ang gabay na ito ng ilang pangunahing hakbang kung paano gumawa "
-"ng [Sparrow Wallet](https://sparrowwallet.com/) na tugma sa `ord` at maaring "
-"ma-import sa `ord`"
+"ng [Sparrow Wallet](https://sparrowwallet.com/) na tugma sa `bitomc` at maaring "
+"ma-import sa `bitomc`"
 
 #: src/guides/collecting/sparrow-wallet.md:8
 msgid "⚠️⚠️ Warning!! ⚠️⚠️"
@@ -4081,10 +4081,10 @@ msgstr ""
 "com/download/) para sa iyong partikular na operating system."
 
 #: src/guides/collecting/sparrow-wallet.md:17
-msgid "Select `File -> New Wallet` and create a new wallet called `ord`."
+msgid "Select `File -> New Wallet` and create a new wallet called `bitomc`."
 msgstr ""
 "Piliin ang `File -> New Wallet` at gumawa ng bagong wallet na tinatawag na "
-"`ord`."
+"`bitomc`."
 
 #: src/guides/collecting/sparrow-wallet.md:19
 msgid "![](images/wallet_setup_01.png)"
@@ -4163,12 +4163,12 @@ msgstr "![](images/wallet_setup_07.png)"
 
 #: src/guides/collecting/sparrow-wallet.md:47
 msgid ""
-"You now have a wallet which is compatible with `ord`, and can be imported "
-"into `ord` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
+"You now have a wallet which is compatible with `bitomc`, and can be imported "
+"into `bitomc` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
 "click on the `Receive` tab and copy a new address."
 msgstr ""
-"Mayroon ka na ngayong wallet na compatible sa `ord`, at maaaring i-import sa "
-"`ord` gamit ang BIP39 Seed Phrase. Upang makatanggap ng mga ordinal o "
+"Mayroon ka na ngayong wallet na compatible sa `bitomc`, at maaaring i-import sa "
+"`bitomc` gamit ang BIP39 Seed Phrase. Upang makatanggap ng mga ordinal o "
 "inskripsiyon, mag-click sa tab na `Receive` at kumopya ng bagong address."
 
 #: src/guides/collecting/sparrow-wallet.md:49
@@ -4292,70 +4292,70 @@ msgstr ""
 "Wallet hanggang sa i-unfreeze mo ito."
 
 #: src/guides/collecting/sparrow-wallet.md:79
-msgid "Importing into `ord` wallet"
-msgstr "Pag-import sa `ord` wallet"
+msgid "Importing into `bitomc` wallet"
+msgstr "Pag-import sa `bitomc` wallet"
 
 #: src/guides/collecting/sparrow-wallet.md:81
 msgid ""
-"For details on setting up Bitcoin Core and the `ord` wallet check out the "
+"For details on setting up Bitcoin Core and the `bitomc` wallet check out the "
 "[Inscriptions Guide](../inscriptions.md)"
 msgstr ""
-"Para sa mga detalye sa pagse-set up ng Bitcoin Core at ang `ord` wallet "
+"Para sa mga detalye sa pagse-set up ng Bitcoin Core at ang `bitomc` wallet "
 "tingnan ang [Inscriptions Guide](../inscriptions.md)"
 
 #: src/guides/collecting/sparrow-wallet.md:83
 msgid ""
-"When setting up `ord`, instead of running `ord wallet create` to create a "
-"brand-new wallet, you can import your existing wallet using `ord wallet "
+"When setting up `bitomc`, instead of running `bitomc wallet create` to create a "
+"brand-new wallet, you can import your existing wallet using `bitomc wallet "
 "restore \"BIP39 SEED PHRASE\"` using the seed phrase you generated with "
 "Sparrow Wallet."
 msgstr ""
-"Kapag nagse-set up ng `ord`, sa halip na i-run ang `ord wallet create` upang "
+"Kapag nagse-set up ng `bitomc`, sa halip na i-run ang `bitomc wallet create` upang "
 "lumikha ng isang bagong-bagong pitaka, maaari mong i-import ang iyong "
-"existing na pitaka gamit ang `ord wallet restore \"BIP39 SEED PHRASE\"` "
+"existing na pitaka gamit ang `bitomc wallet restore \"BIP39 SEED PHRASE\"` "
 "gamit ang seed phrase na nabuo mo gamit ang Sparrow Wallet."
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
+"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
-"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=ord "
+"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"Kasalukuyang may [bug](https://github.com/ordinals/ord/issues/1589) na "
+"Kasalukuyang may [bug](https://github.com/abc1234567890xyz1589) na "
 "nagiging sanhi ng isang na-import na wallet upang hindi awtomatikong muling "
 "i-scan versus sa blockchain. Upang magawa ito, kailangan mong manu-manong "
 "mag-trigger ang rescan gamit ang bitcoin core cli: `bitcoin-cli -"
-"rpcwallet=ord rescanblockchain 767430`"
+"rpcwallet=bitomc rescanblockchain 767430`"
 
 #: src/guides/collecting/sparrow-wallet.md:88
 msgid ""
-"You can then check your wallet's inscriptions using `ord wallet inscriptions`"
+"You can then check your wallet's inscriptions using `bitomc wallet inscriptions`"
 msgstr ""
 "Pagkatapos ay maaari mong suriin ang mga inskripsiyon ng iyong wallet gamit "
-"ang `ord wallet inscriptions`"
+"ang `bitomc wallet inscriptions`"
 
 #: src/guides/collecting/sparrow-wallet.md:90
 msgid ""
-"Note that if you have previously created a wallet with `ord`, then you will "
+"Note that if you have previously created a wallet with `bitomc`, then you will "
 "already have a wallet with the default name, and will need to give your "
 "imported wallet a different name. You can use the `--wallet` parameter in "
-"all `ord` commands to reference a different wallet, eg:"
+"all `bitomc` commands to reference a different wallet, eg:"
 msgstr ""
-"Tandaan na kung nakagawa ka dati ng wallet na may `ord`, pagkatapos ay "
+"Tandaan na kung nakagawa ka dati ng wallet na may `bitomc`, pagkatapos ay "
 "mayroon nang wallet na may default na pangalan, at kakailanganing ibigay ang "
 "iyong imported na wallet ng bagong pangalan. Maaari mong gamitin ang "
-"parameter na `--wallet` sa lahat ng commands ng `ord` para ma-reference sa "
+"parameter na `--wallet` sa lahat ng commands ng `bitomc` para ma-reference sa "
 "ibang wallet, hal:"
 
 #: src/guides/collecting/sparrow-wallet.md:92
-msgid "`ord --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
-msgstr "`ord --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
+msgid "`bitomc --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
+msgstr "`bitomc --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
 
 #: src/guides/collecting/sparrow-wallet.md:94
-msgid "`ord --wallet ord_from_sparrow wallet inscriptions`"
-msgstr "`ord --wallet ord_from_sparrow wallet inscriptions`"
+msgid "`bitomc --wallet ord_from_sparrow wallet inscriptions`"
+msgstr "`bitomc --wallet ord_from_sparrow wallet inscriptions`"
 
 #: src/guides/collecting/sparrow-wallet.md:96
 msgid "`bitcoin-cli -rpcwallet=ord_from_sparrow rescanblockchain 767430`"
@@ -4372,24 +4372,24 @@ msgstr ""
 #: src/guides/collecting/sparrow-wallet.md:101
 msgid ""
 "While it is highly recommended that you set up a bitcoin core node and run "
-"the `ord` software, there are certain limited ways you can send inscriptions "
+"the `bitomc` software, there are certain limited ways you can send inscriptions "
 "out of Sparrow Wallet in a safe way. Please note that this is not "
 "recommended, and you should only do this if you fully understand what you "
 "are doing."
 msgstr ""
 "Habang lubos na inirerekomenda na mag-set up ka ng bitcoin core node at "
-"magpatakbo ng `ord` software, may ilang partikular na limitadong paraan na "
+"magpatakbo ng `bitomc` software, may ilang partikular na limitadong paraan na "
 "maaari kang magpadala ng mga inskripsiyon mula sa Sparrow Wallet sa ligtas "
 "na paraan. Pakitandaan na hindi ito inirerekomenda, at dapat mo lang gawin "
 "ito kung lubos mong naiintindihan kung ano ang iyong ginagawa."
 
 #: src/guides/collecting/sparrow-wallet.md:103
 msgid ""
-"Using the `ord` software will remove much of the complexity we are "
+"Using the `bitomc` software will remove much of the complexity we are "
 "describing here, as it is able to automatically and safely handle sending "
 "inscriptions in an easy way."
 msgstr ""
-"Ang paggamit ng `ord` software ay mag-aalis sa pagiging kumplikado sa "
+"Ang paggamit ng `bitomc` software ay mag-aalis sa pagiging kumplikado sa "
 "paglalarawan dito, dahil awtomatiko at ligtas nitong pangasiwaan ang "
 "pagpapadala ng mga inskripsiyon sa madaling paraan."
 
@@ -4620,12 +4620,12 @@ msgid ""
 "If your transaction looks any different, for example you have multiple "
 "inputs, or multiple outputs then this may not be a safe transfer of your "
 "inscription, and you should abandon sending until you understand more, or "
-"can import into the `ord` wallet."
+"can import into the `bitomc` wallet."
 msgstr ""
 "Kung iba ang hitsura ng iyong transaksyon, halimbawa marami kang mga input, "
 "o maramihang mga output kung gayon ito ay maaaring hindi isang ligtas na "
 "paglipat ng iyong inskripsyon, at dapat mong iwanan ang pagpapadala hanggang "
-"sa mas maunawaan mo, o maaaring mag-import sa `ord` wallet."
+"sa mas maunawaan mo, o maaaring mag-import sa `bitomc` wallet."
 
 #: src/guides/collecting/sparrow-wallet.md:149
 msgid ""
@@ -4764,10 +4764,10 @@ msgstr ""
 
 #: src/guides/testing.md:7
 msgid ""
-"Most `ord` commands in [inscriptions](inscriptions.md) and [explorer]"
+"Most `bitomc` commands in [inscriptions](inscriptions.md) and [explorer]"
 "(explorer.md) can be run with the following network flags:"
 msgstr ""
-"Karamihan sa commands ng `ord` sa [inscriptions](inscriptions.md) at "
+"Karamihan sa commands ng `bitomc` sa [inscriptions](inscriptions.md) at "
 "[explorer](explorer.md) ay maaaring i-run gamit ang mga sumusunod na flag ng "
 "network:"
 
@@ -4804,10 +4804,10 @@ msgid "`--regtest` or `-r`"
 msgstr "`--regtest` or `-r`"
 
 #: src/guides/testing.md:16
-msgid "Regtest doesn't require downloading the blockchain or indexing ord."
+msgid "Regtest doesn't require downloading the blockchain or indexing bitomc."
 msgstr ""
 "Ang regtest ay hindi nangangailangan ng pag-download ng blockchain o "
-"indexing ord."
+"indexing bitomc."
 
 #: src/guides/testing.md:21
 msgid "Run bitcoind in regtest with:"
@@ -4878,10 +4878,10 @@ msgstr ""
 
 #: src/guides/moderation.md:4
 msgid ""
-"`ord` includes a block explorer, which you can run locally with `ord server`."
+"`bitomc` includes a block explorer, which you can run locally with `bitomc server`."
 msgstr ""
-"Ang `ord` ay may kasamang block explorer, na maaari mong patakbuhin sa local "
-"gamit ang `ord server`."
+"Ang `bitomc` ay may kasamang block explorer, na maaari mong patakbuhin sa local "
+"gamit ang `bitomc server`."
 
 #: src/guides/moderation.md:6
 msgid ""
@@ -4905,11 +4905,11 @@ msgstr ""
 
 #: src/guides/moderation.md:13
 msgid ""
-"In order to prevent particular inscriptions from being displayed on an `ord` "
+"In order to prevent particular inscriptions from being displayed on an `bitomc` "
 "instance, they can be included in a YAML config file, which is loaded with "
 "the `--config` option."
 msgstr ""
-"Upang maiwasang maipakita ang mga partikular na inscription sa isang `ord` "
+"Upang maiwasang maipakita ang mga partikular na inscription sa isang `bitomc` "
 "instance, maaaring isama ang mga ito sa isang configuration file ng YAML, na "
 "may kasamang opsyong na `--config`."
 
@@ -4923,10 +4923,10 @@ msgstr ""
 
 #: src/guides/moderation.md:25
 msgid ""
-"The suggested name for `ord` config files is `ord.yaml`, but any filename "
+"The suggested name for `bitomc` config files is `bitomc.yaml`, but any filename "
 "can be used."
 msgstr ""
-"Ang pangalan ng  file ng pagsasaayos ng `ord` ay `ord.yaml`, ngunit maaaring "
+"Ang pangalan ng  file ng pagsasaayos ng `bitomc` ay `bitomc.yaml`, ngunit maaaring "
 "gamitin ang anumang filename."
 
 #: src/guides/moderation.md:28
@@ -4934,21 +4934,21 @@ msgid "Then pass the file to `--config` when starting the server:"
 msgstr "Pagkatapos ay ipasa ang file sa `--config` kapag sinimulan ang server:"
 
 #: src/guides/moderation.md:30
-msgid "`ord --config ord.yaml server`"
-msgstr "`ord --config ord.yaml server`"
+msgid "`bitomc --config bitomc.yaml server`"
+msgstr "`bitomc --config bitomc.yaml server`"
 
 #: src/guides/moderation.md:32
 msgid ""
-"Note that the `--config` option comes after `ord` but before the `server` "
+"Note that the `--config` option comes after `bitomc` but before the `server` "
 "subcommand."
 msgstr ""
-"Tandaan na ang `--config` na opsyon ay pagkatapos ng `ord` ngunit bago ang "
+"Tandaan na ang `--config` na opsyon ay pagkatapos ng `bitomc` ngunit bago ang "
 "`server` subcommand."
 
 #: src/guides/moderation.md:35
-msgid "`ord` must be restarted in to load changes to the config file."
+msgid "`bitomc` must be restarted in to load changes to the config file."
 msgstr ""
-"Ang `ord` ay dapat na i-restart upang ang mga pagbabagong ginawa sa "
+"Ang `bitomc` ay dapat na i-restart upang ang mga pagbabagong ginawa sa "
 "configuration file ay ma-apply."
 
 #: src/guides/moderation.md:37
@@ -4957,12 +4957,12 @@ msgstr "`ordinals.com`"
 
 #: src/guides/moderation.md:40
 msgid ""
-"The `ordinals.com` instances use `systemd` to run the `ord server` service, "
-"which is called `ord`, with a config file located at `/var/lib/ord/ord.yaml`."
+"The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
+"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
 msgstr ""
 "Ang instance ng ordinals.com ay gumagamit ng `systemd` upang patakbuhin ang "
-"service ng `ord server`, na tinatawag na `ord`, na may configuration file na "
-"matatagpuan sa `/var/lib/ord/ord.yaml`."
+"service ng `bitomc server`, na tinatawag na `bitomc`, na may configuration file na "
+"matatagpuan sa `/var/lib/ord/bitomc.yaml`."
 
 #: src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4973,34 +4973,34 @@ msgid "SSH into the server"
 msgstr "Kumonekta sa SSH server"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/ord.yaml`"
-msgstr "Idagdag ang inscription ID sa `/var/lib/ord/ord.yaml`"
+msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
+msgstr "Idagdag ang inscription ID sa `/var/lib/ord/bitomc.yaml`"
 
 #: src/guides/moderation.md:47
-msgid "Restart the service with `systemctl restart ord`"
-msgstr "I-restart ang serbisyo gamit ang `systemctl restart ord`"
+msgid "Restart the service with `systemctl restart bitomc`"
+msgstr "I-restart ang serbisyo gamit ang `systemctl restart bitomc`"
 
 #: src/guides/moderation.md:48
-msgid "Monitor the restart with `journalctl -u ord`"
-msgstr "Subaybayan ang pag-reboot gamit ang `journalctl -u ord`"
+msgid "Monitor the restart with `journalctl -u bitomc`"
+msgstr "Subaybayan ang pag-reboot gamit ang `journalctl -u bitomc`"
 
 #: src/guides/moderation.md:50
 msgid ""
-"Currently, `ord` is slow to restart, so the site will not come back online "
+"Currently, `bitomc` is slow to restart, so the site will not come back online "
 "immediately."
 msgstr ""
-"Sa kasalukuyan, ang `ord` ay mabagal na mag-restart, kaya ang site ay hindi "
+"Sa kasalukuyan, ang `bitomc` ay mabagal na mag-restart, kaya ang site ay hindi "
 "babalik kaagad online."
 
 #: src/guides/reindexing.md:4
 msgid ""
-"Sometimes the `ord` database must be reindexed, which means deleting the "
-"database and restarting the indexing process with either `ord index update` "
-"or `ord server`. Reasons to reindex are:"
+"Sometimes the `bitomc` database must be reindexed, which means deleting the "
+"database and restarting the indexing process with either `bitomc index update` "
+"or `bitomc server`. Reasons to reindex are:"
 msgstr ""
-"Minsan ang database ng `ord` ay dapat na i-reindex, na nangangahulugan ng "
+"Minsan ang database ng `bitomc` ay dapat na i-reindex, na nangangahulugan ng "
 "pagtanggal ng database at i-restart ang proseso ng pag-index gamit ang "
-"alinman sa `ord index update` o `ord server`. Ang mga dahilan para muling i-"
+"alinman sa `bitomc index update` o `bitomc server`. Ang mga dahilan para muling i-"
 "index ay:"
 
 #: src/guides/reindexing.md:8
@@ -5014,11 +5014,11 @@ msgstr "Na-corrupt ang database"
 
 #: src/guides/reindexing.md:11
 msgid ""
-"The database `ord` uses is called [redb](https://github.com/cberner/redb), "
+"The database `bitomc` uses is called [redb](https://github.com/cberner/redb), "
 "so we give the index the default file name `index.redb`. By default we store "
 "this file in different locations depending on your operating system."
 msgstr ""
-"Ang database na ginagamit ng `ord` ay tinatawag na [redb](https://github.com/"
+"Ang database na ginagamit ng `bitomc` ay tinatawag na [redb](https://github.com/"
 "cberner/redb), kaya binibigyan namin ang index ng default na pangalan ng "
 "file na `index.redb`. Bilang default, ni-store namin ang file na ito sa "
 "iba't ibang lokasyon depende sa iyong operating system."
@@ -5036,8 +5036,8 @@ msgid "Linux"
 msgstr "Linux"
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/ord or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/ord or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgstr "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
 
 #: src/guides/reindexing.md:17
 msgid "/home/alice/.local/share/ord"
@@ -5078,12 +5078,12 @@ msgstr ""
 #: src/guides/reindexing.md:29
 msgid ""
 "You can of course also set the location of the data directory yourself with "
-"`ord --datadir <DIR> index update` or give it a specific filename and path "
-"with `ord --index <FILENAME> index update`."
+"`bitomc --datadir <DIR> index update` or give it a specific filename and path "
+"with `bitomc --index <FILENAME> index update`."
 msgstr ""
 "Siyempre maaari mo ring itakda ang lokasyon ng direktoryo ng data sa iyong "
-"sarili gamit ang `ord --datadir <DIR> index update` o bigyan ito ng "
-"partikular na filename at path na may `ord --index <FILENAME> index update`."
+"sarili gamit ang `bitomc --datadir <DIR> index update` o bigyan ito ng "
+"partikular na filename at path na may `bitomc --index <FILENAME> index update`."
 
 #: src/bounties.md:1
 msgid "Ordinal Bounty Hunting Hints"
@@ -5091,11 +5091,11 @@ msgstr "Ordinal Bounty Hunting Hints"
 
 #: src/bounties.md:4
 msgid ""
-"The `ord` wallet can send and receive specific satoshis. Additionally, "
+"The `bitomc` wallet can send and receive specific satoshis. Additionally, "
 "ordinal theory is extremely simple. A clever hacker should be able to write "
 "code from scratch to manipulate satoshis using ordinal theory in no time."
 msgstr ""
-"Ang `ord` wallet ay maaaring magpadala at tumanggap ng partikular na "
+"Ang `bitomc` wallet ay maaaring magpadala at tumanggap ng partikular na "
 "satoshi. Gayundin, ang ordinal theory ay napakasimple. Ang isang matalinong "
 "hacker ay dapat na makapagsulat ng code mula sa simula upang manipulahin ang "
 "mga satoshi gamit ang ordinal theory."
@@ -5103,14 +5103,14 @@ msgstr ""
 #: src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/ordinals/ord/blob/master/bip."
-"mediawiki) for the technical details, and the [ord repo](https://github.com/"
-"ordinals/ord) for the `ord` wallet and block explorer."
+"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
+"BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
 "Para sa higit pang impormasyon sa Ordinal Theory, tingnan ang FAQ para sa "
-"isang pangkalahatang-ideya, ang [BIP](https://github.com/ordinals/ord/blob/"
-"master/bip.mediawiki) para sa mga teknikal na detalye, at ang [ord "
-"repository](https://github.com/ordinals/ord) para sa ord wallet at block "
+"isang pangkalahatang-ideya, ang [BIP](https://github.com/xaz1234567890abc/"
+"master/bip.mediawiki) para sa mga teknikal na detalye, at ang [bitomc "
+"repository](https://github.com/BitOMC/BitOMC) para sa bitomc wallet at block "
 "explorer."
 
 #: src/bounties.md:14
@@ -5354,20 +5354,20 @@ msgstr ""
 
 #: src/bounty/3.md:32
 msgid ""
-"To search an `ord` wallet for sats with a name in `frequency.tsv`, use the "
-"following [`ord`](https://github.com/ordinals/ord) command:"
+"To search an `bitomc` wallet for sats with a name in `frequency.tsv`, use the "
+"following [`bitomc`](https://github.com/BitOMC/BitOMC) command:"
 msgstr ""
-"Upang maghanap ng `ord` wallet para sa sats na may pangalan sa `frequency."
-"tsv`, gamitin ang sumusunod sa [`ord`](https://github.com/ordinals/ord) na "
+"Upang maghanap ng `bitomc` wallet para sa sats na may pangalan sa `frequency."
+"tsv`, gamitin ang sumusunod sa [`bitomc`](https://github.com/BitOMC/BitOMC) na "
 "command:"
 
 #: src/bounty/3.md:39
 msgid ""
-"This command requires the sat index, so `--index-sats` must be passed to ord "
+"This command requires the sat index, so `--index-sats` must be passed to bitomc "
 "when first creating the index."
 msgstr ""
 "Ang command na ito ay nangangailangan ng sat index, kaya ang `--index-sats` "
-"ay dapat ipasa sa ord noong unang gumawa ng index."
+"ay dapat ipasa sa bitomc noong unang gumawa ng index."
 
 #: src/bounty/3.md:42
 msgid "Part 0"

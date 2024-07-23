@@ -11,7 +11,7 @@ extra-watch-dirs = ["po"]
 [output.html]
 cname = "docs.ordinals.com"
 default-theme = "coal"
-git-repository-url = "https://github.com/ordinals/ord"
+git-repository-url = "https://github.com/BitOMC/BitOMC"
 preferred-dark-theme = "coal"
 additional-css = ["language-picker.css"]
 

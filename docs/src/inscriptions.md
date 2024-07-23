@@ -42,7 +42,7 @@ follows:
 ```
 OP_FALSE
 OP_IF
-  OP_PUSH "ord"
+  OP_PUSH "bitomc"
   OP_PUSH 1
   OP_PUSH "text/plain;charset=utf-8"
   OP_PUSH 0
@@ -50,7 +50,7 @@ OP_IF
 OP_ENDIF
 ```
 
-First the string `ord` is pushed, to disambiguate inscriptions from other uses
+First the string `bitomc` is pushed, to disambiguate inscriptions from other uses
 of envelopes.
 
 `OP_PUSH 1` indicates that the next push contains the content type, and
@@ -131,7 +131,7 @@ Inscriptions are assigned inscription numbers starting at zero, first by the
 order reveal transactions appear in blocks, and the order that reveal envelopes
 appear in those transactions.
 
-Due to a historical bug in `ord` which cannot be fixed without changing a great
+Due to a historical bug in `bitomc` which cannot be fixed without changing a great
 many inscription numbers, inscriptions which are revealed and then immediately
 spent to fees are numbered as if they appear last in the block in which they
 are revealed.
@@ -178,7 +178,7 @@ the inscription is present in the wallet. This will only append an inscription t
 a sat, not change the initial inscription.
 
 Reinscribe with satpoint:
-`ord wallet inscribe --fee-rate <FEE_RATE> --reinscribe --file <FILE> --satpoint <SATPOINT>`
+`bitomc wallet inscribe --fee-rate <FEE_RATE> --reinscribe --file <FILE> --satpoint <SATPOINT>`
 
 Reinscribe on a sat (requires sat index):
-`ord --index-sats wallet inscribe --fee-rate <FEE_RATE> --reinscribe --file <FILE> --sat <SAT>`
+`bitomc --index-sats wallet inscribe --fee-rate <FEE_RATE> --reinscribe --file <FILE> --sat <SAT>`

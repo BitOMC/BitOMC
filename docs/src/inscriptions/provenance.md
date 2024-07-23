@@ -32,7 +32,7 @@ An example of a child inscription of
 ```
 OP_FALSE
 OP_IF
-  OP_PUSH "ord"
+  OP_PUSH "bitomc"
   OP_PUSH 1
   OP_PUSH "text/plain;charset=utf-8"
   OP_PUSH 3
@@ -76,7 +76,7 @@ OP_ENDIF
 
 The tag `3` is used because it is the first available odd tag. Unrecognized odd
 tags do not make an inscription unbound, so child inscriptions would be
-recognized and tracked by old versions of `ord`.
+recognized and tracked by old versions of `bitomc`.
 
 A collection can be closed by burning the collection's parent inscription,
 which guarantees that no more items in the collection can be issued.

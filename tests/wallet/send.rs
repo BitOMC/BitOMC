@@ -4,20 +4,20 @@ use {super::*, base64::Engine, bitcoin::psbt::Psbt, bitcoin::Amount};
 fn send_on_mainnnet_works_with_wallet_named_foo() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
   core.mine_blocks(1);
 
   CommandBuilder::new("wallet --name foo create")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .run_and_deserialize_output::<Create>();
 
   CommandBuilder::new(format!(
     "wallet --name foo send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 }
 
@@ -25,9 +25,9 @@ fn send_on_mainnnet_works_with_wallet_named_foo() {
 fn send_addresses_must_be_valid_for_network() {
   let core = mockcore::builder().build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks_with_subsidy(1, 1_000);
 
@@ -35,7 +35,7 @@ fn send_addresses_must_be_valid_for_network() {
     "wallet send --fee-rate 1 tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz 1btc"
   ))
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .expected_stderr(
     "error: address tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz belongs to network testnet which is different from required bitcoin\n",
   )
@@ -47,9 +47,9 @@ fn send_addresses_must_be_valid_for_network() {
 fn send_on_mainnnet_works_with_wallet_named_ord() {
   let core = mockcore::builder().build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks_with_subsidy(1, 1_000_000);
 
@@ -57,7 +57,7 @@ fn send_on_mainnnet_works_with_wallet_named_ord() {
     "wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1000sat"
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   assert_eq!(core.mempool()[0].txid(), output.txid);
@@ -67,15 +67,15 @@ fn send_on_mainnnet_works_with_wallet_named_ord() {
 fn send_btc_fails_if_lock_unspent_fails() {
   let core = mockcore::builder().fail_lock_unspent(true).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
   CommandBuilder::new("wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_stderr("error: failed to lock UTXOs\n")
     .expected_exit_code(1)
     .run_and_extract_stdout();
@@ -85,9 +85,9 @@ fn send_btc_fails_if_lock_unspent_fails() {
 fn wallet_send_with_fee_rate() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
@@ -95,7 +95,7 @@ fn wallet_send_with_fee_rate() {
     "wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc --fee-rate 2.0"
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   let tx = &core.mempool()[0];
@@ -119,9 +119,9 @@ fn wallet_send_with_fee_rate() {
 fn user_must_provide_fee_rate_to_send() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
@@ -129,7 +129,7 @@ fn user_must_provide_fee_rate_to_send() {
     "wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .expected_exit_code(2)
   .stderr_regex(
     ".*error: the following required arguments were not provided:
@@ -142,9 +142,9 @@ fn user_must_provide_fee_rate_to_send() {
 fn send_btc_does_not_send_locked_utxos() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let coinbase_tx = &core.mine_blocks(1)[0].txdata[0];
   let outpoint = OutPoint::new(coinbase_tx.txid(), 0);
@@ -153,7 +153,7 @@ fn send_btc_does_not_send_locked_utxos() {
 
   CommandBuilder::new("wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_exit_code(1)
     .stderr_regex("error:.*")
     .run_and_extract_stdout();
@@ -163,9 +163,9 @@ fn send_btc_does_not_send_locked_utxos() {
 fn send_dry_run() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
@@ -173,7 +173,7 @@ fn send_dry_run() {
     "wallet send --fee-rate 1 bc1qcqgs2pps4u4yedfyl5pysdjjncs8et5utseepv --dry-run 100sats",
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   assert!(core.mempool().is_empty());
@@ -196,9 +196,9 @@ fn send_dry_run() {
 fn sending_rune_that_has_not_been_etched_is_an_error() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let coinbase_tx = &core.mine_blocks(1)[0].txdata[0];
   let outpoint = OutPoint::new(coinbase_tx.txid(), 0);
@@ -207,7 +207,7 @@ fn sending_rune_that_has_not_been_etched_is_an_error() {
 
   CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:FOO")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: rune `FOO` has not been etched\n")
     .run_and_extract_stdout();
@@ -217,16 +217,16 @@ fn sending_rune_that_has_not_been_etched_is_an_error() {
 fn sending_rune_with_excessive_precision_is_an_error() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -235,7 +235,7 @@ fn sending_rune_with_excessive_precision_is_an_error() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: excessive precision\n")
   .run_and_extract_stdout();
@@ -245,16 +245,16 @@ fn sending_rune_with_excessive_precision_is_an_error() {
 fn sending_rune_with_insufficient_balance_is_an_error() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -263,7 +263,7 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
@@ -273,16 +273,16 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
 fn sending_rune_works() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -291,19 +291,19 @@ fn sending_rune_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::balances::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
     balances,
-    ord::subcommand::balances::Output {
+    bitomc::subcommand::balances::Output {
       runes: vec![(
         SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
@@ -343,16 +343,16 @@ fn sending_rune_works() {
 fn sending_rune_with_change_works() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -361,7 +361,7 @@ fn sending_rune_with_change_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -373,12 +373,12 @@ fn sending_rune_with_change_works() {
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::balances::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
     balances,
-    ord::subcommand::balances::Output {
+    bitomc::subcommand::balances::Output {
       runes: vec![(
         SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
@@ -418,16 +418,16 @@ fn sending_rune_with_change_works() {
 fn sending_spaced_rune_works_with_no_change() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -435,7 +435,7 @@ fn sending_spaced_rune_works_with_no_change() {
     "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 50:TIGHTEN",
   )
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -446,12 +446,12 @@ fn sending_spaced_rune_works_with_no_change() {
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::balances::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   assert_eq!(
     balances,
-    ord::subcommand::balances::Output {
+    bitomc::subcommand::balances::Output {
       runes: vec![(
         SpacedRune::new(Rune(TIGHTEN), 0),
         vec![(
@@ -478,16 +478,16 @@ fn sending_spaced_rune_works_with_no_change() {
 fn sending_rune_with_divisibility_works() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -496,19 +496,19 @@ fn sending_rune_with_divisibility_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::balances::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   pretty_assert_eq!(
     balances,
-    ord::subcommand::balances::Output {
+    bitomc::subcommand::balances::Output {
       runes: vec![(
         SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
@@ -548,16 +548,16 @@ fn sending_rune_with_divisibility_works() {
 fn sending_rune_leaves_unspent_runes_in_wallet() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -566,19 +566,19 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::balances::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   assert_eq!(
     balances,
-    ord::subcommand::balances::Output {
+    bitomc::subcommand::balances::Output {
       runes: vec![(
         SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
@@ -624,16 +624,16 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
 fn sending_rune_creates_transaction_with_expected_runestone() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -648,19 +648,19 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
     Rune(TIGHTEN),
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
 
   let balances = CommandBuilder::new("--regtest balances")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::balances::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::balances::Output>();
 
   assert_eq!(
     balances,
-    ord::subcommand::balances::Output {
+    bitomc::subcommand::balances::Output {
       runes: vec![(
         SpacedRune::new(Rune(TIGHTEN), 0),
         vec![
@@ -714,16 +714,16 @@ fn sending_rune_creates_transaction_with_expected_runestone() {
 fn error_messages_use_spaced_runes() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
@@ -731,14 +731,14 @@ fn error_messages_use_spaced_runes() {
     "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1001:TIGHTEN",
   )
   .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
 
   CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: rune `FOO` has not been etched\n")
     .run_and_extract_stdout();

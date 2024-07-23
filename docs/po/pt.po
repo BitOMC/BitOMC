@@ -197,12 +197,12 @@ msgid "Links"
 msgstr "Links"
 
 #: src/introduction.md:38
-msgid "[GitHub](https://github.com/ordinals/ord/)"
-msgstr "[GitHub](https://github.com/ordinals/ord/)"
+msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
+msgstr "[GitHub](https://github.com/BitOMC/BitOMC/)"
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -278,10 +278,10 @@ msgstr ""
 #: src/overview.md:13
 msgid ""
 "Technical details are available in [the "
-"BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)."
+"BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
 msgstr ""
 "Os detalhes técnicos estão disponíveis no "
-"[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)."
+"[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
 
 #: src/overview.md:16
 msgid ""
@@ -356,7 +356,7 @@ msgstr ""
 #: src/overview.md:45
 msgid ""
 "Ordinals is an open-source project, developed [on "
-"GitHub](https://github.com/ordinals/ord). The project consists of a BIP "
+"GitHub](https://github.com/BitOMC/BitOMC). The project consists of a BIP "
 "describing the ordinal scheme, an index that communicates with a Bitcoin "
 "Core node to track the location of all satoshis, a wallet that allows making "
 "ordinal-aware transactions, a block explorer for interactive exploration of "
@@ -364,7 +364,7 @@ msgid ""
 "artifacts, and this manual."
 msgstr ""
 "Ordinals é um projeto de código aberto, desenvolvido [no "
-"GitHub](https://github.com/ordinals/ord). O projeto consiste em um BIP "
+"GitHub](https://github.com/BitOMC/BitOMC). O projeto consiste em um BIP "
 "que descreve o esquema ordinal, um índice que se comunica com um nó "
 "Bitcoin Core para rastrear a localização de todos os satoshis, uma carteira que permite "
 "fazer transações com reconhecimento de Ordinals, um explorador de blocos para "
@@ -1107,10 +1107,10 @@ msgstr ""
 
 #: src/inscriptions.md:53
 msgid ""
-"First the string `ord` is pushed, to disambiguate inscriptions from other "
+"First the string `bitomc` is pushed, to disambiguate inscriptions from other "
 "uses of envelopes."
 msgstr ""
-"Primeiro, se faz um push da string `ord`, para desambiguar inscrições de outros "
+"Primeiro, se faz um push da string `bitomc`, para desambiguar inscrições de outros "
 "usos de envelopes."
 
 #: src/inscriptions.md:56
@@ -1510,11 +1510,11 @@ msgstr "Notas"
 msgid ""
 "The tag `3` is used because it is the first available odd tag. Unrecognized "
 "odd tags do not make an inscription unbound, so child inscriptions would be "
-"recognized and tracked by old versions of `ord`."
+"recognized and tracked by old versions of `bitomc`."
 msgstr ""
 "A tag `3` é usada porque é a primeira tag ímpar disponível. Tags ímpares não "
 "reconhecidas não desvinculam uma inscrição, portanto, inscrições filhas seriam "
-"reconhecidas e rastreadas por versões antigas de `ord`."
+"reconhecidas e rastreadas por versões antigas de `bitomc`."
 
 #: src/inscriptions/provenance.md:81
 msgid ""
@@ -1527,12 +1527,12 @@ msgstr ""
 #: src/inscriptions/recursion.md:4
 msgid ""
 "An important exception to [sandboxing](../inscriptions.md#sandboxing) is "
-"recursion: access to `ord`'s `/content` endpoint is permitted, allowing "
+"recursion: access to `bitomc`'s `/content` endpoint is permitted, allowing "
 "inscriptions to access the content of other inscriptions by requesting "
 "`/content/<INSCRIPTION_ID>`."
 msgstr ""
 "Uma exceção importante ao [sandboxing](../inscriptions.md#sandboxing) é "
-"a recursão: o acesso ao endpoint `/content` do `ord` é permitido, permitindo "
+"a recursão: o acesso ao endpoint `/content` do `bitomc` é permitido, permitindo "
 "que inscrições acessem o conteúdo de outras inscrições solicitando "
 "`/content/<INSCRIPTION_ID>`."
 
@@ -1813,14 +1813,14 @@ msgstr ""
 #: src/faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The "
-"BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki) has the "
+"BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) has the "
 "details, but in short, fees paid by transactions are treated as extra inputs "
 "to the coinbase transaction, and are ordered how their corresponding "
 "transactions are ordered in the block. The coinbase transaction of the block "
 "might look like this:"
 msgstr ""
 "Então eles vão, como taxas, para o minerador que minerou o bloco. [O "
-"BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki) tem os detalhes, "
+"BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) tem os detalhes, "
 "mas resumindo, as taxas pagas pelas transações são tratadas como entradas "
 "extras para a transação coinbase e são ordenadas como suas transações "
 "correspondentes são ordenadas no bloco. A transação coinbase do bloco "
@@ -1841,8 +1841,8 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "Onde posso encontrar os detalhes técnicos?"
 
 #: src/faq.md:92
-msgid "[The BIP!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
-msgstr "[No BIP!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgstr "[No BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: src/faq.md:94
 msgid ""
@@ -2449,8 +2449,8 @@ msgstr ""
 "o seu caso de uso principal como reserva descentralizada de valor da humanidade."
 
 #: src/contributing.md:1
-msgid "Contributing to `ord`"
-msgstr "Contribuindo para `ord`"
+msgid "Contributing to `bitomc`"
+msgstr "Contribuindo para `bitomc`"
 
 #: src/contributing.md:4
 msgid "Suggested Steps"
@@ -2655,13 +2655,13 @@ msgstr "Leia todas as mensagens de erro e não tolere avisos."
 #: src/donate.md:4
 msgid ""
 "Ordinals is open-source and community funded. The current lead maintainer of "
-"`ord` is [raphjaph](https://github.com/raphjaph/). Raph's work on `ord` is "
+"`bitomc` is [raphjaph](https://github.com/raphjaph/). Raph's work on `bitomc` is "
 "entirely funded by donations. If you can, please consider donating!"
 msgstr ""
 Translation result
 "Ordinals tem código aberto e é financiado pela comunidade. O atual mantenedor "
-"principal do `ord` é [raphjaph](https://github.com/raphjaph/). O trabalho de Raph "
-"no `ord` é inteiramente financiado por doações. Se você puder, por favor considere doar!"
+"principal do `bitomc` é [raphjaph](https://github.com/raphjaph/). O trabalho de Raph "
+"no `bitomc` é inteiramente financiado por doações. Se você puder, por favor considere doar!"
 
 #: src/donate.md:8
 msgid ""
@@ -2692,10 +2692,10 @@ msgstr ""
 #: src/donate.md:17
 msgid ""
 "Donations received will go towards funding maintenance and development of "
-"`ord`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
+"`bitomc`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
 msgstr ""
 "As doações recebidas serão destinadas ao financiamento da manutenção e desenvolvimento "
-"do `ord`, bem como aos custos de hospedagem do [ordinals.com](https://ordinals.com)."
+"do `bitomc`, bem como aos custos de hospedagem do [ordinals.com](https://ordinals.com)."
 
 #: src/donate.md:20
 msgid "Thank you for donating!"
@@ -2719,11 +2719,11 @@ msgstr "Explorador Ordinal"
 
 #: src/guides/explorer.md:4
 msgid ""
-"The `ord` binary includes a block explorer. We host a instance of the block "
+"The `bitomc` binary includes a block explorer. We host a instance of the block "
 "explorer on mainnet at [ordinals.com](https://ordinals.com), and on signet "
 "at [signet.ordinals.com](https://signet.ordinals.com)."
 msgstr ""
-"O binário do `ord` inclui um explorador de blocos. Hospedamos uma instância "
+"O binário do `bitomc` inclui um explorador de blocos. Hospedamos uma instância "
 "do explorador de blocos na mainnet em [ordinals.com](https://ordinals.com) "
 "e no signet em [signet.ordinals.com](https://signet.ordinals.com)."
 
@@ -2736,24 +2736,24 @@ msgid "The server can be run locally with:"
 msgstr "O servidor pode ser executado localmente com:"
 
 #: src/guides/explorer.md:11
-msgid "`ord server`"
-msgstr "`ord server`"
+msgid "`bitomc server`"
+msgstr "`bitomc server`"
 
 #: src/guides/explorer.md:13
 msgid "To specify a port add the `--http-port` flag:"
 msgstr "Para especificar uma porta, adicione o sinalizador `--http-port`:"
 
 #: src/guides/explorer.md:15
-msgid "`ord server --http-port 8080`"
-msgstr "`ord server --http-port 8080`"
+msgid "`bitomc server --http-port 8080`"
+msgstr "`bitomc server --http-port 8080`"
 
 #: src/guides/explorer.md:17
 msgid "To test how your inscriptions will look you can run:"
 msgstr "Para testar a aparência de suas inscrições, você pode executar:"
 
 #: src/guides/explorer.md:19
-msgid "`ord preview <FILE1> <FILE2> ...`"
-msgstr "`ord preview <ARCHIVO1> <ARCHIVO2> ...`"
+msgid "`bitomc preview <FILE1> <FILE2> ...`"
+msgstr "`bitomc preview <ARCHIVO1> <ARCHIVO2> ...`"
 
 #: src/guides/explorer.md:21
 msgid "Search"
@@ -2910,12 +2910,12 @@ msgstr ""
 
 #: src/guides/inscriptions.md:17
 msgid ""
-"This requires [`ord`](https://github.com/ordinals/ord), the ordinal utility. "
-"`ord` doesn't implement its own wallet, so `ord wallet` subcommands interact "
+"This requires [`bitomc`](https://github.com/BitOMC/BitOMC), the ordinal utility. "
+"`bitomc` doesn't implement its own wallet, so `bitomc wallet` subcommands interact "
 "with Bitcoin Core wallets."
 msgstr ""
-"Isso requer [`ord`](https://github.com/ordinals/ord), o utilitário ordinal. "
-"`ord` não implementa sua própria carteira, então os subcomandos `ord wallet` "
+"Isso requer [`bitomc`](https://github.com/BitOMC/BitOMC), o utilitário ordinal. "
+"`bitomc` não implementa sua própria carteira, então os subcomandos `bitomc wallet` "
 "interagem com carteiras Bitcoin Core."
 
 #: src/guides/inscriptions.md:21
@@ -2936,20 +2936,20 @@ msgid "Creating a Bitcoin Core wallet"
 msgstr "Criando uma carteira Bitcoin Core"
 
 #: src/guides/inscriptions.md:26
-msgid "Using `ord wallet receive` to receive sats"
-msgstr "Usando `ord wallet receive` para receber sats"
+msgid "Using `bitomc wallet receive` to receive sats"
+msgstr "Usando `bitomc wallet receive` para receber sats"
 
 #: src/guides/inscriptions.md:27
-msgid "Creating inscriptions with `ord wallet inscribe`"
-msgstr "Criando inscrições com `ord wallet inscribe`"
+msgid "Creating inscriptions with `bitomc wallet inscribe`"
+msgstr "Criando inscrições com `bitomc wallet inscribe`"
 
 #: src/guides/inscriptions.md:28
-msgid "Sending inscriptions with `ord wallet send`"
-msgstr ""Enviando inscrições com `ord wallet send`"
+msgid "Sending inscriptions with `bitomc wallet send`"
+msgstr ""Enviando inscrições com `bitomc wallet send`"
 
 #: src/guides/inscriptions.md:29
-msgid "Receiving inscriptions with `ord wallet receive`"
-msgstr "Recebendo inscrições com `ord wallet receive`"
+msgid "Receiving inscriptions with `bitomc wallet receive`"
+msgstr "Recebendo inscrições com `bitomc wallet receive`"
 
 #: src/guides/inscriptions.md:31
 msgid "Getting Help"
@@ -2959,13 +2959,13 @@ msgstr "Obtendo Ajuda"
 msgid ""
 "If you get stuck, try asking for help on the [Ordinals Discord "
 "Server](https://discord.com/invite/87cjuz4FYg), or checking GitHub for "
-"relevant [issues](https://github.com/ordinals/ord/issues) and "
-"[discussions](https://github.com/ordinals/ord/discussions)."
+"relevant [issues](https://github.com/BitOMC/BitOMC/issues) and "
+"[discussions](https://github.com/BitOMC/BitOMC/discussions)."
 msgstr ""
 "Se você tiver dúvidas, tente pedir ajuda no [Ordinals Discord "
 "Server](https://discord.com/invite/87cjuz4FYg) ou verifique o GitHub para "
-"[problemas relevantes](https://github.com/ordinals/ord/issues) e "
-"[discussões](https://github.com/ordinals/ord/discussions)."
+"[problemas relevantes](https://github.com/BitOMC/BitOMC/issues) e "
+"[discussões](https://github.com/BitOMC/BitOMC/discussions)."
 
 #: src/guides/inscriptions.md:42
 msgid ""
@@ -2994,8 +2994,8 @@ msgid "Configuring Bitcoin Core"
 msgstr "Configurando o Bitcoin Core"
 
 #: src/guides/inscriptions.md:54
-msgid "`ord` requires Bitcoin Core's transaction index."
-msgstr "`ord` requer o índice de transação do Bitcoin Core."
+msgid "`bitomc` requires Bitcoin Core's transaction index."
+msgstr "`bitomc` requer o índice de transação do Bitcoin Core."
 
 #: src/guides/inscriptions.md:56
 msgid ""
@@ -3056,28 +3056,28 @@ msgstr ""
 #: src/guides/inscriptions.md:84
 msgid ""
 "agrees with the block count on a block explorer like [the mempool.space "
-"block explorer](https://mempool.space/). `ord` interacts with `bitcoind`, so "
+"block explorer](https://mempool.space/). `bitomc` interacts with `bitcoind`, so "
 "you should leave `bitcoind` running in the background when you're using "
-"`ord`."
+"`bitomc`."
 msgstr ""
 "concorde com a contagem de blocos em um explorador de blocos como [o explorador "
-"de blocos mempool.space](https://mempool.space/). `ord` interage com `bitcoind`, "
+"de blocos mempool.space](https://mempool.space/). `bitomc` interage com `bitcoind`, "
 "então você deve deixar `bitcoind` rodando em segundo plano quando você estiver "
-"usando o `ord`."
+"usando o `bitomc`."
 
 #: src/guides/inscriptions.md:88
-msgid "Installing `ord`"
-msgstr "Instalando o `ord`"
+msgid "Installing `bitomc`"
+msgstr "Instalando o `bitomc`"
 
 #: src/guides/inscriptions.md:91
 msgid ""
-"The `ord` utility is written in Rust and can be built from "
-"[source](https://github.com/ordinals/ord). Pre-built binaries are available "
-"on the [releases page](https://github.com/ordinals/ord/releases)."
+"The `bitomc` utility is written in Rust and can be built from "
+"[source](https://github.com/BitOMC/BitOMC). Pre-built binaries are available "
+"on the [releases page](https://github.com/BitOMC/BitOMC/releases)."
 msgstr ""
-"O utilitário `ord` é escrito em Rust e pode ser compilado a partir da "
-"[fonte](https://github.com/ordinals/ord). Binários pré-construídos estão disponíveis "
-"na [página de lançamentos](https://github.com/ordinals/ord/releases)."
+"O utilitário `bitomc` é escrito em Rust e pode ser compilado a partir da "
+"[fonte](https://github.com/BitOMC/BitOMC). Binários pré-construídos estão disponíveis "
+"na [página de lançamentos](https://github.com/BitOMC/BitOMC/releases)."
 
 #: src/guides/inscriptions.md:95
 msgid "You can install the latest pre-built binary from the command line with:"
@@ -3096,22 +3096,22 @@ msgstr ""
 "```"
 
 #: src/guides/inscriptions.md:101
-msgid "Once `ord` is installed, you should be able to run:"
-msgstr "Depois que o `ord` estiver instalado, você poderá executar:"
+msgid "Once `bitomc` is installed, you should be able to run:"
+msgstr "Depois que o `bitomc` estiver instalado, você poderá executar:"
 
 #: src/guides/inscriptions.md:103
 msgid ""
 "```\n"
-"ord --version\n"
+"bitomc --version\n"
 "```"
 msgstr ""
 "```\n"
-"ord --version\n"
+"bitomc --version\n"
 "```"
 
 #: src/guides/inscriptions.md:107
-msgid "Which prints out `ord`'s version number."
-msgstr "Que imprime o número da versão do `ord`."
+msgid "Which prints out `bitomc`'s version number."
+msgstr "Que imprime o número da versão do `bitomc`."
 
 #: src/guides/inscriptions.md:109
 msgid "Creating a Bitcoin Core Wallet"
@@ -3119,24 +3119,24 @@ msgstr "Criando uma carteira Bitcoin Core"
 
 #: src/guides/inscriptions.md:112
 msgid ""
-"`ord` uses Bitcoin Core to manage private keys, sign transactions, and "
+"`bitomc` uses Bitcoin Core to manage private keys, sign transactions, and "
 "broadcast transactions to the Bitcoin network."
 msgstr ""
-"`ord` usa o Bitcoin Core para gerenciar chaves privadas, assinar transações "
+"`bitomc` usa o Bitcoin Core para gerenciar chaves privadas, assinar transações "
 "e transmitir transações para a rede do Bitcoin."
 
 #: src/guides/inscriptions.md:115
-msgid "To create a Bitcoin Core wallet named `ord` for use with `ord`, run:"
-msgstr "Para criar uma carteira do Bitcoin Core chamada `ord` para usar com `ord`, execute:"
+msgid "To create a Bitcoin Core wallet named `bitomc` for use with `bitomc`, run:"
+msgstr "Para criar uma carteira do Bitcoin Core chamada `bitomc` para usar com `bitomc`, execute:"
 
 #: src/guides/inscriptions.md:117
 msgid ""
 "```\n"
-"ord wallet create\n"
+"bitomc wallet create\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet create\n"
+"bitomc wallet create\n"
 "```"
 
 #: src/guides/inscriptions.md:121
@@ -3152,19 +3152,19 @@ msgstr ""
 "que pagam taxas em sats, então sua carteira precisará de alguns sats."
 
 #: src/guides/inscriptions.md:127
-msgid "Get a new address from your `ord` wallet by running:"
-msgstr "Obtenha um novo endereço da sua carteira `ord` executando:"
+msgid "Get a new address from your `bitomc` wallet by running:"
+msgstr "Obtenha um novo endereço da sua carteira `bitomc` executando:"
 
 #: src/guides/inscriptions.md:129
 #: src/guides/inscriptions.md:201
 #: src/guides/inscriptions.md:229
 msgid ""
 "```\n"
-"ord wallet receive\n"
+"bitomc wallet receive\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet receive\n"
+"bitomc wallet receive\n"
 "```"
 
 #: src/guides/inscriptions.md:133
@@ -3180,20 +3180,20 @@ msgstr "Você pode ver transações pendentes com:"
 #: src/guides/inscriptions.md:240
 msgid ""
 "```\n"
-"ord wallet transactions\n"
+"bitomc wallet transactions\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet transactions\n"
+"bitomc wallet transactions\n"
 "```"
 
 #: src/guides/inscriptions.md:141
 msgid ""
 "Once the transaction confirms, you should be able to see the transactions "
-"outputs with `ord wallet outputs`."
+"outputs with `bitomc wallet outputs`."
 msgstr ""
 "Assim que a transação for confirmada, você poderá ver as saídas da transação "
-"com `ord wallet outputs`."
+"com `bitomc wallet outputs`."
 
 #: src/guides/inscriptions.md:144
 msgid "Creating Inscription Content"
@@ -3201,11 +3201,11 @@ msgstr "Criando conteúdo de inscrição"
 
 #: src/guides/inscriptions.md:147
 msgid ""
-"Sats can be inscribed with any kind of content, but the `ord` wallet only "
-"supports content types that can be displayed by the `ord` block explorer."
+"Sats can be inscribed with any kind of content, but the `bitomc` wallet only "
+"supports content types that can be displayed by the `bitomc` block explorer."
 msgstr ""
-"Sats pode ser inscrito com qualquer tipo de conteúdo, mas a carteira `ord` "
-"só suporta tipos de conteúdo que podem ser exibidos pelo explorador de blocos `ord`."
+"Sats pode ser inscrito com qualquer tipo de conteúdo, mas a carteira `bitomc` "
+"só suporta tipos de conteúdo que podem ser exibidos pelo explorador de blocos `bitomc`."
 
 #: src/guides/inscriptions.md:150
 msgid ""
@@ -3252,11 +3252,11 @@ msgstr "Para criar uma inscrição com o conteúdo de `ARQUIVO`, execute:"
 #: src/guides/inscriptions.md:168
 msgid ""
 "```\n"
-"ord wallet inscribe --fee-rate FEE_RATE --file FILE\n"
+"bitomc wallet inscribe --fee-rate FEE_RATE --file FILE\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet inscribe --fee-rate TAXA --file ARQUIVO\n"
+"bitomc wallet inscribe --fee-rate TAXA --file ARQUIVO\n"
 "```"
 
 #: src/guides/inscriptions.md:172
@@ -3307,11 +3307,11 @@ msgstr ""
 #: src/guides/inscriptions.md:246
 msgid ""
 "```\n"
-"ord wallet inscriptions\n"
+"bitomc wallet inscriptions\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet inscriptions\n"
+"bitomc wallet inscriptions\n"
 "```"
 
 #: src/guides/inscriptions.md:193
@@ -3337,11 +3337,11 @@ msgstr "Envie a inscrição executando:"
 #: src/guides/inscriptions.md:207
 msgid ""
 "```\n"
-"ord wallet send --fee-rate <FEE_RATE> <ADDRESS> <INSCRIPTION_ID>\n"
+"bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <INSCRIPTION_ID>\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet send --fee-rate <TAXA> <ENDEREÇO> <ID_INSCRIÇãO>\n"
+"bitomc wallet send --fee-rate <TAXA> <ENDEREÇO> <ID_INSCRIÇãO>\n"
 "```"
 
 
@@ -3373,11 +3373,11 @@ msgstr "O remetente pode transferir a inscrição para o seu endereço usando:"
 #: src/guides/inscriptions.md:235
 msgid ""
 "```\n"
-"ord wallet send ADDRESS INSCRIPTION_ID\n"
+"bitomc wallet send ADDRESS INSCRIPTION_ID\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet send ENDEREÇO ID_INSCRIÇãO\n"
+"bitomc wallet send ENDEREÇO ID_INSCRIÇãO\n"
 "```"
 
 #: src/guides/inscriptions.md:244
@@ -3388,15 +3388,15 @@ msgstr ""
 
 #: src/guides/sat-hunting.md:4
 msgid ""
-"_This guide is out of date. Since it was written, the `ord` binary was "
+"_This guide is out of date. Since it was written, the `bitomc` binary was "
 "changed to only build the full satoshi index when the `--index-sats` flag is "
-"supplied. Additionally, `ord` now has a built-in wallet that wraps a Bitcoin "
-"Core wallet. See `ord wallet --help`._"
+"supplied. Additionally, `bitomc` now has a built-in wallet that wraps a Bitcoin "
+"Core wallet. See `bitomc wallet --help`._"
 msgstr ""
-"_Este guia está desatualizado. Desde que foi escrito, o binário `ord` foi "
+"_Este guia está desatualizado. Desde que foi escrito, o binário `bitomc` foi "
 "alterado para construir apenas o índice completo de satoshis quando o sinalizador "
-"`--index-sats` for fornecido. Além disso, `ord` agora possui uma carteira "
-"integrada que envolve uma carteira Bitcoin Core. Veja `ord wallet --help`._"
+"`--index-sats` for fornecido. Além disso, `bitomc` agora possui uma carteira "
+"integrada que envolve uma carteira Bitcoin Core. Veja `bitomc wallet --help`._"
 
 #: src/guides/sat-hunting.md:9
 msgid ""
@@ -3466,16 +3466,16 @@ msgstr ""
 "```"
 
 #: src/guides/sat-hunting.md:41
-msgid "Second, you'll need a synced `ord` index."
-msgstr "Em segundo lugar, você precisará de um índice `ord` sincronizado."
+msgid "Second, you'll need a synced `bitomc` index."
+msgstr "Em segundo lugar, você precisará de um índice `bitomc` sincronizado."
 
 #: src/guides/sat-hunting.md:43
-msgid "Get a copy of `ord` from [the repo](https://github.com/ordinals/ord/)."
-msgstr "Obtenha uma cópia do `ord` no [repo](https://github.com/ordinals/ord/)."
+msgid "Get a copy of `bitomc` from [the repo](https://github.com/BitOMC/BitOMC/)."
+msgstr "Obtenha uma cópia do `bitomc` no [repo](https://github.com/BitOMC/BitOMC/)."
 
 #: src/guides/sat-hunting.md:45
 msgid ""
-"Run `RUST_LOG=info ord index`. It should connect to your bitcoin core node "
+"Run `RUST_LOG=info bitomc index`. It should connect to your bitcoin core node "
 "and start indexing."
 msgstr ""
 "Execute `RUST_LOG = info or index`. Ele deve se conectar ao nó principal do bitcoin e iniciar a indexação."
@@ -3498,11 +3498,11 @@ msgstr "Procurando por Ordinais Raros em uma Carteira Bitcoin Core"
 
 #: src/guides/sat-hunting.md:57
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "searching for rare ordinals in a Bitcoin Core wallet is Easy. Assuming your "
 "wallet is named `foo`:"
 msgstr ""
-"O comando `ord wallet` é apenas um wrapper da API RPC do Bitcoin Core, portanto, procurar por ordinais raros em uma carteira Bitcoin Core é fácil. Supondo que sua carteira se chame `foo`:"
+"O comando `bitomc wallet` é apenas um wrapper da API RPC do Bitcoin Core, portanto, procurar por ordinais raros em uma carteira Bitcoin Core é fácil. Supondo que sua carteira se chame `foo`:"
 
 #: src/guides/sat-hunting.md:61
 msgid "Load your wallet:"
@@ -3527,11 +3527,11 @@ msgstr "Exiba os UTXOs da carteira `foo` de ordinais raros:"
 #: src/guides/sat-hunting.md:233
 msgid ""
 "```sh\n"
-"ord wallet sats\n"
+"bitomc wallet sats\n"
 "```"
 msgstr ""
 "```sh\n"
-"ord wallet sats\n"
+"bitomc wallet sats\n"
 "```"
 
 #: src/guides/sat-hunting.md:73
@@ -3540,11 +3540,11 @@ msgstr "Procurando por ordinais raros em uma carteira que não seja Bitcoin Core
 
 #: src/guides/sat-hunting.md:75
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "to search for rare ordinals in a non-Bitcoin Core wallet, you'll need to "
 "import your wallet's descriptors into Bitcoin Core."
 msgstr ""
-"O comando `ord wallet` é apenas um wrapper da API RPC do Bitcoin Core, portanto, para procurar ordinais raros em uma carteira que não seja do Bitcoin Core, "
+"O comando `bitomc wallet` é apenas um wrapper da API RPC do Bitcoin Core, portanto, para procurar ordinais raros em uma carteira que não seja do Bitcoin Core, "
 "você precisará importar os descritores da sua carteira para o Bitcoin Core."
 
 #: src/guides/sat-hunting.md:79
@@ -3898,29 +3898,29 @@ msgstr "Transferindo Ordinals"
 
 #: src/guides/sat-hunting.md:246
 msgid ""
-"The `ord` wallet supports transferring specific satoshis. You can also use "
+"The `bitomc` wallet supports transferring specific satoshis. You can also use "
 "`bitcoin-cli` commands `createrawtransaction`, "
 "`signrawtransactionwithwallet`, and `sendrawtransaction`, how to do so is "
 "complex and outside the scope of this guide."
 msgstr ""
-"A carteira `ord` suporta a transferência de satoshis específicos. Você também pode usar os comandos de `bitcoin-cli` `createrawtransaction`, "
+"A carteira `bitomc` suporta a transferência de satoshis específicos. Você também pode usar os comandos de `bitcoin-cli` `createrawtransaction`, "
 "`signrawtransactionwithwallet` e `sendrawtransaction`, mas fazer isso é complexo e está fora do escopo deste guia."
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/ordinals/ord/) is the only wallet "
+"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"Atualmente, [ord](https://github.com/ordinals/ord/) é a única carteira que suporta controle e seleção de sats, que são necessários para armazenar e enviar com segurança sats e inscrições raras, doravante ordinais."
+"Atualmente, [ord](https://github.com/BitOMC/BitOMC/) é a única carteira que suporta controle e seleção de sats, que são necessários para armazenar e enviar com segurança sats e inscrições raras, doravante ordinais."
 
 #: src/guides/collecting.md:8
 msgid ""
-"The recommended way to send, receive, and store ordinals is with `ord`, but "
+"The recommended way to send, receive, and store ordinals is with `bitomc`, but "
 "if you are careful, it is possible to safely store, and in some cases send, "
 "ordinals with other wallets."
 msgstr ""
-"A forma recomendada de enviar, receber e armazenar ordinais é com `ord`, mas se você for cuidadoso, é possível armazenar com segurança e, em alguns casos, enviar ordinais com outras carteiras."
+"A forma recomendada de enviar, receber e armazenar ordinais é com `bitomc`, mas se você for cuidadoso, é possível armazenar com segurança e, em alguns casos, enviar ordinais com outras carteiras."
 
 #: src/guides/collecting.md:12
 msgid ""
@@ -3936,11 +3936,11 @@ msgstr ""
 
 #: src/guides/collecting.md:18
 msgid ""
-"A [guide](./collecting/sparrow-wallet.md) to creating an `ord`\\-compatible "
+"A [guide](./collecting/sparrow-wallet.md) to creating an `bitomc`\\-compatible "
 "wallet with [Sparrow Wallet](https://sparrowwallet.com/), is available in "
 "this handbook."
 msgstr ""
-"Um [guia](./collecting/sparrow-wallet.md) para criar uma carteira compatível com `ord` com [Sparrow Wallet](https://sparrowwallet.com/) está disponível neste manual."
+"Um [guia](./collecting/sparrow-wallet.md) para criar uma carteira compatível com `bitomc` com [Sparrow Wallet](https://sparrowwallet.com/) está disponível neste manual."
 
 #: src/guides/collecting.md:21
 msgid ""
@@ -3958,20 +3958,20 @@ msgstr "Colecionando Inscrições e Ordinals com Sparrow"
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
 "Users who cannot or have not yet set up the "
-"[ord](https://github.com/ordinals/ord) wallet can receive inscriptions and "
+"[ord](https://github.com/BitOMC/BitOMC) wallet can receive inscriptions and "
 "ordinals with alternative bitcoin wallets, as long as they are _very_ "
 "careful about how they spend from that wallet."
 msgstr ""
-"Usuários que não podem ou ainda não configuraram a carteira [ord](https://github.com/ordinals/ord) podem receber inscrições e ordinais com carteiras bitcoin alternativas, "
+"Usuários que não podem ou ainda não configuraram a carteira [ord](https://github.com/BitOMC/BitOMC) podem receber inscrições e ordinais com carteiras bitcoin alternativas, "
 "desde que sejam _muito_ cuidadosos sobre como gastam fundos daquela carteira."
 
 #: src/guides/collecting/sparrow-wallet.md:6
 msgid ""
 "This guide gives some basic steps on how to create a wallet with [Sparrow "
-"Wallet](https://sparrowwallet.com/) which is compatible with `ord` and can "
-"be later imported into `ord`"
+"Wallet](https://sparrowwallet.com/) which is compatible with `bitomc` and can "
+"be later imported into `bitomc`"
 msgstr ""
-"Este guia fornece alguns passos básicos sobre como criar uma carteira com [Sparrow Wallet](https://sparrowwallet.com/) que é compatível com `ord` e pode ser posteriormente importada para `ord`."
+"Este guia fornece alguns passos básicos sobre como criar uma carteira com [Sparrow Wallet](https://sparrowwallet.com/) que é compatível com `bitomc` e pode ser posteriormente importada para `bitomc`."
 
 #: src/guides/collecting/sparrow-wallet.md:8
 msgid "⚠️⚠️ Warning!! ⚠️⚠️"
@@ -4005,8 +4005,8 @@ msgstr ""
 "Baixe a Sparrow Wallet na [página de lançamentos](https://sparrowwallet.com/download/) para seu sistema operacional específico."
 
 #: src/guides/collecting/sparrow-wallet.md:17
-msgid "Select `File -> New Wallet` and create a new wallet called `ord`."
-msgstr "Selecione `File -> New Wallet` e crie uma nova carteira chamada `ord`."
+msgid "Select `File -> New Wallet` and create a new wallet called `bitomc`."
+msgstr "Selecione `File -> New Wallet` e crie uma nova carteira chamada `bitomc`."
 
 #: src/guides/collecting/sparrow-wallet.md:19
 msgid "![](images/wallet_setup_01.png)"
@@ -4078,11 +4078,11 @@ msgstr "![](images/wallet_setup_07.png)"
 
 #: src/guides/collecting/sparrow-wallet.md:47
 msgid ""
-"You now have a wallet which is compatible with `ord`, and can be imported "
-"into `ord` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
+"You now have a wallet which is compatible with `bitomc`, and can be imported "
+"into `bitomc` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
 "click on the `Receive` tab and copy a new address."
 msgstr ""
-"Agora você tem uma carteira compatível com `ord` e pode ser importada para `ord` usando a frase inicial BIP39. Para receber ordinais ou inscrições, clique na aba `Receive` e copie um novo endereço."
+"Agora você tem uma carteira compatível com `bitomc` e pode ser importada para `bitomc` usando a frase inicial BIP39. Para receber ordinais ou inscrições, clique na aba `Receive` e copie um novo endereço."
 
 #: src/guides/collecting/sparrow-wallet.md:49
 msgid ""
@@ -4187,60 +4187,60 @@ msgstr ""
 "Agora este UTXO (Inscrição) não pode ser gasto na carteira Sparrow até que você o descongele."
 
 #: src/guides/collecting/sparrow-wallet.md:79
-msgid "Importing into `ord` wallet"
-msgstr "Importando para a carteira `ord`"
+msgid "Importing into `bitomc` wallet"
+msgstr "Importando para a carteira `bitomc`"
 
 #: src/guides/collecting/sparrow-wallet.md:81
 msgid ""
-"For details on setting up Bitcoin Core and the `ord` wallet check out the "
+"For details on setting up Bitcoin Core and the `bitomc` wallet check out the "
 "[Inscriptions Guide](../inscriptions.md)"
 msgstr ""
-"Para obter detalhes sobre como configurar o Bitcoin Core e a carteira `ord`, consulte o [Guia de inscrições](../inscriptions.md)."
+"Para obter detalhes sobre como configurar o Bitcoin Core e a carteira `bitomc`, consulte o [Guia de inscrições](../inscriptions.md)."
 
 #: src/guides/collecting/sparrow-wallet.md:83
 msgid ""
-"When setting up `ord`, instead of running `ord wallet create` to create a "
-"brand-new wallet, you can import your existing wallet using `ord wallet "
+"When setting up `bitomc`, instead of running `bitomc wallet create` to create a "
+"brand-new wallet, you can import your existing wallet using `bitomc wallet "
 "restore \"BIP39 SEED PHRASE\"` using the seed phrase you generated with "
 "Sparrow Wallet."
 msgstr ""
-"Ao configurar `ord`, em vez de executar `ord wallet create` para criar uma carteira totalmente nova, você pode importar sua carteira existente usando "
-"`ord wallet restore \"BIP39 SEED PHRASE\"` usando a frase inicial que você gerou na sua carteira Sparrow."
+"Ao configurar `bitomc`, em vez de executar `bitomc wallet create` para criar uma carteira totalmente nova, você pode importar sua carteira existente usando "
+"`bitomc wallet restore \"BIP39 SEED PHRASE\"` usando a frase inicial que você gerou na sua carteira Sparrow."
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
+"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
-"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=ord "
+"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"Atualmente existe um [bug](https://github.com/ordinals/ord/issues/1589) que faz com que uma carteira importada não seja automaticamente verificada novamente na blockchain. "
-"Para contornar isso, você precisará acionar manualmente uma nova verificação usando o bitcoin core cli: `bitcoin-cli -rpcwallet=ord rescanblockchain 767430`"
+"Atualmente existe um [bug](https://github.com/abc1234567890xyz1589) que faz com que uma carteira importada não seja automaticamente verificada novamente na blockchain. "
+"Para contornar isso, você precisará acionar manualmente uma nova verificação usando o bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`"
 
 #: src/guides/collecting/sparrow-wallet.md:88
 msgid ""
-"You can then check your wallet's inscriptions using `ord wallet inscriptions`"
+"You can then check your wallet's inscriptions using `bitomc wallet inscriptions`"
 msgstr ""
-"Você pode então verificar as inscrições da sua carteira usando`ord wallet inscriptions`"
+"Você pode então verificar as inscrições da sua carteira usando`bitomc wallet inscriptions`"
 
 #: src/guides/collecting/sparrow-wallet.md:90
 msgid ""
-"Note that if you have previously created a wallet with `ord`, then you will "
+"Note that if you have previously created a wallet with `bitomc`, then you will "
 "already have a wallet with the default name, and will need to give your "
 "imported wallet a different name. You can use the `--wallet` parameter in "
-"all `ord` commands to reference a different wallet, eg:"
+"all `bitomc` commands to reference a different wallet, eg:"
 msgstr ""
-"Observe que se você já criou uma carteira com `ord`, então você já terá uma carteira com o nome padrão e precisará dar um nome diferente à sua carteira importada. "
-"Você pode usar o parâmetro `--wallet` em todos os comandos `ord` para referenciar uma carteira diferente, por exemplo:"
+"Observe que se você já criou uma carteira com `bitomc`, então você já terá uma carteira com o nome padrão e precisará dar um nome diferente à sua carteira importada. "
+"Você pode usar o parâmetro `--wallet` em todos os comandos `bitomc` para referenciar uma carteira diferente, por exemplo:"
 
 #: src/guides/collecting/sparrow-wallet.md:92
-msgid "`ord --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
-msgstr "`ord --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
+msgid "`bitomc --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
+msgstr "`bitomc --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
 
 #: src/guides/collecting/sparrow-wallet.md:94
-msgid "`ord --wallet ord_from_sparrow wallet inscriptions`"
-msgstr "`ord --wallet ord_from_sparrow wallet inscriptions`"
+msgid "`bitomc --wallet ord_from_sparrow wallet inscriptions`"
+msgstr "`bitomc --wallet ord_from_sparrow wallet inscriptions`"
 
 #: src/guides/collecting/sparrow-wallet.md:96
 msgid "`bitcoin-cli -rpcwallet=ord_from_sparrow rescanblockchain 767430`"
@@ -4257,21 +4257,21 @@ msgstr "⚠️⚠️ Aviso ⚠️⚠️"
 #: src/guides/collecting/sparrow-wallet.md:101
 msgid ""
 "While it is highly recommended that you set up a bitcoin core node and run "
-"the `ord` software, there are certain limited ways you can send inscriptions "
+"the `bitomc` software, there are certain limited ways you can send inscriptions "
 "out of Sparrow Wallet in a safe way. Please note that this is not "
 "recommended, and you should only do this if you fully understand what you "
 "are doing."
 msgstr ""
-"Embora seja altamente recomendado que você configure um nó de bitcoin core e execute o software `ord`, existem certas maneiras limitadas de "
+"Embora seja altamente recomendado que você configure um nó de bitcoin core e execute o software `bitomc`, existem certas maneiras limitadas de "
 "enviar inscrições da Sparrow Wallet de maneira segura. Observe que isso não é recomendado e você só deve fazer isso se compreender totalmente o que está fazendo."
 
 #: src/guides/collecting/sparrow-wallet.md:103
 msgid ""
-"Using the `ord` software will remove much of the complexity we are "
+"Using the `bitomc` software will remove much of the complexity we are "
 "describing here, as it is able to automatically and safely handle sending "
 "inscriptions in an easy way."
 msgstr ""
-"O uso do software `ord` removerá grande parte da complexidade que descrevemos aqui, pois ele é capaz de lidar com o envio de inscrições de maneira fácil e automática."
+"O uso do software `bitomc` removerá grande parte da complexidade que descrevemos aqui, pois ele é capaz de lidar com o envio de inscrições de maneira fácil e automática."
 
 #: src/guides/collecting/sparrow-wallet.md:105
 msgid "⚠️⚠️ Additional Warning ⚠️⚠️"
@@ -4468,10 +4468,10 @@ msgid ""
 "If your transaction looks any different, for example you have multiple "
 "inputs, or multiple outputs then this may not be a safe transfer of your "
 "inscription, and you should abandon sending until you understand more, or "
-"can import into the `ord` wallet."
+"can import into the `bitomc` wallet."
 msgstr ""
 "Se a sua transação parecer diferente, por exemplo, você tem múltiplas entradas ou múltiplas saídas, "
-"então esta pode não ser uma transferência segura da sua inscrição e você deve abandonar o envio até entender mais, ou importar para a carteira `ord`."
+"então esta pode não ser uma transferência segura da sua inscrição e você deve abandonar o envio até entender mais, ou importar para a carteira `bitomc`."
 
 #: src/guides/collecting/sparrow-wallet.md:149
 msgid ""
@@ -4595,10 +4595,10 @@ msgstr ""
 
 #: src/guides/testing.md:7
 msgid ""
-"Most `ord` commands in [inscriptions](inscriptions.md) and "
+"Most `bitomc` commands in [inscriptions](inscriptions.md) and "
 "[explorer](explorer.md) can be run with the following network flags:"
 msgstr ""
-"A maioria dos comandos `ord` em [inscrições](inscriptions.md) e [explorador](explorer.md) podem ser executados com os seguintes sinalizadores de rede:"
+"A maioria dos comandos `bitomc` em [inscrições](inscriptions.md) e [explorador](explorer.md) podem ser executados com os seguintes sinalizadores de rede:"
 
 #: src/guides/testing.md:10
 msgid "Network"
@@ -4633,8 +4633,8 @@ msgid "`--regtest` or `-r`"
 msgstr "`--regtest` o `-r`"
 
 #: src/guides/testing.md:16
-msgid "Regtest doesn't require downloading the blockchain or indexing ord."
-msgstr "O Regtest não requer o download da blockchain ou da indexação do ord."
+msgid "Regtest doesn't require downloading the blockchain or indexing bitomc."
+msgstr "O Regtest não requer o download da blockchain ou da indexação do bitomc."
 
 #: src/guides/testing.md:21
 msgid "Run bitcoind in regtest with:"
@@ -4657,11 +4657,11 @@ msgstr "Crie uma carteira em regtest com:"
 #: src/guides/testing.md:26
 msgid ""
 "```\n"
-"ord -r wallet create\n"
+"bitomc -r wallet create\n"
 "```"
 msgstr ""
 "```\n"
-"ord -r wallet create\n"
+"bitomc -r wallet create\n"
 "```"
 
 #: src/guides/testing.md:29
@@ -4671,11 +4671,11 @@ msgstr "Obtenha um endereço de recebimento de regtest com:"
 #: src/guides/testing.md:30
 msgid ""
 "```\n"
-"ord -r wallet receive\n"
+"bitomc -r wallet receive\n"
 "```"
 msgstr ""
 "```\n"
-"ord -r wallet receive\n"
+"bitomc -r wallet receive\n"
 "```"
 
 #: src/guides/testing.md:33
@@ -4699,11 +4699,11 @@ msgstr "Inscreva no regtest com:"
 #: src/guides/testing.md:38
 msgid ""
 "```\n"
-"ord -r wallet inscribe --fee-rate 1 --file <file>\n"
+"bitomc -r wallet inscribe --fee-rate 1 --file <file>\n"
 "```"
 msgstr ""
 "```\n"
-"ord -r wallet inscribe --fee-rate 1 --file <arquivo>\n"
+"bitomc -r wallet inscribe --fee-rate 1 --file <arquivo>\n"
 "```"
 
 #: src/guides/testing.md:41
@@ -4727,11 +4727,11 @@ msgstr "Veja a inscrição no explorador de blocos regtest:"
 #: src/guides/testing.md:46
 msgid ""
 "```\n"
-"ord -r server\n"
+"bitomc -r server\n"
 "```"
 msgstr ""
 "```\n"
-"ord -r server\n"
+"bitomc -r server\n"
 "```"
 
 #: src/guides/testing.md:50
@@ -4748,11 +4748,11 @@ msgstr ""
 #: src/guides/testing.md:55
 msgid ""
 "```\n"
-"ord -r wallet inscribe --fee-rate 1 --file p5.js\n"
+"bitomc -r wallet inscribe --fee-rate 1 --file p5.js\n"
 "```"
 msgstr ""
 "```\n"
-"ord -r wallet inscribe --fee-rate 1 --file p5.js\n"
+"bitomc -r wallet inscribe --fee-rate 1 --file p5.js\n"
 "```"
 
 #: src/guides/testing.md:58
@@ -4776,11 +4776,11 @@ msgstr "Então você pode inscrever sua inscrição recursiva com:"
 #: src/guides/testing.md:66
 msgid ""
 "```\n"
-"ord -r wallet inscribe --fee-rate 1 --file recursive-inscription.html\n"
+"bitomc -r wallet inscribe --fee-rate 1 --file recursive-inscription.html\n"
 "```"
 msgstr ""
 "```\n"
-"ord -r wallet inscribe --fee-rate 1 --file recursive-inscription.html\n"
+"bitomc -r wallet inscribe --fee-rate 1 --file recursive-inscription.html\n"
 "```"
 
 #: src/guides/testing.md:69
@@ -4791,19 +4791,19 @@ msgstr "Finalmente você terá que minerar alguns blocos e iniciar o servidor:"
 msgid ""
 "```\n"
 "bitcoin-cli generatetoaddress 6 <receive address>\n"
-"ord -r server\n"
+"bitomc -r server\n"
 "```"
 msgstr ""
 "```\n"
 "bitcoin-cli generatetoaddress 6 <receive address>\n"
-"ord -r server\n"
+"bitomc -r server\n"
 "```"
 
 #: src/guides/moderation.md:4
 msgid ""
-"`ord` includes a block explorer, which you can run locally with `ord server`."
+"`bitomc` includes a block explorer, which you can run locally with `bitomc server`."
 msgstr ""
-"`ord` inclui um explorador de blocos, que você pode executar localmente com `ord server`."
+"`bitomc` inclui um explorador de blocos, que você pode executar localmente com `bitomc server`."
 
 #: src/guides/moderation.md:6
 msgid ""
@@ -4824,11 +4824,11 @@ msgstr ""
 
 #: src/guides/moderation.md:13
 msgid ""
-"In order to prevent particular inscriptions from being displayed on an `ord` "
+"In order to prevent particular inscriptions from being displayed on an `bitomc` "
 "instance, they can be included in a YAML config file, which is loaded with "
 "the `--config` option."
 msgstr ""
-"Para evitar que inscrições específicas sejam exibidas em uma instância `ord`, elas podem ser incluídas em um arquivo de configuração YAML, que é carregado com a opção `--config`."
+"Para evitar que inscrições específicas sejam exibidas em uma instância `bitomc`, elas podem ser incluídas em um arquivo de configuração YAML, que é carregado com a opção `--config`."
 
 #: src/guides/moderation.md:17
 msgid ""
@@ -4851,29 +4851,29 @@ msgstr ""
 
 #: src/guides/moderation.md:25
 msgid ""
-"The suggested name for `ord` config files is `ord.yaml`, but any filename "
+"The suggested name for `bitomc` config files is `bitomc.yaml`, but any filename "
 "can be used."
 msgstr ""
-"O nome sugerido para os arquivos de configuração do `ord` é `ord.yaml`, mas qualquer nome de arquivo pode ser usado."
+"O nome sugerido para os arquivos de configuração do `bitomc` é `bitomc.yaml`, mas qualquer nome de arquivo pode ser usado."
 
 #: src/guides/moderation.md:28
 msgid "Then pass the file to `--config` when starting the server:"
 msgstr "Em seguida, passe o arquivo para `--config` ao iniciar o servidor:"
 
 #: src/guides/moderation.md:30
-msgid "`ord --config ord.yaml server`"
-msgstr "`ord --config ord.yaml server`"
+msgid "`bitomc --config bitomc.yaml server`"
+msgstr "`bitomc --config bitomc.yaml server`"
 
 #: src/guides/moderation.md:32
 msgid ""
-"Note that the `--config` option comes after `ord` but before the `server` "
+"Note that the `--config` option comes after `bitomc` but before the `server` "
 "subcommand."
 msgstr ""
-"Observe que a opção `--config` vem depois de `ord`, mas antes do subcomando `server`."
+"Observe que a opção `--config` vem depois de `bitomc`, mas antes do subcomando `server`."
 
 #: src/guides/moderation.md:35
-msgid "`ord` must be restarted in to load changes to the config file."
-msgstr "`ord` deve ser reiniciado para carregar as alterações no arquivo de configuração."
+msgid "`bitomc` must be restarted in to load changes to the config file."
+msgstr "`bitomc` deve ser reiniciado para carregar as alterações no arquivo de configuração."
 
 #: src/guides/moderation.md:37
 msgid "`ordinals.com`"
@@ -4881,11 +4881,11 @@ msgstr "`ordinals.com`"
 
 #: src/guides/moderation.md:40
 msgid ""
-"The `ordinals.com` instances use `systemd` to run the `ord server` service, "
-"which is called `ord`, with a config file located at `/var/lib/ord/ord.yaml`."
+"The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
+"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
 msgstr ""
-"As instâncias `ordinals.com` usam `systemd` para executar o serviço `ord server`, "
-"que é chamado `ord`, com um arquivo de configuração localizado em `/var/lib/ord/ord.yaml`."
+"As instâncias `ordinals.com` usam `systemd` para executar o serviço `bitomc server`, "
+"que é chamado `bitomc`, com um arquivo de configuração localizado em `/var/lib/ord/bitomc.yaml`."
 
 #: src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4896,31 +4896,31 @@ msgid "SSH into the server"
 msgstr "Conecte-se ao servidor com SSH"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/ord.yaml`"
-msgstr "Adicione o ID da inscrição a `/var/lib/ord/ord.yaml`"
+msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
+msgstr "Adicione o ID da inscrição a `/var/lib/ord/bitomc.yaml`"
 
 #: src/guides/moderation.md:47
-msgid "Restart the service with `systemctl restart ord`"
-msgstr "Reinicie o serviço com `systemctl restart ord`"
+msgid "Restart the service with `systemctl restart bitomc`"
+msgstr "Reinicie o serviço com `systemctl restart bitomc`"
 
 #: src/guides/moderation.md:48
-msgid "Monitor the restart with `journalctl -u ord`"
-msgstr "Monitore a reinicialização com `journalctl -u ord`"
+msgid "Monitor the restart with `journalctl -u bitomc`"
+msgstr "Monitore a reinicialização com `journalctl -u bitomc`"
 
 #: src/guides/moderation.md:50
 msgid ""
-"Currently, `ord` is slow to restart, so the site will not come back online "
+"Currently, `bitomc` is slow to restart, so the site will not come back online "
 "immediately."
 msgstr ""
-"Atualmente, `ord` demora para reiniciar, então o site não voltará a ficar online imediatamente."
+"Atualmente, `bitomc` demora para reiniciar, então o site não voltará a ficar online imediatamente."
 
 #: src/guides/reindexing.md:4
 msgid ""
-"Sometimes the `ord` database must be reindexed, which means deleting the "
-"database and restarting the indexing process with either `ord index update` or "
-"`ord server`. Reasons to reindex are:"
+"Sometimes the `bitomc` database must be reindexed, which means deleting the "
+"database and restarting the indexing process with either `bitomc index update` or "
+"`bitomc server`. Reasons to reindex are:"
 msgstr ""
-"Às vezes, o banco de dados `ord` deve ser reindexado, o que significa excluir o banco de dados e reiniciar o processo de indexação com `ord index update` ou `ord server`. Os motivos para reindexar são:"
+"Às vezes, o banco de dados `bitomc` deve ser reindexado, o que significa excluir o banco de dados e reiniciar o processo de indexação com `bitomc index update` ou `bitomc server`. Os motivos para reindexar são:"
 
 #: src/guides/reindexing.md:8
 msgid "A new major release of ord, which changes the database scheme"
@@ -4932,11 +4932,11 @@ msgstr "CO banco de dados foi corrompido de alguma forma"
 
 #: src/guides/reindexing.md:11
 msgid ""
-"The database `ord` uses is called [redb](https://github.com/cberner/redb), "
+"The database `bitomc` uses is called [redb](https://github.com/cberner/redb), "
 "so we give the index the default file name `index.redb`. By default we store "
 "this file in different locations depending on your operating system."
 msgstr ""
-"O banco de dados que `ord` usa é chamado [redb](https://github.com/cberner/redb), "
+"O banco de dados que `bitomc` usa é chamado [redb](https://github.com/cberner/redb), "
 "então damos ao índice o nome de arquivo padrão `index.redb`. Por padrão, armazenamos "
 "esse arquivo em locais diferentes, dependendo do seu sistema operacional."
 
@@ -4953,8 +4953,8 @@ msgid "Linux"
 msgstr "Linux"
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/ord or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/ord ou `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgstr "`$XDG_DATA_HOME`/bitomc ou `$HOME`/.local/share/ord"
 
 #: src/guides/reindexing.md:17
 msgid "/home/alice/.local/share/ord"
@@ -4995,22 +4995,22 @@ msgstr ""
 msgid ""
 "```bash\n"
 "rm ~/Library/Application Support/ord/index.redb\n"
-"ord index update\n"
+"bitomc index update\n"
 "```"
 msgstr ""
 "```bash\n"
 "rm ~/Library/Application Support/ord/index.redb\n"
-"ord index update\n"
+"bitomc index update\n"
 "```"
 
 #: src/guides/reindexing.md:29
 msgid ""
 "You can of course also set the location of the data directory yourself with "
-"`ord --datadir <DIR> index update` or give it a specific filename and path "
-"with `ord --index <FILENAME> index update`."
+"`bitomc --datadir <DIR> index update` or give it a specific filename and path "
+"with `bitomc --index <FILENAME> index update`."
 msgstr ""
-"É claro que você também pode definir a localização do diretório de dados com `ord --datadir <DIR> index update` "
-"ou fornecer um nome de arquivo e caminho específicos com `ord --index <ARQUIVO> index update`."
+"É claro que você também pode definir a localização do diretório de dados com `bitomc --datadir <DIR> index update` "
+"ou fornecer um nome de arquivo e caminho específicos com `bitomc --index <ARQUIVO> index update`."
 
 #: src/bounties.md:1
 msgid "Ordinal Bounty Hunting Hints"
@@ -5019,24 +5019,24 @@ msgstr "Dicas para Caça à Recompensa de Ordinals"
 
 #: src/bounties.md:4
 msgid ""
-"The `ord` wallet can send and receive specific satoshis. Additionally, "
+"The `bitomc` wallet can send and receive specific satoshis. Additionally, "
 "ordinal theory is extremely simple. A clever hacker should be able to write "
 "code from scratch to manipulate satoshis using ordinal theory in no time."
 msgstr ""
-"A carteira `ord` pode enviar e receber satoshis específicos. Além disso, a teoria ordinal é extremamente simples. "
+"A carteira `bitomc` pode enviar e receber satoshis específicos. Além disso, a teoria ordinal é extremamente simples. "
 "Um hacker inteligente deve ser capaz de escrever código do zero para manipular satoshis usando a teoria ordinal rapidamente."
 
 #: src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
 "an overview, the "
-"[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki) for the "
-"technical details, and the [ord repo](https://github.com/ordinals/ord) for "
-"the `ord` wallet and block explorer."
+"[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) for the "
+"technical details, and the [bitomc repo](https://github.com/BitOMC/BitOMC) for "
+"the `bitomc` wallet and block explorer."
 msgstr ""
 "Para obter mais informações sobre a teoria ordinal, consulte o [FAQ](./faq.md) para uma visão geral, "
-"o [BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki) para os detalhes técnicos e o "
-"[repositório ord](https://github.com/ordinals/ord) para a carteira `ord` e o explorador de blocos."
+"o [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) para os detalhes técnicos e o "
+"[repositório ord](https://github.com/BitOMC/BitOMC) para a carteira `bitomc` e o explorador de blocos."
 
 #: src/bounties.md:14
 msgid ""
@@ -5260,27 +5260,27 @@ msgstr ""
 
 #: src/bounty/3.md:32
 msgid ""
-"To search an `ord` wallet for sats with a name in `frequency.tsv`, use the "
-"following [`ord`](https://github.com/ordinals/ord) command:"
+"To search an `bitomc` wallet for sats with a name in `frequency.tsv`, use the "
+"following [`bitomc`](https://github.com/BitOMC/BitOMC) command:"
 msgstr ""
-"Para pesquisar sats em uma carteira `ord` com um nome em `frequency.tsv`, use o seguinte comando [`ord`](https://github.com/ordinals/ord):"
+"Para pesquisar sats em uma carteira `bitomc` com um nome em `frequency.tsv`, use o seguinte comando [`bitomc`](https://github.com/BitOMC/BitOMC):"
 
 #: src/bounty/3.md:35
 msgid ""
 "```\n"
-"ord wallet sats --tsv frequency.tsv\n"
+"bitomc wallet sats --tsv frequency.tsv\n"
 "```"
 msgstr ""
 "```\n"
-"ord wallet sats --tsv frequency.tsv\n"
+"bitomc wallet sats --tsv frequency.tsv\n"
 "```"
 
 #: src/bounty/3.md:39
 msgid ""
-"This command requires the sat index, so `--index-sats` must be passed to ord "
+"This command requires the sat index, so `--index-sats` must be passed to bitomc "
 "when first creating the index."
 msgstr ""
-"Este comando requer o índice sat (sat index), então `--index-sats` deve ser passado ao ord ao criar o índice pela primeira vez."
+"Este comando requer o índice sat (sat index), então `--index-sats` deve ser passado ao bitomc ao criar o índice pela primeira vez."
 
 #: src/bounty/3.md:42
 msgid "Part 0"

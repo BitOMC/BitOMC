@@ -2,7 +2,7 @@ Donate
 ======
 
 Ordinals is open-source and community funded. The current lead maintainer of
-`ord` is [raphjaph](https://github.com/raphjaph/). Raph's work on `ord` is
+`bitomc` is [raphjaph](https://github.com/raphjaph/). Raph's work on `bitomc` is
 entirely funded by donations. If you can, please consider donating!
 
 The donation address for Bitcoin is
@@ -14,7 +14,7 @@ Both addresses are in a 2 of 4 multisig wallet with keys held by
 [rodarmor](https://twitter.com/rodarmor), and
 [ordinally](https://twitter.com/veryordinally).
 
-Donations received will go towards funding maintenance and development of `ord`,
+Donations received will go towards funding maintenance and development of `bitomc`,
 as well as hosting costs for [ordinals.com](https://ordinals.com).
 
 Thank you for donating!

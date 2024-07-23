@@ -37,22 +37,22 @@ deploy branch remote chain domain:
   rsync -avz deploy/checkout root@{{domain}}:deploy/checkout
   ssh root@{{domain}} 'cd deploy && ./checkout {{branch}} {{remote}} {{chain}} {{domain}}'
 
-deploy-mainnet-alpha branch='master' remote='ordinals/ord': \
+deploy-mainnet-alpha branch='master' remote='BitOMC/BitOMC': \
   (deploy branch remote 'main' 'alpha.ordinals.net')
 
-deploy-mainnet-bravo branch='master' remote='ordinals/ord': \
+deploy-mainnet-bravo branch='master' remote='BitOMC/BitOMC': \
   (deploy branch remote 'main' 'bravo.ordinals.net')
 
-deploy-mainnet-charlie branch='master' remote='ordinals/ord': \
+deploy-mainnet-charlie branch='master' remote='BitOMC/BitOMC': \
   (deploy branch remote 'main' 'charlie.ordinals.net')
 
-deploy-regtest branch='master' remote='ordinals/ord': \
+deploy-regtest branch='master' remote='BitOMC/BitOMC': \
   (deploy branch remote 'regtest' 'regtest.ordinals.net')
 
-deploy-signet branch='master' remote='ordinals/ord': \
+deploy-signet branch='master' remote='BitOMC/BitOMC': \
   (deploy branch remote 'signet' 'signet.ordinals.net')
 
-deploy-testnet branch='master' remote='ordinals/ord': \
+deploy-testnet branch='master' remote='BitOMC/BitOMC': \
   (deploy branch remote 'test' 'testnet.ordinals.net')
 
 deploy-all: \
@@ -69,7 +69,7 @@ delete-indices: \
   (delete-index "testnet.ordinals.net")
 
 delete-index domain:
-  ssh root@{{domain}} 'systemctl stop ord && rm -f /var/lib/ord/*/index.redb'
+  ssh root@{{domain}} 'systemctl stop bitomc && rm -f /var/lib/bitomc/*/index.redb'
 
 servers := 'alpha bravo charlie regtest signet testnet'
 
@@ -99,7 +99,7 @@ server-keys:
     ssh root@$server.ordinals.net cat .ssh/authorized_keys
   done
 
-log unit='ord' domain='alpha.ordinals.net':
+log unit='bitomc' domain='alpha.ordinals.net':
   ssh root@{{domain}} 'journalctl -fu {{unit}}'
 
 fuzz:
@@ -139,7 +139,7 @@ publish-release revision='master':
   #!/usr/bin/env bash
   set -euxo pipefail
   rm -rf tmp/release
-  git clone https://github.com/ordinals/ord.git tmp/release
+  git clone https://github.com/BitOMC/BitOMC.git tmp/release
   cd tmp/release
   git checkout {{ revision }}
   cargo publish
@@ -150,12 +150,12 @@ publish-tag-and-crate revision='master':
   #!/usr/bin/env bash
   set -euxo pipefail
   rm -rf tmp/release
-  git clone git@github.com:ordinals/ord.git tmp/release
+  git clone git@github.com:BitOMC/BitOMC.git tmp/release
   cd tmp/release
   git checkout {{revision}}
   version=`sed -En 's/version[[:space:]]*=[[:space:]]*"([^"]+)"/\1/p' Cargo.toml | head -1`
   git tag -a $version -m "Release $version"
-  git push git@github.com:ordinals/ord.git $version
+  git push git@github.com:BitOMC/BitOMC.git $version
   cargo publish
   cd ../..
   rm -rf tmp/release
@@ -169,7 +169,7 @@ update-modern-normalize:
     https://raw.githubusercontent.com/sindresorhus/modern-normalize/main/modern-normalize.css \
     > static/modern-normalize.css
 
-download-log unit='ord' host='alpha.ordinals.net':
+download-log unit='bitomc' host='alpha.ordinals.net':
   ssh root@{{host}} 'mkdir -p tmp && journalctl -u {{unit}} > tmp/{{unit}}.log'
   mkdir -p tmp/{{unit}}
   rsync --progress --compress root@{{host}}:tmp/{{unit}}.log tmp/{{unit}}.log

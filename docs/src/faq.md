@@ -88,7 +88,7 @@ outputs:
 ```
 
 So they go to the miner who mined the block as fees. [The
-BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki) has the details,
+BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) has the details,
 but in short, fees paid by transactions are treated as extra inputs to the
 coinbase transaction, and are ordered how their corresponding transactions are
 ordered in the block. The coinbase transaction of the block might look like
@@ -101,7 +101,7 @@ this:
 Where can I find the nitty-gritty details?
 ------------------------------------------
 
-[The BIP!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)
+[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)
 
 Why are sat inscriptions called "digital artifacts" instead of "NFTs"?
 ----------------------------------------------------------------------

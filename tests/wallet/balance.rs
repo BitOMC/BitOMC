@@ -1,17 +1,17 @@
-use {super::*, ord::decimal::Decimal};
+use {super::*, bitomc::decimal::Decimal};
 
 #[test]
 fn wallet_balance() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   assert_eq!(
     CommandBuilder::new("wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Balance>()
       .cardinal,
     0
@@ -22,7 +22,7 @@ fn wallet_balance() {
   assert_eq!(
     CommandBuilder::new("wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE,
@@ -36,15 +36,15 @@ fn wallet_balance() {
 #[test]
 fn unsynced_wallet_fails_with_unindexed_output() {
   let core = mockcore::spawn();
-  let ord = TestServer::spawn(&core);
+  let bitomc = TestServer::spawn(&core);
 
   core.mine_blocks(1);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   assert_eq!(
     CommandBuilder::new("wallet balance")
-      .ord(&ord)
+      .ord(&bitomc)
       .core(&core)
       .run_and_deserialize_output::<Balance>(),
     Balance {
@@ -57,13 +57,13 @@ fn unsynced_wallet_fails_with_unindexed_output() {
 
   let no_sync_ord = TestServer::spawn_with_server_args(&core, &[], &["--no-sync"]);
 
-  // inscribe(&core, &ord);
+  // inscribe(&core, &bitomc);
 
   CommandBuilder::new("wallet balance")
     .ord(&no_sync_ord)
     .core(&core)
     .expected_exit_code(1)
-    .expected_stderr("error: wallet failed to synchronize with `ord server` after 20 attempts\n")
+    .expected_stderr("error: wallet failed to synchronize with `bitomc server` after 20 attempts\n")
     .run_and_extract_stdout();
 }
 
@@ -71,14 +71,14 @@ fn unsynced_wallet_fails_with_unindexed_output() {
 fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 0,
@@ -92,15 +92,15 @@ fn runic_utxos_are_deducted_from_cardinal_and_displayed_with_decimal_amount() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 50 * COIN_VALUE * 2 - 10_000 - 330,

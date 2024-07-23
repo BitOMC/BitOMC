@@ -7,7 +7,7 @@ on-chain data, including the content of other inscriptions.
 
 Since changes to recursive endpoints might break inscriptions that rely on
 them, recursive endpoints have backwards-compatibility guarantees not shared by
-`ord server`'s other endpoints. In particular:
+`bitomc server`'s other endpoints. In particular:
 
 - Recursive endpoints will not be removed
 - Object fields returned by recursive endpoints will not be renamed or change types

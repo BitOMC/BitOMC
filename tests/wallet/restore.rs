@@ -1,4 +1,4 @@
-use {super::*, ord::subcommand::wallet::create};
+use {super::*, bitomc::subcommand::wallet::create};
 
 #[test]
 fn restore_generates_same_descriptors() {
@@ -56,24 +56,24 @@ fn restore_generates_same_descriptors_with_passphrase() {
 #[test]
 fn restore_to_existing_wallet_fails() {
   let core = mockcore::spawn();
-  let ord = TestServer::spawn(&core);
+  let bitomc = TestServer::spawn(&core);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let descriptors = core.descriptors();
 
   let output = CommandBuilder::new("wallet dump")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .stderr_regex(".*")
     .run_and_deserialize_output::<ListDescriptorsResult>();
 
   CommandBuilder::new("wallet restore --from descriptor")
     .stdin(serde_json::to_string(&output).unwrap().as_bytes().to_vec())
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_exit_code(1)
-    .expected_stderr("error: wallet `ord` already exists\n")
+    .expected_stderr("error: wallet `bitomc` already exists\n")
     .run_and_extract_stdout();
 
   assert_eq!(
@@ -137,7 +137,7 @@ fn restore_with_wrong_descriptors_fails() {
 }"#.into())
     .core(&core)
     .expected_exit_code(1)
-    .expected_stderr("error: wallet \"foo\" contains unexpected output descriptors, and does not appear to be an `ord` wallet, create a new wallet with `ord wallet create`\n")
+    .expected_stderr("error: wallet \"foo\" contains unexpected output descriptors, and does not appear to be an `bitomc` wallet, create a new wallet with `bitomc wallet create`\n")
     .run_and_extract_stdout();
 }
 
@@ -177,7 +177,7 @@ fn restore_with_blank_mnemonic_generates_same_descriptors() {
 #[test]
 fn passphrase_conflicts_with_descriptor() {
   let core = mockcore::spawn();
-  let ord = TestServer::spawn(&core);
+  let bitomc = TestServer::spawn(&core);
 
   CommandBuilder::new([
     "wallet",
@@ -189,7 +189,7 @@ fn passphrase_conflicts_with_descriptor() {
   ])
   .stdin("".into())
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: descriptor does not take a passphrase\n")
   .run_and_extract_stdout();

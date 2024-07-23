@@ -200,12 +200,12 @@ msgid "Links"
 msgstr "링크 모음"
 
 #: /workspaces/ord_ko/docs/src/introduction.md:38
-msgid "[GitHub](https://github.com/ordinals/ord/)"
-msgstr "[깃허브](https://github.com/ordinals/ord/)"
+msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
+msgstr "[깃허브](https://github.com/BitOMC/BitOMC/)"
 
 #: /workspaces/ord_ko/docs/src/introduction.md:39
-msgid "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: /workspaces/ord_ko/docs/src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -279,10 +279,10 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/overview.md:13
 msgid ""
-"Technical details are available in [the BIP](https://github.com/ordinals/ord/"
+"Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/"
 "blob/master/bip.mediawiki)."
 msgstr ""
-"기술적인 자세한 내용은 [BIP](https://github.com/ordinals/ord/blob/master/bip."
+"기술적인 자세한 내용은 [BIP](https://github.com/xaz1234567890abc/master/bip."
 "mediawiki)에서 확인할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/overview.md:16
@@ -354,13 +354,13 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/overview.md:45
 msgid ""
 "Ordinals is an open-source project, developed [on GitHub](https://github.com/"
-"ordinals/ord). The project consists of a BIP describing the ordinal scheme, "
+"BitOMC/BitOMC). The project consists of a BIP describing the ordinal scheme, "
 "an index that communicates with a Bitcoin Core node to track the location of "
 "all satoshis, a wallet that allows making ordinal-aware transactions, a "
 "block explorer for interactive exploration of the blockchain, functionality "
 "for inscribing satoshis with digital artifacts, and this manual."
 msgstr ""
-"오디널스는 [깃허브](https://github.com/ordinals/ord)에서 개발된 오픈 소스 프"
+"오디널스는 [깃허브](https://github.com/BitOMC/BitOMC)에서 개발된 오픈 소스 프"
 "로젝트다. 이 프로젝트는 오디널 체계를 설명하는 BIP, 비트코인 코어 노드와 통신"
 "하여 모든 사토시의 위치를 추적하는 인덱스, 오디널를 인식하고 트랜잭션를 할 "
 "수 있는 지갑, 블록체인의 대화형 탐색을 위한 블록 탐색기, 사토시에 디지털 아티"
@@ -946,10 +946,10 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/inscriptions.md:53
 msgid ""
-"First the string `ord` is pushed, to disambiguate inscriptions from other "
+"First the string `bitomc` is pushed, to disambiguate inscriptions from other "
 "uses of envelopes."
 msgstr ""
-"먼저 `ord` 문자열이 푸시되어 인스크립션을 엔벨롭의 다른 용도와 구분할 수 있"
+"먼저 `bitomc` 문자열이 푸시되어 인스크립션을 엔벨롭의 다른 용도와 구분할 수 있"
 "다."
 
 #: /workspaces/ord_ko/docs/src/inscriptions.md:56
@@ -1205,7 +1205,7 @@ msgid ""
 "CBOR is a complex spec with many different data types, and multiple ways of "
 "representing the same data. Exotic data types, such as tags, floats, and "
 "bignums, and encoding such as indefinite values, may fail to display "
-"correctly or at all. Contributions to `ord` to remedy this are welcome."
+"correctly or at all. Contributions to `bitomc` to remedy this are welcome."
 msgstr ""
 
 #: /workspaces/ord_ko/docs/src/inscriptions/metadata.md:30
@@ -1413,11 +1413,11 @@ msgstr "메모"
 msgid ""
 "The tag `3` is used because it is the first available odd tag. Unrecognized "
 "odd tags do not make an inscription unbound, so child inscriptions would be "
-"recognized and tracked by old versions of `ord`."
+"recognized and tracked by old versions of `bitomc`."
 msgstr ""
 "태그 `3`은 사용 가능한 첫 번째 홀수 태그이기 때문에 사용된다. 인식되지 않는 "
 "홀수 태그는 인스크립션을 unbound(바인딩 해제)하지 않으므로 하위 인스크립션은 "
-"이전 버전의 `ord`에서 인식 및 추적된다."
+"이전 버전의 `bitomc`에서 인식 및 추적된다."
 
 #: /workspaces/ord_ko/docs/src/inscriptions/provenance.md:81
 msgid ""
@@ -1430,12 +1430,12 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/inscriptions/recursion.md:4
 msgid ""
 "An important exception to [sandboxing](../inscriptions.md#sandboxing) is "
-"recursion: access to `ord`'s `/content` endpoint is permitted, allowing "
+"recursion: access to `bitomc`'s `/content` endpoint is permitted, allowing "
 "inscriptions to access the content of other inscriptions by requesting `/"
 "content/<INSCRIPTION_ID>`."
 msgstr ""
 "[샌드박싱](../inscriptions.md#sandboxing)의 중요한 예외는 리커젼(재귀)이다. "
-"`ord`의 `/content` 엔드포인트에 대한 액세스가 허용되므로 어떤 인스크립션이 `/"
+"`bitomc`의 `/content` 엔드포인트에 대한 액세스가 허용되므로 어떤 인스크립션이 `/"
 "content/<INSCRIPTION_ID>`를 요청하여 다른 인스크립션의 콘텐츠에 액세스할 수 "
 "있다."
 
@@ -1657,14 +1657,14 @@ msgstr " 는 이제 출력에 갈 곳이 없다:"
 #: /workspaces/ord_ko/docs/src/faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/ordinals/ord/blob/master/bip.mediawiki) has the details, but in "
+"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
 "this:"
 msgstr ""
 "따라서 블록을 채굴한 채굴자에게 수수료로 지급된다. [BIP](https://github.com/"
-"ordinals/ord/blob/master/bip.mediawiki)에 자세한 내용이 나와 있지만, 간단히 "
+"xaz1234567890abc/master/bip.mediawiki)에 자세한 내용이 나와 있지만, 간단히 "
 "말해 트랜잭션이 지불한 수수료는 코인베이스 트랜잭션에 대한 추가 입력으로 취급"
 "되며, 이의 순서는 해당 트랜잭션이 블록에서 어떻게 정렬되는지에 따라서 정해진"
 "다. 해당 블록의 코인베이스 트랜잭션은 다음과 같이 보일 수 있다:"
@@ -1674,9 +1674,9 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "핵심적인 세부 정보는 어디에서 찾을 수 있는가?"
 
 #: /workspaces/ord_ko/docs/src/faq.md:92
-msgid "[The BIP!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 msgstr ""
-"[BIP을 참조하자!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+"[BIP을 참조하자!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: /workspaces/ord_ko/docs/src/faq.md:94
 msgid ""
@@ -2264,8 +2264,8 @@ msgstr ""
 "로서 이 주요 사용 사례를 더욱 효과적으로 수행할 수 있게 해 주는 것이다."
 
 #: /workspaces/ord_ko/docs/src/contributing.md:1
-msgid "Contributing to `ord`"
-msgstr "`ord`에 기여하기"
+msgid "Contributing to `bitomc`"
+msgstr "`bitomc`에 기여하기"
 
 #: /workspaces/ord_ko/docs/src/contributing.md:4
 msgid "Suggested Steps"
@@ -2466,11 +2466,11 @@ msgstr "모든 오류 메시지를 읽고 경고를 무시하지 말자."
 #: /workspaces/ord_ko/docs/src/donate.md:4
 msgid ""
 "Ordinals is open-source and community funded. The current lead maintainer of "
-"`ord` is [raphjaph](https://github.com/raphjaph/). Raph's work on `ord` is "
+"`bitomc` is [raphjaph](https://github.com/raphjaph/). Raph's work on `bitomc` is "
 "entirely funded by donations. If you can, please consider donating!"
 msgstr ""
-"오디널스는 오픈소스이며 커뮤니티 펀딩을 받고 있다. 현재 `ord`의 리드 메인터너"
-"는 [raphjaph](https://github.com/raphjaph/)이다. Raph의 `ord` 작업은 전적으"
+"오디널스는 오픈소스이며 커뮤니티 펀딩을 받고 있다. 현재 `bitomc`의 리드 메인터너"
+"는 [raphjaph](https://github.com/raphjaph/)이다. Raph의 `bitomc` 작업은 전적으"
 "로 기부금으로 충당된다. 가능하다면 기부에 동참하자!"
 
 #: /workspaces/ord_ko/docs/src/donate.md:8
@@ -2508,7 +2508,7 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/donate.md:17
 msgid ""
 "Donations received will go towards funding maintenance and development of "
-"`ord`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
+"`bitomc`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
 msgstr ""
 "받은 기부금은 'ord'의 유지 및 개발 자금과 [ordinals.com](https://ordinals."
 "com)의 호스팅 비용으로 사용된다."
@@ -2535,11 +2535,11 @@ msgstr "오디널 탐색기"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:4
 msgid ""
-"The `ord` binary includes a block explorer. We host a instance of the block "
+"The `bitomc` binary includes a block explorer. We host a instance of the block "
 "explorer on mainnet at [ordinals.com](https://ordinals.com), and on signet "
 "at [signet.ordinals.com](https://signet.ordinals.com)."
 msgstr ""
-"`ord` 바이너리에는 블록 탐색기가 포함되어 있다. 블록 탐색기의 인스턴스는 메인"
+"`bitomc` 바이너리에는 블록 탐색기가 포함되어 있다. 블록 탐색기의 인스턴스는 메인"
 "넷은 [ordinals.com](https://ordinals.com)에서, 시그넷은 [signet.ordinals.com]"
 "(https://signet.ordinals.com)에서 호스팅된다."
 
@@ -2552,16 +2552,16 @@ msgid "The server can be run locally with:"
 msgstr "서버는 이것으로 로컬에서 실행할 수 있다:"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:11
-msgid "`ord server`"
-msgstr "`ord server`"
+msgid "`bitomc server`"
+msgstr "`bitomc server`"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:13
 msgid "To specify a port add the `--http-port` flag:"
 msgstr "포트를 지정하려면 `--http-port` 플래그를 추가한다:"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:15
-msgid "`ord server --http-port 8080`"
-msgstr "`ord server —http-port 8080`"
+msgid "`bitomc server --http-port 8080`"
+msgstr "`bitomc server —http-port 8080`"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:17
 msgid ""
@@ -2572,16 +2572,16 @@ msgstr ""
 "가한다:"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:20
-msgid "`ord --enable-json-api server`"
-msgstr "`ord --enable-json-api server`"
+msgid "`bitomc --enable-json-api server`"
+msgstr "`bitomc --enable-json-api server`"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:22
 msgid "To test how your inscriptions will look you can run:"
 msgstr "인스크립션이 어떻게 나올지 테스트하려면 이것을 실행해 보라:"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:24
-msgid "`ord preview <FILE1> <FILE2> ...`"
-msgstr "`ord preview <FILE1> <FILE2> …`"
+msgid "`bitomc preview <FILE1> <FILE2> ...`"
+msgstr "`bitomc preview <FILE1> <FILE2> …`"
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:26
 msgid "Search"
@@ -2720,7 +2720,7 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/explorer.md:79
 msgid ""
-"You can run `ord` with the `--enable-json-api` flag to access endpoints that "
+"You can run `bitomc` with the `--enable-json-api` flag to access endpoints that "
 "return JSON instead of HTML if you set the HTTP `Accept: application/json` "
 "header. The structure of theses objects closely follows what is shown in the "
 "HTML. These endpoints are:"
@@ -2846,12 +2846,12 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:17
 msgid ""
-"This requires [`ord`](https://github.com/ordinals/ord), the ordinal utility. "
-"`ord` doesn't implement its own wallet, so `ord wallet` subcommands interact "
+"This requires [`bitomc`](https://github.com/BitOMC/BitOMC), the ordinal utility. "
+"`bitomc` doesn't implement its own wallet, so `bitomc wallet` subcommands interact "
 "with Bitcoin Core wallets."
 msgstr ""
-"이를 위해서는 오디널 유틸리티인 [`ord`](https://github.com/ordinals/ord)가 필"
-"요하다. `ord`는 자체 지갑을 구현하지 않으므로 `ord wallet` 하위 명령은 "
+"이를 위해서는 오디널 유틸리티인 [`bitomc`](https://github.com/BitOMC/BitOMC)가 필"
+"요하다. `bitomc`는 자체 지갑을 구현하지 않으므로 `bitomc wallet` 하위 명령은 "
 "Bitcoin Core 지갑과 상호작용한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:21
@@ -2872,20 +2872,20 @@ msgid "Creating a Bitcoin Core wallet"
 msgstr "Bitcoin Core 지갑 만들기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:26
-msgid "Using `ord wallet receive` to receive sats"
-msgstr "`ord wallet receive`을 사용하여 SAT 받기"
+msgid "Using `bitomc wallet receive` to receive sats"
+msgstr "`bitomc wallet receive`을 사용하여 SAT 받기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:27
-msgid "Creating inscriptions with `ord wallet inscribe`"
-msgstr "`ord wallet inscribe`으로 인스크립션 만들기"
+msgid "Creating inscriptions with `bitomc wallet inscribe`"
+msgstr "`bitomc wallet inscribe`으로 인스크립션 만들기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:28
-msgid "Sending inscriptions with `ord wallet send`"
-msgstr "`ord wallet send`로 인스크립션 보내기"
+msgid "Sending inscriptions with `bitomc wallet send`"
+msgstr "`bitomc wallet send`로 인스크립션 보내기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:29
-msgid "Receiving inscriptions with `ord wallet receive`"
-msgstr "`ord wallet receive`로 인스크립션 받기"
+msgid "Receiving inscriptions with `bitomc wallet receive`"
+msgstr "`bitomc wallet receive`로 인스크립션 받기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:31
 msgid "Getting Help"
@@ -2895,12 +2895,12 @@ msgstr "도움 받기"
 msgid ""
 "If you get stuck, try asking for help on the [Ordinals Discord Server]"
 "(https://discord.com/invite/87cjuz4FYg), or checking GitHub for relevant "
-"[issues](https://github.com/ordinals/ord/issues) and [discussions](https://"
-"github.com/ordinals/ord/discussions)."
+"[issues](https://github.com/BitOMC/BitOMC/issues) and [discussions](https://"
+"github.com/BitOMC/BitOMC/discussions)."
 msgstr ""
 "문제가 해결되지 않는다면, [오디널스 디스코드 서버](https://discord.com/"
 "invite/87cjuz4FYg)에서 도움을 요청해 보거나 깃허브에서 관련 [이슈](https://"
-"github.com/ordinals/ord/issues) 및 [토론](https://github.com/ordinals/ord/"
+"github.com/BitOMC/BitOMC/issues) 및 [토론](https://github.com/BitOMC/BitOMC/"
 "discussions)을 확인해 보자."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:42
@@ -2930,8 +2930,8 @@ msgid "Configuring Bitcoin Core"
 msgstr "Bitcoin Core 설정하기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:54
-msgid "`ord` requires Bitcoin Core's transaction index and rest interface."
-msgstr "`ord`는 Bitcoin Core의 트랜잭션 인덱스와 rest 인터페이스가 필요하다."
+msgid "`bitomc` requires Bitcoin Core's transaction index and rest interface."
+msgstr "`bitomc`는 Bitcoin Core의 트랜잭션 인덱스와 rest 인터페이스가 필요하다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:56
 msgid ""
@@ -2969,12 +2969,12 @@ msgstr "...그리고 `getblockcount`가:"
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:87
 msgid ""
 "agrees with the block count on a block explorer like [the mempool.space "
-"block explorer](https://mempool.space/). `ord` interacts with `bitcoind`, so "
+"block explorer](https://mempool.space/). `bitomc` interacts with `bitcoind`, so "
 "you should leave `bitcoind` running in the background when you're using "
-"`ord`."
+"`bitomc`."
 msgstr ""
 "[mempool.space block explorer](https://mempool.space/)와 같은 블록 탐색기의 "
-"블록 수와 일치할때까지 실행한다. `ord`는 `bitcoind`와 상호 작용하므로 `ord`"
+"블록 수와 일치할때까지 실행한다. `bitomc`는 `bitcoind`와 상호 작용하므로 `bitomc`"
 "을 사용할 때는 `bitcoind`를 백그라운드에서 실행하도록 두어야 한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:91
@@ -2983,11 +2983,11 @@ msgid ""
 "drive you want to store blocks on, use the configuration option "
 "`blocksdir=<external_drive_path>`. This is much simpler than using the "
 "`datadir` option because the cookie file will still be in the default "
-"location for `bitcoin-cli` and `ord` to find."
+"location for `bitcoin-cli` and `bitomc` to find."
 msgstr ""
 "블록체인은 약 600GB의 디스크 공간을 필요로 한다. 블록을 저장할 외장 드라이브"
 "가 있는 경우, 설정 옵션 `blocksdir=<external_drive_path>`를 사용한다. 이렇게 "
-"하면 쿠키 파일이 여전히 `bitcoin-cli`와 `ord`가 찾을 수 있는 기본 위치에 있"
+"하면 쿠키 파일이 여전히 `bitcoin-cli`와 `bitomc`가 찾을 수 있는 기본 위치에 있"
 "기 때문에 `datadir` 옵션을 사용하는 것보다 훨씬 간단하다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:97
@@ -3014,11 +3014,11 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:106
 msgid ""
 "Make sure `rpcuser`, `rpcpassword`, or `rpcauth` are _NOT_ set in your "
-"`bitcoin.conf` file. `ord` requires using cookie authentication. Make sure "
+"`bitcoin.conf` file. `bitomc` requires using cookie authentication. Make sure "
 "there is a file `.cookie` in your bitcoin data directory."
 msgstr ""
 "`rpcuser`, `rpcpassword` 또는 `rpcauth`가 `bitcoin.conf` 파일에 설정되어 있"
-"지 _않는_ 것을 확인하자. `ord`는 쿠키 인증에 사용을 요구한다. 비트코인 데이"
+"지 _않는_ 것을 확인하자. `bitomc`는 쿠키 인증에 사용을 요구한다. 비트코인 데이"
 "터 디렉토리에 `.cookie` 파일이 있는지 확인하자."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:110
@@ -3027,23 +3027,23 @@ msgid ""
 "you must specify the cookie file location. If you are using a custom data "
 "directory (specifying the `datadir` option), then you must specify the "
 "cookie location like `bitcoin-cli -rpccookiefile=<your_bitcoin_datadir>/."
-"cookie -getinfo`. When running `ord` you must specify the cookie file "
+"cookie -getinfo`. When running `bitomc` you must specify the cookie file "
 "location with `--cookie-file=<your_bitcoin_datadir>/.cookie`."
 msgstr ""
 "`bitcoin-cli -getinfo`가 `Could not locate RPC credentials`을 반환하면 쿠키 "
 "파일 위치를 지정해야 한다. 사용자 지정 데이터 디렉터리를 사용하는 경우"
 "(`datadir` 옵션을 지정) `bitcoin-cli -rpccookiefile=<your_bitcoin_datadir>/."
-"cookie -getinfo`와 같이 쿠키 위치를 지정해야 한다. `ord`을 실행할 때는 `--"
+"cookie -getinfo`와 같이 쿠키 위치를 지정해야 한다. `bitomc`을 실행할 때는 `--"
 "cookie-file=<your_bitcoin_datadir>/.cookie`로 쿠키 파일 위치를 지정해야 한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:118
 msgid ""
 "Make sure you do _NOT_ have `disablewallet=1` in your `bitcoin.conf` file. "
 "If `bitcoin-cli listwallets` returns `Method not found` then the wallet is "
-"disabled and you won't be able to use `ord`."
+"disabled and you won't be able to use `bitomc`."
 msgstr ""
 "`bitcoin.conf` 파일에 `disablewallet=1`이 _없는_ 것을 확인하자. `bitcoin-cli "
-"listwallets`가 `Method not found`을 반환하면 지갑이 비활성화된 것이며 `ord`"
+"listwallets`가 `Method not found`을 반환하면 지갑이 비활성화된 것이며 `bitomc`"
 "를 사용할 수 없다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:122
@@ -3078,33 +3078,33 @@ msgstr ""
 msgid ""
 "If it only returns `{}`, `txindex` is not set. If it returns `\"synced\": "
 "false`, `bitcoind` is still creating the `txindex`. Wait until `\"synced\": "
-"true` before using `ord`."
+"true` before using `bitomc`."
 msgstr ""
 "만약 `{}`만 반환하면 `txindex`가 설정되지 않은 것이다. `”synced”: false`를 반"
 "환하면 `bitcoind`가 여전히 `txindex`를 생성하고 있는 것이다. `”synced”: true`"
-"가 될 때까지 기다렸다가 `ord`를 사용하라."
+"가 될 때까지 기다렸다가 `bitomc`를 사용하라."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:136
 msgid ""
 "If you have `maxuploadtarget` set it can interfere with fetching blocks for "
-"`ord` index. Either remove it or set `whitebind=127.0.0.1:8333`."
+"`bitomc` index. Either remove it or set `whitebind=127.0.0.1:8333`."
 msgstr ""
-"`maxuploadtarget`이 설정되어 있으면 `ord` 인덱스를 위해 블록을 가져오는 데 방"
+"`maxuploadtarget`이 설정되어 있으면 `bitomc` 인덱스를 위해 블록을 가져오는 데 방"
 "해가 될 수 있다. 이를 제거하거나 `whitebind=127.0.0.1:8333`을 설정하라."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:139
-msgid "Installing `ord`"
-msgstr "`ord` 설치"
+msgid "Installing `bitomc`"
+msgstr "`bitomc` 설치"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:142
 msgid ""
-"The `ord` utility is written in Rust and can be built from [source](https://"
-"github.com/ordinals/ord). Pre-built binaries are available on the [releases "
-"page](https://github.com/ordinals/ord/releases)."
+"The `bitomc` utility is written in Rust and can be built from [source](https://"
+"github.com/BitOMC/BitOMC). Pre-built binaries are available on the [releases "
+"page](https://github.com/BitOMC/BitOMC/releases)."
 msgstr ""
-"'ord` 유틸리티는 Rust로 작성되었으며 [소스](https://github.com/ordinals/ord)"
+"'bitomc` 유틸리티는 Rust로 작성되었으며 [소스](https://github.com/BitOMC/BitOMC)"
 "에서 빌드할 수 있다. 미리 빌드된 바이너리는 [릴리스 페이지](https://github."
-"com/ordinals/ord/releases)에서 사용할 수 있다."
+"com/BitOMC/BitOMC/releases)에서 사용할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:146
 msgid "You can install the latest pre-built binary from the command line with:"
@@ -3123,12 +3123,12 @@ msgstr ""
 "```"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:152
-msgid "Once `ord` is installed, you should be able to run:"
-msgstr "`ord`가 설치되면 다음을 실행할 수 있어야 한다:"
+msgid "Once `bitomc` is installed, you should be able to run:"
+msgstr "`bitomc`가 설치되면 다음을 실행할 수 있어야 한다:"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:158
-msgid "Which prints out `ord`'s version number."
-msgstr "이것이 `ord`의 버전 번호를 출력한다."
+msgid "Which prints out `bitomc`'s version number."
+msgstr "이것이 `bitomc`의 버전 번호를 출력한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:160
 msgid "Creating a Bitcoin Core Wallet"
@@ -3136,16 +3136,16 @@ msgstr "Bitcoin Core 지갑 만들기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:163
 msgid ""
-"`ord` uses Bitcoin Core to manage private keys, sign transactions, and "
+"`bitomc` uses Bitcoin Core to manage private keys, sign transactions, and "
 "broadcast transactions to the Bitcoin network."
 msgstr ""
 "'ord'는 비트코인 코어를 사용해 개인 키를 관리하고, 트랜잭션에 서명하고, 비트"
 "코인 네트워크로 트랜잭션을 브로드캐스트한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:166
-msgid "To create a Bitcoin Core wallet named `ord` for use with `ord`, run:"
+msgid "To create a Bitcoin Core wallet named `bitomc` for use with `bitomc`, run:"
 msgstr ""
-"`ord`와 함께 사용할 `ord`이라는 이름을 가진 Bitcoin Core 지갑을 만들려면 다음"
+"`bitomc`와 함께 사용할 `bitomc`이라는 이름을 가진 Bitcoin Core 지갑을 만들려면 다음"
 "을 실행한다:"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:172
@@ -3161,8 +3161,8 @@ msgstr ""
 "에 새김 됨으로 지갑에 약간의 SAT가 필요하다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:178
-msgid "Get a new address from your `ord` wallet by running:"
-msgstr "다음을 실행하여 `ord` 지갑에서 새 주소를 가져온다:"
+msgid "Get a new address from your `bitomc` wallet by running:"
+msgstr "다음을 실행하여 `bitomc` 지갑에서 새 주소를 가져온다:"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:184
 msgid "And send it some funds."
@@ -3175,9 +3175,9 @@ msgstr "다음을 사용하여 펜딩 트랜잭션을 확인할 수 있다:"
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:192
 msgid ""
 "Once the transaction confirms, you should be able to see the transactions "
-"outputs with `ord wallet outputs`."
+"outputs with `bitomc wallet outputs`."
 msgstr ""
-"트랜잭션이 컨펌되면 `ord wallet outputs`으로 트랜잭션 출력을 확인할 수 있다."
+"트랜잭션이 컨펌되면 `bitomc wallet outputs`으로 트랜잭션 출력을 확인할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:195
 msgid "Creating Inscription Content"
@@ -3185,10 +3185,10 @@ msgstr "인스크립션 콘텐츠 만들기"
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:198
 msgid ""
-"Sats can be inscribed with any kind of content, but the `ord` wallet only "
-"supports content types that can be displayed by the `ord` block explorer."
+"Sats can be inscribed with any kind of content, but the `bitomc` wallet only "
+"supports content types that can be displayed by the `bitomc` block explorer."
 msgstr ""
-"SAT에는 모든 종류의 콘텐츠를 새길 수 있지만, `ord` 지갑은 `ord` 블록 탐색기에"
+"SAT에는 모든 종류의 콘텐츠를 새길 수 있지만, `bitomc` 지갑은 `bitomc` 블록 탐색기에"
 "서 표시할 수 있는 콘텐츠 유형만 지원한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:201
@@ -3286,11 +3286,11 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:250
 msgid ""
 "To make an inscription a child of another, the parent inscription has to be "
-"inscribed and present in the wallet. To choose a parent run `ord wallet "
+"inscribed and present in the wallet. To choose a parent run `bitomc wallet "
 "inscriptions` and copy the inscription id (`<PARENT_INSCRIPTION_ID>`)."
 msgstr ""
 "인스크립션을 다른 인스크립션의 자식으로 만들려면 부모 인스크립션이 새김되어 "
-"있고 지갑에 있어야 한다. 부모를 선택하려면 `ord wallet inscriptions`을 실행하"
+"있고 지갑에 있어야 한다. 부모를 선택하려면 `bitomc wallet inscriptions`을 실행하"
 "고 인스크립션 ID(`<PARENT_INSCRIPTION_ID>`)를 복사한다."
 
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:254
@@ -3348,14 +3348,14 @@ msgstr "전송 트랜잭션이 확인되면 다음을 실행하여 수신을 확
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:4
 msgid ""
-"_This guide is out of date. Since it was written, the `ord` binary was "
+"_This guide is out of date. Since it was written, the `bitomc` binary was "
 "changed to only build the full satoshi index when the `--index-sats` flag is "
-"supplied. Additionally, `ord` now has a built-in wallet that wraps a Bitcoin "
-"Core wallet. See `ord wallet --help`._"
+"supplied. Additionally, `bitomc` now has a built-in wallet that wraps a Bitcoin "
+"Core wallet. See `bitomc wallet --help`._"
 msgstr ""
-"_이 가이드는 오래되었다. 이 가이드가 작성된 이후, `ord` 바이너리는 `--index-"
-"sats` 플래그가 제공될 때만 풀 사토시 인덱스를 빌드하도록 변경되다. 또한 `ord`"
-"에는 이제 Bitcoin Core 지갑을 감싸는 지갑이 내장되어 있다. `ord wallet —help`"
+"_이 가이드는 오래되었다. 이 가이드가 작성된 이후, `bitomc` 바이너리는 `--index-"
+"sats` 플래그가 제공될 때만 풀 사토시 인덱스를 빌드하도록 변경되다. 또한 `bitomc`"
+"에는 이제 Bitcoin Core 지갑을 감싸는 지갑이 내장되어 있다. `bitomc wallet —help`"
 "를 참조하자._"
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:9
@@ -3408,20 +3408,20 @@ msgstr ""
 "블록 높이를 출력할 것이다:"
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:41
-msgid "Second, you'll need a synced `ord` index."
-msgstr "둘째, 동기화된 `ord` 인덱스가 필요하다."
+msgid "Second, you'll need a synced `bitomc` index."
+msgstr "둘째, 동기화된 `bitomc` 인덱스가 필요하다."
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:43
-msgid "Get a copy of `ord` from [the repo](https://github.com/ordinals/ord/)."
+msgid "Get a copy of `bitomc` from [the repo](https://github.com/BitOMC/BitOMC/)."
 msgstr ""
-"[the repo](https://github.com/ordinals/ord/)에서 `ord`의 사본을 가져오자."
+"[the repo](https://github.com/BitOMC/BitOMC/)에서 `bitomc`의 사본을 가져오자."
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:45
 msgid ""
-"Run `RUST_LOG=info ord index`. It should connect to your bitcoin core node "
+"Run `RUST_LOG=info bitomc index`. It should connect to your bitcoin core node "
 "and start indexing."
 msgstr ""
-"`RUST_LOG=info ord index`를 실행한다. Bitcoin Core 노드에 연결되고 인덱싱을 "
+"`RUST_LOG=info bitomc index`를 실행한다. Bitcoin Core 노드에 연결되고 인덱싱을 "
 "시작할 것이다."
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:48
@@ -3442,11 +3442,11 @@ msgstr "Bitcoin Core 지갑에서 희귀 오디널스 검색하기"
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:57
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "searching for rare ordinals in a Bitcoin Core wallet is Easy. Assuming your "
 "wallet is named `foo`:"
 msgstr ""
-"`ord wallet` 명령은 Bitcoin Core의 RPC API를 감싸는 래퍼일 뿐이므로 Bitcoin "
+"`bitomc wallet` 명령은 Bitcoin Core의 RPC API를 감싸는 래퍼일 뿐이므로 Bitcoin "
 "Core 지갑에서 희귀한 오디널스를 검색하는 것은 쉽다. 지갑의 이름이 `foo`이라"
 "는 가정하에:"
 
@@ -3464,11 +3464,11 @@ msgstr "Bitcoin Core 지갑이 아닌 지갑에서 희귀 오디널스 검색하
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:75
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "to search for rare ordinals in a non-Bitcoin Core wallet, you'll need to "
 "import your wallet's descriptors into Bitcoin Core."
 msgstr ""
-"`ord wallet` 명령은 Bitcoin Core의 RPC API를 감싸는 래퍼일 뿐이므로, Bitcoin "
+"`bitomc wallet` 명령은 Bitcoin Core의 RPC API를 감싸는 래퍼일 뿐이므로, Bitcoin "
 "Core가 아닌 지갑에서 희귀 오디널스를 검색하려면 지갑의 기술자(discriptors)를 "
 "Bitcoin Core로 가져오기 해야 한다."
 
@@ -3737,32 +3737,32 @@ msgstr "오디널스 전송하기"
 
 #: /workspaces/ord_ko/docs/src/guides/sat-hunting.md:246
 msgid ""
-"The `ord` wallet supports transferring specific satoshis. You can also use "
+"The `bitomc` wallet supports transferring specific satoshis. You can also use "
 "`bitcoin-cli` commands `createrawtransaction`, "
 "`signrawtransactionwithwallet`, and `sendrawtransaction`, how to do so is "
 "complex and outside the scope of this guide."
 msgstr ""
-"`ord` 지갑은 특정 사토시 전송을 지원한다. `bitcoin-cli` 명령어인 "
+"`bitomc` 지갑은 특정 사토시 전송을 지원한다. `bitcoin-cli` 명령어인 "
 "`createrawtransaction`, `signrawtransactionwithwallet`, `sendrawtransaction`"
 "을 사용할 수도 있지만, 이 방법들은 복잡하며 이 가이드의 범위를 벗어난다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/ordinals/ord/) is the only wallet "
+"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
 "현재 희귀한 SAT 및 인스크립션(이하 오디널)을 안전하게 보관하고 전송하는 데에 "
 "필수인 SAT콘트롤 및 SAT선택을 지원하는 지갑은 [ord](https://github.com/"
-"ordinals/ord/)가 유일하다."
+"BitOMC/BitOMC/)가 유일하다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting.md:8
 msgid ""
-"The recommended way to send, receive, and store ordinals is with `ord`, but "
+"The recommended way to send, receive, and store ordinals is with `bitomc`, but "
 "if you are careful, it is possible to safely store, and in some cases send, "
 "ordinals with other wallets."
 msgstr ""
-"오디널을 주고받고 보관하는 권장된 방법은 `ord`를 사용하는 것이지만, 조금만 주"
+"오디널을 주고받고 보관하는 권장된 방법은 `bitomc`를 사용하는 것이지만, 조금만 주"
 "의하면 다른 지갑으로 오디널을 안전하게 보관하고 경우에 따라서는 전송하는 것"
 "도 가능하다."
 
@@ -3782,11 +3782,11 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/collecting.md:18
 msgid ""
-"A [guide](./collecting/sparrow-wallet.md) to creating an `ord`\\-compatible "
+"A [guide](./collecting/sparrow-wallet.md) to creating an `bitomc`\\-compatible "
 "wallet with [Sparrow Wallet](https://sparrowwallet.com/), is available in "
 "this handbook."
 msgstr ""
-"이 핸드북에는 [스패로우 월렛](https://sparrowwallet.com/)를 사용해 `ord`와 호"
+"이 핸드북에는 [스패로우 월렛](https://sparrowwallet.com/)를 사용해 `bitomc`와 호"
 "환되는 지갑을 만드는 [가이드](./collecting/sparrow-wallet.md)가 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting.md:21
@@ -3806,21 +3806,21 @@ msgstr "스패로우 월렛으로 인스크립션과 오디널 수집하기"
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:4
 msgid ""
 "Users who cannot or have not yet set up the [ord](https://github.com/"
-"ordinals/ord) wallet can receive inscriptions and ordinals with alternative "
+"BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
-"[ord](https://github.com/ordinals/ord) 지갑을 설정할 수 없거나 아직 설정하지 "
+"[ord](https://github.com/BitOMC/BitOMC) 지갑을 설정할 수 없거나 아직 설정하지 "
 "않은 사용자는 해당 지갑에서 지출하는 방식에 _매우_ 주의를 기울인다면 대체 비"
 "트코인 지갑으로 인스크립션과 오디널을 받을 수 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:6
 msgid ""
 "This guide gives some basic steps on how to create a wallet with [Sparrow "
-"Wallet](https://sparrowwallet.com/) which is compatible with `ord` and can "
-"be later imported into `ord`"
+"Wallet](https://sparrowwallet.com/) which is compatible with `bitomc` and can "
+"be later imported into `bitomc`"
 msgstr ""
-"이 가이드는 `ord`와 호환되며 나중에 `ord`로 가져오기 할 수 있는 [스패로우 월"
+"이 가이드는 `bitomc`와 호환되며 나중에 `bitomc`로 가져오기 할 수 있는 [스패로우 월"
 "렛](https://sparrowwallet.com/)을 사용해 지갑을 어떻게 생성하는지에 기본 단계"
 "를 설명한다"
 
@@ -3859,8 +3859,8 @@ msgstr ""
 "는 스패로우 월렛을 다운로드한다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:17
-msgid "Select `File -> New Wallet` and create a new wallet called `ord`."
-msgstr "`File -> New Wallet`을 선택하고 `ord`라는 새 지갑을 생성한다."
+msgid "Select `File -> New Wallet` and create a new wallet called `bitomc`."
+msgstr "`File -> New Wallet`을 선택하고 `bitomc`라는 새 지갑을 생성한다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:19
 msgid "![](images/wallet_setup_01.png)"
@@ -3935,11 +3935,11 @@ msgstr "![](images/wallet_setup_07.png)"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:47
 msgid ""
-"You now have a wallet which is compatible with `ord`, and can be imported "
-"into `ord` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
+"You now have a wallet which is compatible with `bitomc`, and can be imported "
+"into `bitomc` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
 "click on the `Receive` tab and copy a new address."
 msgstr ""
-"이제 `ord`와 호환되는 지갑을 갖게 되었으며, BIP39 시드 문구를 사용하여 `ord`"
+"이제 `bitomc`와 호환되는 지갑을 갖게 되었으며, BIP39 시드 문구를 사용하여 `bitomc`"
 "로 가져오기 할 수 있다. 오디널 또는 인스크립션을 받으려면 `Receive` 탭을 클릭"
 "하고 새 주소를 복사한다."
 
@@ -4055,66 +4055,66 @@ msgstr ""
 "수 없다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:79
-msgid "Importing into `ord` wallet"
-msgstr "`ord` 지갑으로 가져오기"
+msgid "Importing into `bitomc` wallet"
+msgstr "`bitomc` 지갑으로 가져오기"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:81
 msgid ""
-"For details on setting up Bitcoin Core and the `ord` wallet check out the "
+"For details on setting up Bitcoin Core and the `bitomc` wallet check out the "
 "[Inscriptions Guide](../inscriptions.md)"
 msgstr ""
-"Bitcoin Core 및 `ord` 지갑 설정에 대한 자세한 내용은 [인스크립션 가이드](../"
+"Bitcoin Core 및 `bitomc` 지갑 설정에 대한 자세한 내용은 [인스크립션 가이드](../"
 "inscriptions.md)를 확인하자"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:83
 msgid ""
-"When setting up `ord`, instead of running `ord wallet create` to create a "
-"brand-new wallet, you can import your existing wallet using `ord wallet "
+"When setting up `bitomc`, instead of running `bitomc wallet create` to create a "
+"brand-new wallet, you can import your existing wallet using `bitomc wallet "
 "restore \"BIP39 SEED PHRASE\"` using the seed phrase you generated with "
 "Sparrow Wallet."
 msgstr ""
-"`ord`를 설정할 때 `ord wallet create`을 실행하여 새로운 지갑을 생성하는 대"
-"신, 스패로우 월렛에서 생성한 시드 문구와 `ord wallet restore “BIP39 SEED "
+"`bitomc`를 설정할 때 `bitomc wallet create`을 실행하여 새로운 지갑을 생성하는 대"
+"신, 스패로우 월렛에서 생성한 시드 문구와 `bitomc wallet restore “BIP39 SEED "
 "PHRASE”`를 사용하여 기존 지갑을 가져오기 할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
+"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
-"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=ord "
+"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
 "현재 가져오기 한 지갑이 블록체인에 대해 자동으로 재스캔되지 않는 [버그]"
-"(https://github.com/ordinals/ord/issues/1589)가 있다. 이 문제를 해결하려면 "
-"bitcoin core cli(`bitcoin-cli -rpcwallet=ord rescanblockchain 767430`)를 사용"
+"(https://github.com/abc1234567890xyz1589)가 있다. 이 문제를 해결하려면 "
+"bitcoin core cli(`bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`)를 사용"
 "하여 수동으로 재스캔을 트리거해야 한다"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:88
 msgid ""
-"You can then check your wallet's inscriptions using `ord wallet inscriptions`"
+"You can then check your wallet's inscriptions using `bitomc wallet inscriptions`"
 msgstr ""
-"그런 다음 `ord wallet inscriptions`을 사용하여 지갑의 인스크립션을 확인할 수 "
+"그런 다음 `bitomc wallet inscriptions`을 사용하여 지갑의 인스크립션을 확인할 수 "
 "있다"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:90
 msgid ""
-"Note that if you have previously created a wallet with `ord`, then you will "
+"Note that if you have previously created a wallet with `bitomc`, then you will "
 "already have a wallet with the default name, and will need to give your "
 "imported wallet a different name. You can use the `--wallet` parameter in "
-"all `ord` commands to reference a different wallet, eg:"
+"all `bitomc` commands to reference a different wallet, eg:"
 msgstr ""
-"이전에 `ord`로 지갑을 생성한 적이 있다면 기본 이름의 지갑이 이미 있을 것이므"
-"로 가져오기 한 지갑에 다른 이름을 지정해야 한다. 모든 `ord` 명령에 `--"
+"이전에 `bitomc`로 지갑을 생성한 적이 있다면 기본 이름의 지갑이 이미 있을 것이므"
+"로 가져오기 한 지갑에 다른 이름을 지정해야 한다. 모든 `bitomc` 명령에 `--"
 "wallet` 매개변수를 사용하여 다른 지갑을 참조할 수 있다. 예시:"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:92
-msgid "`ord --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
-msgstr "`ord —wallet ord_from_sparrow wallet restore “BIP39 SEED PHRASE”`"
+msgid "`bitomc --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
+msgstr "`bitomc —wallet ord_from_sparrow wallet restore “BIP39 SEED PHRASE”`"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:94
-msgid "`ord --wallet ord_from_sparrow wallet inscriptions`"
-msgstr "`ord —wallet ord_from_sparrow wallet inscriptions`"
+msgid "`bitomc --wallet ord_from_sparrow wallet inscriptions`"
+msgstr "`bitomc —wallet ord_from_sparrow wallet inscriptions`"
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:96
 msgid "`bitcoin-cli -rpcwallet=ord_from_sparrow rescanblockchain 767430`"
@@ -4131,23 +4131,23 @@ msgstr "⚠️⚠️ 경고 ⚠️⚠️"
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:101
 msgid ""
 "While it is highly recommended that you set up a bitcoin core node and run "
-"the `ord` software, there are certain limited ways you can send inscriptions "
+"the `bitomc` software, there are certain limited ways you can send inscriptions "
 "out of Sparrow Wallet in a safe way. Please note that this is not "
 "recommended, and you should only do this if you fully understand what you "
 "are doing."
 msgstr ""
-"Bitcoin Core 노드를 설정하고 `ord` 소프트웨어를 실행하는 것을 적극 권장하지"
+"Bitcoin Core 노드를 설정하고 `bitomc` 소프트웨어를 실행하는 것을 적극 권장하지"
 "만, 스패로우 월렛에서 안전한 방법으로 인스크립션을 전송할 수 있는 몇 가지 제"
 "한된 방법이 있다. 이 방법은 권장되지 않으며, 자신이 무엇을 하는지 완전히 이해"
 "하는 경우에만 이 방법을 사용해야 한다는 점에 유의하기 바란다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:103
 msgid ""
-"Using the `ord` software will remove much of the complexity we are "
+"Using the `bitomc` software will remove much of the complexity we are "
 "describing here, as it is able to automatically and safely handle sending "
 "inscriptions in an easy way."
 msgstr ""
-"`ord` 소프트웨어를 사용하면 인스크립션 전송을 자동으로 안전하게 처리할 수 있"
+"`bitomc` 소프트웨어를 사용하면 인스크립션 전송을 자동으로 안전하게 처리할 수 있"
 "으므로 여기서 설명하는 복잡성을 상당 부분 제거할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:105
@@ -4359,10 +4359,10 @@ msgid ""
 "If your transaction looks any different, for example you have multiple "
 "inputs, or multiple outputs then this may not be a safe transfer of your "
 "inscription, and you should abandon sending until you understand more, or "
-"can import into the `ord` wallet."
+"can import into the `bitomc` wallet."
 msgstr ""
 "예를 들어 입력이 여러 개이거나 출력이 여러 개인 등 거래가 조금이라도 다르게 "
-"보인다면 안전한 송금이 아닐 수 있으니, 더 많은 정보를 파악하거나 `ord` 지갑으"
+"보인다면 안전한 송금이 아닐 수 있으니, 더 많은 정보를 파악하거나 `bitomc` 지갑으"
 "로 가져오기 할 수 있을 때까지 전송을 중단해야 한다."
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:149
@@ -4496,10 +4496,10 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/testing.md:7
 msgid ""
-"Most `ord` commands in [inscriptions](inscriptions.md) and [explorer]"
+"Most `bitomc` commands in [inscriptions](inscriptions.md) and [explorer]"
 "(explorer.md) can be run with the following network flags:"
 msgstr ""
-"[인스크립션](inscriptions.md) 및 [탐색기](explorer.md)의 대부분의 `ord` 명령"
+"[인스크립션](inscriptions.md) 및 [탐색기](explorer.md)의 대부분의 `bitomc` 명령"
 "은 다음 네트워크 플래그를 사용하여 실행할 수 있다:"
 
 #: /workspaces/ord_ko/docs/src/guides/testing.md:10
@@ -4535,7 +4535,7 @@ msgid "`--regtest` or `-r`"
 msgstr "`--regtest` 또는 `-r`"
 
 #: /workspaces/ord_ko/docs/src/guides/testing.md:16
-msgid "Regtest doesn't require downloading the blockchain or indexing ord."
+msgid "Regtest doesn't require downloading the blockchain or indexing bitomc."
 msgstr "Regtest는 블록체인을 다운로드하거나 ord를 인덱싱할 필요가 없다."
 
 #: /workspaces/ord_ko/docs/src/guides/testing.md:21
@@ -4603,9 +4603,9 @@ msgstr "마지막으로 블록을 어느 정도 채굴해야 하고 서버를 �
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:4
 msgid ""
-"`ord` includes a block explorer, which you can run locally with `ord server`."
+"`bitomc` includes a block explorer, which you can run locally with `bitomc server`."
 msgstr ""
-"`ord`에는 블록 탐색기가 포함되어 있으며, `ord server`로 로컬에서 실행할 수 있"
+"`bitomc`에는 블록 탐색기가 포함되어 있으며, `bitomc server`로 로컬에서 실행할 수 있"
 "다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:6
@@ -4628,11 +4628,11 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:13
 msgid ""
-"In order to prevent particular inscriptions from being displayed on an `ord` "
+"In order to prevent particular inscriptions from being displayed on an `bitomc` "
 "instance, they can be included in a YAML config file, which is loaded with "
 "the `--config` option."
 msgstr ""
-"특정 인스크립션이 `ord` 인스턴스에 표시되지 않도록 하려면 `--config` 옵션을 "
+"특정 인스크립션이 `bitomc` 인스턴스에 표시되지 않도록 하려면 `--config` 옵션을 "
 "사용해 로드되는 YAML 구성 파일에 포함할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:17
@@ -4645,10 +4645,10 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:25
 msgid ""
-"The suggested name for `ord` config files is `ord.yaml`, but any filename "
+"The suggested name for `bitomc` config files is `bitomc.yaml`, but any filename "
 "can be used."
 msgstr ""
-"'ord' 구성 파일의 권장 이름은 'ord.yaml'이지만 어떤 파일 이름도 사용할 수 있"
+"'ord' 구성 파일의 권장 이름은 'bitomc.yaml'이지만 어떤 파일 이름도 사용할 수 있"
 "다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:28
@@ -4656,20 +4656,20 @@ msgid "Then pass the file to `--config` when starting the server:"
 msgstr "그런 다음 서버를 시작할 때 `--config`에 파일을 전달한다:"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:30
-msgid "`ord --config ord.yaml server`"
-msgstr "`ord --config ord.yaml server`"
+msgid "`bitomc --config bitomc.yaml server`"
+msgstr "`bitomc --config bitomc.yaml server`"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:32
 msgid ""
-"Note that the `--config` option comes after `ord` but before the `server` "
+"Note that the `--config` option comes after `bitomc` but before the `server` "
 "subcommand."
 msgstr ""
-"`—config` 옵션은 `ord` 뒤에 오지만 `server` 하위 명령 앞에 온다는 점을 유의하"
+"`—config` 옵션은 `bitomc` 뒤에 오지만 `server` 하위 명령 앞에 온다는 점을 유의하"
 "자."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:35
-msgid "`ord` must be restarted in to load changes to the config file."
-msgstr "구성 파일의 변경 사항을 로드하려면 `ord`를 다시 시작해야 한다."
+msgid "`bitomc` must be restarted in to load changes to the config file."
+msgstr "구성 파일의 변경 사항을 로드하려면 `bitomc`를 다시 시작해야 한다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:37
 msgid "`ordinals.com`"
@@ -4677,11 +4677,11 @@ msgstr "`ordinals.com`"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:40
 msgid ""
-"The `ordinals.com` instances use `systemd` to run the `ord server` service, "
-"which is called `ord`, with a config file located at `/var/lib/ord/ord.yaml`."
+"The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
+"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
 msgstr ""
-"`ordinals.com` 인스턴스는 `systemd`를 사용하여 `ord`라고 하는 `ord server` 서"
-"비스를 실행하며, 구성 파일은 `/var/lib/ord/ord.yaml`에 있다."
+"`ordinals.com` 인스턴스는 `systemd`를 사용하여 `bitomc`라고 하는 `bitomc server` 서"
+"비스를 실행하며, 구성 파일은 `/var/lib/ord/bitomc.yaml`에 있다."
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -4692,33 +4692,33 @@ msgid "SSH into the server"
 msgstr "SSH 사용하여 서버에 접속한다"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/ord.yaml`"
-msgstr "인스크립션 ID를 `/var/lib/ord/ord.yaml`에 추가한다"
+msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
+msgstr "인스크립션 ID를 `/var/lib/ord/bitomc.yaml`에 추가한다"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:47
-msgid "Restart the service with `systemctl restart ord`"
-msgstr "`systemctl restart ord`로 서비스를 다시 시작한다"
+msgid "Restart the service with `systemctl restart bitomc`"
+msgstr "`systemctl restart bitomc`로 서비스를 다시 시작한다"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:48
-msgid "Monitor the restart with `journalctl -u ord`"
-msgstr "`journalctl -u ord`로 재시작을 모니터링한다"
+msgid "Monitor the restart with `journalctl -u bitomc`"
+msgstr "`journalctl -u bitomc`로 재시작을 모니터링한다"
 
 #: /workspaces/ord_ko/docs/src/guides/moderation.md:50
 msgid ""
-"Currently, `ord` is slow to restart, so the site will not come back online "
+"Currently, `bitomc` is slow to restart, so the site will not come back online "
 "immediately."
 msgstr ""
-"현재 `ord`는 재시작 속도가 느리기 때문에 사이트가 즉시 온라인 상태로 돌아오"
+"현재 `bitomc`는 재시작 속도가 느리기 때문에 사이트가 즉시 온라인 상태로 돌아오"
 "지 않을 것이다."
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:4
 msgid ""
-"Sometimes the `ord` database must be reindexed, which means deleting the "
-"database and restarting the indexing process with either `ord index update` "
-"or `ord server`. Reasons to reindex are:"
+"Sometimes the `bitomc` database must be reindexed, which means deleting the "
+"database and restarting the indexing process with either `bitomc index update` "
+"or `bitomc server`. Reasons to reindex are:"
 msgstr ""
-"때때로 `ord` 데이터베이스를 재인덱싱해야 하는 경우가 있는데, 이는 데이터베이"
-"스를 삭제하고 `ord index update` 또는 `ord server`를 사용하여 인덱싱 프로세스"
+"때때로 `bitomc` 데이터베이스를 재인덱싱해야 하는 경우가 있는데, 이는 데이터베이"
+"스를 삭제하고 `bitomc index update` 또는 `bitomc server`를 사용하여 인덱싱 프로세스"
 "를 다시 시작해야 함을 의미한다. 재인덱싱해야 하는 이유는 다음과 같다:"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:8
@@ -4731,11 +4731,11 @@ msgstr "데이터베이스가 어떻게든 손상되었을 때"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:11
 msgid ""
-"The database `ord` uses is called [redb](https://github.com/cberner/redb), "
+"The database `bitomc` uses is called [redb](https://github.com/cberner/redb), "
 "so we give the index the default file name `index.redb`. By default we store "
 "this file in different locations depending on your operating system."
 msgstr ""
-"`ord`가 사용하는 데이터베이스는 [redb](https://github.com/cberner/redb)이므"
+"`bitomc`가 사용하는 데이터베이스는 [redb](https://github.com/cberner/redb)이므"
 "로 인덱스에 `index.redb`로 기본 파일 이름을 지정한다. 기본적으로 이 파일은 운"
 "영 체제에 따라 다른 위치에 저장된다."
 
@@ -4752,8 +4752,8 @@ msgid "Linux"
 msgstr "Linux"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/ord or `$HOME`/.local/share/ord"
-msgstr "`$XDG_DATA_HOME`/ord 또는 `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
+msgstr "`$XDG_DATA_HOME`/bitomc 또는 `$HOME`/.local/share/ord"
 
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:17
 msgid "/home/alice/.local/share/ord"
@@ -4794,11 +4794,11 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/guides/reindexing.md:29
 msgid ""
 "You can of course also set the location of the data directory yourself with "
-"`ord --datadir <DIR> index update` or give it a specific filename and path "
-"with `ord --index <FILENAME> index update`."
+"`bitomc --datadir <DIR> index update` or give it a specific filename and path "
+"with `bitomc --index <FILENAME> index update`."
 msgstr ""
-"물론 `ord --datadir <DIR> index update`로 데이터 디렉터리의 위치를 직접 설정"
-"하거나 `ord --index <FILENAME> index update`로 특정 파일 이름과 경로를 지정"
+"물론 `bitomc --datadir <DIR> index update`로 데이터 디렉터리의 위치를 직접 설정"
+"하거나 `bitomc --index <FILENAME> index update`로 특정 파일 이름과 경로를 지정"
 "할 수도 있다."
 
 #: /workspaces/ord_ko/docs/src/bounties.md:1
@@ -4807,24 +4807,24 @@ msgstr "오디널 현상금 사냥 힌트"
 
 #: /workspaces/ord_ko/docs/src/bounties.md:4
 msgid ""
-"The `ord` wallet can send and receive specific satoshis. Additionally, "
+"The `bitomc` wallet can send and receive specific satoshis. Additionally, "
 "ordinal theory is extremely simple. A clever hacker should be able to write "
 "code from scratch to manipulate satoshis using ordinal theory in no time."
 msgstr ""
-"`ord` 지갑은 특정 사토시를 주고받을 수 있다. 또한 오디널 이론은 매우 간단하"
+"`bitomc` 지갑은 특정 사토시를 주고받을 수 있다. 또한 오디널 이론은 매우 간단하"
 "다. 영리한 해커라면 짧은 시간에 오디널 이론을 사용하여 사토시를 조작하는 코드"
 "를 처음부터 작성할 수 있을 것이다."
 
 #: /workspaces/ord_ko/docs/src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/ordinals/ord/blob/master/bip."
-"mediawiki) for the technical details, and the [ord repo](https://github.com/"
-"ordinals/ord) for the `ord` wallet and block explorer."
+"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
+"BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
 "오디널 이론에 대한 자세한 내용은 [자주 묻는 질문](./faq.md)에서 개요를, [BIP]"
-"(https://github.com/ordinals/ord/blob/master/bip.mediawiki)에서 기술적 세부 "
-"사항을, [ord repo](https://github.com/ordinals/ord)에서 `ord` 지갑 및 블록 탐"
+"(https://github.com/xaz1234567890abc/master/bip.mediawiki)에서 기술적 세부 "
+"사항을, [bitomc repo](https://github.com/BitOMC/BitOMC)에서 `bitomc` 지갑 및 블록 탐"
 "색기를 확인하길 바란다."
 
 #: /workspaces/ord_ko/docs/src/bounties.md:14
@@ -5070,15 +5070,15 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/bounty/3.md:32
 msgid ""
-"To search an `ord` wallet for sats with a name in `frequency.tsv`, use the "
-"following [`ord`](https://github.com/ordinals/ord) command:"
+"To search an `bitomc` wallet for sats with a name in `frequency.tsv`, use the "
+"following [`bitomc`](https://github.com/BitOMC/BitOMC) command:"
 msgstr ""
-"`frequency.tsv`에 이름이 있는 SAT을 `ord` 지갑에서 검색하려면 다음 [`ord`]"
-"(https://github.com/ordinals/ord) 명령을 사용한다:"
+"`frequency.tsv`에 이름이 있는 SAT을 `bitomc` 지갑에서 검색하려면 다음 [`bitomc`]"
+"(https://github.com/BitOMC/BitOMC) 명령을 사용한다:"
 
 #: /workspaces/ord_ko/docs/src/bounty/3.md:39
 msgid ""
-"This command requires the sat index, so `--index-sats` must be passed to ord "
+"This command requires the sat index, so `--index-sats` must be passed to bitomc "
 "when first creating the index."
 msgstr ""
 "이 명령에는 SAT 인덱스가 필요하므로 인덱스를 처음 생성할 때 `--index-sats`를 "
@@ -5159,18 +5159,18 @@ msgstr "미수령!"
 #, fuzzy
 #~ msgid ""
 #~ "get the parent inscription id `<PARENT_INSCRIPTION_ID>` from the output "
-#~ "of `ord wallet inscriptions`"
+#~ "of `bitomc wallet inscriptions`"
 #~ msgstr "지갑 비문`의 출력에서 부모 비문 ID `<부모_비문_ID>`를 가져옵니다"
 
 #, fuzzy
 #~ msgid ""
 #~ "```\n"
-#~ "ord wallet inscribe --fee-rate FEE_RATE --parent <PARENT_INSCRIPTION_ID> "
+#~ "bitomc wallet inscribe --fee-rate FEE_RATE --parent <PARENT_INSCRIPTION_ID> "
 #~ "CHILD_FILE\"\n"
 #~ "```"
 #~ msgstr ""
 #~ "```\n"
-#~ "ord wallet inscribe --fee-rate FEE_RATE --parent <부모 <부모_인스크립션"
+#~ "bitomc wallet inscribe --fee-rate FEE_RATE --parent <부모 <부모_인스크립션"
 #~ "_ID> CHILD_FILE\"\n"
 #~ "```"
 

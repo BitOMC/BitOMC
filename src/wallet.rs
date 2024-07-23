@@ -191,7 +191,7 @@ impl Wallet {
       .count();
 
     if tr != 2 || descriptors.len() != 2 + rawtr {
-      bail!("wallet \"{}\" contains unexpected output descriptors, and does not appear to be an `ord` wallet, create a new wallet with `ord wallet create`", wallet_name);
+      bail!("wallet \"{}\" contains unexpected output descriptors, and does not appear to be an `bitomc` wallet, create a new wallet with `bitomc wallet create`", wallet_name);
     }
 
     Ok(descriptors)

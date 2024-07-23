@@ -1,16 +1,16 @@
-use {super::*, ord::subcommand::wallet::create::Output};
+use {super::*, bitomc::subcommand::wallet::create::Output};
 
 #[test]
 fn create() {
   let core = mockcore::spawn();
 
-  assert!(!core.wallets().contains("ord"));
+  assert!(!core.wallets().contains("bitomc"));
 
   CommandBuilder::new("wallet create")
     .core(&core)
     .run_and_deserialize_output::<Output>();
 
-  assert!(core.wallets().contains("ord"));
+  assert!(core.wallets().contains("bitomc"));
 }
 
 #[test]
@@ -73,7 +73,7 @@ fn detect_wrong_descriptors() {
   CommandBuilder::new("wallet transactions")
     .core(&core)
     .stderr_regex(
-      r#"error: wallet "ord" contains unexpected output descriptors, and does not appear to be an `ord` wallet, create a new wallet with `ord wallet create`\n"#,
+      r#"error: wallet "bitomc" contains unexpected output descriptors, and does not appear to be an `bitomc` wallet, create a new wallet with `bitomc wallet create`\n"#,
     )
     .expected_exit_code(1)
     .run_and_extract_stdout();

@@ -82,7 +82,7 @@ pub struct Server {
   pub(crate) address: Option<String>,
   #[arg(
     long,
-    help = "Request ACME TLS certificate for <ACME_DOMAIN>. This ord instance must be reachable at <ACME_DOMAIN>:443 to respond to Let's Encrypt ACME challenges."
+    help = "Request ACME TLS certificate for <ACME_DOMAIN>. This bitomc instance must be reachable at <ACME_DOMAIN>:443 to respond to Let's Encrypt ACME challenges."
   )]
   pub(crate) acme_domain: Vec<String>,
   #[arg(long, help = "Disable JSON API.")]
@@ -675,7 +675,7 @@ impl Server {
   }
 
   async fn install_script() -> Redirect {
-    Redirect::to("https://raw.githubusercontent.com/ordinals/ord/master/install.sh")
+    Redirect::to("https://raw.githubusercontent.com/BitOMC/BitOMC/master/install.sh")
   }
 
   async fn address(
@@ -945,7 +945,7 @@ impl Server {
         _ => builder.title(format!("Inscriptions – {chain:?}")),
       };
 
-      builder.generator(Some("ord".to_string()));
+      builder.generator(Some("bitomc".to_string()));
 
       Ok(
         (
@@ -1219,7 +1219,7 @@ mod tests {
         .unwrap()
         .port();
 
-      let mut args = vec!["ord".to_string()];
+      let mut args = vec!["bitomc".to_string()];
 
       args.push("--bitcoin-rpc-url".into());
       args.push(core.url());
@@ -1296,7 +1296,7 @@ mod tests {
           Ok(_) => break,
           Err(err) => {
             if i == 400 {
-              panic!("ord server failed to start: {err}");
+              panic!("bitomc server failed to start: {err}");
             }
           }
         }
@@ -1422,24 +1422,24 @@ mod tests {
   #[test]
   fn http_and_https_port_dont_conflict() {
     parse_server_args(
-      "ord server --http-port 0 --https-port 0 --acme-cache foo --acme-contact bar --acme-domain baz",
+      "bitomc server --http-port 0 --https-port 0 --acme-cache foo --acme-contact bar --acme-domain baz",
     );
   }
 
   #[test]
   fn http_port_defaults_to_80() {
-    assert_eq!(parse_server_args("ord server").1.http_port(), Some(80));
+    assert_eq!(parse_server_args("bitomc server").1.http_port(), Some(80));
   }
 
   #[test]
   fn https_port_defaults_to_none() {
-    assert_eq!(parse_server_args("ord server").1.https_port(), None);
+    assert_eq!(parse_server_args("bitomc server").1.https_port(), None);
   }
 
   #[test]
   fn https_sets_https_port_to_443() {
     assert_eq!(
-      parse_server_args("ord server --https --acme-cache foo --acme-contact bar --acme-domain baz")
+      parse_server_args("bitomc server --https --acme-cache foo --acme-contact bar --acme-domain baz")
         .1
         .https_port(),
       Some(443)
@@ -1449,7 +1449,7 @@ mod tests {
   #[test]
   fn https_disables_http() {
     assert_eq!(
-      parse_server_args("ord server --https --acme-cache foo --acme-contact bar --acme-domain baz")
+      parse_server_args("bitomc server --https --acme-cache foo --acme-contact bar --acme-domain baz")
         .1
         .http_port(),
       None
@@ -1460,7 +1460,7 @@ mod tests {
   fn https_port_disables_http() {
     assert_eq!(
       parse_server_args(
-        "ord server --https-port 433 --acme-cache foo --acme-contact bar --acme-domain baz"
+        "bitomc server --https-port 433 --acme-cache foo --acme-contact bar --acme-domain baz"
       )
       .1
       .http_port(),
@@ -1472,7 +1472,7 @@ mod tests {
   fn https_port_sets_https_port() {
     assert_eq!(
       parse_server_args(
-        "ord server --https-port 1000 --acme-cache foo --acme-contact bar --acme-domain baz"
+        "bitomc server --https-port 1000 --acme-cache foo --acme-contact bar --acme-domain baz"
       )
       .1
       .https_port(),
@@ -1484,7 +1484,7 @@ mod tests {
   fn http_with_https_leaves_http_enabled() {
     assert_eq!(
       parse_server_args(
-        "ord server --https --http --acme-cache foo --acme-contact bar --acme-domain baz"
+        "bitomc server --https --http --acme-cache foo --acme-contact bar --acme-domain baz"
       )
       .1
       .http_port(),
@@ -1496,7 +1496,7 @@ mod tests {
   fn http_with_https_leaves_https_enabled() {
     assert_eq!(
       parse_server_args(
-        "ord server --https --http --acme-cache foo --acme-contact bar --acme-domain baz"
+        "bitomc server --https --http --acme-cache foo --acme-contact bar --acme-domain baz"
       )
       .1
       .https_port(),
@@ -1507,7 +1507,7 @@ mod tests {
   #[test]
   fn acme_contact_accepts_multiple_values() {
     assert!(Arguments::try_parse_from([
-      "ord",
+      "bitomc",
       "server",
       "--address",
       "127.0.0.1",
@@ -1524,7 +1524,7 @@ mod tests {
   #[test]
   fn acme_domain_accepts_multiple_values() {
     assert!(Arguments::try_parse_from([
-      "ord",
+      "bitomc",
       "server",
       "--address",
       "127.0.0.1",
@@ -1540,7 +1540,7 @@ mod tests {
 
   #[test]
   fn acme_cache_defaults_to_data_dir() {
-    let arguments = Arguments::try_parse_from(["ord", "--datadir", "foo", "server"]).unwrap();
+    let arguments = Arguments::try_parse_from(["bitomc", "--datadir", "foo", "server"]).unwrap();
 
     let settings = Settings::from_options(arguments.options)
       .or_defaults()
@@ -1560,7 +1560,7 @@ mod tests {
   #[test]
   fn acme_cache_flag_is_respected() {
     let arguments =
-      Arguments::try_parse_from(["ord", "--datadir", "foo", "server", "--acme-cache", "bar"])
+      Arguments::try_parse_from(["bitomc", "--datadir", "foo", "server", "--acme-cache", "bar"])
         .unwrap();
 
     let settings = Settings::from_options(arguments.options)
@@ -1575,7 +1575,7 @@ mod tests {
 
   #[test]
   fn acme_domain_defaults_to_hostname() {
-    let (_, server) = parse_server_args("ord server");
+    let (_, server) = parse_server_args("bitomc server");
     assert_eq!(
       server.acme_domains().unwrap(),
       &[System::host_name().unwrap()]
@@ -1584,7 +1584,7 @@ mod tests {
 
   #[test]
   fn acme_domain_flag_is_respected() {
-    let (_, server) = parse_server_args("ord server --acme-domain example.com");
+    let (_, server) = parse_server_args("bitomc server --acme-domain example.com");
     assert_eq!(server.acme_domains().unwrap(), &["example.com"]);
   }
 
@@ -1592,7 +1592,7 @@ mod tests {
   fn install_sh_redirects_to_github() {
     TestServer::new().assert_redirect(
       "/install.sh",
-      "https://raw.githubusercontent.com/ordinals/ord/master/install.sh",
+      "https://raw.githubusercontent.com/BitOMC/BitOMC/master/install.sh",
     );
   }
 

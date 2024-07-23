@@ -65,7 +65,7 @@ impl Settings {
       } else {
         Self::default_data_dir()?
       }
-      .join("ord.yaml");
+      .join("bitomc.yaml");
 
       path.exists().then_some(path)
     };
@@ -340,7 +340,7 @@ impl Settings {
     Ok(
       dirs::data_dir()
         .context("could not get data dir")?
-        .join("ord"),
+        .join("bitomc"),
     )
   }
 
@@ -411,7 +411,7 @@ impl Settings {
     let ord_chain = self.chain();
 
     if rpc_chain != ord_chain {
-      bail!("Bitcoin RPC server is on {rpc_chain} but ord is on {ord_chain}");
+      bail!("Bitcoin RPC server is on {rpc_chain} but bitomc is on {ord_chain}");
     }
 
     Ok(client)
@@ -514,7 +514,7 @@ mod tests {
   use super::*;
 
   fn parse(args: &[&str]) -> Settings {
-    let args = iter::once("ord")
+    let args = iter::once("bitomc")
       .chain(args.iter().copied())
       .collect::<Vec<&str>>();
     Settings::from_options(Options::try_parse_from(args).unwrap())
@@ -614,7 +614,7 @@ mod tests {
 
     assert_eq!(
       settings.bitcoin_rpc_client(None).unwrap_err().to_string(),
-      "Bitcoin RPC server is on testnet but ord is on mainnet"
+      "Bitcoin RPC server is on testnet but bitomc is on mainnet"
     );
   }
 
@@ -712,7 +712,7 @@ mod tests {
   fn mainnet_data_dir() {
     let data_dir = parse(&[]).data_dir().display().to_string();
     assert!(
-      data_dir.ends_with(if cfg!(windows) { r"\ord" } else { "/ord" }),
+      data_dir.ends_with(if cfg!(windows) { r"\bitomc" } else { "/bitomc" }),
       "{data_dir}"
     );
   }
@@ -722,9 +722,9 @@ mod tests {
     let data_dir = parse(&["--chain=signet"]).data_dir().display().to_string();
     assert!(
       data_dir.ends_with(if cfg!(windows) {
-        r"\ord\signet"
+        r"\bitomc\signet"
       } else {
-        "/ord/signet"
+        "/bitomc/signet"
       }),
       "{data_dir}"
     );
@@ -754,55 +754,55 @@ mod tests {
       assert!(data_dir.ends_with(suffix), "{data_dir}");
     }
 
-    check_network_alias("main", "ord");
-    check_network_alias("mainnet", "ord");
+    check_network_alias("main", "bitomc");
+    check_network_alias("mainnet", "bitomc");
     check_network_alias(
       "regtest",
       if cfg!(windows) {
-        r"ord\regtest"
+        r"bitomc\regtest"
       } else {
-        "ord/regtest"
+        "bitomc/regtest"
       },
     );
     check_network_alias(
       "signet",
       if cfg!(windows) {
-        r"ord\signet"
+        r"bitomc\signet"
       } else {
-        "ord/signet"
+        "bitomc/signet"
       },
     );
     check_network_alias(
       "test",
       if cfg!(windows) {
-        r"ord\testnet3"
+        r"bitomc\testnet3"
       } else {
-        "ord/testnet3"
+        "bitomc/testnet3"
       },
     );
     check_network_alias(
       "testnet",
       if cfg!(windows) {
-        r"ord\testnet3"
+        r"bitomc\testnet3"
       } else {
-        "ord/testnet3"
+        "bitomc/testnet3"
       },
     );
   }
 
   #[test]
   fn chain_flags() {
-    Arguments::try_parse_from(["ord", "--signet", "--chain", "signet", "index", "update"])
+    Arguments::try_parse_from(["bitomc", "--signet", "--chain", "signet", "index", "update"])
       .unwrap_err();
     assert_eq!(parse(&["--signet"]).chain(), Chain::Signet);
     assert_eq!(parse(&["-s"]).chain(), Chain::Signet);
 
-    Arguments::try_parse_from(["ord", "--regtest", "--chain", "signet", "index", "update"])
+    Arguments::try_parse_from(["bitomc", "--regtest", "--chain", "signet", "index", "update"])
       .unwrap_err();
     assert_eq!(parse(&["--regtest"]).chain(), Chain::Regtest);
     assert_eq!(parse(&["-r"]).chain(), Chain::Regtest);
 
-    Arguments::try_parse_from(["ord", "--testnet", "--chain", "signet", "index", "update"])
+    Arguments::try_parse_from(["bitomc", "--testnet", "--chain", "signet", "index", "update"])
       .unwrap_err();
     assert_eq!(parse(&["--testnet"]).chain(), Chain::Testnet);
     assert_eq!(parse(&["-t"]).chain(), Chain::Testnet);
@@ -810,13 +810,13 @@ mod tests {
 
   #[test]
   fn wallet_flag_overrides_default_name() {
-    assert_eq!(wallet("ord wallet create").1.name, "ord");
-    assert_eq!(wallet("ord wallet --name foo create").1.name, "foo")
+    assert_eq!(wallet("bitomc wallet create").1.name, "bitomc");
+    assert_eq!(wallet("bitomc wallet --name foo create").1.name, "foo")
   }
 
   #[test]
   fn uses_wallet_rpc() {
-    let (settings, _) = wallet("ord wallet --name foo balance");
+    let (settings, _) = wallet("bitomc wallet --name foo balance");
 
     assert_eq!(
       settings.bitcoin_rpc_url(Some("foo".into())),
@@ -835,7 +835,7 @@ mod tests {
   #[test]
   fn setting_commit_interval() {
     let arguments =
-      Arguments::try_parse_from(["ord", "--commit-interval", "500", "index", "update"]).unwrap();
+      Arguments::try_parse_from(["bitomc", "--commit-interval", "500", "index", "update"]).unwrap();
     assert_eq!(arguments.options.commit_interval, Some(500));
   }
 
@@ -849,7 +849,7 @@ mod tests {
 
     let tempdir = TempDir::new().unwrap();
 
-    let config_path = tempdir.path().join("ord.yaml");
+    let config_path = tempdir.path().join("bitomc.yaml");
 
     fs::write(&config_path, serde_yaml::to_string(&config).unwrap()).unwrap();
 
@@ -918,7 +918,7 @@ mod tests {
 
   #[test]
   fn example_config_file_is_valid() {
-    let _: Settings = serde_yaml::from_reader(fs::File::open("ord.yaml").unwrap()).unwrap();
+    let _: Settings = serde_yaml::from_reader(fs::File::open("bitomc.yaml").unwrap()).unwrap();
   }
 
   #[test]
@@ -986,7 +986,7 @@ mod tests {
     pretty_assert_eq!(
       Settings::from_options(
         Options::try_parse_from([
-          "ord",
+          "bitomc",
           "--bitcoin-data-dir=/bitcoin/data/dir",
           "--bitcoin-rpc-limit=12",
           "--bitcoin-rpc-password=bitcoin password",
@@ -1051,12 +1051,12 @@ mod tests {
 
     let tempdir = TempDir::new().unwrap();
 
-    let config_path = tempdir.path().join("ord.yaml");
+    let config_path = tempdir.path().join("bitomc.yaml");
 
     fs::write(&config_path, serde_yaml::to_string(&config).unwrap()).unwrap();
 
     let options =
-      Options::try_parse_from(["ord", "--config", config_path.to_str().unwrap()]).unwrap();
+      Options::try_parse_from(["bitomc", "--config", config_path.to_str().unwrap()]).unwrap();
 
     pretty_assert_eq!(
       Settings::merge(options.clone(), Default::default())
@@ -1071,7 +1071,7 @@ mod tests {
     );
 
     let options = Options::try_parse_from([
-      "ord",
+      "bitomc",
       "--index=option",
       "--config",
       config_path.to_str().unwrap(),

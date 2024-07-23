@@ -1,12 +1,12 @@
-use {super::*, ord::subcommand::wallet::outputs::Output};
+use {super::*, bitomc::subcommand::wallet::outputs::Output};
 
 #[test]
 fn outputs() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let coinbase_tx = &core.mine_blocks_with_subsidy(1, 1_000_000)[0].txdata[0];
   let outpoint = OutPoint::new(coinbase_tx.txid(), 0);
@@ -14,7 +14,7 @@ fn outputs() {
 
   let output = CommandBuilder::new("wallet outputs")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].output, outpoint);
@@ -25,9 +25,9 @@ fn outputs() {
 fn outputs_includes_locked_outputs() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let coinbase_tx = &core.mine_blocks_with_subsidy(1, 1_000_000)[0].txdata[0];
   let outpoint = OutPoint::new(coinbase_tx.txid(), 0);
@@ -37,7 +37,7 @@ fn outputs_includes_locked_outputs() {
 
   let output = CommandBuilder::new("wallet outputs")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].output, outpoint);
@@ -48,9 +48,9 @@ fn outputs_includes_locked_outputs() {
 fn outputs_includes_unbound_outputs() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(&core, &[], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &[], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let coinbase_tx = &core.mine_blocks_with_subsidy(1, 1_000_000)[0].txdata[0];
   let outpoint = OutPoint::new(coinbase_tx.txid(), 0);
@@ -60,7 +60,7 @@ fn outputs_includes_unbound_outputs() {
 
   let output = CommandBuilder::new("wallet outputs")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .run_and_deserialize_output::<Vec<Output>>();
 
   assert_eq!(output[0].output, outpoint);

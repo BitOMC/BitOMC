@@ -33,13 +33,13 @@ There are a few things you'll need before you start.
    bitcoin-cli getblockcount
    ```
 
-2. Second, you'll need a synced `ord` index.
+2. Second, you'll need a synced `bitomc` index.
 
-   - Get a copy of `ord` from [the repo](https://github.com/ordinals/ord/).
+   - Get a copy of `bitomc` from [the repo](https://github.com/BitOMC/BitOMC/).
 
-   - Run `ord --index-sats server`. It should connect to your bitcoin core node and start indexing.
+   - Run `bitomc --index-sats server`. It should connect to your bitcoin core node and start indexing.
      
-   - Once it has finished indexing, leave the server running and submit new `ord` commands in a separate terminal session.
+   - Once it has finished indexing, leave the server running and submit new `bitomc` commands in a separate terminal session.
 
 3. Third, you'll need a wallet with UTXOs that you want to search.
 
@@ -48,7 +48,7 @@ Searching for Rare Ordinals
 
 ### Searching for Rare Ordinals in a Bitcoin Core Wallet
 
-The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so
+The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so
 searching for rare ordinals in a Bitcoin Core wallet is Easy. Assuming your
 wallet is named `foo`:
 
@@ -61,12 +61,12 @@ wallet is named `foo`:
 2. Display any rare ordinals wallet `foo`'s UTXOs:
 
    ```sh
-   ord --index-sats wallet --name foo sats
+   bitomc --index-sats wallet --name foo sats
    ```
 
 ### Searching for Rare Ordinals in a Non-Bitcoin Core Wallet
 
-The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so to
+The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so to
 search for rare ordinals in a non-Bitcoin Core wallet, you'll need to import
 your wallet's descriptors into Bitcoin Core.
 
@@ -124,7 +124,7 @@ your wallet of funds.
 6. Display your wallet's rare ordinals:
 
    ```sh
-   ord wallet sats
+   bitomc wallet sats
    ```
 
 ### Searching for Rare Ordinals in a Wallet that Exports Multi-path Descriptors
@@ -225,7 +225,7 @@ those multiple descriptors into Bitcoin Core.
 7. Display your wallet's rare ordinals:
 
    ```sh
-   ord wallet sats
+   bitomc wallet sats
    ```
 
 ### Exporting Descriptors
@@ -237,11 +237,11 @@ button to display the descriptor.
 
 ### Transferring Ordinals
 
-The `ord` wallet supports transferring specific satoshis by using the
+The `bitomc` wallet supports transferring specific satoshis by using the
 name of the satoshi. To send the satoshi `zonefruits`, do:
 
 ```
-ord wallet send <RECEIVING_ADDRESS> zonefruits --fee-rate 21
+bitomc wallet send <RECEIVING_ADDRESS> zonefruits --fee-rate 21
 ```
 
 You can also use the `bitcoin-cli` commands `createrawtransaction`,

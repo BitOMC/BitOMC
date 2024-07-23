@@ -19,13 +19,13 @@ pub mod transactions;
 
 #[derive(Debug, Parser)]
 pub(crate) struct WalletCommand {
-  #[arg(long, default_value = "ord", help = "Use wallet named <WALLET>.")]
+  #[arg(long, default_value = "bitomc", help = "Use wallet named <WALLET>.")]
   pub(crate) name: String,
   #[arg(long, alias = "nosync", help = "Do not update index.")]
   pub(crate) no_sync: bool,
   #[arg(
     long,
-    help = "Use ord running at <SERVER_URL>. [default: http://localhost:80]"
+    help = "Use bitomc running at <SERVER_URL>. [default: http://localhost:80]"
   )]
   pub(crate) server_url: Option<Url>,
   #[command(subcommand)]

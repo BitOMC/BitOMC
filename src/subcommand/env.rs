@@ -97,7 +97,7 @@ rpcport={bitcoind_port}
 
     let server_url = format!("http://127.0.0.1:{ord_port}");
 
-    let config = absolute.join("ord.yaml");
+    let config = absolute.join("bitomc.yaml");
 
     if !config.try_exists()? {
       fs::write(
@@ -106,12 +106,12 @@ rpcport={bitcoind_port}
       )?;
     }
 
-    let ord = std::env::current_exe()?;
+    let bitomc = std::env::current_exe()?;
 
     let decompress = self.decompress;
     let proxy = self.proxy.map(|url| url.to_string());
 
-    let mut command = Command::new(&ord);
+    let mut command = Command::new(&bitomc);
     let ord_server = command
       .arg("--datadir")
       .arg(&absolute)
@@ -133,7 +133,7 @@ rpcport={bitcoind_port}
     thread::sleep(Duration::from_millis(250));
 
     if !absolute.join("regtest/wallets/ord").try_exists()? {
-      let status = Command::new(&ord)
+      let status = Command::new(&bitomc)
         .arg("--datadir")
         .arg(&absolute)
         .arg("wallet")
@@ -142,7 +142,7 @@ rpcport={bitcoind_port}
 
       ensure!(status.success(), "failed to create wallet: {status}");
 
-      let output = Command::new(&ord)
+      let output = Command::new(&bitomc)
         .arg("--datadir")
         .arg(&absolute)
         .arg("wallet")
@@ -181,7 +181,7 @@ rpcport={bitcoind_port}
         ord_port,
         bitcoin_cli_command: vec!["bitcoin-cli".into(), format!("-datadir={relative}")],
         ord_wallet_command: vec![
-          ord.to_str().unwrap().into(),
+          bitomc.to_str().unwrap().into(),
           "--datadir".into(),
           absolute.to_str().unwrap().into(),
           "wallet".into(),
@@ -205,10 +205,10 @@ rpcport={bitcoind_port}
 bitcoin-cli -datadir={datadir} getblockchaininfo
 {}
 {} --datadir {datadir} wallet balance",
-      "`ord` server URL:".blue().bold(),
+      "`bitomc` server URL:".blue().bold(),
       "Example `bitcoin-cli` command:".blue().bold(),
-      "Example `ord` command:".blue().bold(),
-      ord.display(),
+      "Example `bitomc` command:".blue().bold(),
+      bitomc.display(),
     );
 
     loop {

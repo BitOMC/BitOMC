@@ -11,7 +11,7 @@ use {
   chrono::{DateTime, Utc},
   executable_path::executable_path,
   mockcore::TransactionTemplate,
-  ord::{api, chain::Chain, outgoing::Outgoing, RuneEntry},
+  bitomc::{api, chain::Chain, outgoing::Outgoing, RuneEntry},
   ordinals::{Artifact, Edict, Pile, Rune, RuneId, Runestone, SpacedRune},
   pretty_assertions::assert_eq as pretty_assert_eq,
   regex::Regex,
@@ -65,9 +65,9 @@ const ID1: RuneId = RuneId { block: 1, tx: 1 };
 
 const RUNE_COIN_VALUE: u128 = 100000000;
 
-type Balance = ord::subcommand::wallet::balance::Output;
-type Create = ord::subcommand::wallet::create::Output;
-type Send = ord::subcommand::wallet::send::Output;
+type Balance = bitomc::subcommand::wallet::balance::Output;
+type Create = bitomc::subcommand::wallet::create::Output;
+type Send = bitomc::subcommand::wallet::send::Output;
 
 fn create_wallet(core: &mockcore::Handle, ord: &TestServer) {
   CommandBuilder::new(format!("--chain {} wallet create", core.network()))

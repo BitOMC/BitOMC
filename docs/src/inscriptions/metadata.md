@@ -25,7 +25,7 @@ Metadata is rendered to HTML for display as follows:
 CBOR is a complex spec with many different data types, and multiple ways of
 representing the same data. Exotic data types, such as tags, floats, and
 bignums, and encoding such as indefinite values, may fail to display correctly
-or at all. Contributions to `ord` to remedy this are welcome.
+or at all. Contributions to `bitomc` to remedy this are welcome.
 
 Example
 -------

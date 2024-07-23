@@ -17,7 +17,7 @@ debug = 1
 arbitrary = { version = "1", features = ["derive"] }
 bitcoin = { version = "0.30.0", features = ["rand"] }
 libfuzzer-sys = "0.4"
-ord = { path = ".." }
+bitomc = { path = ".." }
 ordinals = { path = "../crates/ordinals" }
 
 [[bin]]

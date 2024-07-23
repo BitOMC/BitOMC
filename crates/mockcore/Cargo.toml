@@ -4,8 +4,8 @@ description = "Mock Bitcoin Core RPC server"
 version = "0.0.1"
 edition = "2021"
 license = "CC0-1.0"
-homepage = "https://github.com/ordinals/ord"
-repository = "https://github.com/ordinals/ord"
+homepage = "https://github.com/BitOMC/BitOMC"
+repository = "https://github.com/BitOMC/BitOMC"
 
 [dependencies]
 bitcoin = { version = "0.30.0", features = ["serde", "rand"] }

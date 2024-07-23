@@ -42,7 +42,7 @@ fn get_block() {
 #[test]
 fn get_blocks() {
   let core = mockcore::spawn();
-  let ord = TestServer::spawn(&core);
+  let bitomc = TestServer::spawn(&core);
 
   let blocks: Vec<BlockHash> = core
     .mine_blocks(101)
@@ -52,9 +52,9 @@ fn get_blocks() {
     .map(|block| block.block_hash())
     .collect();
 
-  ord.sync_server();
+  bitomc.sync_server();
 
-  let response = ord.json_request("/blocks");
+  let response = bitomc.json_request("/blocks");
 
   assert_eq!(response.status(), StatusCode::OK);
 
@@ -78,13 +78,13 @@ fn get_blocks() {
 fn get_transaction() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn(&core);
+  let bitomc = TestServer::spawn(&core);
 
   let transaction = core.mine_blocks(1)[0].txdata[0].clone();
 
   let txid = transaction.txid();
 
-  let response = ord.json_request(format!("/tx/{txid}"));
+  let response = bitomc.json_request(format!("/tx/{txid}"));
 
   assert_eq!(response.status(), StatusCode::OK);
 
@@ -104,12 +104,12 @@ fn get_transaction() {
 fn get_status() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
   core.mine_blocks(1);
 
-  let response = ord.json_request("/status");
+  let response = bitomc.json_request("/status");
 
   assert_eq!(response.status(), StatusCode::OK);
 
@@ -149,13 +149,13 @@ fn get_status() {
 fn get_runes() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
-  let response = ord.json_request(format!("/rune/{}", 0));
+  let response = bitomc.json_request(format!("/rune/{}", 0));
   assert_eq!(response.status(), StatusCode::OK);
 
   let rune_json: api::Rune = serde_json::from_str(&response.text().unwrap()).unwrap();
@@ -176,7 +176,7 @@ fn get_runes() {
     }
   );
 
-  let response = ord.json_request("/runes");
+  let response = bitomc.json_request("/runes");
 
   assert_eq!(response.status(), StatusCode::OK);
 
@@ -218,9 +218,9 @@ fn get_runes() {
 fn get_runes_balances() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
@@ -243,7 +243,7 @@ fn get_runes_balances() {
   .into_iter()
   .collect();
 
-  let response = ord.json_request("/runes/balances");
+  let response = bitomc.json_request("/runes/balances");
   assert_eq!(response.status(), StatusCode::OK);
 
   let runes_balance_json: BTreeMap<Rune, BTreeMap<OutPoint, u128>> =

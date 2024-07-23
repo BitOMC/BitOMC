@@ -1,26 +1,26 @@
 Ordinal Explorer
 ================
 
-The `ord` binary includes a block explorer. We host an instance of the block
+The `bitomc` binary includes a block explorer. We host an instance of the block
 explorer on mainnet at [ordinals.com](https://ordinals.com), on signet at
 [signet.ordinals.com](https://signet.ordinals.com), and on testnet at
 [testnet.ordinals.com](https://testnet.ordinals.com). As of version 0.16.0 the
-wallet needs `ord server` running in the background. This is analogous to how
+wallet needs `bitomc server` running in the background. This is analogous to how
 `bitcoin-cli` needs `bitcoind` running in the background.
 
 ### Running The Explorer
 The server can be run locally with:
 
-`ord server`
+`bitomc server`
 
 To specify a port add the `--http-port` flag:
 
-`ord server --http-port 8080`
+`bitomc server --http-port 8080`
 
 The JSON-API endpoints are enabled by default, to disable them add the
 `--disable-json-api` flag (see [here](#json-api) for more info):
 
-`ord server --disable-json-api`
+`bitomc server --disable-json-api`
 
 Search
 ------
@@ -75,7 +75,7 @@ been issued when they are mined:
 JSON-API
 --------
 
-By default the `ord server` gives access to endpoints that
+By default the `bitomc server` gives access to endpoints that
 return JSON instead of HTML if you set the HTTP `Accept: application/json`
 header. The structure of these objects closely follows
 what is shown in the HTML. These endpoints are:

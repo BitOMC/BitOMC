@@ -1,6 +1,6 @@
 # example config
 
-# see `ord --help` for setting documentation
+# see `bitomc --help` for setting documentation
 
 bitcoin_data_dir: /var/lib/bitcoin
 bitcoin_rpc_password: bar
@@ -8,13 +8,13 @@ bitcoin_rpc_url: https://localhost:8000
 bitcoin_rpc_username: foo
 chain: mainnet
 commit_interval: 10000
-config: /var/lib/ord/ord.yaml
-config_dir: /var/lib/ord
+config: /var/lib/bitomc/bitomc.yaml
+config_dir: /var/lib/bitomc
 cookie_file: /var/lib/bitcoin/.cookie
-data_dir: /var/lib/ord
+data_dir: /var/lib/bitomc
 first_rune_height: 100
 height_limit: 1000
-index: /var/lib/ord/index.redb
+index: /var/lib/bitomc/index.redb
 index_addresses: false
 index_cache_size: 1000000000
 index_transactions: false

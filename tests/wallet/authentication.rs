@@ -1,21 +1,21 @@
-use {super::*, ord::subcommand::wallet::balance::Output};
+use {super::*, bitomc::subcommand::wallet::balance::Output};
 
 #[test]
 fn authentication() {
   let core = mockcore::spawn();
 
-  let ord = TestServer::spawn_with_server_args(
+  let bitomc = TestServer::spawn_with_server_args(
     &core,
     &["--server-username", "foo", "--server-password", "bar"],
     &[],
   );
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   assert_eq!(
     CommandBuilder::new("--server-username foo --server-password bar wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Output>()
       .cardinal,
     0
@@ -26,7 +26,7 @@ fn authentication() {
   assert_eq!(
     CommandBuilder::new("--server-username foo --server-password bar wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Output>(),
     Output {
       cardinal: 50 * COIN_VALUE,

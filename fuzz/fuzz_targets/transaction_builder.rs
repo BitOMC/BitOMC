@@ -7,7 +7,7 @@ use {
     Amount, OutPoint, TxOut,
   },
   libfuzzer_sys::fuzz_target,
-  ord::{FeeRate, InscriptionId, Target, TransactionBuilder},
+  bitomc::{FeeRate, InscriptionId, Target, TransactionBuilder},
   ordinals::SatPoint,
   std::collections::{BTreeMap, BTreeSet},
 };

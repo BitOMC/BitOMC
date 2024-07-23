@@ -1,4 +1,4 @@
-use {super::*, ord::subcommand::index::info::TransactionsOutput};
+use {super::*, bitomc::subcommand::index::info::TransactionsOutput};
 
 #[test]
 fn json_without_satoshi_index() {

@@ -906,7 +906,7 @@ impl Api for Server {
     _with_private_keys: Option<bool>,
   ) -> Result<ListDescriptorsResult, jsonrpc_core::Error> {
     Ok(ListDescriptorsResult {
-      wallet_name: "ord".into(),
+      wallet_name: "bitomc".into(),
       descriptors: self
         .state()
         .descriptors

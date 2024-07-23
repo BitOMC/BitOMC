@@ -217,12 +217,12 @@ msgid "Links"
 msgstr "链接"
 
 #: src/introduction.md:38
-msgid "[GitHub](https://github.com/ordinals/ord/)"
-msgstr "[GitHub仓库](https://github.com/ordinals/ord/)"
+msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
+msgstr "[GitHub仓库](https://github.com/BitOMC/BitOMC/)"
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 
 #: src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -286,10 +286,10 @@ msgstr ""
 
 #: src/overview.md:13
 msgid ""
-"Technical details are available in [the BIP](https://github.com/ordinals/ord/"
+"Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/"
 "blob/master/bip.mediawiki)."
 msgstr ""
-"技术细节可以在[the BIP](https://github.com/ordinals/ord/blob/master/bip."
+"技术细节可以在[the BIP](https://github.com/xaz1234567890abc/master/bip."
 "mediawiki)获取."
 
 #: src/overview.md:16
@@ -359,13 +359,13 @@ msgstr ""
 #: src/overview.md:45
 msgid ""
 "Ordinals is an open-source project, developed [on GitHub](https://github.com/"
-"ordinals/ord). The project consists of a BIP describing the ordinal scheme, "
+"BitOMC/BitOMC). The project consists of a BIP describing the ordinal scheme, "
 "an index that communicates with a Bitcoin Core node to track the location of "
 "all satoshis, a wallet that allows making ordinal-aware transactions, a "
 "block explorer for interactive exploration of the blockchain, functionality "
 "for inscribing satoshis with digital artifacts, and this manual."
 msgstr ""
-"Ordinals是一个开源项目，部署在[on GitHub](https://github.com/ordinals/ord). "
+"Ordinals是一个开源项目，部署在[on GitHub](https://github.com/BitOMC/BitOMC). "
 "该项目包括一个描述序数方案的BIP、 一个与比特币核心节点通信以跟踪所有聪位置的"
 "索引一个允许进行序号感知交易的钱包、 一个用于区块链交互探索的区块资源管理器、"
 "用数字文物嵌入聪的功能，以及本手册。 "
@@ -1044,9 +1044,9 @@ msgstr ""
 
 #: src/inscriptions.md:53
 msgid ""
-"First the string `ord` is pushed, to disambiguate inscriptions from other "
+"First the string `bitomc` is pushed, to disambiguate inscriptions from other "
 "uses of envelopes."
-msgstr "首先字符串`ord`被推送，以消除铭文与信封其他用途的歧义。"
+msgstr "首先字符串`bitomc`被推送，以消除铭文与信封其他用途的歧义。"
 
 #: src/inscriptions.md:56
 msgid ""
@@ -1282,12 +1282,12 @@ msgstr ""
 
 #: src/inscriptions.md:134
 msgid ""
-"Due to a historical bug in `ord` which cannot be fixed without changing a "
+"Due to a historical bug in `bitomc` which cannot be fixed without changing a "
 "great many inscription numbers, inscriptions which are revealed and then "
 "immediately spent to fees are numbered as if they appear last in the block "
 "in which they are revealed."
 msgstr ""
-"由于在`ord`中的一个过往的错误，如果不改变大量的铭文编号就无法修复 因此，那些"
+"由于在`bitomc`中的一个过往的错误，如果不改变大量的铭文编号就无法修复 因此，那些"
 "被揭示出来然后立即用于支付费用的铭文，其编号就好像它们是在被揭示出来的区块中"
 "最后出现的一样。"
 
@@ -1336,7 +1336,7 @@ msgstr ""
 
 #: src/inscriptions.md:160
 msgid ""
-"Reinscribe with satpoint: `ord wallet inscribe --fee-rate <FEE_RATE> --"
+"Reinscribe with satpoint: `bitomc wallet inscribe --fee-rate <FEE_RATE> --"
 "reinscribe --file <FILE> --satpoint <SATPOINT>`"
 msgstr ""
 "如果铭文存在于钱包中，之前铭刻的sats可以使用--reinscribe命令进行重新铭刻。这"
@@ -1344,10 +1344,10 @@ msgstr ""
 
 #: src/inscriptions.md:163
 msgid ""
-"Reinscribe on a sat (requires sat index): `ord --index-sats wallet inscribe "
+"Reinscribe on a sat (requires sat index): `bitomc --index-sats wallet inscribe "
 "--fee-rate <FEE_RATE> --reinscribe --file <FILE> --sat <SAT>`"
 msgstr ""
-"在一个聪上再刻录铭文 (需要聪索引): `ord --index-sats wallet inscribe --fee-"
+"在一个聪上再刻录铭文 (需要聪索引): `bitomc --index-sats wallet inscribe --fee-"
 "rate <FEE_RATE> --reinscribe --file <FILE> --sat <SAT>`"
 
 #: src/inscriptions/delegate.md:4
@@ -1489,7 +1489,7 @@ msgid ""
 "CBOR is a complex spec with many different data types, and multiple ways of "
 "representing the same data. Exotic data types, such as tags, floats, and "
 "bignums, and encoding such as indefinite values, may fail to display "
-"correctly or at all. Contributions to `ord` to remedy this are welcome."
+"correctly or at all. Contributions to `bitomc` to remedy this are welcome."
 msgstr ""
 "CBOR是一个包含许多不同数据类型和多种表达相同数据方式的复杂规格。一些特殊的数"
 "据类型，如标签、浮点数和大数字，以及某些编码方式，如不定值，可能无法正确或完"
@@ -1594,10 +1594,10 @@ msgstr ""
 
 #: src/inscriptions/pointer.md:12
 msgid ""
-"An even tag is used, so that old versions of `ord` consider the inscription "
+"An even tag is used, so that old versions of `bitomc` consider the inscription "
 "to be unbound, instead of assigning it, incorrectly, to the first sat."
 msgstr ""
-"使用了偶数标签，所以旧版本的 `ord` 会把铭文视为无约束，而不是错误地将其分配到"
+"使用了偶数标签，所以旧版本的 `bitomc` 会把铭文视为无约束，而不是错误地将其分配到"
 "第一个sat。"
 
 #: src/inscriptions/pointer.md:15
@@ -1804,7 +1804,7 @@ msgstr "注释"
 msgid ""
 "The tag `3` is used because it is the first available odd tag. Unrecognized "
 "odd tags do not make an inscription unbound, so child inscriptions would be "
-"recognized and tracked by old versions of `ord`."
+"recognized and tracked by old versions of `bitomc`."
 msgstr ""
 "标签 `3` 被使用是因为它是第一个可用的奇数标签。未识别的奇数标签不会使铭文无法"
 "进行绑定，因此，旧版本的ord仍可以识别和追踪子铭文。"
@@ -1831,10 +1831,10 @@ msgstr ""
 msgid ""
 "Since changes to recursive endpoints might break inscriptions that rely on "
 "them, recursive endpoints have backwards-compatibility guarantees not shared "
-"by `ord server`'s other endpoints. In particular:"
+"by `bitomc server`'s other endpoints. In particular:"
 msgstr ""
 "由于对递归端点的更改可能会破坏依赖它们的铭文，递归端点具有向后兼容性保证，这"
-"是`ord server`的其他端点所不具备的。具体来说："
+"是`bitomc server`的其他端点所不具备的。具体来说："
 
 #: src/inscriptions/recursion.md:12
 msgid "Recursive endpoints will not be removed"
@@ -2181,11 +2181,11 @@ msgstr "最大尺寸"
 
 #: src/inscriptions/rendering.md:14
 msgid ""
-"The `ord` explorer, used by [ordinals.com](https://ordinals.com/), displays "
+"The `bitomc` explorer, used by [ordinals.com](https://ordinals.com/), displays "
 "inscription previews with a maximum size of 576 by 576 pixels, making it a "
 "reasonable choice when choosing a maximum display size."
 msgstr ""
-"由[ordinals.com](https://ordinals.com/)使用的`ord` 浏览器，展示的铭文预览的最"
+"由[ordinals.com](https://ordinals.com/)使用的`bitomc` 浏览器，展示的铭文预览的最"
 "大尺寸为576乘以576像素，这使得它在选择最大显示尺寸时是一个合理的选择。"
 
 #: src/inscriptions/rendering.md:18
@@ -2212,7 +2212,7 @@ msgid ""
 "When upscaling image inscriptions other than AVIF, `image-rendering: "
 "pixelated` should be used. This is desirable when upscaling pixel art, since "
 "it preserves the sharp edges of pixels. It is undesirable when upscaling non-"
-"pixel art, but should still be used for visual compatibility with the `ord` "
+"pixel art, but should still be used for visual compatibility with the `bitomc` "
 "explorer."
 msgstr ""
 "在放大非AVIF格式的图片铭文时，应使用`image-rendering: pixelated`。这在放大像"
@@ -2566,39 +2566,39 @@ msgstr "符文没有规范"
 
 #: src/runes/specification.md:4
 msgid ""
-"The Runes reference implementation, `ord`, is the normative specification of "
+"The Runes reference implementation, `bitomc`, is the normative specification of "
 "the Runes protocol."
 msgstr ""
-" 符文的参考实现，即`ord`，是符文协议的规范性规格说明。"
+" 符文的参考实现，即`bitomc`，是符文协议的规范性规格说明。"
 
 #: src/runes/specification.md:7
 msgid ""
-"Nothing you read here or elsewhere, aside from the code of `ord`, is a "
+"Nothing you read here or elsewhere, aside from the code of `bitomc`, is a "
 "specification. This prose description of the runes protocol is provided as a "
-"guide to the behavior of `ord`, and the code of `ord` itself should always "
+"guide to the behavior of `bitomc`, and the code of `bitomc` itself should always "
 "be consulted to confirm the correctness of any prose description."
 msgstr ""
-"您在这里或其他地方阅读的内容，除了`ord`的代码之外，都不是规格说明。"
-"这篇关于符文协议的描述是作为`ord`行为的指南提供的，"
-"而`ord`的代码本身应始终被查询以确认任何描述的正确性。"
+"您在这里或其他地方阅读的内容，除了`bitomc`的代码之外，都不是规格说明。"
+"这篇关于符文协议的描述是作为`bitomc`行为的指南提供的，"
+"而`bitomc`的代码本身应始终被查询以确认任何描述的正确性。"
 
 #: src/runes/specification.md:12
 msgid ""
-"If, due to a bug in `ord`, this document diverges from the actual behavior "
-"of `ord` and it is impractically disruptive to change `ord`'s behavior, this "
-"document will be amended to agree with `ord`'s actual behavior."
+"If, due to a bug in `bitomc`, this document diverges from the actual behavior "
+"of `bitomc` and it is impractically disruptive to change `bitomc`'s behavior, this "
+"document will be amended to agree with `bitomc`'s actual behavior."
 msgstr ""
-"如果由于`ord`中的一个错误，本文档与`ord`的实际行为出现偏差，"
-"并且改变`ord`的行为实际上是不切实际的，那么本文档将被修订以符合`ord`的实际行为。"
+"如果由于`bitomc`中的一个错误，本文档与`bitomc`的实际行为出现偏差，"
+"并且改变`bitomc`的行为实际上是不切实际的，那么本文档将被修订以符合`bitomc`的实际行为。"
 
 #: src/runes/specification.md:16
 msgid ""
 "Users of alternative implementations do so at their own risk, and services "
-"wishing to integrate Runes are strongly encouraged to use `ord` itself to "
+"wishing to integrate Runes are strongly encouraged to use `bitomc` itself to "
 "make Runes transactions, and to determine the state of runes, mints, and "
 "balances."
 msgstr ""
-"使用替代实现的用户需自担风险，强烈建议希望整合符文的服务使用`ord`本身来进行符文交易，"
+"使用替代实现的用户需自担风险，强烈建议希望整合符文的服务使用`bitomc`本身来进行符文交易，"
 "并确定符文、铸币和余额的状态"
 
 #: src/runes/specification.md:23
@@ -3422,7 +3422,7 @@ msgid ""
 "the twelve-character rune names are unlocked, between block 857,500 and "
 "block 875,000 the eleven character rune names are unlocked, and so on and so "
 "on, until the one-character rune names are unlocked between block 1,032,500 "
-"and block 1,050,000. See the `ord` codebase for the precise unlocking "
+"and block 1,050,000. See the `bitomc` codebase for the precise unlocking "
 "schedule."
 msgstr ""
 "此后，每个17,500区块周期，连续解锁下一个最短长度的符文名称。"
@@ -3748,14 +3748,14 @@ msgstr ""
 #: src/faq.md:90
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/ordinals/ord/blob/master/bip.mediawiki) has the details, but in "
+"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
 "this:"
 msgstr ""
 "所以他们作为“费用”去到挖这个区块的矿工那里。[The BIP](https://github.com/"
-"ordinals/ord/blob/master/bip.mediawiki) 有更详细的描述,但简而言之，交易支付的"
+"xaz1234567890abc/master/bip.mediawiki) 有更详细的描述,但简而言之，交易支付的"
 "费用被视为对Coinbase交易的额外输入，并按照其对应的交易在区块中的顺序进行排"
 "序。该区块的Coinbase交易可能是这样的:"
 
@@ -3771,7 +3771,7 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "我在哪里可以找到这些详细信息"
 
 #: src/faq.md:104
-msgid "[The BIP!](https://github.com/ordinals/ord/blob/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
 msgstr ""
 
 #: src/faq.md:106
@@ -4314,8 +4314,8 @@ msgstr ""
 "能够更有效地服务于其作为人类去中心化价值存储的主要用例。"
 
 #: src/contributing.md:1
-msgid "Contributing to `ord`"
-msgstr "如何为`ord`做贡献"
+msgid "Contributing to `bitomc`"
+msgstr "如何为`bitomc`做贡献"
 
 #: src/contributing.md:4
 msgid "Suggested Steps"
@@ -4505,11 +4505,11 @@ msgstr "阅读所有错误消息，不要容忍警告。"
 #: src/donate.md:4
 msgid ""
 "Ordinals is open-source and community funded. The current lead maintainer of "
-"`ord` is [raphjaph](https://github.com/raphjaph/). Raph's work on `ord` is "
+"`bitomc` is [raphjaph](https://github.com/raphjaph/). Raph's work on `bitomc` is "
 "entirely funded by donations. If you can, please consider donating!"
 msgstr ""
-"Ordinals序数是开源的，由社区资助的项目。目前`ord`的首席维护者是[raphjaph]"
-"(https://github.com/raphjaph/).Raph在 `ord` 上的维护工作全部由捐赠的资金完"
+"Ordinals序数是开源的，由社区资助的项目。目前`bitomc`的首席维护者是[raphjaph]"
+"(https://github.com/raphjaph/).Raph在 `bitomc` 上的维护工作全部由捐赠的资金完"
 "成。你如果可以的话，请考虑捐赠！"
 
 #: src/donate.md:8
@@ -4544,9 +4544,9 @@ msgstr ""
 #: src/donate.md:17
 msgid ""
 "Donations received will go towards funding maintenance and development of "
-"`ord`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
+"`bitomc`, as well as hosting costs for [ordinals.com](https://ordinals.com)."
 msgstr ""
-"收到的捐赠款将用于资助 `ord`的维护和进一步开发，同时将支付[ordinals.com]"
+"收到的捐赠款将用于资助 `bitomc`的维护和进一步开发，同时将支付[ordinals.com]"
 "(https://ordinals.com)的托管费用。"
 
 #: src/donate.md:20
@@ -4569,14 +4569,14 @@ msgstr "序数浏览器"
 
 #: src/guides/explorer.md:4
 msgid ""
-"The `ord` binary includes a block explorer. We host an instance of the block "
+"The `bitomc` binary includes a block explorer. We host an instance of the block "
 "explorer on mainnet at [ordinals.com](https://ordinals.com), on signet at "
 "[signet.ordinals.com](https://signet.ordinals.com), and on testnet at "
 "[testnet.ordinals.com](https://testnet.ordinals.com). As of version 0.16.0 "
-"the wallet needs `ord server` running in the background. This is analogous "
+"the wallet needs `bitomc server` running in the background. This is analogous "
 "to how `bitcoin-cli` needs `bitcoind` running in the background."
 msgstr ""
-"`ord` 文件包含一个区块浏览器。我们的主网区块链器部署在 [ordinals.com]"
+"`bitomc` 文件包含一个区块浏览器。我们的主网区块链器部署在 [ordinals.com]"
 "(https://ordinals.com), signet部署在[signet.ordinals.com](https://signet."
 "ordinals.com)."
 
@@ -4589,7 +4589,7 @@ msgid "The server can be run locally with:"
 msgstr "服务器可以使用本地运行："
 
 #: src/guides/explorer.md:14
-msgid "`ord server`"
+msgid "`bitomc server`"
 msgstr ""
 
 #: src/guides/explorer.md:16
@@ -4597,7 +4597,7 @@ msgid "To specify a port add the `--http-port` flag:"
 msgstr "指定端口使用`--http-port`标记"
 
 #: src/guides/explorer.md:18
-msgid "`ord server --http-port 8080`"
+msgid "`bitomc server --http-port 8080`"
 msgstr ""
 
 #: src/guides/explorer.md:20
@@ -4609,7 +4609,7 @@ msgstr ""
 "里](#json-api) :"
 
 #: src/guides/explorer.md:23
-msgid "`ord server --disable-json-api`"
+msgid "`bitomc server --disable-json-api`"
 msgstr ""
 
 #: src/guides/explorer.md:25
@@ -4728,12 +4728,12 @@ msgstr ""
 
 #: src/guides/explorer.md:78
 msgid ""
-"By default the `ord server` gives access to endpoints that return JSON "
+"By default the `bitomc server` gives access to endpoints that return JSON "
 "instead of HTML if you set the HTTP `Accept: application/json` header. The "
 "structure of these objects closely follows what is shown in the HTML. These "
 "endpoints are:"
 msgstr ""
-"你可以运行 `ord` 和 `--enable-json-api` 标签访问返回JSON而非HTML的端点，只需"
+"你可以运行 `bitomc` 和 `--enable-json-api` 标签访问返回JSON而非HTML的端点，只需"
 "要设置HTTP的header `Accept: application/json` 这些对象的结构紧贴HTML所展示的"
 "内容。这些端点包括： "
 
@@ -4847,12 +4847,12 @@ msgstr ""
 
 #: src/guides/wallet.md:17
 msgid ""
-"This requires [`ord`](https://github.com/ordinals/ord), the ordinal utility. "
-"`ord` doesn't implement its own wallet, so `ord wallet` subcommands interact "
+"This requires [`bitomc`](https://github.com/BitOMC/BitOMC), the ordinal utility. "
+"`bitomc` doesn't implement its own wallet, so `bitomc wallet` subcommands interact "
 "with Bitcoin Core wallets."
 msgstr ""
-"这需要[`ord`](https://github.com/ordinals/ord)，序数实用程序。 `ord` 没有自己"
-"的钱包，因此  `ord wallet`子命令与 Bitcoin Core 钱包交互。"
+"这需要[`bitomc`](https://github.com/BitOMC/BitOMC)，序数实用程序。 `bitomc` 没有自己"
+"的钱包，因此  `bitomc wallet`子命令与 Bitcoin Core 钱包交互。"
 
 #: src/guides/wallet.md:21
 msgid "This guide covers:"
@@ -4871,24 +4871,24 @@ msgid "Creating a Bitcoin Core wallet"
 msgstr "创建 Bitcoin Core 钱包"
 
 #: src/guides/wallet.md:26
-msgid "Using `ord wallet receive` to receive sats"
-msgstr "使用 `ord wallet receive`收取聪"
+msgid "Using `bitomc wallet receive` to receive sats"
+msgstr "使用 `bitomc wallet receive`收取聪"
 
 #: src/guides/wallet.md:27
-msgid "Creating inscriptions with `ord wallet inscribe`"
-msgstr "使用`ord wallet inscribe`创建铭文"
+msgid "Creating inscriptions with `bitomc wallet inscribe`"
+msgstr "使用`bitomc wallet inscribe`创建铭文"
 
 #: src/guides/wallet.md:28
-msgid "Sending inscriptions with `ord wallet send`"
-msgstr "使用 `ord wallet send`发送铭文"
+msgid "Sending inscriptions with `bitomc wallet send`"
+msgstr "使用 `bitomc wallet send`发送铭文"
 
 #: src/guides/wallet.md:29
-msgid "Receiving inscriptions with `ord wallet receive`"
-msgstr "使用`ord wallet receive`收取铭文"
+msgid "Receiving inscriptions with `bitomc wallet receive`"
+msgstr "使用`bitomc wallet receive`收取铭文"
 
 #: src/guides/wallet.md:30
-msgid "Batch inscribing with `ord wallet inscribe --batch`"
-msgstr "使用`ord wallet inscribe`创建铭文"
+msgid "Batch inscribing with `bitomc wallet inscribe --batch`"
+msgstr "使用`bitomc wallet inscribe`创建铭文"
 
 #: src/guides/wallet.md:32
 msgid "Getting Help"
@@ -4898,12 +4898,12 @@ msgstr "寻求帮助"
 msgid ""
 "If you get stuck, try asking for help on the [Ordinals Discord Server]"
 "(https://discord.com/invite/87cjuz4FYg), or checking GitHub for relevant "
-"[issues](https://github.com/ordinals/ord/issues) and [discussions](https://"
-"github.com/ordinals/ord/discussions)."
+"[issues](https://github.com/BitOMC/BitOMC/issues) and [discussions](https://"
+"github.com/BitOMC/BitOMC/discussions)."
 msgstr ""
 "如果你遇到困难，可以在[Ordinals Discord Server](https://discord.com/"
 "invite/87cjuz4FYg),或者检查Github上的相关内容[问题](https://github.com/"
-"ordinals/ord/issues) 和[讨论](https://github.com/ordinals/ord/discussions)."
+"BitOMC/BitOMC/issues) 和[讨论](https://github.com/BitOMC/BitOMC/discussions)."
 
 #: src/guides/wallet.md:43
 msgid ""
@@ -4931,8 +4931,8 @@ msgid "Configuring Bitcoin Core"
 msgstr "配置 Bitcoin Core"
 
 #: src/guides/wallet.md:55
-msgid "`ord` requires Bitcoin Core's transaction index and rest interface."
-msgstr "`ord` 需要Bitcoin Core 的交易索引"
+msgid "`bitomc` requires Bitcoin Core's transaction index and rest interface."
+msgstr "`bitomc` 需要Bitcoin Core 的交易索引"
 
 #: src/guides/wallet.md:57
 msgid ""
@@ -4989,12 +4989,12 @@ msgstr ""
 #: src/guides/wallet.md:88
 msgid ""
 "agrees with the block count on a block explorer like [the mempool.space "
-"block explorer](https://mempool.space/). `ord` interacts with `bitcoind`, so "
+"block explorer](https://mempool.space/). `bitomc` interacts with `bitcoind`, so "
 "you should leave `bitcoind` running in the background when you're using "
-"`ord`."
+"`bitomc`."
 msgstr ""
 "像区块链浏览器[the mempool.space block explorer](https://mempool.space/)一样"
-"对区块进行记述. `ord`同`bitcoind`进行交互, 所以你在使用`ord`时候需要让"
+"对区块进行记述. `bitomc`同`bitcoind`进行交互, 所以你在使用`bitomc`时候需要让"
 "`bitcoind` 在后台运行。"
 
 #: src/guides/wallet.md:92
@@ -5003,11 +5003,11 @@ msgid ""
 "drive you want to store blocks on, use the configuration option "
 "`blocksdir=<external_drive_path>`. This is much simpler than using the "
 "`datadir` option because the cookie file will still be in the default "
-"location for `bitcoin-cli` and `ord` to find."
+"location for `bitcoin-cli` and `bitomc` to find."
 msgstr ""
 "区块链占用约600GB的磁盘空间。如果你有一个外接硬盘来存储区块，可以使用配置选"
 "项`blocksdir=<external_drive_path>`. 这比使用`datadir` 选项更简单， `bitcoin-"
-"cli` 和 `ord` 可以在默认的位置找到cookie文件"
+"cli` 和 `bitomc` 可以在默认的位置找到cookie文件"
 
 #: src/guides/wallet.md:98 src/guides/collecting/sparrow-wallet.md:173
 msgid "Troubleshooting"
@@ -5031,11 +5031,11 @@ msgstr ""
 #: src/guides/wallet.md:107
 msgid ""
 "Make sure `rpcuser`, `rpcpassword`, or `rpcauth` are _NOT_ set in your "
-"`bitcoin.conf` file. `ord` requires using cookie authentication. Make sure "
+"`bitcoin.conf` file. `bitomc` requires using cookie authentication. Make sure "
 "there is a file `.cookie` in your bitcoin data directory."
 msgstr ""
 "确保 `rpcuser`, `rpcpassword`, 或者 `rpcauth` _没有_ 在你的 `bitcoin.conf` 文"
-"件里进行设置。 `ord` 需要使用 cookie 认证。因此需要确保 你的bitcoin data的文"
+"件里进行设置。 `bitomc` 需要使用 cookie 认证。因此需要确保 你的bitcoin data的文"
 "件夹里有 `.cookie`文件。"
 
 #: src/guides/wallet.md:111
@@ -5044,13 +5044,13 @@ msgid ""
 "you must specify the cookie file location. If you are using a custom data "
 "directory (specifying the `datadir` option), then you must specify the "
 "cookie location like `bitcoin-cli -rpccookiefile=<your_bitcoin_datadir>/."
-"cookie -getinfo`. When running `ord` you must specify the cookie file "
+"cookie -getinfo`. When running `bitomc` you must specify the cookie file "
 "location with `--cookie-file=<your_bitcoin_datadir>/.cookie`."
 msgstr ""
 "如果 `bitcoin-cli -getinfo` 返回`Could not locate RPC credentials`, 那么 你必"
 "须指定 cookie 文件的位置。如果你正在使用自定义的数据目录 (指定 `datadir` 的选"
 "项),那么你必须指定cookie文件的位置. `bitcoin-cli -"
-"rpccookiefile=<your_bitcoin_datadir>/ cookie -getinfo`.当你运行 `ord` 命令"
+"rpccookiefile=<your_bitcoin_datadir>/ cookie -getinfo`.当你运行 `bitomc` 命令"
 "时，你必须指定 cookie 文件的位置 `--cookie-file=<your_bitcoin_datadir>/."
 "cookie`."
 
@@ -5058,11 +5058,11 @@ msgstr ""
 msgid ""
 "Make sure you do _NOT_ have `disablewallet=1` in your `bitcoin.conf` file. "
 "If `bitcoin-cli listwallets` returns `Method not found` then the wallet is "
-"disabled and you won't be able to use `ord`."
+"disabled and you won't be able to use `bitomc`."
 msgstr ""
 "确保你在`bitcoin.conf` 文件中 _没有_ 配置 `disablewallet=1` 如果 `bitcoin-"
 "cli listwallets` 返回 `Method not found` 那么钱包就会被禁用你将要无法使用 "
-"`ord`."
+"`bitomc`."
 
 #: src/guides/wallet.md:123
 msgid ""
@@ -5088,32 +5088,32 @@ msgstr ""
 msgid ""
 "If it only returns `{}`, `txindex` is not set. If it returns `\"synced\": "
 "false`, `bitcoind` is still creating the `txindex`. Wait until `\"synced\": "
-"true` before using `ord`."
+"true` before using `bitomc`."
 msgstr ""
 "假如仅仅返回 `{}`, `txindex` 没有被设置。如果返回 `\"synced\": false`, "
-"`bitcoind` 仍然在创建 `txindex`。那就需要等到`\"synced\": true` ，`ord`命令方"
+"`bitcoind` 仍然在创建 `txindex`。那就需要等到`\"synced\": true` ，`bitomc`命令方"
 "可以使用."
 
 #: src/guides/wallet.md:137
 msgid ""
 "If you have `maxuploadtarget` set it can interfere with fetching blocks for "
-"`ord` index. Either remove it or set `whitebind=127.0.0.1:8333`."
+"`bitomc` index. Either remove it or set `whitebind=127.0.0.1:8333`."
 msgstr ""
-"如果你设置了`maxuploadtarget` ，他将干扰 `ord` 的索引获取区块， 你可以选择移"
+"如果你设置了`maxuploadtarget` ，他将干扰 `bitomc` 的索引获取区块， 你可以选择移"
 "除或者设置`whitebind=127.0.0.1:8333`."
 
 #: src/guides/wallet.md:140
-msgid "Installing `ord`"
-msgstr "安装 `ord`"
+msgid "Installing `bitomc`"
+msgstr "安装 `bitomc`"
 
 #: src/guides/wallet.md:143
 msgid ""
-"The `ord` utility is written in Rust and can be built from [source](https://"
-"github.com/ordinals/ord). Pre-built binaries are available on the [releases "
-"page](https://github.com/ordinals/ord/releases)."
+"The `bitomc` utility is written in Rust and can be built from [source](https://"
+"github.com/BitOMC/BitOMC). Pre-built binaries are available on the [releases "
+"page](https://github.com/BitOMC/BitOMC/releases)."
 msgstr ""
-"`ord` 程序使用Rust语言写成，可以从[源码](https://github.com/ordinals/ord)安"
-"装. 预制文件可以从[版本发布页](https://github.com/ordinals/ord/releases)下"
+"`bitomc` 程序使用Rust语言写成，可以从[源码](https://github.com/BitOMC/BitOMC)安"
+"装. 预制文件可以从[版本发布页](https://github.com/BitOMC/BitOMC/releases)下"
 "载。"
 
 #: src/guides/wallet.md:147
@@ -5129,19 +5129,19 @@ msgid ""
 msgstr ""
 
 #: src/guides/wallet.md:153
-msgid "Once `ord` is installed, you should be able to run:"
-msgstr "当 `ord` 成功安装以后,你可以运行 :"
+msgid "Once `bitomc` is installed, you should be able to run:"
+msgstr "当 `bitomc` 成功安装以后,你可以运行 :"
 
 #: src/guides/wallet.md:155
 msgid ""
 "```\n"
-"ord --version\n"
+"bitomc --version\n"
 "```"
 msgstr ""
 
 #: src/guides/wallet.md:159
-msgid "Which prints out `ord`'s version number."
-msgstr "这会返回 `ord`的版本信息."
+msgid "Which prints out `bitomc`'s version number."
+msgstr "这会返回 `bitomc`的版本信息."
 
 #: src/guides/wallet.md:161
 msgid "Creating a Wallet"
@@ -5149,30 +5149,30 @@ msgstr "创建一个Bitcoin Core钱包"
 
 #: src/guides/wallet.md:164
 msgid ""
-"`ord` uses `bitcoind` to manage private keys, sign transactions, and "
-"broadcast transactions to the Bitcoin network. Additionally the `ord wallet` "
-"requires [`ord server`](explorer.md) running in the background. Make sure "
+"`bitomc` uses `bitcoind` to manage private keys, sign transactions, and "
+"broadcast transactions to the Bitcoin network. Additionally the `bitomc wallet` "
+"requires [`bitomc server`](explorer.md) running in the background. Make sure "
 "these programs are running:"
 msgstr ""
-"`ord` 使用Bitcoin Core来管理私钥，签署交易以及向比特币网络广播交易。此外，"
-"`ord` 钱包需要在后台运行[`ord server`](explorer.md)，请确保这些程序运行"
+"`bitomc` 使用Bitcoin Core来管理私钥，签署交易以及向比特币网络广播交易。此外，"
+"`bitomc` 钱包需要在后台运行[`bitomc server`](explorer.md)，请确保这些程序运行"
 
 #: src/guides/wallet.md:173
 msgid ""
 "```\n"
-"ord server\n"
+"bitomc server\n"
 "```"
 msgstr ""
 
 #: src/guides/wallet.md:177
 msgid ""
-"To create a wallet named `ord`, the default, for use with `ord wallet`, run:"
-msgstr "创建一个名为`ord` 的Bitcoin Core 钱包，运行:"
+"To create a wallet named `bitomc`, the default, for use with `bitomc wallet`, run:"
+msgstr "创建一个名为`bitomc` 的Bitcoin Core 钱包，运行:"
 
 #: src/guides/wallet.md:179
 msgid ""
 "```\n"
-"ord wallet create\n"
+"bitomc wallet create\n"
 "```"
 msgstr ""
 
@@ -5193,15 +5193,15 @@ msgstr ""
 
 #: src/guides/wallet.md:192
 msgid ""
-"If you want to specify a different name or use an `ord server` running on a "
+"If you want to specify a different name or use an `bitomc server` running on a "
 "non-default URL you can set these options:"
 msgstr ""
-"如果你想指定不同的名称或者在非默认的URL上运行 `ord server`你可以设置以下选项:"
+"如果你想指定不同的名称或者在非默认的URL上运行 `bitomc server`你可以设置以下选项:"
 
 #: src/guides/wallet.md:195
 msgid ""
 "```\n"
-"ord wallet --name foo --server-url http://127.0.0.1:8080 create\n"
+"bitomc wallet --name foo --server-url http://127.0.0.1:8080 create\n"
 "```"
 msgstr ""
 
@@ -5212,7 +5212,7 @@ msgstr "查看所有可用的钱包选项，你可以运行"
 #: src/guides/wallet.md:201
 msgid ""
 "```\n"
-"ord wallet help\n"
+"bitomc wallet help\n"
 "```"
 msgstr ""
 
@@ -5222,17 +5222,17 @@ msgstr "恢复和转存钱包"
 
 #: src/guides/wallet.md:208
 msgid ""
-"The `ord` wallet uses descriptors, so you can export the output descriptors "
+"The `bitomc` wallet uses descriptors, so you can export the output descriptors "
 "and import them into another descriptor-based wallet. To export the wallet "
 "descriptors, which include your private keys:"
 msgstr ""
-"`ord`钱包使用描述符descriptors,你可以导出输出描述符并将它们导入另外一个基于描"
+"`bitomc`钱包使用描述符descriptors,你可以导出输出描述符并将它们导入另外一个基于描"
 "述符的钱包导出钱包描述符，其中包含你的私钥:"
 
 #: src/guides/wallet.md:212
 msgid ""
 "```\n"
-"$ ord wallet dump\n"
+"$ bitomc wallet dump\n"
 "==========================================\n"
 "= THIS STRING CONTAINS YOUR PRIVATE KEYS =\n"
 "=        DO NOT SHARE WITH ANYONE        =\n"
@@ -5271,7 +5271,7 @@ msgid ""
 "```"
 msgstr ""
 "```\n"
-"$ ord wallet dump\n"
+"$ bitomc wallet dump\n"
 "==========================================\n"
 "= 这个字节包含你的私钥信息 =\n"
 "=   不要和任何人分享 =\n"
@@ -5310,13 +5310,13 @@ msgstr ""
 "```"
 
 #: src/guides/wallet.md:247
-msgid "An `ord` wallet can be restored from a mnemonic:"
-msgstr "`ord` 钱包可以从助记词恢复:"
+msgid "An `bitomc` wallet can be restored from a mnemonic:"
+msgstr "`bitomc` 钱包可以从助记词恢复:"
 
 #: src/guides/wallet.md:249
 msgid ""
 "```\n"
-"ord wallet restore --from mnemonic\n"
+"bitomc wallet restore --from mnemonic\n"
 "```"
 msgstr ""
 
@@ -5331,7 +5331,7 @@ msgstr "从`descriptor.json`恢复描述符:"
 #: src/guides/wallet.md:257
 msgid ""
 "```\n"
-"cat descriptor.json | ord wallet restore --from descriptor\n"
+"cat descriptor.json | bitomc wallet restore --from descriptor\n"
 "```"
 msgstr ""
 
@@ -5342,7 +5342,7 @@ msgstr "要从剪贴板中的描述符恢复："
 #: src/guides/wallet.md:263
 msgid ""
 "```\n"
-"ord wallet restore --from descriptor\n"
+"bitomc wallet restore --from descriptor\n"
 "```"
 msgstr ""
 
@@ -5365,14 +5365,14 @@ msgstr ""
 "一些 聪（比特币）。"
 
 #: src/guides/wallet.md:276
-msgid "Get a new address from your `ord` wallet by running:"
-msgstr "为你的 `ord` 钱包创建一个新地址，运行:"
+msgid "Get a new address from your `bitomc` wallet by running:"
+msgstr "为你的 `bitomc` 钱包创建一个新地址，运行:"
 
 #: src/guides/wallet.md:278 src/guides/wallet.md:366 src/guides/wallet.md:394
 #: src/guides/wallet.md:429
 msgid ""
 "```\n"
-"ord wallet receive\n"
+"bitomc wallet receive\n"
 "```"
 msgstr ""
 
@@ -5388,15 +5388,15 @@ msgstr "你可以使用以下命令看到交易情况："
 #: src/guides/wallet.md:440
 msgid ""
 "```\n"
-"ord wallet transactions\n"
+"bitomc wallet transactions\n"
 "```"
 msgstr ""
 
 #: src/guides/wallet.md:290
 msgid ""
 "Once the transaction confirms, you should be able to see the transactions "
-"outputs with `ord wallet outputs`."
-msgstr "一旦交易确认，你应该可以使用 `ord wallet outputs`看到交易的输出；"
+"outputs with `bitomc wallet outputs`."
+msgstr "一旦交易确认，你应该可以使用 `bitomc wallet outputs`看到交易的输出；"
 
 #: src/guides/wallet.md:293
 msgid "Creating Inscription Content"
@@ -5404,10 +5404,10 @@ msgstr "创建铭文内容"
 
 #: src/guides/wallet.md:296
 msgid ""
-"Sats can be inscribed with any kind of content, but the `ord` wallet only "
-"supports content types that can be displayed by the `ord` block explorer."
+"Sats can be inscribed with any kind of content, but the `bitomc` wallet only "
+"supports content types that can be displayed by the `bitomc` block explorer."
 msgstr ""
-"聪上可以刻录任何类型的内容，但`ord`钱包只支持`ord`区块浏览器可以显示的内容类"
+"聪上可以刻录任何类型的内容，但`bitomc`钱包只支持`bitomc`区块浏览器可以显示的内容类"
 "型。"
 
 #: src/guides/wallet.md:299
@@ -5450,7 +5450,7 @@ msgstr "以`FILE`的内容创建一个铭文，需要运行:"
 #: src/guides/wallet.md:317
 msgid ""
 "```\n"
-"ord wallet inscribe --fee-rate FEE_RATE --file FILE\n"
+"bitomc wallet inscribe --fee-rate FEE_RATE --file FILE\n"
 "```"
 msgstr ""
 
@@ -5494,7 +5494,7 @@ msgstr "一旦reveal交易完成记账，你可以使用以下命令查询铭文
 #: src/guides/wallet.md:338 src/guides/wallet.md:385 src/guides/wallet.md:446
 msgid ""
 "```\n"
-"ord wallet inscriptions\n"
+"bitomc wallet inscriptions\n"
 "```"
 msgstr ""
 
@@ -5513,11 +5513,11 @@ msgstr ""
 #: src/guides/wallet.md:348
 msgid ""
 "To make an inscription a child of another, the parent inscription has to be "
-"inscribed and present in the wallet. To choose a parent run `ord wallet "
+"inscribed and present in the wallet. To choose a parent run `bitomc wallet "
 "inscriptions` and copy the inscription id (`<PARENT_INSCRIPTION_ID>`)."
 msgstr ""
 "要使一个铭文成为另一个铭文的子项，父铭文必须已经被铭刻并且存在于钱包中。要选"
-"择一个父铭文，请运行`ord wallet inscriptions`并复制铭文ID"
+"择一个父铭文，请运行`bitomc wallet inscriptions`并复制铭文ID"
 "（`<PARENT_INSCRIPTION_ID>`）。"
 
 #: src/guides/wallet.md:352
@@ -5527,7 +5527,7 @@ msgstr "为父系铭文P创建一个子铭文C:"
 #: src/guides/wallet.md:354
 msgid ""
 "```\n"
-"ord wallet inscribe --fee-rate FEE_RATE --parent <PARENT_INSCRIPTION_ID> --"
+"bitomc wallet inscribe --fee-rate FEE_RATE --parent <PARENT_INSCRIPTION_ID> --"
 "file CHILD_FILE\n"
 "```"
 msgstr ""
@@ -5553,7 +5553,7 @@ msgstr "使用命令格式发送铭文："
 #: src/guides/wallet.md:372
 msgid ""
 "```\n"
-"ord wallet send --fee-rate <FEE_RATE> <ADDRESS> <INSCRIPTION_ID>\n"
+"bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <INSCRIPTION_ID>\n"
 "```"
 msgstr ""
 
@@ -5578,7 +5578,7 @@ msgstr "使用命令格式发送铭文："
 #: src/guides/wallet.md:400
 msgid ""
 "```\n"
-"ord wallet send --fee-rate <FEE_RATE> <ADDRESS> <RUNES_AMOUNT>\n"
+"bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <RUNES_AMOUNT>\n"
 "```"
 msgstr ""
 
@@ -5594,7 +5594,7 @@ msgstr ""
 #: src/guides/wallet.md:408
 msgid ""
 "```\n"
-"ord wallet send --fee-rate 1 SOME_ADDRESS 1000:EXAMPLE\n"
+"bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EXAMPLE\n"
 "```"
 msgstr ""
 
@@ -5606,7 +5606,7 @@ msgstr "一旦交易确认，接收方可以使用一下命令查看接收到的
 #: src/guides/wallet.md:420
 msgid ""
 "```\n"
-"ord wallet balance\n"
+"bitomc wallet balance\n"
 "```"
 msgstr ""
 
@@ -5625,7 +5625,7 @@ msgstr "发送方使用命令发送铭文到你的地址"
 #: src/guides/wallet.md:435
 msgid ""
 "```\n"
-"ord wallet send --fee-rate <FEE_RATE> ADDRESS INSCRIPTION_ID\n"
+"bitomc wallet send --fee-rate <FEE_RATE> ADDRESS INSCRIPTION_ID\n"
 "```"
 msgstr ""
 
@@ -5654,7 +5654,7 @@ msgstr "创建批量铭文，使用批处理文件`batch.yaml`, 运行"
 #: src/guides/batch-inscribing.md:13
 msgid ""
 "```bash\n"
-"ord wallet batch --fee-rate 21 --batch batch.yaml\n"
+"bitomc wallet batch --fee-rate 21 --batch batch.yaml\n"
 "```"
 msgstr ""
 
@@ -5750,21 +5750,21 @@ msgstr ""
 
 #: src/guides/collecting.md:4
 msgid ""
-"Currently, [ord](https://github.com/ordinals/ord/) is the only wallet "
+"Currently, [ord](https://github.com/BitOMC/BitOMC/) is the only wallet "
 "supporting sat-control and sat-selection, which are required to safely store "
 "and send rare sats and inscriptions, hereafter ordinals."
 msgstr ""
-"目前，[ord](https://github.com/ordinals/ord/) 是唯一支持 sat-control 和 sat-"
+"目前，[ord](https://github.com/BitOMC/BitOMC/) 是唯一支持 sat-control 和 sat-"
 "selection 的钱包，这是安全存储和发送稀有 sats 和铭文（以下简称序数）所必需"
 "的。"
 
 #: src/guides/collecting.md:8
 msgid ""
-"The recommended way to send, receive, and store ordinals is with `ord`, but "
+"The recommended way to send, receive, and store ordinals is with `bitomc`, but "
 "if you are careful, it is possible to safely store, and in some cases send, "
 "ordinals with other wallets."
 msgstr ""
-"发送、接收和存储序号的推荐方法是使用 `ord`，但如果你小心，可以安全地存储，在"
+"发送、接收和存储序号的推荐方法是使用 `bitomc`，但如果你小心，可以安全地存储，在"
 "某些情况下，使用其他钱包发送序号。"
 
 #: src/guides/collecting.md:12
@@ -5781,11 +5781,11 @@ msgstr ""
 
 #: src/guides/collecting.md:18
 msgid ""
-"A [guide](./collecting/sparrow-wallet.md) to creating an `ord`\\-compatible "
+"A [guide](./collecting/sparrow-wallet.md) to creating an `bitomc`\\-compatible "
 "wallet with [Sparrow Wallet](https://sparrowwallet.com/), is available in "
 "this handbook."
 msgstr ""
-"本手册提供了使用[Sparrow Wallet](https://sparrowwallet.com/)创建与 `ord`兼容"
+"本手册提供了使用[Sparrow Wallet](https://sparrowwallet.com/)创建与 `bitomc`兼容"
 "的钱包的[指南](./collecting/sparrow-wallet.md) 。"
 
 #: src/guides/collecting.md:21
@@ -5804,21 +5804,21 @@ msgstr "使用麻雀Sparrow钱包收藏铭文"
 #: src/guides/collecting/sparrow-wallet.md:4
 msgid ""
 "Users who cannot or have not yet set up the [ord](https://github.com/"
-"ordinals/ord) wallet can receive inscriptions and ordinals with alternative "
+"BitOMC/BitOMC) wallet can receive inscriptions and ordinals with alternative "
 "bitcoin wallets, as long as they are _very_ careful about how they spend "
 "from that wallet."
 msgstr ""
-"那些无法活着尚未设置[ord](https://github.com/ordinals/ord) 钱包的用户可以使用"
+"那些无法活着尚未设置[ord](https://github.com/BitOMC/BitOMC) 钱包的用户可以使用"
 "其他比特币钱包接收铭文和序数，只要他们在使用该钱包时非常小心。"
 
 #: src/guides/collecting/sparrow-wallet.md:6
 msgid ""
 "This guide gives some basic steps on how to create a wallet with [Sparrow "
-"Wallet](https://sparrowwallet.com/) which is compatible with `ord` and can "
-"be later imported into `ord`"
+"Wallet](https://sparrowwallet.com/) which is compatible with `bitomc` and can "
+"be later imported into `bitomc`"
 msgstr ""
 "本指南提供了一些基本步骤，说明如何使用 [Sparrow Wallet](https://"
-"sparrowwallet.com/) 创建一个与`ord`兼容的钱包，稍后可以将其导入到`ord`"
+"sparrowwallet.com/) 创建一个与`bitomc`兼容的钱包，稍后可以将其导入到`bitomc`"
 
 #: src/guides/collecting/sparrow-wallet.md:8
 msgid "⚠️⚠️ Warning!! ⚠️⚠️"
@@ -5854,8 +5854,8 @@ msgstr ""
 "Sparrow钱包。"
 
 #: src/guides/collecting/sparrow-wallet.md:17
-msgid "Select `File -> New Wallet` and create a new wallet called `ord`."
-msgstr "选择 `File -> New Wallet`并创建一个名为`ord`的新钱包。"
+msgid "Select `File -> New Wallet` and create a new wallet called `bitomc`."
+msgstr "选择 `File -> New Wallet`并创建一个名为`bitomc`的新钱包。"
 
 #: src/guides/collecting/sparrow-wallet.md:19
 msgid "![](images/wallet_setup_01.png)"
@@ -5928,11 +5928,11 @@ msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:47
 msgid ""
-"You now have a wallet which is compatible with `ord`, and can be imported "
-"into `ord` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
+"You now have a wallet which is compatible with `bitomc`, and can be imported "
+"into `bitomc` using the BIP39 Seed Phrase. To receive ordinals or inscriptions, "
 "click on the `Receive` tab and copy a new address."
 msgstr ""
-"你现在有了一个兼容`ord`的钱包，可以使用BIP39种子短语导入到 `ord`。要接收序数"
+"你现在有了一个兼容`bitomc`的钱包，可以使用BIP39种子短语导入到 `bitomc`。要接收序数"
 "或铭文，点击 `Receive`选项卡并复制一个新地址。"
 
 #: src/guides/collecting/sparrow-wallet.md:49
@@ -6041,61 +6041,61 @@ msgid ""
 msgstr "这个 UTXO (铭文) 现在在 Sparrow 钱包中是不可消费的，直到你解冻它。"
 
 #: src/guides/collecting/sparrow-wallet.md:79
-msgid "Importing into `ord` wallet"
-msgstr "导入 `ord` 钱包"
+msgid "Importing into `bitomc` wallet"
+msgstr "导入 `bitomc` 钱包"
 
 #: src/guides/collecting/sparrow-wallet.md:81
 msgid ""
-"For details on setting up Bitcoin Core and the `ord` wallet check out the "
+"For details on setting up Bitcoin Core and the `bitomc` wallet check out the "
 "[Wallet Guide](../wallet.md)"
 msgstr ""
-"关于设置比特币核心和 `ord` 钱包的详细信息，请查看[钱包指南](../wallet.md）"
+"关于设置比特币核心和 `bitomc` 钱包的详细信息，请查看[钱包指南](../wallet.md）"
 
 #: src/guides/collecting/sparrow-wallet.md:83
 msgid ""
-"When setting up `ord`, instead of running `ord wallet create` to create a "
-"brand-new wallet, you can import your existing wallet using `ord wallet "
+"When setting up `bitomc`, instead of running `bitomc wallet create` to create a "
+"brand-new wallet, you can import your existing wallet using `bitomc wallet "
 "restore \"BIP39 SEED PHRASE\"` using the seed phrase you generated with "
 "Sparrow Wallet."
 msgstr ""
-"设置 `ord` 时，你可以使用 `ord wallet restore \"BIP39 SEED PHRASE\"` 命令和你"
-"用Sparrow Wallet生成的种子短语，导入你现有的钱包，而不是运行 `ord wallet "
+"设置 `bitomc` 时，你可以使用 `bitomc wallet restore \"BIP39 SEED PHRASE\"` 命令和你"
+"用Sparrow Wallet生成的种子短语，导入你现有的钱包，而不是运行 `bitomc wallet "
 "create` 来创建一个全新的钱包。"
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
+"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
-"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=ord "
+"rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"目前存在一个[程序错误](https://github.com/ordinals/ord/issues/1589) 导致导入"
+"目前存在一个[程序错误](https://github.com/abc1234567890xyz1589) 导致导入"
 "的钱包无法自动重新扫描区块链。为解决这个问题，你需要手动触发重新扫描，使用比"
 "特币核心命令行界面："
 
 #: src/guides/collecting/sparrow-wallet.md:88
 msgid ""
-"You can then check your wallet's inscriptions using `ord wallet inscriptions`"
-msgstr "然后，你可以使用`ord wallet inscriptions`检查你的钱包的铭文."
+"You can then check your wallet's inscriptions using `bitomc wallet inscriptions`"
+msgstr "然后，你可以使用`bitomc wallet inscriptions`检查你的钱包的铭文."
 
 #: src/guides/collecting/sparrow-wallet.md:90
 msgid ""
-"Note that if you have previously created a wallet with `ord`, then you will "
+"Note that if you have previously created a wallet with `bitomc`, then you will "
 "already have a wallet with the default name, and will need to give your "
 "imported wallet a different name. You can use the `--wallet` parameter in "
-"all `ord` commands to reference a different wallet, eg:"
+"all `bitomc` commands to reference a different wallet, eg:"
 msgstr ""
-"注意，如果你之前已经用 `ord` 创建过一个钱包，那么你已经有一个默认名称的钱包，"
-"需要给你导入的钱包取一个不同的名称。你可以在所有的 `ord`命令中使用 `--"
+"注意，如果你之前已经用 `bitomc` 创建过一个钱包，那么你已经有一个默认名称的钱包，"
+"需要给你导入的钱包取一个不同的名称。你可以在所有的 `bitomc`命令中使用 `--"
 "wallet` 参数来引用不同的钱包，例如："
 
 #: src/guides/collecting/sparrow-wallet.md:92
-msgid "`ord --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
+msgid "`bitomc --wallet ord_from_sparrow wallet restore \"BIP39 SEED PHRASE\"`"
 msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:94
-msgid "`ord --wallet ord_from_sparrow wallet inscriptions`"
+msgid "`bitomc --wallet ord_from_sparrow wallet inscriptions`"
 msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:96
@@ -6113,22 +6113,22 @@ msgstr "⚠️⚠️ 警告 ⚠️⚠️"
 #: src/guides/collecting/sparrow-wallet.md:101
 msgid ""
 "While it is highly recommended that you set up a bitcoin core node and run "
-"the `ord` software, there are certain limited ways you can send inscriptions "
+"the `bitomc` software, there are certain limited ways you can send inscriptions "
 "out of Sparrow Wallet in a safe way. Please note that this is not "
 "recommended, and you should only do this if you fully understand what you "
 "are doing."
 msgstr ""
-"虽然强烈建议你设置一个比特币核心节点并运行 `ord` 软件，但是你可以通过一些安全"
+"虽然强烈建议你设置一个比特币核心节点并运行 `bitomc` 软件，但是你可以通过一些安全"
 "的方式在 Sparrow 钱包中发送铭文。请注意，这并不推荐，只有在你完全理解你正在做"
 "什么的情况下才能这么做。"
 
 #: src/guides/collecting/sparrow-wallet.md:103
 msgid ""
-"Using the `ord` software will remove much of the complexity we are "
+"Using the `bitomc` software will remove much of the complexity we are "
 "describing here, as it is able to automatically and safely handle sending "
 "inscriptions in an easy way."
 msgstr ""
-"使用 `ord` 软件将大大简化我们在这里描述的复杂性，因为它能以一种简单的方式自动"
+"使用 `bitomc` 软件将大大简化我们在这里描述的复杂性，因为它能以一种简单的方式自动"
 "并安全地处理发送铭文。"
 
 #: src/guides/collecting/sparrow-wallet.md:105
@@ -6322,10 +6322,10 @@ msgid ""
 "If your transaction looks any different, for example you have multiple "
 "inputs, or multiple outputs then this may not be a safe transfer of your "
 "inscription, and you should abandon sending until you understand more, or "
-"can import into the `ord` wallet."
+"can import into the `bitomc` wallet."
 msgstr ""
 "如果您的交易看起来与此不同，例如您有多个输入或多个输出，那么这可能不是一种安"
-"全的铭文传输方式，您应该放弃发送，直到您更了解或可以导入到`ord`钱包。"
+"全的铭文传输方式，您应该放弃发送，直到您更了解或可以导入到`bitomc`钱包。"
 
 #: src/guides/collecting/sparrow-wallet.md:149
 msgid ""
@@ -6441,8 +6441,8 @@ msgstr ""
 
 #: src/guides/moderation.md:4
 msgid ""
-"`ord` includes a block explorer, which you can run locally with `ord server`."
-msgstr "`ord` 包含了一个区块浏览器，你可以在本地运行`ord server`."
+"`bitomc` includes a block explorer, which you can run locally with `bitomc server`."
+msgstr "`bitomc` 包含了一个区块浏览器，你可以在本地运行`bitomc server`."
 
 #: src/guides/moderation.md:6
 msgid ""
@@ -6463,11 +6463,11 @@ msgstr ""
 
 #: src/guides/moderation.md:13
 msgid ""
-"In order to prevent particular inscriptions from being displayed on an `ord` "
+"In order to prevent particular inscriptions from being displayed on an `bitomc` "
 "instance, they can be included in a YAML config file, which is loaded with "
 "the `--config` option."
 msgstr ""
-"为了防止特定的铭文显示在`ord`实例上，它们可以包含在 YAML 配置文件中，该文件使"
+"为了防止特定的铭文显示在`bitomc`实例上，它们可以包含在 YAML 配置文件中，该文件使"
 "用 `--config`选项加载。"
 
 #: src/guides/moderation.md:17
@@ -6486,27 +6486,27 @@ msgstr ""
 
 #: src/guides/moderation.md:25
 msgid ""
-"The suggested name for `ord` config files is `ord.yaml`, but any filename "
+"The suggested name for `bitomc` config files is `bitomc.yaml`, but any filename "
 "can be used."
-msgstr "`ord` 配置文件的建议名称是 `ord.yaml`，但可以使用任何文件名。"
+msgstr "`bitomc` 配置文件的建议名称是 `bitomc.yaml`，但可以使用任何文件名。"
 
 #: src/guides/moderation.md:28
 msgid "Then pass the file to `--config` when starting the server:"
 msgstr "然后将文件在服务启动的使用使用 `--config` :"
 
 #: src/guides/moderation.md:30
-msgid "`ord --config ord.yaml server`"
+msgid "`bitomc --config bitomc.yaml server`"
 msgstr ""
 
 #: src/guides/moderation.md:32
 msgid ""
-"Note that the `--config` option comes after `ord` but before the `server` "
+"Note that the `--config` option comes after `bitomc` but before the `server` "
 "subcommand."
-msgstr "请注意， `--config` 选项的位置在  `ord` 之后但是在  `server`子命令前。"
+msgstr "请注意， `--config` 选项的位置在  `bitomc` 之后但是在  `server`子命令前。"
 
 #: src/guides/moderation.md:35
-msgid "`ord` must be restarted in to load changes to the config file."
-msgstr "`ord` 必须重启才可以加载在配置文件中的更改。"
+msgid "`bitomc` must be restarted in to load changes to the config file."
+msgstr "`bitomc` 必须重启才可以加载在配置文件中的更改。"
 
 #: src/guides/moderation.md:37
 msgid "`ordinals.com`"
@@ -6514,11 +6514,11 @@ msgstr ""
 
 #: src/guides/moderation.md:40
 msgid ""
-"The `ordinals.com` instances use `systemd` to run the `ord server` service, "
-"which is called `ord`, with a config file located at `/var/lib/ord/ord.yaml`."
+"The `ordinals.com` instances use `systemd` to run the `bitomc server` service, "
+"which is called `bitomc`, with a config file located at `/var/lib/ord/bitomc.yaml`."
 msgstr ""
-"`ordinals.com` 实例使用 `systemd` 运行名为 `ord`的 `ord server` 服务，配置文"
-"件在 `/var/lib/ord/ord.yaml`."
+"`ordinals.com` 实例使用 `systemd` 运行名为 `bitomc`的 `bitomc server` 服务，配置文"
+"件在 `/var/lib/ord/bitomc.yaml`."
 
 #: src/guides/moderation.md:43
 msgid "To hide an inscription on `ordinals.com`:"
@@ -6529,35 +6529,35 @@ msgid "SSH into the server"
 msgstr "使用SSH登陆服务器"
 
 #: src/guides/moderation.md:46
-msgid "Add the inscription ID to `/var/lib/ord/ord.yaml`"
-msgstr "在 `/var/lib/ord/ord.yaml`中增加铭文ID"
+msgid "Add the inscription ID to `/var/lib/ord/bitomc.yaml`"
+msgstr "在 `/var/lib/ord/bitomc.yaml`中增加铭文ID"
 
 #: src/guides/moderation.md:47
-msgid "Restart the service with `systemctl restart ord`"
-msgstr "使用 `systemctl restart ord` 重启服务"
+msgid "Restart the service with `systemctl restart bitomc`"
+msgstr "使用 `systemctl restart bitomc` 重启服务"
 
 #: src/guides/moderation.md:48
-msgid "Monitor the restart with `journalctl -u ord`"
-msgstr "通过 `journalctl -u ord` 重启"
+msgid "Monitor the restart with `journalctl -u bitomc`"
+msgstr "通过 `journalctl -u bitomc` 重启"
 
 #: src/guides/moderation.md:50
 msgid ""
-"Currently, `ord` is slow to restart, so the site will not come back online "
+"Currently, `bitomc` is slow to restart, so the site will not come back online "
 "immediately."
 msgstr "目前，ord 重启速度较慢，因此站点不会立即恢复在线。"
 
 #: src/guides/reindexing.md:4
 msgid ""
-"Sometimes the `ord` database must be reindexed, which means deleting the "
-"database and restarting the indexing process with either `ord index update` "
-"or `ord server`. Reasons to reindex are:"
+"Sometimes the `bitomc` database must be reindexed, which means deleting the "
+"database and restarting the indexing process with either `bitomc index update` "
+"or `bitomc server`. Reasons to reindex are:"
 msgstr ""
-"有时必须重新索引‘ord’数据库，这意味着删除数据库并使用 `ord index update`或"
-"`ord server`来重新索引数据库。重新索引的原因是："
+"有时必须重新索引‘ord’数据库，这意味着删除数据库并使用 `bitomc index update`或"
+"`bitomc server`来重新索引数据库。重新索引的原因是："
 
 #: src/guides/reindexing.md:8
 msgid "A new major release of ord, which changes the database scheme"
-msgstr "ord 发布新的主要版本，更改了数据库架构"
+msgstr "bitomc 发布新的主要版本，更改了数据库架构"
 
 #: src/guides/reindexing.md:9
 msgid "The database got corrupted somehow"
@@ -6565,11 +6565,11 @@ msgstr "数据库可能会损坏"
 
 #: src/guides/reindexing.md:11
 msgid ""
-"The database `ord` uses is called [redb](https://github.com/cberner/redb), "
+"The database `bitomc` uses is called [redb](https://github.com/cberner/redb), "
 "so we give the index the default file name `index.redb`. By default we store "
 "this file in different locations depending on your operating system."
 msgstr ""
-"`ord` 使用的数据库称为 [redb](https://github.com/cberner/redb)，所以我们为索"
+"`bitomc` 使用的数据库称为 [redb](https://github.com/cberner/redb)，所以我们为索"
 "引指定默认文件名‘index.redb’。默认情况下我们存储根据您的操作系统，此文件位于"
 "不同的位置。"
 
@@ -6586,7 +6586,7 @@ msgid "Linux"
 msgstr ""
 
 #: src/guides/reindexing.md:17
-msgid "`$XDG_DATA_HOME`/ord or `$HOME`/.local/share/ord"
+msgid "`$XDG_DATA_HOME`/bitomc or `$HOME`/.local/share/ord"
 msgstr ""
 
 #: src/guides/reindexing.md:17
@@ -6627,29 +6627,29 @@ msgstr "因此，要在 MacOS 上删除数据库并重新索引，您必须在�
 msgid ""
 "```bash\n"
 "rm ~/Library/Application Support/ord/index.redb\n"
-"ord index update\n"
+"bitomc index update\n"
 "```"
 msgstr ""
 
 #: src/guides/reindexing.md:29
 msgid ""
 "You can of course also set the location of the data directory yourself with "
-"`ord --datadir <DIR> index update` or give it a specific filename and path "
-"with `ord --index <FILENAME> index update`."
+"`bitomc --datadir <DIR> index update` or give it a specific filename and path "
+"with `bitomc --index <FILENAME> index update`."
 msgstr ""
-"您当然也可以自己设置数据目录的位置,`ord --datadir <DIR> index update` 或为其"
+"您当然也可以自己设置数据目录的位置,`bitomc --datadir <DIR> index update` 或为其"
 "指定特定的文件名和路径,使用‘ord --index <FILENAME>索引运行’。"
 
 #: src/guides/sat-hunting.md:4
 msgid ""
-"_This guide is out of date. Since it was written, the `ord` binary was "
+"_This guide is out of date. Since it was written, the `bitomc` binary was "
 "changed to only build the full satoshi index when the `--index-sats` flag is "
-"supplied. Additionally, `ord` now has a built-in wallet that wraps a Bitcoin "
-"Core wallet. See `ord wallet --help`._"
+"supplied. Additionally, `bitomc` now has a built-in wallet that wraps a Bitcoin "
+"Core wallet. See `bitomc wallet --help`._"
 msgstr ""
 "_本指南已过时。自编写以来，“ord”安装文件已更改仅当提供“--index-sats”标志时才"
 "构建完整的聪索引。此外，“ord”现在有一个内置钱包，其中包含比特币核心钱包。请参"
-"阅`ord wallet --help`。_"
+"阅`bitomc wallet --help`。_"
 
 #: src/guides/sat-hunting.md:9
 msgid ""
@@ -6705,16 +6705,16 @@ msgid ""
 msgstr ""
 
 #: src/guides/sat-hunting.md:41
-msgid "Second, you'll need a synced `ord` index."
+msgid "Second, you'll need a synced `bitomc` index."
 msgstr ""
 
 #: src/guides/sat-hunting.md:43
-msgid "Get a copy of `ord` from [the repo](https://github.com/ordinals/ord/)."
+msgid "Get a copy of `bitomc` from [the repo](https://github.com/BitOMC/BitOMC/)."
 msgstr ""
 
 #: src/guides/sat-hunting.md:45
 msgid ""
-"Run `RUST_LOG=info ord index`. It should connect to your bitcoin core node "
+"Run `RUST_LOG=info bitomc index`. It should connect to your bitcoin core node "
 "and start indexing."
 msgstr ""
 
@@ -6736,7 +6736,7 @@ msgstr ""
 
 #: src/guides/sat-hunting.md:57
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "searching for rare ordinals in a Bitcoin Core wallet is Easy. Assuming your "
 "wallet is named `foo`:"
 msgstr ""
@@ -6759,7 +6759,7 @@ msgstr ""
 #: src/guides/sat-hunting.md:69
 msgid ""
 "```sh\n"
-"ord --index-sats wallet --name foo sats\n"
+"bitomc --index-sats wallet --name foo sats\n"
 "```"
 msgstr ""
 
@@ -6769,7 +6769,7 @@ msgstr ""
 
 #: src/guides/sat-hunting.md:75
 msgid ""
-"The `ord wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
+"The `bitomc wallet` command is just a wrapper around Bitcoin Core's RPC API, so "
 "to search for rare ordinals in a non-Bitcoin Core wallet, you'll need to "
 "import your wallet's descriptors into Bitcoin Core."
 msgstr ""
@@ -6878,7 +6878,7 @@ msgstr ""
 #: src/guides/sat-hunting.md:132 src/guides/sat-hunting.md:233
 msgid ""
 "```sh\n"
-"ord wallet sats\n"
+"bitomc wallet sats\n"
 "```"
 msgstr ""
 
@@ -7046,7 +7046,7 @@ msgstr ""
 
 #: src/guides/sat-hunting.md:246
 msgid ""
-"The `ord` wallet supports transferring specific satoshis. You can also use "
+"The `bitomc` wallet supports transferring specific satoshis. You can also use "
 "`bitcoin-cli` commands `createrawtransaction`, "
 "`signrawtransactionwithwallet`, and `sendrawtransaction`, how to do so is "
 "complex and outside the scope of this guide."
@@ -7054,9 +7054,9 @@ msgstr ""
 
 #: src/guides/settings.md:4
 msgid ""
-"`ord` can be configured with the command line, environment variables, a "
+"`bitomc` can be configured with the command line, environment variables, a "
 "configuration file, and default values."
-msgstr "`ord`可以通过命令行、环境变量、配置文件以及默认值进行配置。"
+msgstr "`bitomc`可以通过命令行、环境变量、配置文件以及默认值进行配置。"
 
 #: src/guides/settings.md:7
 msgid ""
@@ -7069,27 +7069,27 @@ msgstr ""
 #: src/guides/settings.md:10
 msgid ""
 "The path to the configuration file can be given with `--config "
-"<CONFIG_PATH>`. `ord` will error if `<CONFIG_PATH>` doesn't exist."
+"<CONFIG_PATH>`. `bitomc` will error if `<CONFIG_PATH>` doesn't exist."
 msgstr ""
 "配置文件的路径可以通过 `--config <CONFIG_PATH>`给出. 如果 `<CONFIG_PATH>` 不"
-"存在则`ord` 会显示错误 ."
+"存在则`bitomc` 会显示错误 ."
 
 #: src/guides/settings.md:13
 msgid ""
-"The path to a directory containing a configuration file name named `ord."
+"The path to a directory containing a configuration file name named `bitomc."
 "yaml` can be given with `--config-dir <CONFIG_DIR_PATH>` or `--datadir "
-"<DATA_DIR_PATH>` in which case the config path is `<CONFIG_DIR_PATH>/ord."
-"yaml` or `<DATA_DIR_PATH>/ord.yaml`. It is not an error if it does not exist."
+"<DATA_DIR_PATH>` in which case the config path is `<CONFIG_DIR_PATH>/bitomc."
+"yaml` or `<DATA_DIR_PATH>/bitomc.yaml`. It is not an error if it does not exist."
 msgstr ""
 "可以使用`--config-dir <CONFIG_DIR_PATH>` 或 `--datadir <DATA_DIR_PATH>` 指定"
 "包含名为ord.yaml的配置文件的目录路径。在这种情况下，配置路径为"
-"`<CONFIG_DIR_PATH>/ord.yaml`或`<DATA_DIR_PATH>/ord.yaml`。如果它不存在，这不"
+"`<CONFIG_DIR_PATH>/bitomc.yaml`或`<DATA_DIR_PATH>/bitomc.yaml`。如果它不存在，这不"
 "是一个错误。"
 
 #: src/guides/settings.md:18
 msgid ""
 "If none of `--config`, `--config-dir`, or `--datadir` are given, and a file "
-"named `ord.yaml` exists in the default data directory, it will be loaded."
+"named `bitomc.yaml` exists in the default data directory, it will be loaded."
 msgstr ""
 "如果没有给出`--config`、`--config-dir`或`--datadir`中的任何一个，并且在默认数"
 "据目录中存在一个名为ord.yaml的文件，它将会被加载。"
@@ -7108,14 +7108,14 @@ msgstr ""
 "来配置。"
 
 #: src/guides/settings.md:27
-msgid "See `ord --help` for documentation of all the settings."
-msgstr "查看`ord --help`可以获取所有设置的文档。"
+msgid "See `bitomc --help` for documentation of all the settings."
+msgstr "查看`bitomc --help`可以获取所有设置的文档。"
 
 #: src/guides/settings.md:29
 msgid ""
-"`ord`'s current configuration can be viewed as JSON with the `ord settings` "
+"`bitomc`'s current configuration can be viewed as JSON with the `bitomc settings` "
 "command."
-msgstr "`ord`当前的配置可以通过`ord settings`命令以JSON格式查看。"
+msgstr "`bitomc`当前的配置可以通过`bitomc settings`命令以JSON格式查看。"
 
 #: src/guides/settings.md:32
 msgid "Example Configuration"
@@ -7126,7 +7126,7 @@ msgid ""
 "```yaml\n"
 "# example config\n"
 "\n"
-"# see `ord --help` for setting documentation\n"
+"# see `bitomc --help` for setting documentation\n"
 "\n"
 "bitcoin_data_dir: /var/lib/bitcoin\n"
 "bitcoin_rpc_password: bar\n"
@@ -7134,7 +7134,7 @@ msgid ""
 "bitcoin_rpc_username: foo\n"
 "chain: mainnet\n"
 "commit_interval: 10000\n"
-"config: /var/lib/ord/ord.yaml\n"
+"config: /var/lib/ord/bitomc.yaml\n"
 "config_dir: /var/lib/ord\n"
 "cookie_file: /var/lib/bitcoin/.cookie\n"
 "data_dir: /var/lib/ord\n"
@@ -7156,9 +7156,9 @@ msgstr "隐藏铭文内容"
 
 #: src/guides/settings.md:71
 msgid ""
-"Inscription content can be selectively prevented from being served by `ord "
+"Inscription content can be selectively prevented from being served by `bitomc "
 "server`."
-msgstr "铭文内容可以被选择性地阻止由`ord server`提供服务。"
+msgstr "铭文内容可以被选择性地阻止由`bitomc server`提供服务。"
 
 #: src/guides/settings.md:74
 msgid ""
@@ -7260,7 +7260,7 @@ msgstr ""
 #: src/guides/teleburning.md:36
 msgid ""
 "```bash\n"
-"$ ord teleburn "
+"$ bitomc teleburn "
 "6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0\n"
 "```"
 msgstr ""
@@ -7293,39 +7293,39 @@ msgstr "测试环境"
 
 #: src/guides/testing.md:7
 msgid ""
-"`ord env <DIRECTORY>` creates a test environment in `<DIRECTORY>`, spins up "
-"`bitcoind` and `ord server` instances, prints example commands for "
-"interacting with the test `bitcoind` and `ord server` instances, waits for "
-"`CTRL-C`, and then shuts down `bitcoind` and `ord server`."
+"`bitomc env <DIRECTORY>` creates a test environment in `<DIRECTORY>`, spins up "
+"`bitcoind` and `bitomc server` instances, prints example commands for "
+"interacting with the test `bitcoind` and `bitomc server` instances, waits for "
+"`CTRL-C`, and then shuts down `bitcoind` and `bitomc server`."
 msgstr ""
-"`ord env <DIRECTORY>`在`<DIRECTORY>`中创建一个测试环境，启动`bitcoind`和`ord "
-"server`实例，打印与测试`bitcoind`和`ord server`实例交互的示例命令，等待`CTRL-"
-"C`，然后关闭`bitcoind`和`ord server`。"
+"`bitomc env <DIRECTORY>`在`<DIRECTORY>`中创建一个测试环境，启动`bitcoind`和`bitomc "
+"server`实例，打印与测试`bitcoind`和`bitomc server`实例交互的示例命令，等待`CTRL-"
+"C`，然后关闭`bitcoind`和`bitomc server`。"
 
 #: src/guides/testing.md:12
 msgid ""
-"`ord env` tries to use port 9000 for `bitcoind`'s RPC interface, and port "
-"`9001` for `ord`'s RPC interface, but will fall back to random unused ports."
+"`bitomc env` tries to use port 9000 for `bitcoind`'s RPC interface, and port "
+"`9001` for `bitomc`'s RPC interface, but will fall back to random unused ports."
 msgstr ""
-"`ord env`尝试使用端口9000作为`bitcoind`的RPC接口，以及端口`9001`作为`ord`的"
+"`bitomc env`尝试使用端口9000作为`bitcoind`的RPC接口，以及端口`9001`作为`bitomc`的"
 "RPC接口，但如果这些端口被占用，它将回退到随机的未使用端口。"
 
 #: src/guides/testing.md:15
 msgid ""
-"Inside of the env directory, `ord env` will write `bitcoind`'s configuration "
-"to `bitcoin.conf`, `ord`'s configuration to `ord.yaml`, and the env "
+"Inside of the env directory, `bitomc env` will write `bitcoind`'s configuration "
+"to `bitcoin.conf`, `bitomc`'s configuration to `bitomc.yaml`, and the env "
 "configuration to `env.json`."
 msgstr ""
-"在env目录内部，`ord env`将会将`bitcoind`的配置写入`bitcoin.conf`，`ord`的配置"
-"写入`ord.yaml`，以及环境配置写入`env.json`。"
+"在env目录内部，`bitomc env`将会将`bitcoind`的配置写入`bitcoin.conf`，`bitomc`的配置"
+"写入`bitomc.yaml`，以及环境配置写入`env.json`。"
 
 #: src/guides/testing.md:19
 msgid ""
-"`env.json` contains the commands needed to invoke `bitcoin-cli` and `ord "
-"wallet`, as well as the ports `bitcoind` and `ord server` are listening on."
+"`env.json` contains the commands needed to invoke `bitcoin-cli` and `bitomc "
+"wallet`, as well as the ports `bitcoind` and `bitomc server` are listening on."
 msgstr ""
-"`env.json`包含了调用`bitcoin-cli`和`ord wallet`所需的命令，以及`bitcoind`和"
-"`ord server`正在监听的端口信息。"
+"`env.json`包含了调用`bitcoin-cli`和`bitomc wallet`所需的命令，以及`bitcoind`和"
+"`bitomc server`正在监听的端口信息。"
 
 #: src/guides/testing.md:22
 msgid "These can be extracted into shell commands using `jq`:"
@@ -7338,16 +7338,16 @@ msgid ""
 "$bitcoin listunspent\n"
 "\n"
 "ord=`jq -r '.ord_wallet_command | join(\" \")' env/env.json`\n"
-"$ord outputs\n"
+"$bitomc outputs\n"
 "```"
 msgstr ""
 
 #: src/guides/testing.md:32
 msgid ""
-"If `ord` is in the `$PATH` and the env directory is `env`, the `bitcoin-cli` "
+"If `bitomc` is in the `$PATH` and the env directory is `env`, the `bitcoin-cli` "
 "command will be:"
 msgstr ""
-"如果`ord`在`$PATH`中，并且环境目录是`env`，那么`bitcoin-cli`命令将会是："
+"如果`bitomc`在`$PATH`中，并且环境目录是`env`，那么`bitcoin-cli`命令将会是："
 
 #: src/guides/testing.md:35
 msgid ""
@@ -7357,13 +7357,13 @@ msgid ""
 msgstr ""
 
 #: src/guides/testing.md:39
-msgid "And the `ord` will be:"
-msgstr "`ord`将是"
+msgid "And the `bitomc` will be:"
+msgstr "`bitomc`将是"
 
 #: src/guides/testing.md:41
 msgid ""
 "```\n"
-"ord --datadir env\n"
+"bitomc --datadir env\n"
 "```"
 msgstr ""
 
@@ -7384,10 +7384,10 @@ msgstr ""
 
 #: src/guides/testing.md:51
 msgid ""
-"Most `ord` commands in [wallet](wallet.md) and [explorer](explorer.md) can "
+"Most `bitomc` commands in [wallet](wallet.md) and [explorer](explorer.md) can "
 "be run with the following network flags:"
 msgstr ""
-"大多数在[钱包](wallet.md) 和 [浏览器](explorer.md) 中的 `ord`命令可以使用以下"
+"大多数在[钱包](wallet.md) 和 [浏览器](explorer.md) 中的 `bitomc`命令可以使用以下"
 "网络标志运行："
 
 #: src/guides/testing.md:54
@@ -7423,7 +7423,7 @@ msgid "`--regtest` or `-r`"
 msgstr ""
 
 #: src/guides/testing.md:60
-msgid "Regtest doesn't require downloading the blockchain or indexing ord."
+msgid "Regtest doesn't require downloading the blockchain or indexing bitomc."
 msgstr "Regtest不需要下载区块链或者建立ord索引"
 
 #: src/guides/testing.md:65
@@ -7438,13 +7438,13 @@ msgid ""
 msgstr ""
 
 #: src/guides/testing.md:71
-msgid "Run `ord server` in regtest with:"
+msgid "Run `bitomc server` in regtest with:"
 msgstr "在regtest里运行ord server，使用："
 
 #: src/guides/testing.md:73
 msgid ""
 "```\n"
-"ord --regtest server\n"
+"bitomc --regtest server\n"
 "```"
 msgstr ""
 
@@ -7455,7 +7455,7 @@ msgstr "在regtest里创建钱包"
 #: src/guides/testing.md:79
 msgid ""
 "```\n"
-"ord --regtest wallet create\n"
+"bitomc --regtest wallet create\n"
 "```"
 msgstr ""
 
@@ -7466,7 +7466,7 @@ msgstr "创建一个regtest接收地址"
 #: src/guides/testing.md:85
 msgid ""
 "```\n"
-"ord --regtest wallet receive\n"
+"bitomc --regtest wallet receive\n"
 "```"
 msgstr ""
 
@@ -7488,7 +7488,7 @@ msgstr "在regtest上铭刻"
 #: src/guides/testing.md:97
 msgid ""
 "```\n"
-"ord --regtest wallet inscribe --fee-rate 1 --file <file>\n"
+"bitomc --regtest wallet inscribe --fee-rate 1 --file <file>\n"
 "```"
 msgstr ""
 
@@ -7512,7 +7512,7 @@ msgstr ""
 #: src/guides/testing.md:110
 msgid ""
 "```\n"
-"ord --regtest server --decompress\n"
+"bitomc --regtest server --decompress\n"
 "```"
 msgstr ""
 
@@ -7531,7 +7531,7 @@ msgstr ""
 #: src/guides/testing.md:120
 msgid ""
 "```\n"
-"ord --regtest wallet inscribe --fee-rate 1 --file p5.js\n"
+"bitomc --regtest wallet inscribe --fee-rate 1 --file p5.js\n"
 "```"
 msgstr ""
 
@@ -7557,7 +7557,7 @@ msgstr "现在你可以使用以下命令来铭刻你的递归铭文："
 #: src/guides/testing.md:133
 msgid ""
 "```\n"
-"ord --regtest wallet inscribe --fee-rate 1 --file recursive-inscription."
+"bitomc --regtest wallet inscribe --fee-rate 1 --file recursive-inscription."
 "html\n"
 "```"
 msgstr ""
@@ -7580,26 +7580,26 @@ msgstr "主网依赖"
 #: src/guides/testing.md:145
 msgid ""
 "To avoid having to change dependency inscription IDs to mainnet inscription "
-"IDs, you may utilize a content proxy when testing. `ord server` accepts a `--"
-"content-proxy` option, which takes the URL of a another `ord server` "
+"IDs, you may utilize a content proxy when testing. `bitomc server` accepts a `--"
+"content-proxy` option, which takes the URL of a another `bitomc server` "
 "instance. When making a request to `/content/<INSCRIPTION_ID>` when a "
-"content proxy is set and the inscription is not found, `ord server` will "
-"forward the request to the content proxy. This allows you to run a test `ord "
+"content proxy is set and the inscription is not found, `bitomc server` will "
+"forward the request to the content proxy. This allows you to run a test `bitomc "
 "server` instance with a mainnet content proxy. You can then use mainnet "
 "inscription IDs in your test inscription, which will then return the content "
 "of the mainnet inscriptions."
 msgstr ""
 "为了避免在测试时必须将依赖铭文ID更改为主网铭文ID，你可以在测试时使用内容代"
-"理。`ord server`接受一个`--proxy`选项，它需要另一个`ord server`实例的"
+"理。`bitomc server`接受一个`--proxy`选项，它需要另一个`bitomc server`实例的"
 "URL。当设置了内容代理并且铭文未找到时，向`/content/<INSCRIPTION_ID>`发出请"
-"求，`ord server`将会将请求转发给内容代理。这允许你运行一个带有主网内容代理的"
-"测试`ord server`实例。然后你可以在测试铭文中使用主网铭文ID，这将返回主网铭文"
+"求，`bitomc server`将会将请求转发给内容代理。这允许你运行一个带有主网内容代理的"
+"测试`bitomc server`实例。然后你可以在测试铭文中使用主网铭文ID，这将返回主网铭文"
 "的内容。"
 
 #: src/guides/testing.md:155
 msgid ""
 "```\n"
-"ord --regtest server --proxy https://ordinals.com\n"
+"bitomc --regtest server --proxy https://ordinals.com\n"
 "```"
 msgstr ""
 
@@ -7609,23 +7609,23 @@ msgstr "Ordinals赏金计划提示"
 
 #: src/bounties.md:4
 msgid ""
-"The `ord` wallet can send and receive specific satoshis. Additionally, "
+"The `bitomc` wallet can send and receive specific satoshis. Additionally, "
 "ordinal theory is extremely simple. A clever hacker should be able to write "
 "code from scratch to manipulate satoshis using ordinal theory in no time."
 msgstr ""
-"`ord` 钱包可以发送和接收特定的聪。此外序数理论非常简单。聪明的黑客应该能够很"
+"`bitomc` 钱包可以发送和接收特定的聪。此外序数理论非常简单。聪明的黑客应该能够很"
 "快的从头开始编写代码，使用序数理论来操作聪；"
 
 #: src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/ordinals/ord/blob/master/bip."
-"mediawiki) for the technical details, and the [ord repo](https://github.com/"
-"ordinals/ord) for the `ord` wallet and block explorer."
+"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
+"BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
 "关于序数理论的更多信息，请查阅[FAQ](./faq.md) 来获取概述；查阅[BIP](https://"
-"github.com/ordinals/ord/blob/master/bip.mediawiki) 来获取技术细节查阅[ord "
-"repo](https://github.com/ordinals/ord)来获取`ord`钱包和浏览器的信息."
+"github.com/xaz1234567890abc/master/bip.mediawiki) 来获取技术细节查阅[bitomc "
+"repo](https://github.com/BitOMC/BitOMC)来获取`bitomc`钱包和浏览器的信息."
 
 #: src/bounties.md:14
 msgid ""
@@ -7845,22 +7845,22 @@ msgstr ""
 
 #: src/bounty/3.md:32
 msgid ""
-"To search an `ord` wallet for sats with a name in `frequency.tsv`, use the "
-"following [`ord`](https://github.com/ordinals/ord) command:"
+"To search an `bitomc` wallet for sats with a name in `frequency.tsv`, use the "
+"following [`bitomc`](https://github.com/BitOMC/BitOMC) command:"
 msgstr ""
-"在`ord`钱包里搜索`frequency.tsv`中所包含的聪的名字 , 使用下面的[`ord`]"
-"(https://github.com/ordinals/ord)命令: "
+"在`bitomc`钱包里搜索`frequency.tsv`中所包含的聪的名字 , 使用下面的[`bitomc`]"
+"(https://github.com/BitOMC/BitOMC)命令: "
 
 #: src/bounty/3.md:35
 msgid ""
 "```\n"
-"ord wallet sats --tsv frequency.tsv\n"
+"bitomc wallet sats --tsv frequency.tsv\n"
 "```"
 msgstr ""
 
 #: src/bounty/3.md:39
 msgid ""
-"This command requires the sat index, so `--index-sats` must be passed to ord "
+"This command requires the sat index, so `--index-sats` must be passed to bitomc "
 "when first creating the index."
 msgstr ""
 "这个命令需要聪的索引，所以 `--index-sats` 必须在首次创建索引的时候使用。"

@@ -1,20 +1,20 @@
 Runes Does Not Have a Specification
 ===================================
 
-The Runes reference implementation, `ord`, is the normative specification of
+The Runes reference implementation, `bitomc`, is the normative specification of
 the Runes protocol.
 
-Nothing you read here or elsewhere, aside from the code of `ord`, is a
+Nothing you read here or elsewhere, aside from the code of `bitomc`, is a
 specification. This prose description of the runes protocol is provided as a
-guide to the behavior of `ord`, and the code of `ord` itself should always be
+guide to the behavior of `bitomc`, and the code of `bitomc` itself should always be
 consulted to confirm the correctness of any prose description.
 
-If, due to a bug in `ord`, this document diverges from the actual behavior of
-`ord` and it is impractically disruptive to change `ord`'s behavior, this
-document will be amended to agree with `ord`'s actual behavior.
+If, due to a bug in `bitomc`, this document diverges from the actual behavior of
+`bitomc` and it is impractically disruptive to change `bitomc`'s behavior, this
+document will be amended to agree with `bitomc`'s actual behavior.
 
 Users of alternative implementations do so at their own risk, and services
-wishing to integrate Runes are strongly encouraged to use `ord` itself to make
+wishing to integrate Runes are strongly encouraged to use `bitomc` itself to make
 Runes transactions, and to determine the state of runes, mints, and balances.
 
 Runestones
@@ -374,7 +374,7 @@ is continuously unlocked. So, between block 840,000 and block 857,500, the
 twelve-character rune names are unlocked, between block 857,500 and block
 875,000 the eleven character rune names are unlocked, and so on and so on,
 until the one-character rune names are unlocked between block 1,032,500 and
-block 1,050,000. See the `ord` codebase for the precise unlocking schedule.
+block 1,050,000. See the `bitomc` codebase for the precise unlocking schedule.
 
 To prevent front running an etching that has been broadcast but not mined, if a
 non-reserved rune name is being etched, the etching transaction must contain a

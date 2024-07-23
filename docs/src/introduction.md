@@ -35,8 +35,8 @@ enabled by ordinal theory.
 Links
 -----
 
-- [GitHub](https://github.com/ordinals/ord/)
-- [BIP](https://github.com/ordinals/ord/blob/master/bip.mediawiki)
+- [GitHub](https://github.com/BitOMC/BitOMC/)
+- [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)
 - [Discord](https://discord.gg/ordinals)
 - [Open Ordinals Institute Website](https://ordinals.org/)
 - [Open Ordinals Institute X](https://x.com/ordinalsorg)

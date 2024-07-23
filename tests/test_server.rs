@@ -2,7 +2,7 @@ use {
   super::*,
   axum_server::Handle,
   bitcoincore_rpc::{Auth, Client, RpcApi},
-  ord::{parse_ord_server_args, Index},
+  bitomc::{parse_ord_server_args, Index},
   reqwest::blocking::Response,
 };
 
@@ -41,7 +41,7 @@ impl TestServer {
       .port();
 
     let (settings, server) = parse_ord_server_args(&format!(
-      "ord --bitcoin-rpc-url {} --cookie-file {} --bitcoin-data-dir {} --datadir {} {} server {} --http-port {port} --address 127.0.0.1",
+      "bitomc --bitcoin-rpc-url {} --cookie-file {} --bitcoin-data-dir {} --datadir {} {} server {} --http-port {port} --address 127.0.0.1",
       core.url(),
       cookiefile.to_str().unwrap(),
       tempdir.path().display(),
@@ -64,7 +64,7 @@ impl TestServer {
         Ok(_) => break,
         Err(err) => {
           if i == 400 {
-            panic!("ord server failed to start: {err}");
+            panic!("bitomc server failed to start: {err}");
           }
         }
       }

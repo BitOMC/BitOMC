@@ -17,7 +17,7 @@ pub(crate) enum Subcommand {
   Balances,
   #[command(about = "Decode a transaction")]
   Decode(decode::Decode),
-  #[command(about = "Start a regtest ord and bitcoind instance")]
+  #[command(about = "Start a regtest bitomc and bitcoind instance")]
   Env(env::Env),
   #[command(subcommand, about = "Index commands")]
   Index(index::IndexSubcommand),

@@ -4,24 +4,24 @@ use super::*;
 fn send_amount_does_not_select_runic_utxos() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
-  drain(&core, &ord);
+  drain(&core, &bitomc);
 
   CommandBuilder::new("--regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 600sat")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: not enough cardinal utxos\n")
     .run_and_extract_stdout();
@@ -31,24 +31,24 @@ fn send_amount_does_not_select_runic_utxos() {
 fn mint_does_not_select_runic_utxos() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
-  drain(&core, &ord);
+  drain(&core, &bitomc);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 0")
     .core(&core)
-    .ord(&ord)
+    .ord(&bitomc)
     .expected_exit_code(1)
     .expected_stderr("error: not enough cardinal utxos\n")
     .run_and_extract_stdout();
@@ -58,9 +58,9 @@ fn mint_does_not_select_runic_utxos() {
 fn sending_rune_does_not_send_runic_utxos() {
   let core = mockcore::builder().network(Network::Regtest).build();
 
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   let rune = Rune(TIGHTEN);
 
@@ -69,7 +69,7 @@ fn sending_rune_does_not_send_runic_utxos() {
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet balance")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Balance>(),
     Balance {
       cardinal: 10000,
@@ -83,12 +83,12 @@ fn sending_rune_does_not_send_runic_utxos() {
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
-  drain(&core, &ord);
+  drain(&core, &bitomc);
 
   CommandBuilder::new(format!(
     "
@@ -101,7 +101,7 @@ fn sending_rune_does_not_send_runic_utxos() {
      ",
   ))
   .core(&core)
-  .ord(&ord)
+  .ord(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: not enough cardinal utxos\n")
   .run_and_extract_stdout();

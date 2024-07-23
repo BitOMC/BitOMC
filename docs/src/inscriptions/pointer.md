@@ -9,7 +9,7 @@ of the inscribe transaction, it is ignored, and the inscription is made as
 usual. The value of the pointer field is a little endian integer, with trailing
 zeroes ignored.
 
-An even tag is used, so that old versions of `ord` consider the inscription to
+An even tag is used, so that old versions of `bitomc` consider the inscription to
 be unbound, instead of assigning it, incorrectly, to the first sat.
 
 This can be used to create multiple inscriptions in a single transaction on
@@ -23,7 +23,7 @@ An inscription with pointer 255:
 ```
 OP_FALSE
 OP_IF
-  OP_PUSH "ord"
+  OP_PUSH "bitomc"
   OP_PUSH 1
   OP_PUSH "text/plain;charset=utf-8"
   OP_PUSH 2
@@ -38,7 +38,7 @@ An inscription with pointer 256:
 ```
 OP_FALSE
 OP_IF
-  OP_PUSH "ord"
+  OP_PUSH "bitomc"
   OP_PUSH 1
   OP_PUSH "text/plain;charset=utf-8"
   OP_PUSH 2
@@ -53,7 +53,7 @@ An inscription with pointer 256, with trailing zeroes, which are ignored:
 ```
 OP_FALSE
 OP_IF
-  OP_PUSH "ord"
+  OP_PUSH "bitomc"
   OP_PUSH 1
   OP_PUSH "text/plain;charset=utf-8"
   OP_PUSH 2

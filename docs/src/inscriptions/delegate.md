@@ -28,7 +28,7 @@ An example of an inscription which delegates to
 ```
 OP_FALSE
 OP_IF
-  OP_PUSH "ord"
+  OP_PUSH "bitomc"
   OP_PUSH 11
   OP_PUSH 0x1f1e1d1c1b1a191817161514131211100f0e0d0c0b0a09080706050403020100
 OP_ENDIF

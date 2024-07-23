@@ -1,18 +1,18 @@
 [package]
-name = "ord"
-description = "◉ Ordinal wallet and block explorer"
-version = "0.19.0-dev"
+name = "bitomc"
+description = "BitOMC wallet and indexer"
+version = "0.1.0-dev"
 license = "CC0-1.0"
 edition = "2021"
 autotests = false
-homepage = "https://github.com/ordinals/ord"
-repository = "https://github.com/ordinals/ord"
+homepage = "https://github.com/BitOMC/BitOMC"
+repository = "https://github.com/BitOMC/BitOMC"
 autobins = false
 rust-version = "1.76.0"
 
 [package.metadata.deb]
-copyright = "The Ord Maintainers"
-maintainer = "The Ord Maintainers"
+copyright = "The BitOMC Maintainers"
+maintainer = "The BitOMC Maintainers"
 
 [workspace]
 members = [".", "crates/*"]
@@ -83,11 +83,11 @@ mockcore = { path = "crates/mockcore" }
 unindent = "0.2.1"
 
 [[bin]]
-name = "ord"
+name = "bitomc"
 path = "src/bin/main.rs"
 
 [lib]
-name = "ord"
+name = "bitomc"
 path = "src/lib.rs"
 
 [[test]]

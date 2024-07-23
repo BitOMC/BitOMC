@@ -1,28 +1,28 @@
 use {
   super::*,
-  ord::{decimal::Decimal, subcommand::wallet::runics::RunicUtxo},
+  bitomc::{decimal::Decimal, subcommand::wallet::runics::RunicUtxo},
 };
 
 #[test]
 fn wallet_runics() {
   let core = mockcore::builder().network(Network::Regtest).build();
-  let ord = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
+  let bitomc = TestServer::spawn_with_server_args(&core, &["--regtest"], &[]);
 
-  create_wallet(&core, &ord);
+  create_wallet(&core, &bitomc);
 
   core.mine_blocks(1);
 
   CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
-    .ord(&ord)
-    .run_and_deserialize_output::<ord::subcommand::wallet::mint::Output>();
+    .ord(&bitomc)
+    .run_and_deserialize_output::<bitomc::subcommand::wallet::mint::Output>();
 
   core.mine_blocks(1);
 
   pretty_assert_eq!(
     CommandBuilder::new("--regtest wallet runics")
       .core(&core)
-      .ord(&ord)
+      .ord(&bitomc)
       .run_and_deserialize_output::<Vec<RunicUtxo>>()
       .first()
       .unwrap()
