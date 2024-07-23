@@ -28,7 +28,7 @@ impl Arguments {
         continue;
       };
 
-      let Some(key) = var.strip_prefix("ORD_") else {
+      let Some(key) = var.strip_prefix("BITOMC_") else {
         continue;
       };
 

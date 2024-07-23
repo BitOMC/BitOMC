@@ -205,12 +205,14 @@ fn sending_rune_that_has_not_been_etched_is_an_error() {
 
   core.lock(outpoint);
 
-  CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:FOO")
-    .core(&core)
-    .bitomc(&bitomc)
-    .expected_exit_code(1)
-    .expected_stderr("error: rune `FOO` has not been etched\n")
-    .run_and_extract_stdout();
+  CommandBuilder::new(
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:FOO",
+  )
+  .core(&core)
+  .bitomc(&bitomc)
+  .expected_exit_code(1)
+  .expected_stderr("error: rune `FOO` has not been etched\n")
+  .run_and_extract_stdout();
 }
 
 #[test]
@@ -263,7 +265,7 @@ fn sending_rune_with_insufficient_balance_is_an_error() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .bitomc(&bitomc)
+  .bitomc(&bitomc)
   .expected_exit_code(1)
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
@@ -291,7 +293,7 @@ fn sending_rune_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .bitomc(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -496,7 +498,7 @@ fn sending_rune_with_divisibility_works() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .bitomc(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -566,7 +568,7 @@ fn sending_rune_leaves_unspent_runes_in_wallet() {
     Rune(TIGHTEN)
   ))
   .core(&core)
-    .bitomc(&bitomc)
+  .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
 
   core.mine_blocks(1);
@@ -736,10 +738,12 @@ fn error_messages_use_spaced_runes() {
   .expected_stderr("error: insufficient `TIGHTEN` balance, only 50 in wallet\n")
   .run_and_extract_stdout();
 
-  CommandBuilder::new("--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO")
-    .core(&core)
-    .bitomc(&bitomc)
-    .expected_exit_code(1)
-    .expected_stderr("error: rune `FOO` has not been etched\n")
-    .run_and_extract_stdout();
+  CommandBuilder::new(
+    "--chain regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 1:F•OO",
+  )
+  .core(&core)
+  .bitomc(&bitomc)
+  .expected_exit_code(1)
+  .expected_stderr("error: rune `FOO` has not been etched\n")
+  .run_and_extract_stdout();
 }

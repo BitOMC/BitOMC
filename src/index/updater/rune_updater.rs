@@ -413,8 +413,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       return Ok(());
     }
 
-    let sum_of_sq =
-      entry0.supply * entry0.supply + entry1.supply * entry1.supply;
+    let sum_of_sq = entry0.supply * entry0.supply + entry1.supply * entry1.supply;
     let amount0;
     let amount1;
     if sum_of_sq == 0 {

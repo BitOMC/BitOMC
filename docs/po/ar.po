@@ -143,7 +143,7 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr ""
 
 #: src\introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
 
 #: src\introduction.md:40
@@ -197,8 +197,8 @@ msgstr ""
 "_ordinals_."
 
 #: src\overview.md:13
-msgid "Technical details are available in [the BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
-msgstr "التفاصيل التقنية متاحة في [the BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
+msgid "Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)."
+msgstr "التفاصيل التقنية متاحة في [the BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)."
 
 #: src\overview.md:16
 msgid "Ordinal theory does not require a separate token, another blockchain, or any changes to Bitcoin. It works right now."
@@ -980,10 +980,10 @@ msgstr ""
 
 #: src\faq.md:80
 msgid ""
-"So they go to the miner who mined the block as fees. [The BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in short, fees paid by transactions are treated as extra inputs to the coinbase transaction, and are ordered how their "
+"So they go to the miner who mined the block as fees. [The BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the details, but in short, fees paid by transactions are treated as extra inputs to the coinbase transaction, and are ordered how their "
 "corresponding transactions are ordered in the block. The coinbase transaction of the block might look like this:"
 msgstr ""
-"لذا سيذهبون إلى عائد العامل الذي قام بتعدين الكتلة كرسوم.[The BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) المعيار المعني به هنا يمتلك التفاصيل، لكن بشكل موجز، يتم التعامل مع الرسوم التي يتم دفعها من خلال المعاملات على أنها مداخل إضافية لمعاملة العملة "
+"لذا سيذهبون إلى عائد العامل الذي قام بتعدين الكتلة كرسوم.[The BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) المعيار المعني به هنا يمتلك التفاصيل، لكن بشكل موجز، يتم التعامل مع الرسوم التي يتم دفعها من خلال المعاملات على أنها مداخل إضافية لمعاملة العملة "
 "الأساسية، وتتم ترتيبها بناءً على ترتيب معاملاتها المقابلة في الكتلة. قد يبدو معامل العملة الأساسية في البلوك كما يلي:"
 
 #: src\faq.md:87
@@ -998,7 +998,7 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "أين يمكنني العثور على تفاصيل البنية الدقيقة؟"
 
 #: src\faq.md:92
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
 
 #: src\faq.md:94
@@ -2456,10 +2456,10 @@ msgstr "عند إعداد `bitomc`، بدلاً من تشغيل `bitomc wallet c
 
 #: src\guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) which causes an imported wallet to not be automatically rescanned against the blockchain. To work around this you will need to manually trigger a rescan using the bitcoin core cli: `bitcoin-cli -"
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) which causes an imported wallet to not be automatically rescanned against the blockchain. To work around this you will need to manually trigger a rescan using the bitcoin core cli: `bitcoin-cli -"
 "rpcwallet=bitomc rescanblockchain 767430`"
 msgstr ""
-"هناك [خلل](https://github.com/abc1234567890xyz1589) حاليًا يجعل من المحفظة المستوردة ألا تُمسح تلقائياً ضد سلسلة الكتل. للتغلب على ذلك، ستحتاج إلى تشغيل عملية مسح يدويًا باستخدام واجهة سطر الأوامر للنود البيتكوين: `bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`"
+"هناك [خلل](https://github.com/ordinals/ord/issues/1589) حاليًا يجعل من المحفظة المستوردة ألا تُمسح تلقائياً ضد سلسلة الكتل. للتغلب على ذلك، ستحتاج إلى تشغيل عملية مسح يدويًا باستخدام واجهة سطر الأوامر للنود البيتكوين: `bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`"
 
 #: src\guides/collecting/sparrow-wallet.md:88
 msgid "You can then check your wallet's inscriptions using `bitomc wallet inscriptions`"
@@ -3023,9 +3023,9 @@ msgstr "محفظة `أورد` يمكنها إرسال واستقبال ساتو�
 
 #: src\bounties.md:8
 msgid ""
-"For more information about ordinal theory, check out the [FAQ](./faq.md) for an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) for the technical details, and the [bitomc repo](https://github.com/BitOMC/BitOMC) for the `bitomc` wallet and block "
+"For more information about ordinal theory, check out the [FAQ](./faq.md) for an overview, the [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) for the technical details, and the [bitomc repo](https://github.com/BitOMC/BitOMC) for the `bitomc` wallet and block "
 "explorer."
-msgstr "لمزيد من المعلومات حول نظرية أوردينال، تفضل بزيارة [الأسئلة الشائعة](./faq.md) للحصول على نظرة عامة، وال [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) للتفاصيل الفنية وال [bitomc repo](https://github.com/BitOMC/BitOMC) لمحفظة `أورد` ومستكشف الكتل."
+msgstr "لمزيد من المعلومات حول نظرية أوردينال، تفضل بزيارة [الأسئلة الشائعة](./faq.md) للحصول على نظرة عامة، وال [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) للتفاصيل الفنية وال [bitomc repo](https://github.com/BitOMC/BitOMC) لمحفظة `أورد` ومستكشف الكتل."
 
 #: src\bounties.md:14
 msgid ""

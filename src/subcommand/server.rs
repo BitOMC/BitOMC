@@ -1439,9 +1439,11 @@ mod tests {
   #[test]
   fn https_sets_https_port_to_443() {
     assert_eq!(
-      parse_server_args("bitomc server --https --acme-cache foo --acme-contact bar --acme-domain baz")
-        .1
-        .https_port(),
+      parse_server_args(
+        "bitomc server --https --acme-cache foo --acme-contact bar --acme-domain baz"
+      )
+      .1
+      .https_port(),
       Some(443)
     );
   }
@@ -1449,9 +1451,11 @@ mod tests {
   #[test]
   fn https_disables_http() {
     assert_eq!(
-      parse_server_args("bitomc server --https --acme-cache foo --acme-contact bar --acme-domain baz")
-        .1
-        .http_port(),
+      parse_server_args(
+        "bitomc server --https --acme-cache foo --acme-contact bar --acme-domain baz"
+      )
+      .1
+      .http_port(),
       None
     );
   }
@@ -1559,9 +1563,15 @@ mod tests {
 
   #[test]
   fn acme_cache_flag_is_respected() {
-    let arguments =
-      Arguments::try_parse_from(["bitomc", "--datadir", "foo", "server", "--acme-cache", "bar"])
-        .unwrap();
+    let arguments = Arguments::try_parse_from([
+      "bitomc",
+      "--datadir",
+      "foo",
+      "server",
+      "--acme-cache",
+      "bar",
+    ])
+    .unwrap();
 
     let settings = Settings::from_options(arguments.options)
       .or_defaults()

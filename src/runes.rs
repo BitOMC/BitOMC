@@ -709,8 +709,7 @@ mod tests {
 
     let expected_balance1_2 = expected_balance1 - input_amt_2;
     let expected_supply1_2 = supply1_2 - input_amt_2;
-    let expected_supply0_2 = (supply0_2 * supply0_2
-      + supply1_2 * supply1_2
+    let expected_supply0_2 = (supply0_2 * supply0_2 + supply1_2 * supply1_2
       - expected_supply1_2 * expected_supply1_2)
       .sqrt();
     let expected_balance0_2 = expected_supply0_2 - burned0_2;
@@ -847,7 +846,7 @@ mod tests {
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
         (context.get_block_count() - 1, 1, 0, Witness::new()),
-        (context.get_block_count() - 1, 1, 1, Witness::new())
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
       ],
       mint: true,
       convert: true,
@@ -1112,7 +1111,7 @@ mod tests {
     let txid1 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
         (context.get_block_count() - 1, 1, 0, Witness::new()),
-        (context.get_block_count() - 1, 1, 1, Witness::new())
+        (context.get_block_count() - 1, 1, 1, Witness::new()),
       ],
       mint: true,
       convert: true,
@@ -1272,8 +1271,7 @@ mod tests {
     let input_amt_2 = 20 * COIN_VALUE;
 
     let expected_balance0_2 = supply0_2 - input_amt_2;
-    let expected_balance1_2 = (supply0_2 * supply0_2
-      + supply1_2 * supply1_2
+    let expected_balance1_2 = (supply0_2 * supply0_2 + supply1_2 * supply1_2
       - expected_balance0_2 * expected_balance0_2)
       .sqrt();
 
@@ -1336,15 +1334,13 @@ mod tests {
           },
         ),
       ],
-      [
-        (
-          OutPoint {
-            txid: txid2,
-            vout: 2,
-          },
-          vec![(ID0, expected_balance0_2), (ID1, expected_balance1_2)],
-        )
-      ],
+      [(
+        OutPoint {
+          txid: txid2,
+          vout: 2,
+        },
+        vec![(ID0, expected_balance0_2), (ID1, expected_balance1_2)],
+      )],
     );
   }
 
@@ -1431,8 +1427,7 @@ mod tests {
     let input_amt_2 = 20 * COIN_VALUE;
 
     let expected_balance0_2 = supply0_2 - input_amt_2;
-    let expected_balance1_2 = (supply0_2 * supply0_2
-      + supply1_2 * supply1_2
+    let expected_balance1_2 = (supply0_2 * supply0_2 + supply1_2 * supply1_2
       - expected_balance0_2 * expected_balance0_2)
       .sqrt();
 
@@ -1509,7 +1504,7 @@ mod tests {
             vout: 3,
           },
           vec![(ID1, expected_balance1_2 / 2)],
-        )
+        ),
       ],
     );
   }
@@ -4442,7 +4437,6 @@ mod tests {
 
     Context::builder()
       .chain(Chain::Mainnet)
-      
       .build()
       .assert_runes(
         [

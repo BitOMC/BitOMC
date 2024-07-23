@@ -204,8 +204,8 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr "[깃허브](https://github.com/BitOMC/BitOMC/)"
 
 #: /workspaces/ord_ko/docs/src/introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: /workspaces/ord_ko/docs/src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -282,7 +282,7 @@ msgid ""
 "Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/"
 "blob/master/bip.mediawiki)."
 msgstr ""
-"기술적인 자세한 내용은 [BIP](https://github.com/xaz1234567890abc/master/bip."
+"기술적인 자세한 내용은 [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki)에서 확인할 수 있다."
 
 #: /workspaces/ord_ko/docs/src/overview.md:16
@@ -1657,14 +1657,14 @@ msgstr " 는 이제 출력에 갈 곳이 없다:"
 #: /workspaces/ord_ko/docs/src/faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
+"github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
 "this:"
 msgstr ""
 "따라서 블록을 채굴한 채굴자에게 수수료로 지급된다. [BIP](https://github.com/"
-"xaz1234567890abc/master/bip.mediawiki)에 자세한 내용이 나와 있지만, 간단히 "
+"BitOMC/BitOMC/blob/master/bip.mediawiki)에 자세한 내용이 나와 있지만, 간단히 "
 "말해 트랜잭션이 지불한 수수료는 코인베이스 트랜잭션에 대한 추가 입력으로 취급"
 "되며, 이의 순서는 해당 트랜잭션이 블록에서 어떻게 정렬되는지에 따라서 정해진"
 "다. 해당 블록의 코인베이스 트랜잭션은 다음과 같이 보일 수 있다:"
@@ -1674,9 +1674,9 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "핵심적인 세부 정보는 어디에서 찾을 수 있는가?"
 
 #: /workspaces/ord_ko/docs/src/faq.md:92
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
-"[BIP을 참조하자!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+"[BIP을 참조하자!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: /workspaces/ord_ko/docs/src/faq.md:94
 msgid ""
@@ -4079,14 +4079,14 @@ msgstr ""
 
 #: /workspaces/ord_ko/docs/src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
 "rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
 "현재 가져오기 한 지갑이 블록체인에 대해 자동으로 재스캔되지 않는 [버그]"
-"(https://github.com/abc1234567890xyz1589)가 있다. 이 문제를 해결하려면 "
+"(https://github.com/ordinals/ord/issues/1589)가 있다. 이 문제를 해결하려면 "
 "bitcoin core cli(`bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`)를 사용"
 "하여 수동으로 재스캔을 트리거해야 한다"
 
@@ -4818,12 +4818,12 @@ msgstr ""
 #: /workspaces/ord_ko/docs/src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"an overview, the [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
 "BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
 "오디널 이론에 대한 자세한 내용은 [자주 묻는 질문](./faq.md)에서 개요를, [BIP]"
-"(https://github.com/xaz1234567890abc/master/bip.mediawiki)에서 기술적 세부 "
+"(https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)에서 기술적 세부 "
 "사항을, [bitomc repo](https://github.com/BitOMC/BitOMC)에서 `bitomc` 지갑 및 블록 탐"
 "색기를 확인하길 바란다."
 

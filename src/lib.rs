@@ -77,7 +77,7 @@ pub use self::{
   chain::Chain,
   fee_rate::FeeRate,
   index::{Index, RuneEntry},
-  inscriptions::{InscriptionId},
+  inscriptions::InscriptionId,
   object::Object,
   options::Options,
 };

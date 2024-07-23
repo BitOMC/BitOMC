@@ -19,12 +19,14 @@ fn send_amount_does_not_select_runic_utxos() {
 
   drain(&core, &bitomc);
 
-  CommandBuilder::new("--regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 600sat")
-    .core(&core)
-    .bitomc(&bitomc)
-    .expected_exit_code(1)
-    .expected_stderr("error: not enough cardinal utxos\n")
-    .run_and_extract_stdout();
+  CommandBuilder::new(
+    "--regtest wallet send --fee-rate 1 bcrt1qs758ursh4q9z627kt3pp5yysm78ddny6txaqgw 600sat",
+  )
+  .core(&core)
+  .bitomc(&bitomc)
+  .expected_exit_code(1)
+  .expected_stderr("error: not enough cardinal utxos\n")
+  .run_and_extract_stdout();
 }
 
 #[test]

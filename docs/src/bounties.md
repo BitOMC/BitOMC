@@ -7,7 +7,7 @@ Ordinal Bounty Hunting Hints
 
 - For more information about ordinal theory, check out the [FAQ](./faq.md) for
   an overview, the
-  [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) for the
+  [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) for the
   technical details, and the [bitomc repo](https://github.com/BitOMC/BitOMC) for the
   `bitomc` wallet and block explorer.
 

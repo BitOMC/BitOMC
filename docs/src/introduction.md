@@ -36,7 +36,7 @@ Links
 -----
 
 - [GitHub](https://github.com/BitOMC/BitOMC/)
-- [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)
+- [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)
 - [Discord](https://discord.gg/ordinals)
 - [Open Ordinals Institute Website](https://ordinals.org/)
 - [Open Ordinals Institute X](https://x.com/ordinalsorg)

@@ -118,7 +118,7 @@ fn env_is_loaded() {
     .run_and_extract_stdout();
 
   CommandBuilder::new("settings")
-    .env("ORD_CHAIN", "regtest")
+    .env("BITOMC_CHAIN", "regtest")
     .stdout_regex(
       r#".*
   "chain": "regtest",
@@ -133,8 +133,8 @@ fn invalid_env_error_message() {
   use std::os::unix::ffi::OsStringExt;
 
   CommandBuilder::new("settings")
-    .env("ORD_BAR", OsString::from_vec(b"\xFF".into()))
-    .stderr_regex("error: environment variable `ORD_BAR` not valid unicode: `�`\n")
+    .env("BITOMC_BAR", OsString::from_vec(b"\xFF".into()))
+    .stderr_regex("error: environment variable `BITOMC_BAR` not valid unicode: `�`\n")
     .expected_exit_code(1)
     .run_and_extract_stdout();
 }

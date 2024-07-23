@@ -160,7 +160,7 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr ""
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
 
 #: src/introduction.md:40
@@ -216,8 +216,8 @@ msgstr ""
 "выходов транзакций. Отсюда и название - _ordinals_."
 
 #: src/overview.md:13
-msgid "Technical details are available in [the BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
-msgstr "Техническая информация представлена в [the BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
+msgid "Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)."
+msgstr "Техническая информация представлена в [the BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)."
 
 #: src/overview.md:16
 msgid "Ordinal theory does not require a separate token, another blockchain, or any changes to Bitcoin. It works right now."
@@ -1408,11 +1408,11 @@ msgstr ""
 
 #: src/faq.md:80
 msgid ""
-"So they go to the miner who mined the block as fees. [The BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in short, fees "
+"So they go to the miner who mined the block as fees. [The BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the details, but in short, fees "
 "paid by transactions are treated as extra inputs to the coinbase transaction, and are ordered how their corresponding transactions are ordered in the block. "
 "The coinbase transaction of the block might look like this:"
 msgstr ""
-"Поэтому они поступают майнеру, добывшему блок, в качестве вознаграждения. [В BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) описаны "
+"Поэтому они поступают майнеру, добывшему блок, в качестве вознаграждения. [В BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) описаны "
 "подробности, но вкратце, комиссии, уплаченные транзакциями, рассматриваются как дополнительные входы в транзакцию coinbase и упорядочиваются так, как "
 "упорядочены соответствующие им транзакции в блоке. Транзакция блока coinbase может выглядеть следующим образом:"
 
@@ -1431,8 +1431,8 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "Где я могу найти подробную информацию?"
 
 #: src/faq.md:92
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[В BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[В BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src/faq.md:94
 msgid "Why are sat inscriptions called \"digital artifacts\" instead of \"NFTs\"?"
@@ -3351,10 +3351,10 @@ msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) which causes an imported wallet to not be automatically rescanned against the "
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) which causes an imported wallet to not be automatically rescanned against the "
 "blockchain. To work around this you will need to manually trigger a rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`"
 msgstr ""
-"В настоящее время существует [ошибка](https://github.com/abc1234567890xyz1589) из-за которой импортированный кошелек не может быть автоматически "
+"В настоящее время существует [ошибка](https://github.com/ordinals/ord/issues/1589) из-за которой импортированный кошелек не может быть автоматически "
 "пересканирован на блокчейн. Чтобы решить эту проблему, необходимо вручную запустить повторное сканирование с помощью программы bitcoin core cli: `bitcoin-cli -"
 "rpcwallet=bitomc rescanblockchain 767430`"
 
@@ -4044,10 +4044,10 @@ msgstr ""
 
 #: src/bounties.md:8
 msgid ""
-"For more information about ordinal theory, check out the [FAQ](./faq.md) for an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) "
+"For more information about ordinal theory, check out the [FAQ](./faq.md) for an overview, the [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) "
 "for the technical details, and the [bitomc repo](https://github.com/BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
-"Более подробную информацию о теории порядков можно найти в [ЧАВО](./faq.md) для общего обзора, в [BIP](https://github.com/xaz1234567890abc/master/bip."
+"Более подробную информацию о теории порядков можно найти в [ЧАВО](./faq.md) для общего обзора, в [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki) для технических деталей, а также в [bitomc repo](https://github.com/BitOMC/BitOMC) для кошелька `bitomc` и обозревателя блоков."
 
 #: src/bounties.md:14

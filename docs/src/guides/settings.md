@@ -19,9 +19,9 @@ If none of `--config`, `--config-dir`, or `--datadir` are given, and a file
 named `bitomc.yaml` exists in the default data directory, it will be loaded.
 
 For a setting named `--setting-name` on the command line, the environment
-variable will be named `ORD_SETTING_NAME`, and the config file field will be
+variable will be named `BITOMC_SETTING_NAME`, and the config file field will be
 named `setting_name`. For example, the data directory can be configured with
-`--datadir` on the command line, the `ORD_DATA_DIR` environment variable, or
+`--datadir` on the command line, the `BITOMC_DATA_DIR` environment variable, or
 `data_dir` in the config file.
 
 See `bitomc --help` for documentation of all the settings.
@@ -48,7 +48,7 @@ or environment variables.
 To hide inscriptions with an environment variable:
 
 ```
-export ORD_HIDDEN='6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0 703e5f7c49d82aab99e605af306b9a30e991e57d42f982908a962a81ac439832i0'
+export BITOMC_HIDDEN='6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0 703e5f7c49d82aab99e605af306b9a30e991e57d42f982908a962a81ac439832i0'
 ```
 
 Or with the configuration file:

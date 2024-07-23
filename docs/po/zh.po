@@ -221,8 +221,8 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr "[GitHub仓库](https://github.com/BitOMC/BitOMC/)"
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -289,7 +289,7 @@ msgid ""
 "Technical details are available in [the BIP](https://github.com/BitOMC/BitOMC/"
 "blob/master/bip.mediawiki)."
 msgstr ""
-"技术细节可以在[the BIP](https://github.com/xaz1234567890abc/master/bip."
+"技术细节可以在[the BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki)获取."
 
 #: src/overview.md:16
@@ -3748,14 +3748,14 @@ msgstr ""
 #: src/faq.md:90
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
+"github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
 "this:"
 msgstr ""
 "所以他们作为“费用”去到挖这个区块的矿工那里。[The BIP](https://github.com/"
-"xaz1234567890abc/master/bip.mediawiki) 有更详细的描述,但简而言之，交易支付的"
+"BitOMC/BitOMC/blob/master/bip.mediawiki) 有更详细的描述,但简而言之，交易支付的"
 "费用被视为对Coinbase交易的额外输入，并按照其对应的交易在区块中的顺序进行排"
 "序。该区块的Coinbase交易可能是这样的:"
 
@@ -3771,7 +3771,7 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "我在哪里可以找到这些详细信息"
 
 #: src/faq.md:104
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
 
 #: src/faq.md:106
@@ -6064,13 +6064,13 @@ msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
 "rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"目前存在一个[程序错误](https://github.com/abc1234567890xyz1589) 导致导入"
+"目前存在一个[程序错误](https://github.com/ordinals/ord/issues/1589) 导致导入"
 "的钱包无法自动重新扫描区块链。为解决这个问题，你需要手动触发重新扫描，使用比"
 "特币核心命令行界面："
 
@@ -7097,14 +7097,14 @@ msgstr ""
 #: src/guides/settings.md:21
 msgid ""
 "For a setting named `--setting-name` on the command line, the environment "
-"variable will be named `ORD_SETTING_NAME`, and the config file field will be "
+"variable will be named `BITOMC_SETTING_NAME`, and the config file field will be "
 "named `setting_name`. For example, the data directory can be configured with "
-"`--datadir` on the command line, the `ORD_DATA_DIR` environment variable, or "
+"`--datadir` on the command line, the `BITOMC_DATA_DIR` environment variable, or "
 "`data_dir` in the config file."
 msgstr ""
 "对于命令行中名为`--setting-name`的设置，环境变量将被命名为"
-"`ORD_SETTING_NAME`，配置文件中的字段将被命名为`setting_name`。例如，数据目录"
-"可以通过命令行中的`--datadir`、环境变量`ORD_DATA_DIR`或配置文件中的`data_dir`"
+"`BITOMC_SETTING_NAME`，配置文件中的字段将被命名为`setting_name`。例如，数据目录"
+"可以通过命令行中的`--datadir`、环境变量`BITOMC_DATA_DIR`或配置文件中的`data_dir`"
 "来配置。"
 
 #: src/guides/settings.md:27
@@ -7174,7 +7174,7 @@ msgstr "要在 ordinals.com 上隐藏铭文:"
 msgid ""
 "```\n"
 "export "
-"ORD_HIDDEN='6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0 "
+"BITOMC_HIDDEN='6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0 "
 "703e5f7c49d82aab99e605af306b9a30e991e57d42f982908a962a81ac439832i0'\n"
 "```"
 msgstr ""
@@ -7619,12 +7619,12 @@ msgstr ""
 #: src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"an overview, the [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
 "BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
 "关于序数理论的更多信息，请查阅[FAQ](./faq.md) 来获取概述；查阅[BIP](https://"
-"github.com/xaz1234567890abc/master/bip.mediawiki) 来获取技术细节查阅[bitomc "
+"github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) 来获取技术细节查阅[bitomc "
 "repo](https://github.com/BitOMC/BitOMC)来获取`bitomc`钱包和浏览器的信息."
 
 #: src/bounties.md:14

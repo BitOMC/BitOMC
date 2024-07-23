@@ -201,8 +201,8 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr "[GitHub](https://github.com/BitOMC/BitOMC/)"
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -278,10 +278,10 @@ msgstr ""
 #: src/overview.md:13
 msgid ""
 "Technical details are available in [the "
-"BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
+"BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)."
 msgstr ""
 "Os detalhes técnicos estão disponíveis no "
-"[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)."
+"[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)."
 
 #: src/overview.md:16
 msgid ""
@@ -1813,14 +1813,14 @@ msgstr ""
 #: src/faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The "
-"BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) has the "
+"BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the "
 "details, but in short, fees paid by transactions are treated as extra inputs "
 "to the coinbase transaction, and are ordered how their corresponding "
 "transactions are ordered in the block. The coinbase transaction of the block "
 "might look like this:"
 msgstr ""
 "Então eles vão, como taxas, para o minerador que minerou o bloco. [O "
-"BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) tem os detalhes, "
+"BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) tem os detalhes, "
 "mas resumindo, as taxas pagas pelas transações são tratadas como entradas "
 "extras para a transação coinbase e são ordenadas como suas transações "
 "correspondentes são ordenadas no bloco. A transação coinbase do bloco "
@@ -1841,8 +1841,8 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "Onde posso encontrar os detalhes técnicos?"
 
 #: src/faq.md:92
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[No BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[No BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src/faq.md:94
 msgid ""
@@ -4209,13 +4209,13 @@ msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
 "rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"Atualmente existe um [bug](https://github.com/abc1234567890xyz1589) que faz com que uma carteira importada não seja automaticamente verificada novamente na blockchain. "
+"Atualmente existe um [bug](https://github.com/ordinals/ord/issues/1589) que faz com que uma carteira importada não seja automaticamente verificada novamente na blockchain. "
 "Para contornar isso, você precisará acionar manualmente uma nova verificação usando o bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`"
 
 #: src/guides/collecting/sparrow-wallet.md:88
@@ -5030,12 +5030,12 @@ msgstr ""
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
 "an overview, the "
-"[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) for the "
+"[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) for the "
 "technical details, and the [bitomc repo](https://github.com/BitOMC/BitOMC) for "
 "the `bitomc` wallet and block explorer."
 msgstr ""
 "Para obter mais informações sobre a teoria ordinal, consulte o [FAQ](./faq.md) para uma visão geral, "
-"o [BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki) para os detalhes técnicos e o "
+"o [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) para os detalhes técnicos e o "
 "[repositório bitomc](https://github.com/BitOMC/BitOMC) para a carteira `bitomc` e o explorador de blocos."
 
 #: src/bounties.md:14

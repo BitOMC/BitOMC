@@ -36,7 +36,7 @@ impl Settings {
         continue;
       };
 
-      let Some(key) = var.strip_prefix("ORD_") else {
+      let Some(key) = var.strip_prefix("BITOMC_") else {
         continue;
       };
 
@@ -179,7 +179,7 @@ impl Settings {
         .get(key)
         .map(|chain| chain.parse::<Chain>())
         .transpose()
-        .with_context(|| format!("failed to parse environment variable ORD_{key} as chain"))
+        .with_context(|| format!("failed to parse environment variable BITOMC_{key} as chain"))
     };
 
     let get_u16 = |key| {
@@ -187,7 +187,7 @@ impl Settings {
         .get(key)
         .map(|int| int.parse::<u16>())
         .transpose()
-        .with_context(|| format!("failed to parse environment variable ORD_{key} as u16"))
+        .with_context(|| format!("failed to parse environment variable BITOMC_{key} as u16"))
     };
 
     let get_u32 = |key| {
@@ -195,7 +195,7 @@ impl Settings {
         .get(key)
         .map(|int| int.parse::<u32>())
         .transpose()
-        .with_context(|| format!("failed to parse environment variable ORD_{key} as u32"))
+        .with_context(|| format!("failed to parse environment variable BITOMC_{key} as u32"))
     };
 
     let get_usize = |key| {
@@ -203,7 +203,7 @@ impl Settings {
         .get(key)
         .map(|int| int.parse::<usize>())
         .transpose()
-        .with_context(|| format!("failed to parse environment variable ORD_{key} as usize"))
+        .with_context(|| format!("failed to parse environment variable BITOMC_{key} as usize"))
     };
 
     Ok(Self {
@@ -797,13 +797,27 @@ mod tests {
     assert_eq!(parse(&["--signet"]).chain(), Chain::Signet);
     assert_eq!(parse(&["-s"]).chain(), Chain::Signet);
 
-    Arguments::try_parse_from(["bitomc", "--regtest", "--chain", "signet", "index", "update"])
-      .unwrap_err();
+    Arguments::try_parse_from([
+      "bitomc",
+      "--regtest",
+      "--chain",
+      "signet",
+      "index",
+      "update",
+    ])
+    .unwrap_err();
     assert_eq!(parse(&["--regtest"]).chain(), Chain::Regtest);
     assert_eq!(parse(&["-r"]).chain(), Chain::Regtest);
 
-    Arguments::try_parse_from(["bitomc", "--testnet", "--chain", "signet", "index", "update"])
-      .unwrap_err();
+    Arguments::try_parse_from([
+      "bitomc",
+      "--testnet",
+      "--chain",
+      "signet",
+      "index",
+      "update",
+    ])
+    .unwrap_err();
     assert_eq!(parse(&["--testnet"]).chain(), Chain::Testnet);
     assert_eq!(parse(&["-t"]).chain(), Chain::Testnet);
   }

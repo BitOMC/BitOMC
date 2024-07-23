@@ -82,7 +82,7 @@ For details on setting up Bitcoin Core and the `bitomc` wallet check out the [Wa
 
 When setting up `bitomc`, instead of running `bitomc wallet create` to create a brand-new wallet, you can import your existing wallet using `bitomc wallet restore "BIP39 SEED PHRASE"` using the seed phrase you generated with Sparrow Wallet.
 
-There is currently a [bug](https://github.com/abc1234567890xyz1589) which causes an imported wallet to not be automatically rescanned against the blockchain. To work around this you will need to manually trigger a rescan using the bitcoin core cli:
+There is currently a [bug](https://github.com/ordinals/ord/issues/1589) which causes an imported wallet to not be automatically rescanned against the blockchain. To work around this you will need to manually trigger a rescan using the bitcoin core cli:
 `bitcoin-cli -rpcwallet=bitomc rescanblockchain 767430`
 
 You can then check your wallet's inscriptions using `bitomc wallet inscriptions`

@@ -199,7 +199,7 @@ impl CommandBuilder {
     }
 
     if self.integration_test {
-      command.env("ORD_INTEGRATION_TEST", "1");
+      command.env("BITOMC_INTEGRATION_TEST", "1");
     }
 
     command

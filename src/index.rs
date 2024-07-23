@@ -1,9 +1,8 @@
 use {
   self::{
     entry::{
-      Entry, HeaderValue,
-      OutPointValue, RuneEntryValue, RuneIdValue, TxOutValue, TxidValue, UtilEntry,
-      UtilEntryValue,
+      Entry, HeaderValue, OutPointValue, RuneEntryValue, RuneIdValue, TxOutValue, TxidValue,
+      UtilEntry, UtilEntryValue,
     },
     event::Event,
     lot::Lot,
@@ -25,10 +24,7 @@ use {
     ReadOnlyTable, ReadableTable, ReadableTableMetadata, RepairSession, StorageError, Table,
     TableDefinition, TableHandle, TableStats, WriteTransaction,
   },
-  std::{
-    collections::HashMap,
-    sync::Once,
-  },
+  std::{collections::HashMap, sync::Once},
 };
 
 pub use self::entry::RuneEntry;
@@ -1782,10 +1778,7 @@ mod tests {
     const COIN_VALUE: u128 = 100000000;
 
     let (event_sender, mut event_receiver) = tokio::sync::mpsc::channel(1024);
-    let context = Context::builder()
-      
-      .event_sender(event_sender)
-      .build();
+    let context = Context::builder().event_sender(event_sender).build();
 
     context.mine_blocks(1);
 
@@ -2203,8 +2196,10 @@ mod tests {
 
     context.mine_blocks(1);
 
-    let balance0_2 = balance0 + REWARD * balance0 / (balance0 * balance0 + balance1 * balance1).sqrt();
-    let balance1_2 = balance1 + REWARD * balance1 / (balance0 * balance0 + balance1 * balance1).sqrt();
+    let balance0_2 =
+      balance0 + REWARD * balance0 / (balance0 * balance0 + balance1 * balance1).sqrt();
+    let balance1_2 =
+      balance1 + REWARD * balance1 / (balance0 * balance0 + balance1 * balance1).sqrt();
     context.assert_runes(
       [
         (
@@ -2266,9 +2261,8 @@ mod tests {
 
     // Convert to 120 EASE and 90 TIGHTEN
     let balance0_4 = 90 * COIN_VALUE;
-    let balance1_4 = (balance0_3 * balance0_3 + balance1_3 * balance1_3
-      - balance0_4 * balance0_4)
-      .sqrt();
+    let balance1_4 =
+      (balance0_3 * balance0_3 + balance1_3 * balance1_3 - balance0_4 * balance0_4).sqrt();
     let txid2 = context.core.broadcast_tx(TransactionTemplate {
       inputs: &[
         (context.get_block_count() - 2, 1, 0, Witness::new()),

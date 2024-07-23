@@ -198,8 +198,8 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr "[GitHub](https://github.com/BitOMC/BitOMC/)"
 
 #: src/introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src/introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -1746,7 +1746,7 @@ msgstr " ay wala nang slot sa output:"
 #: src/faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
+"github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
@@ -1765,9 +1765,9 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "Saan ko mahahanap ang pinakatiyak na mga detalye?"
 
 #: src/faq.md:92
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
-"Dito sa [The BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+"Dito sa [The BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src/faq.md:94
 msgid ""
@@ -4317,13 +4317,13 @@ msgstr ""
 
 #: src/guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
 "rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"Kasalukuyang may [bug](https://github.com/abc1234567890xyz1589) na "
+"Kasalukuyang may [bug](https://github.com/ordinals/ord/issues/1589) na "
 "nagiging sanhi ng isang na-import na wallet upang hindi awtomatikong muling "
 "i-scan versus sa blockchain. Upang magawa ito, kailangan mong manu-manong "
 "mag-trigger ang rescan gamit ang bitcoin core cli: `bitcoin-cli -"
@@ -5103,12 +5103,12 @@ msgstr ""
 #: src/bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"an overview, the [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
 "BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
 "Para sa higit pang impormasyon sa Ordinal Theory, tingnan ang FAQ para sa "
-"isang pangkalahatang-ideya, ang [BIP](https://github.com/xaz1234567890abc/"
+"isang pangkalahatang-ideya, ang [BIP](https://github.com/BitOMC/BitOMC/blob/"
 "master/bip.mediawiki) para sa mga teknikal na detalye, at ang [bitomc "
 "repository](https://github.com/BitOMC/BitOMC) para sa bitomc wallet at block "
 "explorer."

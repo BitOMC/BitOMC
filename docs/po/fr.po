@@ -198,8 +198,8 @@ msgid "[GitHub](https://github.com/BitOMC/BitOMC/)"
 msgstr "[GitHub](https://github.com/BitOMC/BitOMC/)"
 
 #: src\introduction.md:39
-msgid "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
-msgstr "[BIP](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
+msgstr "[BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src\introduction.md:40
 msgid "[Discord](https://discord.gg/ordinals)"
@@ -281,7 +281,7 @@ msgid ""
 "blob/master/bip.mediawiki)."
 msgstr ""
 "Les détails techniques sont disponibles dans [le BIP](https://github.com/"
-"xaz1234567890abc/master/bip.mediawiki)."
+"BitOMC/BitOMC/blob/master/bip.mediawiki)."
 
 #: src\overview.md:16
 msgid ""
@@ -1772,14 +1772,14 @@ msgstr " n’ont désormais nulle part où aller dans les sorties :"
 #: src\faq.md:80
 msgid ""
 "So they go to the miner who mined the block as fees. [The BIP](https://"
-"github.com/xaz1234567890abc/master/bip.mediawiki) has the details, but in "
+"github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) has the details, but in "
 "short, fees paid by transactions are treated as extra inputs to the coinbase "
 "transaction, and are ordered how their corresponding transactions are "
 "ordered in the block. The coinbase transaction of the block might look like "
 "this:"
 msgstr ""
 "Ils vont donc au mineur qui a miné le bloc en tant que frais. [Le BIP]"
-"(https://github.com/xaz1234567890abc/master/bip.mediawiki) donne les "
+"(https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki) donne les "
 "détails, mais en résumé, les frais payés par les transactions sont traités "
 "comme des entrées supplémentaires dans la transaction coinbase, et sont "
 "organisés selon l’ordre de leurs transactions correspondantes dans le bloc. "
@@ -1790,9 +1790,9 @@ msgid "Where can I find the nitty-gritty details?"
 msgstr "Où puis-je trouver les détails techniques approfondis ?"
 
 #: src\faq.md:92
-msgid "[The BIP!](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+msgid "[The BIP!](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 msgstr ""
-"Dans [le BIP !](https://github.com/xaz1234567890abc/master/bip.mediawiki)"
+"Dans [le BIP !](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)"
 
 #: src\faq.md:94
 msgid ""
@@ -4420,13 +4420,13 @@ msgstr ""
 
 #: src\guides/collecting/sparrow-wallet.md:85
 msgid ""
-"There is currently a [bug](https://github.com/abc1234567890xyz1589) "
+"There is currently a [bug](https://github.com/ordinals/ord/issues/1589) "
 "which causes an imported wallet to not be automatically rescanned against "
 "the blockchain. To work around this you will need to manually trigger a "
 "rescan using the bitcoin core cli: `bitcoin-cli -rpcwallet=bitomc "
 "rescanblockchain 767430`"
 msgstr ""
-"Il existe actuellement un [bug](https://github.com/abc1234567890xyz1589) "
+"Il existe actuellement un [bug](https://github.com/ordinals/ord/issues/1589) "
 "qui empêche un portefeuille importé d’être re-scanné automatiquement pour "
 "trouver son contenu sur la blockchain. Pour contourner ce problème, vous "
 "devrez manuellement déclencher un rescan à l’aide de bitcoin core cli: "
@@ -5217,7 +5217,7 @@ msgstr ""
 #: src\bounties.md:8
 msgid ""
 "For more information about ordinal theory, check out the [FAQ](./faq.md) for "
-"an overview, the [BIP](https://github.com/xaz1234567890abc/master/bip."
+"an overview, the [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip."
 "mediawiki) for the technical details, and the [bitomc repo](https://github.com/"
 "BitOMC/BitOMC) for the `bitomc` wallet and block explorer."
 msgstr ""
