@@ -224,7 +224,12 @@ impl Index {
     let integration_test = settings.integration_test();
 
     let repair_callback = move |progress: &mut RepairSession| {
-      once.call_once(|| println!("Index file `{}` needs recovery. This can take a long time, especially for the --index-sats index.", index_path.display()));
+      once.call_once(|| {
+        println!(
+          "Index file `{}` needs recovery. This can take a long time.",
+          index_path.display()
+        )
+      });
 
       if !(cfg!(test) || log_enabled!(log::Level::Info) || integration_test) {
         let mut guard = progress_bar.lock().unwrap();
@@ -334,6 +339,7 @@ impl Index {
           tx.open_table(RUNE_ID_TO_RUNE_ENTRY)?.insert(
             id0.store(),
             RuneEntry {
+              block: settings.first_rune_height().into(),
               divisibility: 8,
               spaced_rune: SpacedRune {
                 rune: rune0,
@@ -347,6 +353,7 @@ impl Index {
           tx.open_table(RUNE_ID_TO_RUNE_ENTRY)?.insert(
             id1.store(),
             RuneEntry {
+              block: settings.first_rune_height().into(),
               divisibility: 8,
               spaced_rune: SpacedRune {
                 rune: rune1,
@@ -1980,43 +1987,9 @@ mod tests {
     const UTIL_BASE_VALUE: u128 = 1_000_000_000_000;
     const BLOCKS_PER_YEAR: u128 = 52_595;
 
-    let context = Context::builder().build();
-
-    let interest_rate0 = UTIL_BASE_VALUE;
-    let interest0 = UTIL_BASE_VALUE * interest_rate0 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
-    let bonds_per_sat0 = UTIL_BASE_VALUE + interest0;
-    let utils_per_bond0 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate0;
-    let utils_per_sat0 = bonds_per_sat0 * utils_per_bond0 / UTIL_BASE_VALUE;
-
-    pretty_assert_eq!(
-      context.index.get_util_state().unwrap(),
-      api::UtilState {
-        bonds_per_sat: bonds_per_sat0,
-        utils_per_bond: utils_per_bond0,
-        utils_per_sat: utils_per_sat0,
-        interest_rate: interest_rate0,
-        decimals: UTIL_BASE_VALUE,
-      }
-    );
+    let context = Context::builder().chain(Chain::Regtest).build();
 
     context.mine_blocks(1);
-
-    let interest_rate1 = UTIL_BASE_VALUE;
-    let interest1 = bonds_per_sat0 * interest_rate1 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
-    let bonds_per_sat1 = bonds_per_sat0 + interest1;
-    let utils_per_bond1 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate1;
-    let utils_per_sat1 = bonds_per_sat1 * utils_per_bond1 / UTIL_BASE_VALUE;
-
-    pretty_assert_eq!(
-      context.index.get_util_state().unwrap(),
-      api::UtilState {
-        bonds_per_sat: bonds_per_sat1,
-        utils_per_bond: utils_per_bond1,
-        utils_per_sat: utils_per_sat1,
-        interest_rate: interest_rate1,
-        decimals: UTIL_BASE_VALUE,
-      }
-    );
 
     // Mints 40 TIGHTEN and 30 EASE
     let txid0 = context.core.broadcast_tx(TransactionTemplate {
@@ -2084,8 +2057,8 @@ mod tests {
     );
 
     let interest_rate2 = UTIL_BASE_VALUE * (40 - 30) / (40 + 30);
-    let interest2 = bonds_per_sat1 * interest_rate2 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
-    let bonds_per_sat2 = bonds_per_sat1 + interest2;
+    let interest2 = UTIL_BASE_VALUE * interest_rate2 / UTIL_BASE_VALUE / BLOCKS_PER_YEAR;
+    let bonds_per_sat2 = UTIL_BASE_VALUE + interest2;
     let utils_per_bond2 = UTIL_BASE_VALUE * UTIL_BASE_VALUE / interest_rate2;
     let utils_per_sat2 = bonds_per_sat2 * utils_per_bond2 / UTIL_BASE_VALUE;
 

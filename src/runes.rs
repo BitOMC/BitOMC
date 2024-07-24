@@ -4443,6 +4443,7 @@ mod tests {
           (
             ID0,
             RuneEntry {
+              block: 854_000,
               spaced_rune: SpacedRune {
                 rune: Rune(TIGHTEN),
                 spacers: 0,
@@ -4453,6 +4454,7 @@ mod tests {
           (
             ID1,
             RuneEntry {
+              block: 854_000,
               spaced_rune: SpacedRune {
                 rune: Rune(EASE),
                 spacers: 0,

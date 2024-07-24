@@ -310,7 +310,7 @@ impl Settings {
       cookie_file: Some(cookie_file),
       data_dir: Some(data_dir),
       first_rune_height: Some(if self.integration_test {
-        0
+        2
       } else {
         self
           .first_rune_height
@@ -460,7 +460,7 @@ impl Settings {
 
   pub fn first_rune_height(&self) -> u32 {
     if self.integration_test {
-      0
+      2
     } else {
       self
         .first_rune_height

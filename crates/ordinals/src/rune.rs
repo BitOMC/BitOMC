@@ -13,10 +13,10 @@ impl Rune {
   pub fn first_rune_height(network: Network) -> u32 {
     match network {
       Network::Bitcoin => 854_000,
-      Network::Regtest => 0,
-      Network::Signet => 0,
+      Network::Regtest => 2,
+      Network::Signet => 2,
       Network::Testnet => 12 * SUBSIDY_HALVING_INTERVAL,
-      _ => 0,
+      _ => 2,
     }
   }
 

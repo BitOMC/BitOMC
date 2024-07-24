@@ -60,6 +60,10 @@ impl Mint {
       amount1 += rune_entry1.supply * reward / k;
     }
 
+    if amount0 == 0 && amount1 == 0 {
+      bail!("No reward for minting. Wait until block {}.", rune_entry0.block);
+    }
+
     let chain = wallet.chain();
 
     let destination = match self.destination {
