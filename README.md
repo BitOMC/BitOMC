@@ -1,25 +1,25 @@
 `bitomc`
 =====
 
-`bitomc` is an index, block explorer, and command-line wallet. It is experimental
+`bitomc` is an index and command-line wallet. It is experimental
 software with no warranty. See [LICENSE](LICENSE) for more details.
 
-Ordinal theory imbues satoshis with numismatic value, allowing them to
-be collected and traded as curios.
+BitOMC is a metaprotocol on Bitcoin that defines a dynamic sub-denomination of sats
+called the "util." The util is a more stable unit of account, ideal for contracts
+where payment is due in the future.
 
-Ordinal numbers are serial numbers for satoshis, assigned in the order in which
-they are mined, and preserved across transactions.
+BitOMC is a fork of the Runes protocol and consists of two interconvertible assets,
+Tighten and Ease. Users convert between them according to a constant function
+conversion rule, and their relative quantity determines a dynamic interest rate,
+which defines the util.
 
-See [the docs](https://docs.ordinals.com) for documentation and guides.
+See [the docs](docs/src/SUMMARY.md) for documentation and guides.
 
-See [the BIP](bip.mediawiki) for a technical description of the assignment and
-transfer algorithm.
+See [the whitepaper](https://bitomc.org/bitomc.pdf) for a technical description of the
+protocol.
 
-See [the project board](https://github.com/orgs/BitOMC/projects/1) for
-currently prioritized issues.
-
-Join [the Discord server](https://discord.gg/87cjuz4FYg) to chat with fellow
-ordinal degenerates.
+Join [the Telegram group](https://t.me/bitOMC_chat) to chat with fellow members
+of BitOMC.
 
 Wallet
 ------
@@ -179,8 +179,7 @@ instance in [test-bitcoincore-rpc](./test-bitcoincore-rpc).
 Syncing
 -------
 
-`bitomc` requires a synced `bitcoind` node with `-txindex` to build the index of
-satoshi locations. `bitomc` communicates with `bitcoind` via RPC.
+`bitomc` requires a synced `bitcoind` node. `bitomc` communicates with `bitcoind` via RPC.
 
 If `bitcoind` is run locally by the same user, without additional
 configuration, `bitomc` should find it automatically by reading the `.cookie` file
@@ -251,61 +250,3 @@ Release x.y.z
 - Update changelog contributor credits
 - Update dependencies
 ```
-
-Translations
-------------
-
-To translate [the docs](https://docs.ordinals.com) we use
-[mdBook i18n helper](https://github.com/google/mdbook-i18n-helpers).
-
-See
-[mdbook-i18n-helpers usage guide](https://github.com/google/mdbook-i18n-helpers/blob/main/i18n-helpers/USAGE.md)
-for help.
-
-Adding a new translations is somewhat involved, so feel free to start
-translation and open a pull request, even if your translation is incomplete.
-
-Take a look at
-[this commit](https://github.com/ordinals/ord/commit/329f31bf6dac207dad001507dd6f18c87fdef355)
-for an example of adding a new translation. A maintainer will help you integrate it
-into our build system.
-
-To start a new translation:
-
-1. Install `mdbook`, `mdbook-i18n-helpers`, and `mdbook-linkcheck`:
-
-   ```
-   cargo install mdbook mdbook-i18n-helpers mdbook-linkcheck
-   ```
-
-2. Generate a new `pot` file named `messages.pot`:
-
-   ```
-   MDBOOK_OUTPUT='{"xgettext": {"pot-file": "messages.pot"}}'
-   mdbook build -d po
-   ```
-
-3. Run `msgmerge` on `XX.po` where `XX` is the two-letter
-   [ISO-639](https://en.wikipedia.org/wiki/List_of_ISO_639-1_codes) code for
-   the language you are translating into. This will update the `po` file with
-   the text of the most recent English version:
-
-   ```
-   msgmerge --update po/XX.po po/messages.pot
-   ```
-
-4. Untranslated sections are marked with `#, fuzzy` in `XX.po`. Edit the
-   `msgstr` string with the translated text.
-
-5. Execute the `mdbook` command to rebuild the docs. For Chinese, whose
-   two-letter ISO-639 code is `zh`:
-
-   ```
-   mdbook build docs -d build
-   MDBOOK_BOOK__LANGUAGE=zh mdbook build docs -d build/zh
-   mv docs/build/zh/html docs/build/html/zh
-   python3 -m http.server --directory docs/build/html --bind 127.0.0.1 8080
-   ```
-
-6. If everything looks good, commit `XX.po` and open a pull request on GitHub.
-   Other changed files should be omitted from the pull request.
