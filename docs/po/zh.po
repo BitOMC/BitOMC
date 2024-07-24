@@ -7082,7 +7082,7 @@ msgid ""
 "yaml` or `<DATA_DIR_PATH>/bitomc.yaml`. It is not an error if it does not exist."
 msgstr ""
 "可以使用`--config-dir <CONFIG_DIR_PATH>` 或 `--datadir <DATA_DIR_PATH>` 指定"
-"包含名为ord.yaml的配置文件的目录路径。在这种情况下，配置路径为"
+"包含名为bitomc.yaml的配置文件的目录路径。在这种情况下，配置路径为"
 "`<CONFIG_DIR_PATH>/bitomc.yaml`或`<DATA_DIR_PATH>/bitomc.yaml`。如果它不存在，这不"
 "是一个错误。"
 
@@ -7092,7 +7092,7 @@ msgid ""
 "named `bitomc.yaml` exists in the default data directory, it will be loaded."
 msgstr ""
 "如果没有给出`--config`、`--config-dir`或`--datadir`中的任何一个，并且在默认数"
-"据目录中存在一个名为ord.yaml的文件，它将会被加载。"
+"据目录中存在一个名为bitomc.yaml的文件，它将会被加载。"
 
 #: src/guides/settings.md:21
 msgid ""
