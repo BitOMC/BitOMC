@@ -141,7 +141,10 @@ impl Send {
   ) -> Result<Transaction> {
     let state = wallet.get_util_state()?;
     let sats = (utils * state.decimals + state.utils_per_sat - 1) / state.utils_per_sat;
-    let amount = Amount::from_sat(sats as u64);
+    let Ok(sats) = u64::try_from(sats) else {
+      panic!("attempting to send an excessive amount");
+    };
+    let amount = Amount::from_sat(sats);
     Self::create_unsigned_send_amount_transaction(wallet, destination, amount, fee_rate)
   }
 

@@ -29,6 +29,8 @@ impl FeeRate {
     Amount::from_sat((self.0 * vsize as f64).round() as u64)
   }
 
+  #[allow(clippy::cast_possible_truncation)]
+  #[allow(clippy::cast_sign_loss)]
   pub fn vsize(&self, fee: Amount) -> u64 {
     (fee.to_sat() as f64 / self.0).ceil() as u64
   }

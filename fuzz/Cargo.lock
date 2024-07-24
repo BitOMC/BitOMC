@@ -528,6 +528,67 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "cf4b9d6a944f767f8e5e0db018570623c85f3d925ac718db4e06d0187adb21c1"
 
 [[package]]
+name = "bitomc"
+version = "0.1.0-dev"
+dependencies = [
+ "anyhow",
+ "async-trait",
+ "axum",
+ "axum-server",
+ "base64 0.22.0",
+ "bech32 0.11.0",
+ "bip39",
+ "bitcoin",
+ "boilerplate",
+ "brotli 5.0.0",
+ "chrono",
+ "ciborium",
+ "clap",
+ "colored",
+ "ctrlc",
+ "dirs",
+ "env_logger",
+ "futures",
+ "hex",
+ "html-escaper",
+ "http 0.2.12",
+ "humantime",
+ "hyper",
+ "indicatif",
+ "lazy_static",
+ "log",
+ "mime",
+ "mime_guess",
+ "miniscript",
+ "mp4",
+ "num-integer",
+ "ord-bitcoincore-rpc",
+ "ordinals",
+ "petgraph",
+ "pulldown-cmark",
+ "redb",
+ "regex",
+ "reqwest",
+ "rss",
+ "rust-embed",
+ "rustls 0.22.3",
+ "rustls-acme",
+ "serde",
+ "serde-hex",
+ "serde_json",
+ "serde_with",
+ "serde_yaml",
+ "sha3",
+ "sysinfo",
+ "tempfile",
+ "tokio",
+ "tokio-stream",
+ "tokio-util",
+ "tower-http",
+ "urlencoding",
+]
+
+[[package]]
 name = "block-buffer"
 version = "0.10.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1189,6 +1250,12 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "658bd65b1cf4c852a3cc96f18a8ce7b5640f6b703f905c7d74532294c2a63984"
 
 [[package]]
+name = "fixedbitset"
+version = "0.4.2"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "0ce7134b9999ecaf8bcd65542e436736ef32ddca1b3e06094cb6ec5755203b80"
+
+[[package]]
 name = "flate2"
 version = "1.0.28"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1359,8 +1426,8 @@ version = "0.0.0"
 dependencies = [
  "arbitrary",
  "bitcoin",
- "libfuzzer-sys",
  "bitomc",
+ "libfuzzer-sys",
  "ordinals",
 ]
 
@@ -2095,65 +2162,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "04744f49eae99ab78e0d5c0b603ab218f515ea8cfe5a456d7629ad883a3b6e7d"
 
 [[package]]
-name = "bitomc"
-version = "0.18.5"
-dependencies = [
- "anyhow",
- "async-trait",
- "axum",
- "axum-server",
- "base64 0.22.0",
- "bech32 0.11.0",
- "bip39",
- "bitcoin",
- "boilerplate",
- "brotli 5.0.0",
- "chrono",
- "ciborium",
- "clap",
- "colored",
- "ctrlc",
- "dirs",
- "env_logger",
- "futures",
- "hex",
- "html-escaper",
- "http 0.2.12",
- "humantime",
- "hyper",
- "indicatif",
- "lazy_static",
- "log",
- "mime",
- "mime_guess",
- "miniscript",
- "mp4",
- "ord-bitcoincore-rpc",
- "ordinals",
- "pulldown-cmark",
- "redb",
- "regex",
- "reqwest",
- "rss",
- "rust-embed",
- "rustls 0.22.3",
- "rustls-acme",
- "serde",
- "serde-hex",
- "serde_json",
- "serde_with",
- "serde_yaml",
- "sha3",
- "sysinfo",
- "tempfile",
- "tokio",
- "tokio-stream",
- "tokio-util",
- "tower-http",
- "urlencoding",
-]
-
-[[package]]
 name = "ord-bitcoincore-rpc"
 version = "0.17.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2210,6 +2218,16 @@ name = "percent-encoding"
 version = "2.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "e3148f5046208a5d56bcfc03053e3ca6334e51da8dfb19b6cdc8b306fae3283e"
+
+[[package]]
+name = "petgraph"
+version = "0.6.5"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "b4c5cc86750666a3ed20bdaf5ca2a0344f9c67674cae0515bec2da16fbaa47db"
+dependencies = [
+ "fixedbitset",
+ "indexmap 2.2.6",
+]
 
 [[package]]
 name = "pin-project"

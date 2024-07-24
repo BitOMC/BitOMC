@@ -492,7 +492,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         {
           next_mint_outpoint = OutPoint {
             txid,
-            vout: vout as u32,
+            vout: u32::try_from(vout).unwrap(),
           };
         } else {
           next_mint_outpoint = OutPoint::null();
@@ -512,7 +512,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         {
           next_conversion_outpoint = OutPoint {
             txid: tx.txid(),
-            vout: vout as u32,
+            vout: u32::try_from(vout).unwrap(),
           };
         } else {
           next_conversion_outpoint = OutPoint::null();
@@ -572,7 +572,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       };
       let mint_outpoint = OutPoint {
         txid,
-        vout: vout as u32,
+        vout: u32::try_from(vout).unwrap(),
       };
       self
         .state_change_to_last_outpoint
@@ -625,7 +625,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
       };
       let conversion_outpoint = OutPoint {
         txid,
-        vout: vout as u32,
+        vout: u32::try_from(vout).unwrap(),
       };
 
       self

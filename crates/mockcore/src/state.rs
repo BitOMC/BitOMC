@@ -218,13 +218,6 @@ impl State {
           sequence: Sequence::from_height(1),
           witness: Witness::from_slice(&[mint_script.clone().into_bytes()]),
         });
-      } else if template.convert && tx.output[*vout].script_pubkey == convert_script_pubkey {
-        input.push(TxIn {
-          previous_output: OutPoint::new(tx.txid(), *vout as u32),
-          script_sig: ScriptBuf::new(),
-          sequence: Sequence::ENABLE_RBF_NO_LOCKTIME,
-          witness: witness.clone(),
-        });
       } else {
         input.push(TxIn {
           previous_output: OutPoint::new(tx.txid(), *vout as u32),
@@ -254,9 +247,7 @@ impl State {
             .unwrap_or(value_per_output),
           script_pubkey: if template.mint && i == 0 {
             mint_script_pubkey.clone()
-          } else if template.mint && template.convert && i == 1 {
-            convert_script_pubkey.clone()
-          } else if !template.mint && template.convert && i == 0 {
+          } else if (i == 0 || template.mint) && (i == 1 || !template.mint) && template.convert {
             convert_script_pubkey.clone()
           } else if template.p2tr {
             let secp = Secp256k1::new();

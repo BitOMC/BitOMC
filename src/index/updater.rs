@@ -526,7 +526,7 @@ impl<'index> Updater<'index> {
 
     let mut states = Vec::new();
     for tx in &transactions {
-      rune_updater.index_runes(&tx, tx.txid())?;
+      rune_updater.index_runes(tx, tx.txid())?;
 
       rune_updater.update_burned()?;
 

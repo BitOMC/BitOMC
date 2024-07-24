@@ -47,7 +47,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "0\u{A0}¤"
+      "0"
     );
     assert_eq!(
       Pile {
@@ -56,7 +56,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "25\u{A0}¤"
+      "25"
     );
     assert_eq!(
       Pile {
@@ -65,7 +65,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "0\u{A0}¤"
+      "0"
     );
     assert_eq!(
       Pile {
@@ -74,7 +74,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "0.1\u{A0}¤"
+      "0.1"
     );
     assert_eq!(
       Pile {
@@ -83,7 +83,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "0.01\u{A0}¤"
+      "0.01"
     );
     assert_eq!(
       Pile {
@@ -92,7 +92,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "0.1\u{A0}¤"
+      "0.1"
     );
     assert_eq!(
       Pile {
@@ -101,7 +101,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "1.1\u{A0}¤"
+      "1.1"
     );
     assert_eq!(
       Pile {
@@ -110,7 +110,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "1\u{A0}¤"
+      "1"
     );
     assert_eq!(
       Pile {
@@ -119,7 +119,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "1.01\u{A0}¤"
+      "1.01"
     );
     assert_eq!(
       Pile {
@@ -128,7 +128,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "340282366920938463463.374607431768211455\u{A0}¤"
+      "340282366920938463463.374607431768211455"
     );
     assert_eq!(
       Pile {
@@ -137,7 +137,7 @@ mod tests {
         symbol: None,
       }
       .to_string(),
-      "3.40282366920938463463374607431768211455\u{A0}¤"
+      "3.40282366920938463463374607431768211455"
     );
     assert_eq!(
       Pile {

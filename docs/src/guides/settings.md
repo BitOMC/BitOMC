@@ -35,26 +35,3 @@ Example Configuration
 ```yaml
 {{#include ../../../bitomc.yaml}}
 ```
-
-Hiding Inscription Content
---------------------------
-
-Inscription content can be selectively prevented from being served by `bitomc
-server`.
-
-Unlike other settings, this can only be configured with the configuration file
-or environment variables.
-
-To hide inscriptions with an environment variable:
-
-```
-export BITOMC_HIDDEN='6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0 703e5f7c49d82aab99e605af306b9a30e991e57d42f982908a962a81ac439832i0'
-```
-
-Or with the configuration file:
-
-```yaml
-hidden:
-- 6fb976ab49dcec017f1e201e84395983204ae1a7c2abf7ced0a85d692e442799i0
-- 703e5f7c49d82aab99e605af306b9a30e991e57d42f982908a962a81ac439832i0
-```

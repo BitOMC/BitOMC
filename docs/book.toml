@@ -1,5 +1,5 @@
 [book]
-title = "Ordinal Theory Handbook"
+title = "BitOMC Handbook"
 language = "en"
 src = "src"
 
@@ -9,7 +9,7 @@ create-missing = false
 extra-watch-dirs = ["po"]
 
 [output.html]
-cname = "docs.ordinals.com"
+cname = "docs.bitomc.org"
 default-theme = "coal"
 git-repository-url = "https://github.com/BitOMC/BitOMC"
 preferred-dark-theme = "coal"

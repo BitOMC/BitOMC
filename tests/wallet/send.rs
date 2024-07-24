@@ -13,9 +13,9 @@ fn send_on_mainnnet_works_with_wallet_named_foo() {
     .bitomc(&bitomc)
     .run_and_deserialize_output::<Create>();
 
-  CommandBuilder::new(format!(
-    "wallet --name foo send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
-  ))
+  CommandBuilder::new(
+    "wallet --name foo send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc",
+  )
   .core(&core)
   .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
@@ -31,9 +31,9 @@ fn send_addresses_must_be_valid_for_network() {
 
   core.mine_blocks_with_subsidy(1, 1_000);
 
-  CommandBuilder::new(format!(
+  CommandBuilder::new(
     "wallet send --fee-rate 1 tb1q6en7qjxgw4ev8xwx94pzdry6a6ky7wlfeqzunz 1btc"
-  ))
+  )
   .core(&core)
     .bitomc(&bitomc)
   .expected_stderr(
@@ -53,9 +53,9 @@ fn send_on_mainnnet_works_with_wallet_named_ord() {
 
   core.mine_blocks_with_subsidy(1, 1_000_000);
 
-  let output = CommandBuilder::new(format!(
-    "wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1000sat"
-  ))
+  let output = CommandBuilder::new(
+    "wallet send --fee-rate 1 bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1000sat",
+  )
   .core(&core)
   .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();
@@ -91,12 +91,10 @@ fn wallet_send_with_fee_rate() {
 
   core.mine_blocks(1);
 
-  CommandBuilder::new(format!(
-    "wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc --fee-rate 2.0"
-  ))
-  .core(&core)
-  .bitomc(&bitomc)
-  .run_and_deserialize_output::<Send>();
+  CommandBuilder::new("wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc --fee-rate 2.0")
+    .core(&core)
+    .bitomc(&bitomc)
+    .run_and_deserialize_output::<Send>();
 
   let tx = &core.mempool()[0];
   let mut fee = 0;
@@ -125,17 +123,15 @@ fn user_must_provide_fee_rate_to_send() {
 
   core.mine_blocks(1);
 
-  CommandBuilder::new(format!(
-    "wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc"
-  ))
-  .core(&core)
-  .bitomc(&bitomc)
-  .expected_exit_code(2)
-  .stderr_regex(
-    ".*error: the following required arguments were not provided:
+  CommandBuilder::new("wallet send bc1qw508d6qejxtdg4y5r3zarvary0c5xw7kv8f3t4 1btc")
+    .core(&core)
+    .bitomc(&bitomc)
+    .expected_exit_code(2)
+    .stderr_regex(
+      ".*error: the following required arguments were not provided:
 .*--fee-rate <FEE_RATE>.*",
-  )
-  .run_and_extract_stdout();
+    )
+    .run_and_extract_stdout();
 }
 
 #[test]
@@ -169,9 +165,9 @@ fn send_dry_run() {
 
   core.mine_blocks(1);
 
-  let output = CommandBuilder::new(format!(
+  let output = CommandBuilder::new(
     "wallet send --fee-rate 1 bc1qcqgs2pps4u4yedfyl5pysdjjncs8et5utseepv --dry-run 100sats",
-  ))
+  )
   .core(&core)
   .bitomc(&bitomc)
   .run_and_deserialize_output::<Send>();

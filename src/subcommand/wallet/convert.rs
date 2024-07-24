@@ -228,7 +228,7 @@ fn create_best_unsigned_convert_runes_transaction(
   postage: Amount,
   fee_rate: FeeRate,
 ) -> Result<(Transaction, Psbt, Amount, u128, u128, bool)> {
-  let mut state_chain = get_conversion_chain(&wallet)?;
+  let mut state_chain = get_conversion_chain(wallet)?;
   let prev_outpoint = state_chain.first().and_then(|s| s.input.clone());
 
   let is_connected = prev_outpoint.is_some();
@@ -242,7 +242,7 @@ fn create_best_unsigned_convert_runes_transaction(
   )?;
 
   let unfunded_transaction = create_unfunded_convert_transaction(
-    &wallet,
+    wallet,
     is_exact_input,
     is_connected,
     input_id,
@@ -253,7 +253,7 @@ fn create_best_unsigned_convert_runes_transaction(
   )?;
 
   let (mut unsigned_transaction, mut unsigned_psbt) = fund_convert_transaction(
-    &wallet,
+    wallet,
     unfunded_transaction.clone(),
     fee_rate,
     prev_outpoint.clone(),
@@ -280,7 +280,7 @@ fn create_best_unsigned_convert_runes_transaction(
     .filter_map(|o| o.entry)
     .collect();
 
-  if !entries.is_empty() && state_chain[state_chain.len() - 1].txid == None {
+  if !entries.is_empty() && state_chain[state_chain.len() - 1].txid.is_none() {
     // Check if adding a transaction to end of chain would exceed package limit
     let mut exceeds_package_limit = false;
     for entry in &entries {
@@ -380,7 +380,7 @@ fn get_conversion_parameters(
       // To efficiently select inputs, we need the required input amount. This will
       // be based on either the last state in the conversion chain or the second to
       // last, if adding our transaction exceeds the package limit.
-      if let Some(state) = state_chain.last().and_then(|s| Some(s.prev_state.clone())) {
+      if let Some(state) = state_chain.last().map(|s| s.prev_state) {
         if input_id == ID0 {
           input_amt = get_required_input(state.supply0, state.supply1, output_amt);
         } else {
@@ -389,13 +389,12 @@ fn get_conversion_parameters(
 
         // Lookup required input on second to last state
         if state_chain.len() > 1 {
-          let input_amt2;
           let state = state_chain[state_chain.len() - 2].prev_state;
-          if input_id == ID0 {
-            input_amt2 = get_required_input(state.supply0, state.supply1, output_amt);
+          let input_amt2 = if input_id == ID0 {
+            get_required_input(state.supply0, state.supply1, output_amt)
           } else {
-            input_amt2 = get_required_input(state.supply1, state.supply0, output_amt);
-          }
+            get_required_input(state.supply1, state.supply0, output_amt)
+          };
           input_amt = input_amt.max(input_amt2);
         }
         ensure! { input_amt < u128::MAX, "excessive output amount" }
@@ -702,7 +701,7 @@ fn get_conversion_chain(wallet: &Wallet) -> Result<Vec<ChainStateOutput>> {
 
   let (txs, entries, outpoints) = find_current_conversion_chain(wallet, prev_outpoint.clone())?;
 
-  if txs.len() == 0 {
+  if txs.is_empty() {
     // Empty conversion chain means tx will be accepted by mempool using `prev_outpoint`
     state_chain[0].input = Some(prev_outpoint);
     return Ok(state_chain);
@@ -823,7 +822,7 @@ fn find_potential_spenders(
   };
 
   let (funded_tx, _) = fund_convert_transaction(
-    &wallet,
+    wallet,
     unfunded_test_transaction,
     test_fee_rate,
     Some(prev_outpoint.clone()),
@@ -878,7 +877,7 @@ fn find_potential_spenders(
             FeeRate::try_from((btc_per_kvb.to_sat() as f64 + 100.0) / 1000.0)?,
           );
         } else {
-          potential_spenders = filtered_mempool.into_iter().map(|(txid, _)| txid).collect();
+          potential_spenders = filtered_mempool.into_keys().collect();
         }
       }
     }
@@ -949,7 +948,7 @@ fn find_conversion_chain(
     .map(|(vout, output)| OutPointTxOut {
       outpoint: OutPoint {
         txid: spending_tx.txid(),
-        vout: vout as u32,
+        vout: u32::try_from(vout).unwrap(),
       },
       output: output.clone(),
     });
@@ -962,13 +961,14 @@ fn find_conversion_chain(
     let next_spent_by = spending_entry.clone().spent_by;
     let (txs, entries, outpoints) =
       find_conversion_chain(wallet, next_outpoint, next_spent_by, convert_script_pubkey)?;
-    return Ok((
+
+    Ok((
       vec![spending_tx].into_iter().chain(txs).collect(),
       vec![spending_entry].into_iter().chain(entries).collect(),
       vec![outpoint].into_iter().chain(outpoints).collect(),
-    ));
+    ))
   } else {
-    return Ok((vec![spending_tx], vec![spending_entry], vec![outpoint]));
+    Ok((vec![spending_tx], vec![spending_entry], vec![outpoint]))
   }
 }
 
@@ -979,13 +979,13 @@ fn get_conversion_chain_with_ancestors_in_topological_order(
 ) -> Result<Vec<(Transaction, GetMempoolEntryResult)>> {
   let mut txid_to_node = HashMap::new();
   let mut graph: Graph<(Transaction, GetMempoolEntryResult), (), Directed> = Graph::new();
-  for i in 0..(chain.len()) {
-    txid_to_node.insert(chain[i].0.txid(), graph.add_node(chain[i].clone()));
+  for item in &chain {
+    txid_to_node.insert(item.0.txid(), graph.add_node(item.clone()));
   }
 
   let mut queue = VecDeque::from(chain.clone());
   while let Some(tx) = queue.pop_front() {
-    let node = txid_to_node.get(&tx.0.txid()).unwrap().clone();
+    let node = *txid_to_node.get(&tx.0.txid()).unwrap();
     for ancestor_txid in &tx.1.depends {
       if let Some(ancestor_node) = txid_to_node.get(&ancestor_txid.clone()) {
         graph.add_edge(*ancestor_node, node, ());
@@ -1027,13 +1027,13 @@ fn get_best_outpoint_in_conversion_chain(
 ) -> Result<Option<(OutPointTxOut, u128, u128)>> {
   let sats_per_kvb = fee.to_sat() * 1000 / size_in_vb;
   let replacement_relay_fee_rate = FeeRate::try_from(1.0).unwrap();
-  let replacement_relay_fee = replacement_relay_fee_rate.fee(size_in_vb as usize);
+  let replacement_relay_fee = replacement_relay_fee_rate.fee(usize::try_from(size_in_vb).unwrap());
 
   let mut best_replacement = None;
 
   for i in 0..(chain.len()) {
     let chain_state = &chain[chain.len() - i - 1];
-    if best_replacement != None {
+    if best_replacement.is_some() {
       let entry = chain_state.entry.clone().unwrap();
       if (entry.vsize > 0 && sats_per_kvb <= entry.fees.modified.to_sat() * 1000 / entry.vsize)
         || fee < entry.fees.descendant + replacement_relay_fee
@@ -1080,12 +1080,12 @@ fn fund_convert_transaction(
   prev_outpoint: Option<OutPointTxOut>,
 ) -> Result<(Transaction, Psbt)> {
   let mut convert_input_vb = 68; // max size of p2wpkh input
-  if unfunded_transaction.input.len() == 0 {
+  if unfunded_transaction.input.is_empty() {
     convert_input_vb -= 27; // tx requires 27 fewer bytes if no other inputs
   }
-  if prev_outpoint != None {
+  if prev_outpoint.is_some() {
     // Add fee for conversion input (used solely for fee calculation during funding)
-    assert!(unfunded_transaction.output.len() > 0);
+    assert!(!unfunded_transaction.output.is_empty());
     unfunded_transaction.output[0].value += fee_rate.fee(convert_input_vb).to_sat();
   }
 
@@ -1177,7 +1177,8 @@ fn get_expected_output(input_supply: u128, output_supply: u128, input: u128) -> 
 
   let invariant = input_supply * input_supply + output_supply * output_supply;
   let new_input_sq = (input_supply - input) * (input_supply - input);
-  return (invariant - new_input_sq).sqrt() - output_supply;
+
+  (invariant - new_input_sq).sqrt() - output_supply
 }
 
 fn get_required_input(input_supply: u128, output_supply: u128, output: u128) -> u128 {
@@ -1188,5 +1189,5 @@ fn get_required_input(input_supply: u128, output_supply: u128, output: u128) -> 
     return u128::MAX;
   }
 
-  return input_supply - (invariant - new_output_sq).sqrt();
+  input_supply - (invariant - new_output_sq).sqrt()
 }

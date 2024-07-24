@@ -14,14 +14,14 @@ Rune protocol messages, called runestones, are stored in Bitcoin transaction
 outputs.
 
 A runestone output's script pubkey begins with an `OP_RETURN`, followed by
-`OP_13`, followed by zero or more data pushes. These data pushes are
+`OP_14`, followed by zero or more data pushes. These data pushes are
 concatenated and decoded into a sequence of 128-bit integers, and finally
 parsed into a runestone.
 
 A transaction may have at most one runestone.
 
-A runestone may etch a new rune, mint an existing rune, and transfer runes from
-a transaction's inputs to its outputs.
+A runestone may mint an existing rune, transfer runes from a transaction's inputs 
+to its outputs, and convert from one rune to another.
 
 A transaction output may hold balances of any number of runes.
 

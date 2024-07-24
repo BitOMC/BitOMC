@@ -110,7 +110,6 @@ fuzz:
     cargo +nightly fuzz run runestone-decipher -- -max_total_time=60
     cargo +nightly fuzz run varint-decode -- -max_total_time=60
     cargo +nightly fuzz run varint-encode -- -max_total_time=60
-    cargo +nightly fuzz run transaction-builder -- -max_total_time=60
   done
 
 open:

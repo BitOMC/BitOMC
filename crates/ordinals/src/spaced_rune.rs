@@ -96,10 +96,10 @@ mod tests {
     assert_eq!(
       SpacedRune {
         rune: Rune(0),
-        spacers: 1
+        spacers: 0
       }
       .to_string(),
-      "A"
+      "TIGHTEN"
     );
   }
 
