@@ -20,7 +20,7 @@ bitcoind --version
 
 # write config
 if [[ ! -f ~/Library/Application\ Support/Bitcoin/bitcoin.conf ]]; then
-  printf 'txindex=1\nsignet=1\n' > ~/Library/Application\ Support/Bitcoin/bitcoin.conf
+  printf 'signet=1\n' > ~/Library/Application\ Support/Bitcoin/bitcoin.conf
 fi
 
 # start bitcoind
@@ -33,7 +33,7 @@ bitcoin-cli getblockchaininfo | grep signet
 
 # install bitomc
 if ! command -v bitomc; then
-  curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s
+  curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s
 fi
 
 # check bitomc

@@ -5123,7 +5123,7 @@ msgstr "你也可以在命令行中使用下面命令来安装最新的文件：
 #: src/guides/wallet.md:149
 msgid ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash "
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash "
 "-s\n"
 "```"
 msgstr ""

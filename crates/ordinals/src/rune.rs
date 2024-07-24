@@ -15,7 +15,7 @@ impl Rune {
       Network::Bitcoin => 854_000,
       Network::Regtest => 2,
       Network::Signet => 2,
-      Network::Testnet => 12 * SUBSIDY_HALVING_INTERVAL,
+      Network::Testnet => 2_869_900,
       _ => 2,
     }
   }

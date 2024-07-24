@@ -1731,7 +1731,7 @@ msgstr "يمكنك تحميل الثنائيات المبنية مسبقًا ب�
 #: src\guides/wallet.md:97
 msgid ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s\n"
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s\n"
 "```"
 msgstr ""
 

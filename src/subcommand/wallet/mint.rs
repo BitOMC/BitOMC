@@ -25,6 +25,7 @@ pub struct Output {
   pub pile0: Pile,
   pub pile1: Pile,
   pub mint: Txid,
+  pub connected: bool,
 }
 
 impl Mint {
@@ -61,7 +62,10 @@ impl Mint {
     }
 
     if amount0 == 0 && amount1 == 0 {
-      bail!("No reward for minting. Wait until block {}.", rune_entry0.block);
+      bail!(
+        "No reward for minting. Wait until block {}.",
+        rune_entry0.block
+      );
     }
 
     let chain = wallet.chain();
@@ -174,6 +178,7 @@ impl Mint {
         symbol: rune_entry1.symbol,
       },
       mint: transaction,
+      connected: last_mint_outpoint != OutPoint::null(),
     })))
   }
 }

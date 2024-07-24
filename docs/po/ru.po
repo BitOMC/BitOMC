@@ -2381,11 +2381,11 @@ msgstr "Вы можете установить последний предвар
 #: src/guides/inscriptions.md:97
 msgid ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s\n"
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s\n"
 "```"
 msgstr ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s\n"
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s\n"
 "```"
 
 #: src/guides/inscriptions.md:101

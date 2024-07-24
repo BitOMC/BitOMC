@@ -40,6 +40,8 @@ fn minting_rune_with_destination() {
     }
   );
 
+  pretty_assert_eq!(output.connected, false);
+
   assert_eq!(
     core.mempool()[0].output[1].script_pubkey,
     destination.payload.script_pubkey()
@@ -156,6 +158,8 @@ fn minting_is_allowed_on_first_mint() {
     }
   );
 
+  pretty_assert_eq!(output.connected, false);
+
   pretty_assert_eq!(
     balances,
     bitomc::subcommand::balances::Output {
@@ -194,6 +198,8 @@ fn minting_is_allowed_using_output_of_first_mint_as_input() {
 
   core.mine_blocks(1);
 
+  pretty_assert_eq!(output0.connected, false);
+
   let output1 = CommandBuilder::new("--chain regtest wallet mint --fee-rate 1")
     .core(&core)
     .bitomc(&bitomc)
@@ -223,6 +229,8 @@ fn minting_is_allowed_using_output_of_first_mint_as_input() {
       symbol: None,
     }
   );
+
+  pretty_assert_eq!(output1.connected, true);
 
   pretty_assert_eq!(
     balances,

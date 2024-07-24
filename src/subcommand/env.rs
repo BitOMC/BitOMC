@@ -16,16 +16,6 @@ impl Drop for KillOnDrop {
 pub(crate) struct Env {
   #[arg(default_value = "env", help = "Create env in <DIRECTORY>.")]
   directory: PathBuf,
-  #[arg(
-    long,
-    help = "Decompress encoded content. Currently only supports brotli. Be careful using this on production instances. A decompressed inscription may be arbitrarily large, making decompression a DoS vector."
-  )]
-  pub(crate) decompress: bool,
-  #[arg(
-    long,
-    help = "Proxy `/content/INSCRIPTION_ID` and other recursive endpoints to `<PROXY>` if the inscription is not present on current chain."
-  )]
-  pub(crate) proxy: Option<Url>,
 }
 
 #[derive(Serialize)]
@@ -108,9 +98,6 @@ rpcport={bitcoind_port}
 
     let bitomc = std::env::current_exe()?;
 
-    let decompress = self.decompress;
-    let proxy = self.proxy.map(|url| url.to_string());
-
     let mut command = Command::new(&bitomc);
     let ord_server = command
       .arg("--datadir")
@@ -119,14 +106,6 @@ rpcport={bitcoind_port}
       .arg("--polling-interval=100ms")
       .arg("--http-port")
       .arg(ord_port.to_string());
-
-    if decompress {
-      ord_server.arg("--decompress");
-    }
-
-    if let Some(proxy) = proxy {
-      ord_server.arg("--proxy").arg(proxy);
-    }
 
     let _ord = KillOnDrop(ord_server.spawn()?);
 

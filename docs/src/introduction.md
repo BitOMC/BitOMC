@@ -1,50 +1,35 @@
 Introduction
 ============
 
-This handbook is a guide to ordinal theory. Ordinal theory concerns itself with
-satoshis, giving them individual identities and allowing them to be tracked,
-transferred, and imbued with meaning.
+This handbook is a guide to BitOMC, a metaprotocol on Bitcoin that facilitates 
+the creation of a more stable unit of account for Bitcoin payments.
 
-Satoshis, not bitcoin, are the atomic, native currency of the Bitcoin network.
-One bitcoin can be sub-divided into 100,000,000 satoshis, but no further.
+In a world with ever-changing economic conditions, Bitcoin's fixed supply makes it 
+unattractive as a unit of account in contracts where payment is due in the future. 
+BitOMC addresses this by defining a market-driven unit of account that can facilitate
+price stability in a Bitcoin economy, without changing Bitcoin's core protocol.
 
-Ordinal theory does not require a sidechain or token aside from Bitcoin, and
-can be used without any changes to the Bitcoin network. It works right now.
+BitOMC uses two interconvertible assets, Tighten and Ease, to establishe a dynamic
+interest rate and a new unit of Bitcoin called the "util". Tighten and Ease are 
+transferable on Bitcoin using rules nearly identical to those used by the Runes
+protocol.
 
-Ordinal theory imbues satoshis with numismatic value, allowing them to be
-collected and traded as curios.
+BitOMC is not premined. Users can mint Tighten and Ease once per block according to
+the same four-year halving schedule as Bitcoin. To limit network congestion and MEV, 
+mint and conversion transactions leave a small anchor output, which must be spent by 
+the next respective transaction.
 
-Individual satoshis can be inscribed with arbitrary content, creating unique
-Bitcoin-native digital artifacts that can be held in Bitcoin wallets and
-transferred using Bitcoin transactions. Inscriptions are as durable, immutable,
-secure, and decentralized as Bitcoin itself.
+For more details, see the [overview](overview.md).
 
-Other, more unusual use-cases are possible: off-chain colored-coins, public key
-infrastructure with key rotation, a decentralized replacement for the DNS. For
-now though, such use-cases are speculative, and exist only in the minds of
-fringe ordinal theorists.
+For details on how Tighten and Ease are transferred, see [runes](runes.md).
 
-For more details on ordinal theory, see the [overview](overview.md).
-
-For more details on inscriptions, see [inscriptions](inscriptions.md).
-
-When you're ready to get your hands dirty, a good place to start is with
-[inscriptions](guides/wallet.md), a curious species of digital artifact
-enabled by ordinal theory.
+When you're ready to get your hands dirty, a good place to start is by 
+[minting](guides/wallet.md).
 
 Links
 -----
 
 - [GitHub](https://github.com/BitOMC/BitOMC/)
-- [BIP](https://github.com/BitOMC/BitOMC/blob/master/bip.mediawiki)
-- [Discord](https://discord.gg/ordinals)
-- [Open Ordinals Institute Website](https://ordinals.org/)
-- [Open Ordinals Institute X](https://x.com/ordinalsorg)
-- [Mainnet Block Explorer](https://ordinals.com)
-- [Signet Block Explorer](https://signet.ordinals.com)
-
-Videos
-------
-
-- [Ordinal Theory Explained: Satoshi Serial Numbers and NFTs on Bitcoin](https://www.youtube.com/watch?v=rSS0O2KQpsI)
-- [Ordinals Workshop with Rodarmor](https://www.youtube.com/watch?v=MC_haVa6N3I)
+- [BitOMC Whitepaper](bitomc.pdf)
+- [BitOMC Telegram group](https://t.me/bitOMC_chat)
+- [BitOMC Website](https://bitomc.org/)

@@ -3113,12 +3113,12 @@ msgstr "명령줄에서 다음을 사용하여 미리 빌드된 최신 바이너
 #: /workspaces/ord_ko/docs/src/guides/inscriptions.md:148
 msgid ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash "
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash "
 "-s\n"
 "```"
 msgstr ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash "
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash "
 "-s\n"
 "```"
 

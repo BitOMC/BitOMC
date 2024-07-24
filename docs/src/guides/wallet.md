@@ -1,22 +1,20 @@
 Wallet
 ======
 
-Individual sats can be inscribed with arbitrary content, creating
-Bitcoin-native digital artifacts that can be held in a Bitcoin wallet and
-transferred using Bitcoin transactions. Inscriptions are as durable, immutable,
-secure, and decentralized as Bitcoin itself.
+Tighten and Ease can be held in a Bitcoin wallet and
+transferred using Bitcoin transactions. Utils are a floating denomination
+of sats and can be transferred by transferring the equivalent number of sats.
 
-Working with inscriptions requires a Bitcoin full node, to give you a view of
-the current state of the Bitcoin blockchain, and a wallet that can create
-inscriptions and perform sat control when constructing transactions to send
-inscriptions to another wallet.
+BitOMC requires a Bitcoin node to give you a view of the current state of the
+Bitcoin blockchain, and a wallet that can transfer utils, mint and convert Tighten 
+and Ease, and perform sat control when constructing transactions to send them to
+another wallet.
 
-Bitcoin Core provides both a Bitcoin full node and wallet. However, the Bitcoin
-Core wallet cannot create inscriptions and does not perform sat control.
+Bitcoin Core provides both a Bitcoin node and wallet. However, the Bitcoin
+Core wallet cannot mint or convert Tighten and Ease and does not perform sat control.
 
-This requires [`bitomc`](https://github.com/BitOMC/BitOMC), the ordinal utility. `bitomc`
-doesn't implement its own wallet, so `bitomc wallet` subcommands interact with
-Bitcoin Core wallets.
+The utility [`bitomc`](https://github.com/BitOMC/BitOMC) doesn't implement its own 
+wallet, so `bitomc wallet` subcommands interact with Bitcoin Core wallets.
 
 This guide covers:
 
@@ -24,10 +22,10 @@ This guide covers:
 2. Syncing the Bitcoin blockchain
 3. Creating a Bitcoin Core wallet
 4. Using `bitomc wallet receive` to receive sats
-5. Creating inscriptions with `bitomc wallet inscribe`
-6. Sending inscriptions with `bitomc wallet send`
-7. Receiving inscriptions with `bitomc wallet receive`
-8. Batch inscribing with `bitomc wallet inscribe --batch`
+5. Minting Tighten and Ease with `bitomc wallet mint`
+5. Converting Tighten and Ease with `bitomc wallet convert-exact-input` and `bitomc wallet convert-exact-output`
+6. Sending sats, utils, and Tighten and Ease with `bitomc wallet send`
+7. Receiving Tighten and Ease with `bitomc wallet receive`
 
 Getting Help
 ------------
@@ -43,7 +41,7 @@ Installing Bitcoin Core
 Bitcoin Core is available from [bitcoincore.org](https://bitcoincore.org/) on
 the [download page](https://bitcoincore.org/en/download/).
 
-Making inscriptions requires Bitcoin Core 24 or newer.
+`bitomc` requires Bitcoin Core 24 or newer.
 
 This guide does not cover installing Bitcoin Core in detail. Once Bitcoin Core
 is installed, you should be able to run `bitcoind -version` successfully from
@@ -52,7 +50,8 @@ the command line. Do *NOT* use `bitcoin-qt`.
 Configuring Bitcoin Core
 ------------------------
 
-`bitomc` requires Bitcoin Core's transaction index and rest interface.
+`bitomc` requires Bitcoin Core's rest interface and block data. The `bitomc`
+explorer also requires the transaction index, but the explorer is optional. 
 
 To configure your Bitcoin Core node to maintain a transaction
 index, add the following to your `bitcoin.conf`:
@@ -67,6 +66,10 @@ Or, run `bitcoind` with `-txindex`:
 bitcoind -txindex
 ```
 
+`bitomc` can be run on a Bitcoin Core node pruned below block 854000. Subsequent
+blocks may be manually pruned after being indexed by `bitomc`, but this will 
+prevent `bitomc` from re-indexing.
+
 Details on creating or modifying your `bitcoin.conf` file can be found
 [here](https://github.com/bitcoin/bitcoin/blob/master/doc/bitcoin-conf.md).
 
@@ -76,7 +79,7 @@ Syncing the Bitcoin Blockchain
 To sync the chain, run:
 
 ```
-bitcoind -txindex
+bitcoind
 ```
 
 …and leave it running until `getblockcount`:
@@ -120,20 +123,6 @@ Make sure you do *NOT* have `disablewallet=1` in your `bitcoin.conf` file. If
 `bitcoin-cli listwallets` returns `Method not found` then the wallet is disabled
 and you won't be able to use `bitomc`.
 
-Make sure `txindex=1` is set. Run `bitcoin-cli getindexinfo` and it should
-return something like
-```json
-{
-  "txindex": {
-    "synced": true,
-    "best_block_height": 776546
-  }
-}
-```
-If it only returns `{}`, `txindex` is not set.
-If it returns `"synced": false`, `bitcoind` is still creating the `txindex`.
-Wait until `"synced": true` before using `bitomc`.
-
 If you have `maxuploadtarget` set it can interfere with fetching blocks for
 `bitomc` index. Either remove it or set `whitebind=127.0.0.1:8333`.
 
@@ -147,7 +136,7 @@ The `bitomc` utility is written in Rust and can be built from
 You can install the latest pre-built binary from the command line with:
 
 ```sh
-curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash -s
+curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s
 ```
 
 Once `bitomc` is installed, you should be able to run:
@@ -163,11 +152,11 @@ Creating a Wallet
 
 `bitomc` uses `bitcoind` to manage private keys, sign transactions, and
 broadcast transactions to the Bitcoin network. Additionally the `bitomc wallet`
-requires [`bitomc server`](explorer.md) running in the background. Make sure these
+requires `bitomc server` running in the background. Make sure these
 programs are running:
 
 ```
-bitcoind -txindex
+bitcoind
 ```
 
 ```
@@ -290,87 +279,93 @@ bitomc wallet transactions
 Once the transaction confirms, you should be able to see the transactions
 outputs with `bitomc wallet outputs`.
 
-Creating Inscription Content
-----------------------------
-
-Sats can be inscribed with any kind of content, but the `bitomc` wallet only
-supports content types that can be displayed by the `bitomc` block explorer.
-
-Additionally, inscriptions are included in transactions, so the larger the
-content, the higher the fee that the inscription transaction must pay.
-
-Inscription content is included in transaction witnesses, which receive the
-witness discount. To calculate the approximate fee that an inscribe transaction
-will pay, divide the content size by four and multiply by the fee rate.
-
-Inscription transactions must be less than 400,000 weight units, or they will
-not be relayed by Bitcoin Core. One byte of inscription content costs one
-weight unit. Since an inscription transaction includes not just the inscription
-content, limit inscription content to less than 400,000 weight units. 390,000
-weight units should be safe.
-
-Creating Inscriptions
+Minting Tighten and Ease
 ---------------------
 
-To create an inscription with the contents of `FILE`, run:
+To mint Tighten and Ease, run:
 
 ```
-bitomc wallet inscribe --fee-rate FEE_RATE --file FILE
+bitomc wallet mint --fee-rate <FEE_RATE>
 ```
 
-Ord will output two transactions IDs, one for the commit transaction, and one
-for the reveal transaction, and the inscription ID. Inscription IDs are of the
-form `TXIDiN`, where `TXID` is the transaction ID of the reveal transaction,
-and `N` is the index of the inscription in the reveal transaction.
+BitOMC will output the transaction ID, the amount of Tighten and Ease received,
+and a `connected` boolean, which will be `true` if the transaction spends the
+output left by the previous mint transaction. If so, the transaction will be
+added to the mempool if and only if it is able to RBF the existing candidate mint
+transaction (or if it is the first mint transaction seen). If `false`, the 
+transaction will only mint Tighten and Ease if it is the first transaction in the block.
 
-The commit transaction commits to a tapscript containing the content of the
-inscription, and the reveal transaction spends from that tapscript, revealing
-the content on chain and inscribing it on the first sat of the input that
-contains the corresponding tapscript.
-
-Wait for the reveal transaction to be mined. You can check the status of the
-commit and reveal transactions using  [the mempool.space block
+You can check the status of the transactions using [the mempool.space block
 explorer](https://mempool.space/).
 
-Once the reveal transaction has been mined, the inscription ID should be
-printed when you run:
+Once the transaction has been mined, you can confirm receipt by running:
 
 ```
-bitomc wallet inscriptions
+bitomc wallet balance
 ```
 
-Parent-Child Inscriptions
--------------------------
+Converting Tighten and Ease
+---------------------
 
-Parent-child inscriptions enable what is colloquially known as collections, see
-[provenance](../inscriptions/provenance.md) for more information.
-
-To make an inscription a child of another, the parent inscription has to be
-inscribed and present in the wallet. To choose a parent run `bitomc wallet inscriptions`
-and copy the inscription id (`<PARENT_INSCRIPTION_ID>`).
-
-Now inscribe the child inscription and specify the parent like so:
+To convert between Tighten and Ease using an exact input amount, run:
 
 ```
-bitomc wallet inscribe --fee-rate FEE_RATE --parent <PARENT_INSCRIPTION_ID> --file CHILD_FILE
+bitomc wallet convert-exact-input --fee-rate <INPUT_AMOUNT> <MIN_OUTPUT_AMOUNT>
 ```
 
-This relationship cannot be added retroactively, the parent has to be
-present at inception of the child.
+Where `INPUT_AMOUNT` is the number of runes to convert, a `:` character, and the
+name of the input rune, and `MIN_OUTPUT_AMOUNT` is the minimum number of runes
+you wish to receive, a `:` character, and the name of the output rune.
 
-Sending Inscriptions
+
+For example, if you want to convert 1000 TIGHTEN and receive at least 500 EASE, you
+would use `1000:TIGHTEN` and `500:EASE`.
+
+```
+bitomc wallet convert-exact-input --fee-rate 1 1000:TIGHTEN 500:EASE
+```
+
+Alternatively, if you want to convert 1000 TIGHTEN at the latest conversion rate, you
+would use `1000:TIGHTEN` and `0:EASE`.
+
+```
+bitomc wallet convert-exact-input --fee-rate 1 1000:TIGHTEN 0:EASE
+```
+
+To convert between Tighten and Ease using an exact output amount, run:
+
+```
+bitomc wallet convert-exact-input --fee-rate <OUTPUT_AMOUNT> <MAX_INPUT_AMOUNT>
+```
+
+BitOMC will output the transaction ID, the expected amount of Tighten and Ease received,
+and a `connected` boolean, which will be `true` if and only if the transaction spends the
+output left by the preceding conversion transaction.
+
+You can check the status of the transactions using [the mempool.space block
+explorer](https://mempool.space/).
+
+Once the transaction has been mined, you can confirm receipt by running:
+
+```
+bitomc wallet balance
+```
+
+Sending Sats
 --------------------
 
-Ask the recipient to generate a new address by running:
+Send sats by running:
 
 ```
-bitomc wallet receive
+bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <SAT_AMOUNT>
 ```
 
-Send the inscription by running:
+Where `SAT_AMOUNT` is the amount of sats to send, an optional space, and the
+denomination (`bit|btc|cbtc|mbtc|msat|nbtc|pbtc|sat|satoshi|ubtc`). For example if you
+want to send 1000 sats, you would use `1000 sats`.
 
 ```
-bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <INSCRIPTION_ID>
+bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000 sats
 ```
 
 See the pending transaction with:
@@ -383,10 +378,39 @@ Once the send transaction confirms, the recipient can confirm receipt by
 running:
 
 ```
-bitomc wallet inscriptions
+bitomc wallet balance
 ```
 
-Sending Runes
+Sending Utils
+--------------------
+
+Send utils by running:
+
+```
+bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <UTIL_AMOUNT>
+```
+
+Where `UTIL_AMOUNT` is the amount of sats to send, an optional space, and the denomination
+`util` or `utils`. For example if you want to send 1000 utils, you would use `1000 utils`.
+
+```
+bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000 utils
+```
+
+See the pending transaction with:
+
+```
+bitomc wallet transactions
+```
+
+Once the send transaction confirms, the recipient can confirm receipt by
+running:
+
+```
+bitomc wallet balance
+```
+
+Sending Tighten and Ease
 -------------
 
 Ask the recipient to generate a new address by running:
@@ -402,11 +426,18 @@ bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <RUNES_AMOUNT>
 ```
 
 Where `RUNES_AMOUNT` is the number of runes to send, a `:` character, and the
-name of the rune. For example if you want to send 1000 of the EXAMPLE rune, you
-would use `1000:EXAMPLE`.
+name of the rune. For example if you want to send 1000 of TIGHTEN, you
+would use `1000:TIGHTEN`.
 
 ```
 bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EXAMPLE
+```
+
+Likewise, if you want to send 1000 of EASE, you
+would use `1000:EASE`.
+
+```
+bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EASE
 ```
 
 See the pending transaction with:
@@ -421,7 +452,7 @@ Once the send transaction confirms, the recipient can confirm receipt with:
 bitomc wallet balance
 ```
 
-Receiving Inscriptions
+Receiving Runes
 ----------------------
 
 Generate a new receive address using:
@@ -430,10 +461,10 @@ Generate a new receive address using:
 bitomc wallet receive
 ```
 
-The sender can transfer the inscription to your address using:
+The sender can transfer the rune to your address using:
 
 ```
-bitomc wallet send --fee-rate <FEE_RATE> ADDRESS INSCRIPTION_ID
+bitomc wallet send --fee-rate <FEE_RATE> <ADDRESS> <RUNES_AMOUNT>
 ```
 
 See the pending transaction with:
@@ -444,5 +475,5 @@ bitomc wallet transactions
 Once the send transaction confirms, you can confirm receipt by running:
 
 ```
-bitomc wallet inscriptions
+bitomc wallet balance
 ```

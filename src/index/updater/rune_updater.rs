@@ -245,13 +245,10 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
           }
 
           // add residual amount to residual vout
-          if output_amt > *min_output_amt {
-            if let Some(residual_vout) = residual_vout {
-              *allocated[residual_vout].entry(output_id).or_default() +=
-                output_amt - *min_output_amt;
-            } else {
-              *burned.entry(output_id).or_default() += output_amt - *min_output_amt;
-            }
+          if let Some(residual_vout) = residual_vout {
+            *allocated[residual_vout].entry(output_id).or_default() += output_amt - *min_output_amt;
+          } else {
+            *burned.entry(output_id).or_default() += output_amt - *min_output_amt;
           }
         }
       } else {

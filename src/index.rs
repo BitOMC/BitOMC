@@ -1006,7 +1006,11 @@ impl Index {
       }
     }
 
-    self.client.get_raw_transaction(&txid, None).into_option()
+    if let Ok(result) = self.client.get_transaction(&txid, None) {
+      Ok(result.transaction().ok())
+    } else {
+      self.client.get_raw_transaction(&txid, None).into_option()
+    }
   }
 
   pub fn is_output_spent(&self, outpoint: OutPoint) -> Result<bool> {

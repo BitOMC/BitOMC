@@ -3082,12 +3082,12 @@ msgstr "Puedes instalar el último binario preconstruido desde la línea de coma
 #: src/guides/inscriptions.md:97
 msgid ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash "
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash "
 "-s\n"
 "```"
 msgstr ""
 "```sh\n"
-"curl --proto '=https' --tlsv1.2 -fsLS https://ordinals.com/install.sh | bash "
+"curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash "
 "-s\n"
 "```"
 
