@@ -112,14 +112,6 @@ A Docker image can be built with:
 docker build -t BitOMC/BitOMC .
 ```
 
-### Homebrew
-
-`bitomc` is available in [Homebrew](https://brew.sh/):
-
-```
-brew install bitomc
-```
-
 ### Debian Package
 
 To build a `.deb` package:
