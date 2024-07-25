@@ -43,12 +43,12 @@ use {
   html_escaper::{Escape, Trusted},
   http::HeaderMap,
   lazy_static::lazy_static,
-  ordinals::{
+  regex::Regex,
+  reqwest::Url,
+  runes_bitomc::{
     varint, Artifact, Charm, Edict, Epoch, Height, Pile, Rarity, Rune, RuneId, Runestone, Sat,
     SatPoint, SpacedRune, Terms,
   },
-  regex::Regex,
-  reqwest::Url,
   serde::{Deserialize, Deserializer, Serialize},
   serde_with::{DeserializeFromStr, SerializeDisplay},
   std::{

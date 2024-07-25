@@ -12,10 +12,10 @@ use {
   chrono::{DateTime, Utc},
   executable_path::executable_path,
   mockcore::TransactionTemplate,
-  ordinals::{Artifact, Edict, Pile, Rune, RuneId, Runestone, SpacedRune},
   pretty_assertions::assert_eq as pretty_assert_eq,
   regex::Regex,
   reqwest::{StatusCode, Url},
+  runes_bitomc::{Artifact, Edict, Pile, Rune, RuneId, Runestone, SpacedRune},
   serde::de::DeserializeOwned,
   std::sync::Arc,
   std::{

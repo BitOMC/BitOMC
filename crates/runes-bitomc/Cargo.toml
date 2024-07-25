@@ -1,8 +1,8 @@
 [package]
-name = "ordinals"
+name = "runes-bitomc"
 version = "0.0.8"
 edition = "2021"
-description = "Library for interoperating with ordinals and inscriptions"
+description = "Library for interoperating with runes in BitOMC"
 homepage = "https://github.com/BitOMC/BitOMC"
 repository = "https://github.com/BitOMC/BitOMC"
 license = "CC0-1.0"

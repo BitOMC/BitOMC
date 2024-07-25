@@ -1,6 +1,6 @@
 #![no_main]
 
-use {libfuzzer_sys::fuzz_target, ordinals::varint};
+use {libfuzzer_sys::fuzz_target, runes_bitomc::varint};
 
 fuzz_target!(|input: &[u8]| {
   let mut i = 0;

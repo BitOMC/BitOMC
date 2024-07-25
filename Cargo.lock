@@ -581,7 +581,6 @@ dependencies = [
  "nix",
  "num-integer",
  "ord-bitcoincore-rpc",
- "ordinals",
  "petgraph",
  "pretty_assertions",
  "pulldown-cmark",
@@ -589,6 +588,7 @@ dependencies = [
  "regex",
  "reqwest",
  "rss",
+ "runes-bitomc",
  "rust-embed",
  "rustls 0.22.4",
  "rustls-acme",
@@ -2350,19 +2350,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "ordinals"
-version = "0.0.8"
-dependencies = [
- "bitcoin",
- "derive_more",
- "pretty_assertions",
- "serde",
- "serde_json",
- "serde_with",
- "thiserror",
-]
-
-[[package]]
 name = "parking"
 version = "2.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -2797,6 +2784,19 @@ dependencies = [
  "derive_builder",
  "never",
  "quick-xml",
+]
+
+[[package]]
+name = "runes-bitomc"
+version = "0.0.8"
+dependencies = [
+ "bitcoin",
+ "derive_more",
+ "pretty_assertions",
+ "serde",
+ "serde_json",
+ "serde_with",
+ "thiserror",
 ]
 
 [[package]]
