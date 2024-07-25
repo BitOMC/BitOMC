@@ -22,7 +22,7 @@ use {
     collections::BTreeMap,
     ffi::{OsStr, OsString},
     fs,
-    io::{BufRead, BufReader, Write},
+    io::Write,
     net::TcpListener,
     path::{Path, PathBuf},
     process::{Child, Command, Stdio},

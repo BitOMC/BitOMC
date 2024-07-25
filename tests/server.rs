@@ -1,4 +1,4 @@
-use super::*;
+use {super::*, std::io::BufRead, std::io::BufReader};
 
 #[test]
 fn run() {
