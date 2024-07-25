@@ -22,7 +22,7 @@ Runestones
 
 Like Runes, BitOMC protocol messages are termed "runestones".
 
-The protocol activates on block 854,000. Runestones in earlier blocks are
+The protocol activates on block 854,500. Runestones in earlier blocks are
 ignored.
 
 Abstractly, runestones contain the following fields:
