@@ -1,0 +1,825 @@
+<!DOCTYPE HTML>
+<html lang="fr" class="coal" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BitOMC Handbook</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="language-picker.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "coal" : "coal";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">Introduction</a></li><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> Aperçu</a></li><li class="chapter-item expanded "><a href="bitomc.html"><strong aria-hidden="true">2.</strong> BitOMC</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bitomc/specification.html"><strong aria-hidden="true">2.1.</strong> Spécification</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">3.</strong> Contribuer</a></li><li class="chapter-item expanded "><a href="guides.html"><strong aria-hidden="true">4.</strong> Guides</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="guides/wallet.html"><strong aria-hidden="true">4.1.</strong> Wallet</a></li><li class="chapter-item expanded "><a href="guides/reindexing.html"><strong aria-hidden="true">4.2.</strong> Réindexation</a></li><li class="chapter-item expanded "><a href="guides/settings.html"><strong aria-hidden="true">4.3.</strong> Settings</a></li><li class="chapter-item expanded "><a href="guides/testing.html"><strong aria-hidden="true">4.4.</strong> Tests</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">BitOMC Handbook</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="de">Deutsch</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="fr">Français</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="es">Español</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="pt">Português</a>
+                          </button></li>
+                           <li role="none"><button role="menuitem" class="theme">
+                              <a id="ru">Русский</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh">中文版</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ja">日本語版</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ko">한국어</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="fil">Filipino</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ar">العربية</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="hi">हिंदी</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="it">Italiano</a>
+                          </button></li>
+                        </ul>
+
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("fr");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "print.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "en") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+                        </script>
+
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/BitOMC/BitOMC" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="introduction"><a class="header" href="#introduction">Introduction</a></h1>
+<p>This handbook is a guide to BitOMC, a metaprotocol on Bitcoin that facilitates the creation of a more stable unit of account for Bitcoin payments.</p>
+<p>In a world with ever-changing economic conditions, Bitcoin's fixed supply makes it unattractive as a unit of account in contracts where payment is due in the future. BitOMC addresses this by defining a market-driven unit of account that can facilitate price stability in a Bitcoin economy, without changing Bitcoin's core protocol.</p>
+<p>BitOMC uses two interconvertible assets, Tighten and Ease, to establish a dynamic interest rate and a new unit of Bitcoin called the "util". Tighten and Ease are transferable on Bitcoin using rules nearly identical to those used by the Runes protocol.</p>
+<p>BitOMC is not premined. Users can mint Tighten and Ease once per block according to the same four-year halving schedule as Bitcoin. To limit network congestion and MEV, mint and conversion transactions leave a small anchor output, which must be spent by the next respective transaction.</p>
+<p>For more high-level details, see the <a href="overview.html">overview</a>.</p>
+<p>For details on the specification, see <a href="bitomc.html">bitomc</a>.</p>
+<p>When you're ready to get your hands dirty, a good place to start is by <a href="guides/wallet.html">minting</a>.</p>
+<h2 id="liens"><a class="header" href="#liens">Liens</a></h2>
+<ul>
+<li><a href="https://github.com/BitOMC/BitOMC/">GitHub</a></li>
+<li><a href="https://bitomc.org/bitomc.pdf">BitOMC Whitepaper</a></li>
+<li><a href="https://t.me/bitOMC_chat">BitOMC Telegram group</a></li>
+<li><a href="https://bitomc.org/">BitOMC Website</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc-overview"><a class="header" href="#bitomc-overview">BitOMC Overview</a></h1>
+<p>BitOMC is a fork of the <a href="https://docs.ordinals.com/runes.html">Runes protocol</a>, consisting of two interconvertible assets, Tighten and Ease, which users can convert between according to a constant function conversion rule. This keeps the system in balance and ensures the conversion rate reflects their relative market price. This conversion rate determines a dynamic interest rate, which in turn defines a floating unit of Bitcoin called the "util". Transactions continue to settle in Bitcoin, but parties seeking greater price stability may choose to denominate their contracts in "utils" rather than BTC or a fiat currency.</p>
+<p>Technical details are available in <a href="https://bitomc.org/bitomc.pdf">the whitepaper</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc"><a class="header" href="#bitomc">BitOMC</a></h1>
+<p>BitOMC is a fork of the <a href="https://docs.ordinals.com/runes.html">Runes protocol</a>. Runes allow Bitcoin transactions to mint, transfer, and convert Bitcoin-native digital commodities. There are only two runes in BitOMC, Tighten and Ease.</p>
+<h2 id="runestones"><a class="header" href="#runestones">Runestones</a></h2>
+<p>Rune protocol messages, called runestones, are stored in Bitcoin transaction outputs.</p>
+<p>In BitOMC, a runestone output's script pubkey begins with an <code>OP_RETURN</code>, followed by <code>OP_14</code>, followed by zero or more data pushes. These data pushes are concatenated and decoded into a sequence of 128-bit integers, and finally parsed into a runestone.</p>
+<p>A transaction may have at most one runestone.</p>
+<p>A runestone may mint an existing rune, transfer runes from a transaction's inputs to its outputs, and convert from one rune to another.</p>
+<p>A transaction output may hold balances of any number of runes.</p>
+<p>Runes are identified by IDs. The IDs of Tighten and Ease are <code>1:0</code> and <code>1:1</code>, respectively.</p>
+<h2 id="minting"><a class="header" href="#minting">Minting</a></h2>
+<p>Anyone may create a mint transaction that mints the amount of Tighten and Ease available in the block the transaction is mined, plus any amount of Tighten and Ease that has been burned. The issuance of Tighten and Ease follows a four-year halving schedule as outlined in <a href="https://bitomc.org/bitomc.pdf">the whitepaper</a>.</p>
+<h2 id="transferring"><a class="header" href="#transferring">Transferring</a></h2>
+<p>When transaction inputs contain runes, or new runes are created by a mint, those runes are transferred to that transaction's outputs. A transaction's runestone may change how input runes transfer to outputs.</p>
+<h3 id="edicts"><a class="header" href="#edicts">Edicts</a></h3>
+<p>A runestone may contain any number of edicts. Edicts consist of a rune ID, an amount, and an output number. Edicts are processed in order, allocating unallocated runes to outputs.</p>
+<h3 id="pointer"><a class="header" href="#pointer">Pointer</a></h3>
+<p>After all edicts are processed, remaining unallocated runes are transferred to the transaction's first non-<code>OP_RETURN</code> output. A runestone may optionally contain a pointer that specifies an alternative default output.</p>
+<h3 id="burning"><a class="header" href="#burning">Burning</a></h3>
+<p>Runes may be burned by transferring them to an <code>OP_RETURN</code> output with an edict or pointer.</p>
+<h2 id="converting"><a class="header" href="#converting">Converting</a></h2>
+<p>When runes of one ID are burned and runes of another are transferred in excess of their input balance, those runes are created if the conversion rules are satisfied. Any remaining runes post-conversion are transferred to the ID of the last edict in the runestone.</p>
+<h2 id="cenotaphs"><a class="header" href="#cenotaphs">Cenotaphs</a></h2>
+<p>Runestones may be malformed for a number of reasons, including non-pushdata opcodes in the runestone <code>OP_RETURN</code>, invalid varints, or unrecognized runestone fields.</p>
+<p>Malformed runestones are termed <a href="https://en.wikipedia.org/wiki/Cenotaph">cenotaphs</a>.</p>
+<p>Runes input to a transaction with a cenotaph are burned. Runes etched in a transaction with a cenotaph are set as unmintable. Mints in a transaction with a cenotaph count towards the mint cap, but the minted runes are burned.</p>
+<p>Cenotaphs are an upgrade mechanism, allowing runestones to be given new semantics that change how runes are created and transferred, while not misleading unupgraded clients as to the location of those runes, as unupgraded clients will see those runes as having been burned.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc-does-not-have-a-specification"><a class="header" href="#bitomc-does-not-have-a-specification">BitOMC Does Not Have a Specification</a></h1>
+<p>The BitOMC reference implementation, <code>bitomc</code>, is the normative specification of the BitOMC protocol.</p>
+<p>Nothing you read here or elsewhere, aside from the code of <code>bitomc</code>, is a specification. This prose description of the BitOMC protocol is provided as a guide to the behavior of <code>bitomc</code>, and the code of <code>bitomc</code> itself should always be consulted to confirm the correctness of any prose description.</p>
+<p>If, due to a bug in <code>bitomc</code>, this document diverges from the actual behavior of <code>bitomc</code> and it is impractically disruptive to change <code>bitomc</code>'s behavior, this document will be amended to agree with <code>bitomc</code>'s actual behavior.</p>
+<p>Users of alternative implementations do so at their own risk, and services wishing to integrate Runes are strongly encouraged to use <code>bitomc</code> itself to make Runes transactions, and to determine the state of runes, mints, and balances.</p>
+<h2 id="runestones-1"><a class="header" href="#runestones-1">Runestones</a></h2>
+<p>Like Runes, BitOMC protocol messages are termed "runestones".</p>
+<p>The protocol activates on block 854,000. Runestones in earlier blocks are ignored.</p>
+<p>Abstractly, runestones contain the following fields:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Runestone {
+  edicts: Vec&lt;Edict&gt;,
+  pointer: Option&lt;u32&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Runes are transferred by edict:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Rune IDs are encoded as the block height and transaction index of the transaction in which the rune was etched:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct RuneId {
+  block: u64,
+  tx: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>Rune IDs are represented in text as <code>BLOCK:TX</code>.</p>
+<p>Rune names are encoded as modified base-26 integers:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Rune(u128);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="deciphering"><a class="header" href="#deciphering">Deciphering</a></h3>
+<p>Runestones are deciphered from transactions with the following steps:</p>
+<ol>
+<li>
+<p>Find the first transaction output whose script pubkey begins with <code>OP_RETURN OP_14</code>.</p>
+</li>
+<li>
+<p>Concatenate all following data pushes into a payload buffer.</p>
+</li>
+<li>
+<p>Decode a sequence 128-bit <a href="https://en.wikipedia.org/wiki/LEB128">LEB128</a> integers from the payload buffer.</p>
+</li>
+<li>
+<p>Parse the sequence of integers into an untyped message.</p>
+</li>
+<li>
+<p>Parse the untyped message into a runestone.</p>
+</li>
+</ol>
+<p>Deciphering may produce a malformed runestone, termed a <a href="https://en.wikipedia.org/wiki/Cenotaph">cenotaph</a>.</p>
+<h4 id="locating-the-runestone-output"><a class="header" href="#locating-the-runestone-output">Locating the Runestone Output</a></h4>
+<p>Outputs are searched for the first script pubkey that beings with <code>OP_RETURN OP_14</code>. If deciphering fails, later matching outputs are not considered.</p>
+<h4 id="assembling-the-payload-buffer"><a class="header" href="#assembling-the-payload-buffer">Assembling the Payload Buffer</a></h4>
+<p>The payload buffer is assembled by concatenating data pushes, after <code>OP_14</code>, in the matching script pubkey.</p>
+<p>Data pushes are opcodes 0 through 78 inclusive. If a non-data push opcode is encountered, i.e., any opcode equal to or greater than opcode 79, the deciphered runestone is a cenotaph with no etching, mint, or edicts.</p>
+<h4 id="decoding-the-integer-sequence"><a class="header" href="#decoding-the-integer-sequence">Decoding the Integer Sequence</a></h4>
+<p>A sequence of 128-bit integers are decoded from the payload as LEB128 varints.</p>
+<p>LEB128 varints are encoded as sequence of bytes, each of which has the most-significant bit set, except for the last.</p>
+<p>If a LEB128 varint contains more than 18 bytes, would overflow a u128, or is truncated, meaning that the end of the payload buffer is reached before encountering a byte with the continuation bit not set, the decoded runestone is a cenotaph with no etching, mint, or edicts.</p>
+<h4 id="parsing-the-message"><a class="header" href="#parsing-the-message">Parsing the Message</a></h4>
+<p>The integer sequence is parsed into an untyped message:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Message {
+  pointer: Option&lt;u32&gt;,
+  edicts: Vec&lt;Edict&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the number of integers is odd, the first integer is interpreted as the pointer, and all subsequent integer pairs are interpreted as edicts. If the number of integers is even, the pointer is set to null, and each integer pair is interpreted as an edict.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>In the integer pair, <code>id</code> is interpreted as <code>1:0</code> (Tighten) if the first integer is odd. Otherwise, <code>id</code> is interpreted as <code>1:1</code> (Ease). <code>amount</code> is interpreted as the first integer divided by 2, and <code>output</code> is interpreted as the second integer.</p>
+<h4 id="minting-1"><a class="header" href="#minting-1">Minting</a></h4>
+<p>A transaction may mint Tighten and Ease by including an output that anyone can spend after 1 block, using a P2WSH for <code>OP_1 OP_CHECKSEQUENCEVERIFY</code>, and spending the output of the previous mint, if unspent. If no such output exists, the first mint transaction receives the mint reward.</p>
+<p>If successful, the mint amount is added to the unallocated runes in the transaction's inputs. These runes may be transferred using edicts, and will otherwise be transferred to the first non-<code>OP_RETURN</code> output, or the output designated by the <code>Pointer</code> field. A runestone is required for a mint transaction to be valid.</p>
+<p>At the start of each block, the amount of Tighten and Ease to be issued is immediately burned, and the mint transaction receives the amount of outstanding burned Tighten and Ease. For this reason, if no mint transaction is present, the runes to be issued are made available to the first minter in subsequent blocks.</p>
+<h4 id="transferring-1"><a class="header" href="#transferring-1">Transferring</a></h4>
+<p>Runes are transferred by edict:</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>A runestone may contain any number of edicts, which are processed in sequence.</p>
+<p>Before edicts are processed, input runes, as well as minted or premined runes, if any, are unallocated.</p>
+<p>Each edict decrements the unallocated balance of rune <code>id</code> and increments the balance allocated to transaction outputs of rune <code>id</code>.</p>
+<p>If an edict would allocate more runes than are currently unallocated, the <code>amount</code> is reduced to the number of currently unallocated runes. In other words, the edict allocates all remaining unallocated units of rune <code>id</code>.</p>
+<p>An edict with <code>amount</code> zero allocates all remaining units of rune <code>id</code>.</p>
+<p>An edict with <code>output</code> equal to the number of transaction outputs allocates <code>amount</code> runes to each non-<code>OP_RETURN</code> output in order.</p>
+<p>An edict with <code>amount</code> zero and <code>output</code> equal to the number of transaction outputs divides all unallocated units of rune <code>id</code> between each non-<code>OP_RETURN</code> output. If the number of unallocated runes is not divisible by the number of non-<code>OP_RETURN</code> outputs, 1 additional rune is assigned to the first <code>R</code> non-<code>OP_RETURN</code> outputs, where <code>R</code> is the remainder after dividing the balance of unallocated units of rune <code>id</code> by the number of non-<code>OP_RETURN</code> outputs.</p>
+<p>If any edict in a runestone has an <code>output</code> greater than the number of transaction outputs, the runestone is a cenotaph.</p>
+<p>Note that edicts in cenotaphs are not processed, and all input runes are burned.</p>
+<h4 id="converting-1"><a class="header" href="#converting-1">Converting</a></h4>
+<p>A runestone may convert between Tighten and Ease by burning one as an input and allocating more of the other than are unallocated. The ID of the final edict in the Runestone determines whether the input or the output of the conversion is to be exact. If the ID is the same as the output ID, then the input is exact and the required output is the minimum allowable output amount. Otherwise, the output is exact and the input is the maximum allowable input amount.</p>
+<p>Runes are converted according to the invariant <code>A^2 + B^2 = K^2</code>, where <code>A</code> and <code>B</code> are the supply of Tighten and Ease, respectively, and <code>K</code> is some constant, which is the same before and after.</p>
+<p>If the invariant is satisfied, the output runes are allocated. If the conversion yields more output runes than the minimum allowable output amount, the additional output runes are allocated to the first tx output already receiving output runes.</p>
+<p>If the conversion requires fewer input runes than the maximum allowable input amount, the leftover input runes are allocated to the output of the last edict of input ID with an output whose value is less than the number of tx outputs. If no such output exists, the input runes are allocated to the first output with a non-zero balance for input ID. If still unallocated, the input runes are allocated to the output of the first edict.</p>
+<p>If the invariant is not satisfied, the transaction does not signal RBF, the transaction fails to leave a P2WPKH output for the private key <code>0x01</code> repeating, or the P2WPKH output of the preceding conversion is unspent and not spent by this transaction, the burned input runes are unburned and allocated according to the same rules as the preceding paragraph.</p>
+<p>An exception to this final condition is made for conversions in a block <code>P</code> in which the first conversion cannot spend an output of a previous conversion. When this is case, conversions in the block do not need to spend an output of the previous conversion to be valid. The first conversion in the next block, however, must spend the output created by the first conversion in block <code>P</code>.</p>
+<h2 id="the-util"><a class="header" href="#the-util">The Util</a></h2>
+<p>The util is the dynamic unit of account created by BitOMC. The util is a dynamic sub-denomination of sats, determined by an interest rate that is controlled by the relative quantity of Tighten and Ease. To calculate the number of utils per sat, a second sub-denomination of sats is introduced, called the e-bond. The number of e-bonds per sat increases monotically at the current interest rate. The number of utils per sat is then determined by the number of utils per e-bond, which is 1 divided by the interest rate.</p>
+<h3 id="the-interest-rate"><a class="header" href="#the-interest-rate">The Interest Rate</a></h3>
+<p>The interest rate equals the median value of <code>(A - B) / (A + B)</code> over the last 100 blocks where <code>A &gt; B</code> and <code>(A - B) / (A + B)</code> is non-zero after integer division. <code>A</code> and <code>B</code> are the supply of Tighten and Ease, respectively, and the value is calculated to 12 decimal places. The default interest rate is 100%.</p>
+<p>The number of e-bonds per sat is stored as an integer with 12 decimal places and updated each block using the current interest rate divided by 52,595, which is approximately the number of blocks per year.</p>
+<h3 id="utils-per-sat"><a class="header" href="#utils-per-sat">Utils per Sat</a></h3>
+<p>The number of utils per bond is calculated by dividing 10^24 by the interest rate in integer form.</p>
+<p>The number of utils per sat is calculated by multiplying the number of bonds per sat by the number of utils per bond and dividing by 10^12.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="contribuer-à-bitomc"><a class="header" href="#contribuer-à-bitomc">Contribuer à <code>bitomc</code></a></h1>
+<h2 id="Étapes-suggérées"><a class="header" href="#Étapes-suggérées">Étapes suggérées</a></h2>
+<ol>
+<li>Trouvez un problème sur lequel vous voulez travailler.</li>
+<li>Déterminez quelle pourrait être la première mesure à prendre pour résoudre le problème. Cela pourrait se faire sous la forme d’un code, d’une recherche, d’une proposition, ou en suggérant qu’il soit clos, si le problème est obsolète ou s’il n’était pas une bonne idée dès le départ.</li>
+<li>Commentez le problème en décrivant les grandes lignes de la première étape que vous suggérez et demandez un retour d’information. Bien sûr, vous pourriez vous lancer immédiatement dans l’écriture du code ou de tests, mais cela vous évitera de gaspiller des efforts si le problème n’est plus d’actualité, s’il n’est pas clairement spécifié, s’il est bloqué ou s’il n’est pas prêt à être implémenté.</li>
+<li>Si le problème nécessite une modification du code ou la correction d’un bogue, ouvrez un brouillon de demande de tirage (pull request) avec des tests et demandez des suggestions. Cela permet de s’assurer que tout le monde est d’accord sur ce qui doit être fait, ou sur la première étape de la résolution du problème. De plus, puisque des tests sont nécessaires, le fait de les écrire en premier permet de confirmer que le changement peut être testé facilement.</li>
+<li>Tapez de façon aléatoire sur le clavier jusqu’à ce que les tests passent, et réusinez le code jusqu’à ce qu’il soit prêt à être soumis.</li>
+<li>Marquez la demande de tirage comme prête à être révisée.</li>
+<li>Révisez la demande de tirage si nécessaire.</li>
+<li>Et finalement, fusionnez-la !</li>
+</ol>
+<h2 id="commencez-modestement"><a class="header" href="#commencez-modestement">Commencez modestement</a></h2>
+<p>Des petits changements vous permettront d’avoir un impact rapide, et si vous faites fausse route, vous n’aurez pas perdu beaucoup de temps.</p>
+<p>Voici quelques idées pour des problèmes mineurs :</p>
+<ul>
+<li>Ajoutez un nouveau test ou un cas de test qui augmente la couverture des tests</li>
+<li>Ajoutez ou améliorez la documentation</li>
+<li>Trouvez un problème nécessitant davantage de recherche, effectuez cette recherche et résumez-la dans un commentaire</li>
+<li>Trouvez un problème obsolète et indiquez qu’il peut être clos dans un commentaire</li>
+<li>Identifiez un problème qui ne devrait pas être traité, et fournissez des commentaires constructifs expliquant pourquoi vous pensez que c’est le cas</li>
+</ul>
+<h2 id="fusionnez-tôt-et-souvent"><a class="header" href="#fusionnez-tôt-et-souvent">Fusionnez tôt et souvent</a></h2>
+<p>Divisez les tâches importantes en plusieurs étapes plus petites, qui progressent individuellement. En cas de bogue, vous pouvez ouvrir une demande de tirage qui ajoute un test ignoré défaillant. Cela peut être fusionné, et l’étape suivante peut être de corriger le bogue et de désactiver (unignore) l’option ignorant le test. Effectuez des recherches ou des tests et faites un rapport sur vos résultats. Divisez une fonctionnalité en de petites sous-fonctionnalités et implémentez-les une par une.</p>
+<p>Trouver un moyen de réduire la taille d’une demande de tirage volumineuse en demandes de tirages plus petites, de façon à ce que chacune puisse être fusionnée individuellement, est un art qui vaut la peine d’être pratiqué. Le défi consiste à s’assurer que chaque demande de tirage représente une amélioration en soi.</p>
+<p>Je m’efforce de suivre ce conseil moi-même et je m’en sors toujours mieux quand je le fais.</p>
+<p>Les petites modifications sont rapides à rédiger, à réviser et à fusionner, ce qui est beaucoup plus amusant que de travailler sur une seule demande de tirage géante qui prend une éternité à rédiger, à réviser et à fusionner. Les petites modifications ne prennent pas beaucoup de temps, donc si vous devez arrêter de travailler sur une petite modification, vous n’aurez pas perdu beaucoup de temps par rapport à une modification plus importante qui exige de nombreuses heures de travail. La soumission rapide d’une demande de tirage améliore un peu le projet, mais de façon immédiate, au lieu de devoir attendre longtemps pour obtenir une amélioration plus importante. Les petites modifications sont moins susceptibles d’entraîner des conflits de fusion. Comme le disaient les Athéniens : <em>Les plus rapides commettent ce qu’ils veulent, tandis que les plus lents sont contraints de fusionner ce qui est possible.</em></p>
+<h2 id="sollicitez-de-laide"><a class="header" href="#sollicitez-de-laide">Sollicitez de l’aide</a></h2>
+<p>Si vous êtes bloqué pendant plus de 15 minutes, demandez de l’aide dans des espaces tels que le Discord de Rust, sur Stack Exchange, ou dans le cadre d’une question ou d’une discussion au sein du projet.</p>
+<h2 id="pratiquez-le-débogage-par-hypothèse"><a class="header" href="#pratiquez-le-débogage-par-hypothèse">Pratiquez le débogage par hypothèse</a></h2>
+<p>Formulez une hypothèse sur la cause du problème. Trouvez comment vérifier cette hypothèse et effectuez les tests appropriés. Si cela fonctionne, parfait, vous avez résolu le problème, ou du moins vous savez maintenant comment le faire. Dans le cas contraire, recommencez en formulant une nouvelle hypothèse.</p>
+<h2 id="prêtez-attention-aux-messages-derreur"><a class="header" href="#prêtez-attention-aux-messages-derreur">Prêtez attention aux messages d’erreur</a></h2>
+<p>Lisez tous les messages d’erreur et ne tolérez pas les avertissements.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc-guides"><a class="header" href="#bitomc-guides">BitOMC Guides</a></h1>
+<p>See the table of contents for a list of guides, including a guide to the explorer and a guide to the wallet.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="wallet"><a class="header" href="#wallet">Wallet</a></h1>
+<p>Tighten and Ease can be held in a Bitcoin wallet and transferred using Bitcoin transactions. Utils are a floating denomination of sats and can be transferred by transferring the equivalent number of sats.</p>
+<p>BitOMC requires a Bitcoin node to give you a view of the current state of the Bitcoin blockchain, and a wallet that can transfer utils, mint and convert Tighten and Ease, and perform sat control when constructing transactions to send them to another wallet.</p>
+<p>Bitcoin Core provides both a Bitcoin node and wallet. However, the Bitcoin Core wallet cannot mint or convert Tighten and Ease and does not perform sat control.</p>
+<p>The utility <a href="https://github.com/BitOMC/BitOMC"><code>bitomc</code></a> doesn't implement its own wallet, so <code>bitomc wallet</code> subcommands interact with Bitcoin Core wallets.</p>
+<p>Ce guide couvre :</p>
+<ol>
+<li>L’installation de Bitcoin Core</li>
+<li>La synchronisation de la blockchain Bitcoin</li>
+<li>La création d’un portefeuille Bitcoin Core</li>
+<li>L’utilisation de <code>bitomc wallet receive</code> pour recevoir des sats</li>
+<li>Minting Tighten and Ease with <code>bitomc wallet mint</code></li>
+<li>Converting Tighten and Ease with <code>bitomc wallet convert-exact-input</code> and <code>bitomc wallet convert-exact-output</code></li>
+<li>Sending sats, utils, and Tighten and Ease with <code>bitomc wallet send</code></li>
+<li>Receiving Tighten and Ease with <code>bitomc wallet receive</code></li>
+</ol>
+<h2 id="obtenir-de-laide"><a class="header" href="#obtenir-de-laide">Obtenir de l’aide</a></h2>
+<p>Si vous êtes coincé, essayez de demander de l’aide sur le <a href="https://discord.com/invite/87cjuz4FYg">Serveur Discord d’Ordinals</a>, ou consultez GitHub pour des <a href="https://github.com/BitOMC/BitOMC/discussions">discussions</a> et des <a href="https://github.com/BitOMC/BitOMC/issues">problèmes</a> pertinents.</p>
+<h2 id="linstallation-de-bitcoin-core"><a class="header" href="#linstallation-de-bitcoin-core">L’installation de Bitcoin Core</a></h2>
+<p>Bitcoin Core est disponible sur la <a href="https://bitcoincore.org/en/download/">page de téléchargement</a> de <a href="https://bitcoincore.org/">bitcoincore.org</a>.</p>
+<p><code>bitomc</code> requires Bitcoin Core 24 or newer.</p>
+<p>Ce guide ne couvre pas l’installation de Bitcoin Core en détail. Une fois Bitcoin Core installé, vous devriez être en mesure d’exécuter <code>bitcoind -version</code> avec succès depuis la ligne de commande. N’utilisez <em>PAS</em> <code>bitcoin-qt</code>.</p>
+<h2 id="configurer-bitcoin-core"><a class="header" href="#configurer-bitcoin-core">Configurer Bitcoin Core</a></h2>
+<p><code>bitomc</code> requires Bitcoin Core's rest interface and block data. The <code>bitomc</code> explorer also requires the transaction index, but the explorer is optional.</p>
+<p>Pour configurer votre nœud Bitcoin Core afin qu’il maintienne un index des transactions, ajoutez ce qui suit à votre <code>bitcoin.conf</code>:</p>
+<pre><code>txindex=1
+</code></pre>
+<p>Ou bien, exécutez <code>bitcoind</code> avec <code>-txindex</code>:</p>
+<pre><code>bitcoind -txindex
+</code></pre>
+<p><code>bitomc</code> can be run on a Bitcoin Core node pruned below block 854000. Subsequent blocks may be manually pruned after being indexed by <code>bitomc</code>, but this will prevent <code>bitomc</code> from re-indexing.</p>
+<p>Vous pouvez trouver des détails sur la création ou la modification de votre fichier <code>bitcoin.conf</code> <a href="https://github.com/bitcoin/bitcoin/blob/master/doc/bitcoin-conf.md">ici</a>.</p>
+<h2 id="la-synchronisation-de-la-blockchain-bitcoin"><a class="header" href="#la-synchronisation-de-la-blockchain-bitcoin">La synchronisation de la blockchain Bitcoin</a></h2>
+<p>Pour synchroniser la blockchain, exécutez :</p>
+<pre><code>bitcoind
+</code></pre>
+<p>...et laissez-la s’exécuter jusqu’à ce que <code>getblockcount</code>:</p>
+<pre><code>bitcoin-cli getblockcount
+</code></pre>
+<p>corresponde au nombre de blocs sur un <a href="https://mempool.space/">explorateur de blocs tel que mempool.space</a>. <code>bitomc</code> interagit avec <code>bitcoind</code>, il faut donc laisser <code>bitcoind</code> s’exécuter en arrière-plan lorsque vous utilisez <code>bitomc</code>.</p>
+<p>La blockchain occupe environ 600 Go d’espace disque. Si vous avez un disque externe sur lequel vous souhaitez stocker des blocs, utilisez l’option de configuration <code>blocksdir=&lt;external_drive_path&gt;</code>. C’est beaucoup plus simple que d’utiliser l’option <code>datadir</code> car le fichier cookie sera toujours dans l’emplacement par défaut afin que <code>bitcoin-cli</code> et <code>bitomc</code> puissent le trouver.</p>
+<h2 id="résolution-des-problèmes"><a class="header" href="#résolution-des-problèmes">Résolution des problèmes</a></h2>
+<p>Assurez-vous de pouvoir accéder à <code>bitcoind</code> avec <code>bitcoin-cli -getinfo</code> et qu’il est entièrement synchronisé.</p>
+<p>Si <code>bitcoin-cli -getinfo</code> renvoie <code>Could not connect to the server</code> (n’a pas pu se connecter au serveur), <code>bitcoind</code> ne s’exécute pas.</p>
+<p>Assurez-vous que <code>rpcuser</code>, <code>rpcpassword</code> ou <code>rpcauth</code> ne sont <em>PAS</em> configurés dans votre fichier <code>bitcoin.conf</code>. <code>bitomc</code> nécessite l’utilisation de l’authentification à l’aide de cookies. Assurez-vous qu’il y a un fichier <code>.cookie</code> dans votre répertoire de données Bitcoin.</p>
+<p>Si <code>bitcoin-cli -getinfo</code> renvoie <code>Could not locate RPC credentials</code> (n’a pas pu localiser les informations d’authentification RPC), vous devez spécifier l’emplacement du fichier cookie. Si vous utilisez un répertoire de données personnalisé (en spécifiant l’option <code>datadir</code>), vous devez spécifier l’emplacement du cookie comme suit : <code>bitcoin-cli -rpccookiefile=&lt;your_bitcoin_datadir&gt;/.cookie -getinfo</code>. Lorsque vous exécutez <code>bitomc</code>, vous devez spécifier l’emplacement du fichier cookie à l’aide de <code>--cookie-file=&lt;your_bitcoin_datadir&gt;/.cookie</code>.</p>
+<p>Assurez-vous de ne <em>PAS</em> avoir <code>disablewallet=1</code> dans votre fichier <code>bitcoin.conf</code>. Si <code>bitcoin-cli listwallets</code> renvoie <code>Method not found</code> (méthode non trouvée), le portefeuille est désactivé et vous ne pourrez pas utiliser <code>bitomc</code>.</p>
+<p>Si vous avez configuré <code>maxuploadtarget</code>, cela peut interférer avec le fetch de blocs pour l’index <code>bitomc</code>. Il faut soit le supprimer ou définir <code>whitebind=127.0.0.1:8333</code>.</p>
+<h2 id="linstallation-de-bitomc"><a class="header" href="#linstallation-de-bitomc">L’installation de <code>bitomc</code></a></h2>
+<p>L’utilitaire <code>bitomc</code> est écrit en Rust et peut être compilé à partir des <a href="https://github.com/BitOMC/BitOMC">sources</a>. Des binaires préconstruits sont disponibles sur la <a href="https://github.com/BitOMC/BitOMC/releases">page des versions</a>.</p>
+<p>Vous pouvez installer le dernier binaire préconstruit à partir de la ligne de commande suivante :</p>
+<pre><code class="language-sh">curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s
+</code></pre>
+<p>Une fois <code>bitomc</code> installé, vous devriez être en mesure d’exécuter :</p>
+<pre><code>bitomc --version
+</code></pre>
+<p>Ce qui indiquera le numéro de version de <code>bitomc</code>.</p>
+<h2 id="creating-a-wallet"><a class="header" href="#creating-a-wallet">Creating a Wallet</a></h2>
+<p><code>bitomc</code> uses <code>bitcoind</code> to manage private keys, sign transactions, and broadcast transactions to the Bitcoin network. Additionally the <code>bitomc wallet</code> requires <code>bitomc server</code> running in the background. Make sure these programs are running:</p>
+<pre><code>bitcoind
+</code></pre>
+<pre><code>bitomc server
+</code></pre>
+<p>To create a wallet named <code>bitomc</code>, the default, for use with <code>bitomc wallet</code>, run:</p>
+<pre><code>bitomc wallet create
+</code></pre>
+<p>This will print out your seed phrase mnemonic, store it somewhere safe.</p>
+<pre><code>{
+  "mnemonic": "dignity buddy actor toast talk crisp city annual tourist orient similar federal",
+  "passphrase": ""
+}
+</code></pre>
+<p>If you want to specify a different name or use an <code>bitomc server</code> running on a non-default URL you can set these options:</p>
+<pre><code>bitomc wallet --name foo --server-url http://127.0.0.1:8080 create
+</code></pre>
+<p>To see all available wallet options you can run:</p>
+<pre><code>bitomc wallet help
+</code></pre>
+<h2 id="restoring-and-dumping-wallet"><a class="header" href="#restoring-and-dumping-wallet">Restoring and Dumping Wallet</a></h2>
+<p>The <code>bitomc</code> wallet uses descriptors, so you can export the output descriptors and import them into another descriptor-based wallet. To export the wallet descriptors, which include your private keys:</p>
+<pre><code>$ bitomc wallet dump
+==========================================
+= THIS STRING CONTAINS YOUR PRIVATE KEYS =
+=        DO NOT SHARE WITH ANYONE        =
+==========================================
+{
+  "wallet_name": "bitomc",
+  "descriptors": [
+    {
+      "desc": "tr([551ac972/86'/1'/0']tprv8h4xBhrfZwX9o1XtUMmz92yNiGRYjF9B1vkvQ858aN1UQcACZNqN9nFzj3vrYPa4jdPMfw4ooMuNBfR4gcYm7LmhKZNTaF4etbN29Tj7UcH/0/*)#uxn94yt5",
+      "timestamp": 1296688602,
+      "active": true,
+      "internal": false,
+      "range": [
+        0,
+        999
+      ],
+      "next": 0
+    },
+    {
+      "desc": "tr([551ac972/86'/1'/0']tprv8h4xBhrfZwX9o1XtUMmz92yNiGRYjF9B1vkvQ858aN1UQcACZNqN9nFzj3vrYPa4jdPMfw4ooMuNBfR4gcYm7LmhKZNTaF4etbN29Tj7UcH/1/*)#djkyg3mv",
+      "timestamp": 1296688602,
+      "active": true,
+      "internal": true,
+      "range": [
+        0,
+        999
+      ],
+      "next": 0
+    }
+  ]
+}
+</code></pre>
+<p>An <code>bitomc</code> wallet can be restored from a mnemonic:</p>
+<pre><code>bitomc wallet restore --from mnemonic
+</code></pre>
+<p>Type your mnemonic and press return.</p>
+<p>To restore from a descriptor in <code>descriptor.json</code>:</p>
+<pre><code>cat descriptor.json | bitomc wallet restore --from descriptor
+</code></pre>
+<p>To restore from a descriptor in the clipboard:</p>
+<pre><code>bitomc wallet restore --from descriptor
+</code></pre>
+<p>Paste the descriptor into the terminal and press CTRL-D on unix and CTRL-Z on Windows.</p>
+<h2 id="recevoir-des-sats"><a class="header" href="#recevoir-des-sats">Recevoir des sats</a></h2>
+<p>Les inscriptions sont créées sur des sats individuels, en utilisant des transactions Bitcoin standard qui paient des frais en sats. Votre portefeuille doit donc contenir quelques sats.</p>
+<p>Obtenez une nouvelle adresse à partir de votre portefeuille <code>bitomc</code> en exécutant :</p>
+<pre><code>bitomc wallet receive
+</code></pre>
+<p>Et envoyez-y des fonds.</p>
+<p>Vous pouvez voir les transactions en attente en exécutant :</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>Une fois la transaction confirmée, vous devriez être en mesure de voir les sorties de transactions avec <code>bitomc wallet outputs</code>.</p>
+<h2 id="minting-tighten-and-ease"><a class="header" href="#minting-tighten-and-ease">Minting Tighten and Ease</a></h2>
+<p>To mint Tighten and Ease, run:</p>
+<pre><code>bitomc wallet mint --fee-rate &lt;FEE_RATE&gt;
+</code></pre>
+<p>BitOMC will output the transaction ID, the amount of Tighten and Ease received, and a <code>connected</code> boolean, which will be <code>true</code> if the transaction spends the output left by the previous mint transaction. If so, the transaction will be added to the mempool if and only if it is able to RBF the existing candidate mint transaction (or if it is the first mint transaction seen). If <code>false</code>, the transaction will only mint Tighten and Ease if it is the first transaction in the block.</p>
+<p>You can check the status of the transactions using <a href="https://mempool.space/">the mempool.space block explorer</a>.</p>
+<p>Once the transaction has been mined, you can confirm receipt by running:</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="converting-tighten-and-ease"><a class="header" href="#converting-tighten-and-ease">Converting Tighten and Ease</a></h2>
+<p>To convert between Tighten and Ease using an exact input amount, run:</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate &lt;INPUT_AMOUNT&gt; &lt;MIN_OUTPUT_AMOUNT&gt;
+</code></pre>
+<p>Where <code>INPUT_AMOUNT</code> is the number of runes to convert, a <code>:</code> character, and the name of the input rune, and <code>MIN_OUTPUT_AMOUNT</code> is the minimum number of runes you wish to receive, a <code>:</code> character, and the name of the output rune.</p>
+<p>For example, if you want to convert 1000 TIGHTEN and receive at least 500 EASE, you would use <code>1000:TIGHTEN</code> and <code>500:EASE</code>.</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate 1 1000:TIGHTEN 500:EASE
+</code></pre>
+<p>Alternatively, if you want to convert 1000 TIGHTEN at the latest conversion rate, you would use <code>1000:TIGHTEN</code> and <code>0:EASE</code>.</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate 1 1000:TIGHTEN 0:EASE
+</code></pre>
+<p>To convert between Tighten and Ease using an exact output amount, run:</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate &lt;OUTPUT_AMOUNT&gt; &lt;MAX_INPUT_AMOUNT&gt;
+</code></pre>
+<p>BitOMC will output the transaction ID, the expected amount of Tighten and Ease received, and a <code>connected</code> boolean, which will be <code>true</code> if and only if the transaction spends the output left by the preceding conversion transaction.</p>
+<p>You can check the status of the transactions using <a href="https://mempool.space/">the mempool.space block explorer</a>.</p>
+<p>Once the transaction has been mined, you can confirm receipt by running:</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="sending-sats"><a class="header" href="#sending-sats">Sending Sats</a></h2>
+<p>Send sats by running:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;SAT_AMOUNT&gt;
+</code></pre>
+<p>Where <code>SAT_AMOUNT</code> is the amount of sats to send, an optional space, and the denomination (<code>bit|btc|cbtc|mbtc|msat|nbtc|pbtc|sat|satoshi|ubtc</code>). For example if you want to send 1000 sats, you would use <code>1000 sats</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000 sats
+</code></pre>
+<p>Voyez la transaction en attente avec la commande :</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>Une fois que la transaction d’envoi est confirmée, le destinataire peut confirmer la réception en exécutant :</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="sending-utils"><a class="header" href="#sending-utils">Sending Utils</a></h2>
+<p>Send utils by running:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;UTIL_AMOUNT&gt;
+</code></pre>
+<p>Where <code>UTIL_AMOUNT</code> is the amount of sats to send, an optional space, and the denomination <code>util</code> or <code>utils</code>. For example if you want to send 1000 utils, you would use <code>1000 utils</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000 utils
+</code></pre>
+<p>Voyez la transaction en attente avec la commande :</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>Une fois que la transaction d’envoi est confirmée, le destinataire peut confirmer la réception en exécutant :</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="sending-tighten-and-ease"><a class="header" href="#sending-tighten-and-ease">Sending Tighten and Ease</a></h2>
+<p>Demandez au destinataire de générer une nouvelle adresse en exécutant :</p>
+<pre><code>bitomc wallet receive
+</code></pre>
+<p>Send the runes by running:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;RUNES_AMOUNT&gt;
+</code></pre>
+<p>Where <code>RUNES_AMOUNT</code> is the number of runes to send, a <code>:</code> character, and the name of the rune. For example if you want to send 1000 of TIGHTEN, you would use <code>1000:TIGHTEN</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EXAMPLE
+</code></pre>
+<p>Likewise, if you want to send 1000 of EASE, you would use <code>1000:EASE</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EASE
+</code></pre>
+<p>Voyez la transaction en attente avec la commande :</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>Once the send transaction confirms, the recipient can confirm receipt with:</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="receiving-runes"><a class="header" href="#receiving-runes">Receiving Runes</a></h2>
+<p>Générez une nouvelle adresse de réception en utilisant :</p>
+<pre><code>bitomc wallet receive
+</code></pre>
+<p>The sender can transfer the rune to your address using:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;RUNES_AMOUNT&gt;
+</code></pre>
+<p>Voyez la transaction en attente avec la commande :</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>Once the send transaction confirms, you can confirm receipt by running:</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="réindexation"><a class="header" href="#réindexation">Réindexation</a></h1>
+<p>Parfois, la base de données <code>bitomc</code> doit être réindexée, ce qui signifie qu'il faut supprimer la base de données et relancer le processus d'indexation, soit avec <code>bitomc index update</code> , soit avec <code>bitomc server</code>. Les raisons qui justifient la réindexation sont les suivantes :</p>
+<ol>
+<li>Il existe une nouvelle version importante d’bitomc, qui modifie le schéma de la base de données</li>
+<li>La base de données a été corrompue d'une certaine manière</li>
+</ol>
+<p>La base de données utilisée par bitomc s'appelle <a href="https://github.com/cberner/redb">redb</a>, et l'index se voit donc attribué le nom de fichier par défaut <code>index.redb</code>. Ce fichier est sauvegardé par défaut à différents endroits en fonction de votre système d'exploitation.</p>
+<div class="table-wrapper"><table><thead><tr><th>Plateforme</th><th>Valeur</th><th>Exemple</th></tr></thead><tbody>
+<tr><td>Linux</td><td><code>$XDG_DATA_HOME</code>/bitomc ou <code>$HOME</code>/.local/share/bitomc</td><td>/home/alice/.local/share/bitomc</td></tr>
+<tr><td>macOS</td><td><code>$HOME</code>/Library/Application Support/bitomc</td><td>/Users/Alice/Library/Application Support/bitomc</td></tr>
+<tr><td>Windows</td><td><code>{FOLDERID_RoamingAppData}</code>\bitomc</td><td>C:\Users\Alice\AppData\Roaming\bitomc</td></tr>
+</tbody></table>
+</div>
+<p>Ainsi, pour supprimer la base de données et la réindexer sur MacOS, vous devriez exécuter les commandes suivantes dans le terminal :</p>
+<pre><code class="language-bash">rm ~/Library/Application Support/bitomc/index.redb
+bitomc index update
+</code></pre>
+<p>Vous pouvez bien sûr aussi définir <code>bitomc --datadir &lt;DIR&gt; index update</code> ou lui donner un nom de fichier et un chemin d’accès spécifiques avec <code>bitomc --index &lt;FILENAME&gt; index update</code>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="settings"><a class="header" href="#settings">Settings</a></h1>
+<p><code>bitomc</code> can be configured with the command line, environment variables, a configuration file, and default values.</p>
+<p>The command line takes precedence over environment variables, which take precedence over the configuration file, which takes precedence over defaults.</p>
+<p>The path to the configuration file can be given with <code>--config &lt;CONFIG_PATH&gt;</code>. <code>bitomc</code> will error if <code>&lt;CONFIG_PATH&gt;</code> doesn't exist.</p>
+<p>The path to a directory containing a configuration file name named <code>bitomc.yaml</code> can be given with <code>--config-dir &lt;CONFIG_DIR_PATH&gt;</code> or <code>--datadir &lt;DATA_DIR_PATH&gt;</code> in which case the config path is <code>&lt;CONFIG_DIR_PATH&gt;/bitomc.yaml</code> or <code>&lt;DATA_DIR_PATH&gt;/bitomc.yaml</code>. It is not an error if it does not exist.</p>
+<p>If none of <code>--config</code>, <code>--config-dir</code>, or <code>--datadir</code> are given, and a file named <code>bitomc.yaml</code> exists in the default data directory, it will be loaded.</p>
+<p>For a setting named <code>--setting-name</code> on the command line, the environment variable will be named <code>BITOMC_SETTING_NAME</code>, and the config file field will be named <code>setting_name</code>. For example, the data directory can be configured with <code>--datadir</code> on the command line, the <code>BITOMC_DATA_DIR</code> environment variable, or <code>data_dir</code> in the config file.</p>
+<p>See <code>bitomc --help</code> for documentation of all the settings.</p>
+<p><code>bitomc</code>'s current configuration can be viewed as JSON with the <code>bitomc settings</code> command.</p>
+<h2 id="example-configuration"><a class="header" href="#example-configuration">Example Configuration</a></h2>
+<pre><code class="language-yaml"># example config
+
+# see `bitomc --help` for setting documentation
+
+bitcoin_data_dir: /var/lib/bitcoin
+bitcoin_rpc_password: bar
+bitcoin_rpc_url: https://localhost:8000
+bitcoin_rpc_username: foo
+chain: mainnet
+commit_interval: 10000
+config: /var/lib/bitomc/bitomc.yaml
+config_dir: /var/lib/bitomc
+cookie_file: /var/lib/bitcoin/.cookie
+data_dir: /var/lib/bitomc
+first_rune_height: 100
+height_limit: 1000
+index: /var/lib/bitomc/index.redb
+index_addresses: false
+index_cache_size: 1000000000
+index_transactions: false
+integration_test: true
+server_password: bar
+server_url: http://localhost:8888
+server_username: foo
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="tests"><a class="header" href="#tests">Tests</a></h1>
+<h2 id="test-environment"><a class="header" href="#test-environment">Test Environment</a></h2>
+<p><code>bitomc env &lt;DIRECTORY&gt;</code> creates a test environment in <code>&lt;DIRECTORY&gt;</code>, spins up <code>bitcoind</code> and <code>bitomc server</code> instances, prints example commands for interacting with the test <code>bitcoind</code> and <code>bitomc server</code> instances, waits for <code>CTRL-C</code>, and then shuts down <code>bitcoind</code> and <code>bitomc server</code>.</p>
+<p><code>bitomc env</code> tries to use port 9000 for <code>bitcoind</code>'s RPC interface, and port <code>9001</code> for <code>bitomc</code>'s RPC interface, but will fall back to random unused ports.</p>
+<p>Inside of the env directory, <code>bitomc env</code> will write <code>bitcoind</code>'s configuration to <code>bitcoin.conf</code>, <code>bitomc</code>'s configuration to <code>bitomc.yaml</code>, and the env configuration to <code>env.json</code>.</p>
+<p><code>env.json</code> contains the commands needed to invoke <code>bitcoin-cli</code> and <code>bitomc wallet</code>, as well as the ports <code>bitcoind</code> and <code>bitomc server</code> are listening on.</p>
+<p>These can be extracted into shell commands using <code>jq</code>:</p>
+<pre><code class="language-shell">bitcoin=`jq -r '.bitcoin_cli_command | join(" ")' env/env.json`
+$bitcoin listunspent
+
+bitomc=`jq -r '.ord_wallet_command | join(" ")' env/env.json`
+$bitomc outputs
+</code></pre>
+<p>If <code>bitomc</code> is in the <code>$PATH</code> and the env directory is <code>env</code>, the <code>bitcoin-cli</code> command will be:</p>
+<pre><code>bitcoin-cli -datadir=env`
+</code></pre>
+<p>And the <code>bitomc</code> will be:</p>
+<pre><code>bitomc --datadir env
+</code></pre>
+<h2 id="test-networks"><a class="header" href="#test-networks">Test Networks</a></h2>
+<p>BitOMC can be tested using the following flags to specify the test network. For more information on running Bitcoin Core for testing, see <a href="https://developer.bitcoin.org/examples/testing.html">Bitcoin's developer documentation</a>.</p>
+<p>Most <code>bitomc</code> commands in <a href="guides/wallet.html">wallet</a> can be run with the following network flags:</p>
+<div class="table-wrapper"><table><thead><tr><th>Réseau</th><th>Drapeau</th></tr></thead><tbody>
+<tr><td>Testnet</td><td><code>--testnet</code> ou <code>-t</code></td></tr>
+<tr><td>Signet</td><td><code>--signet</code> ou <code>-s</code></td></tr>
+<tr><td>Regtest</td><td><code>--regtest</code> ou <code>-r</code></td></tr>
+</tbody></table>
+</div>
+<p>Regtest doesn't require downloading the blockchain since you create your own private blockchain, so indexing <code>bitomc</code> is almost instantaneous.</p>
+<h2 id="exemple"><a class="header" href="#exemple">Exemple</a></h2>
+<p>Run <code>bitcoind</code> in regtest with:</p>
+<pre><code>bitcoind -regtest -txindex
+</code></pre>
+<p>Run <code>bitomc server</code> in regtest with:</p>
+<pre><code>bitomc --regtest server
+</code></pre>
+<p>Créez un portefeuille sur regtest avec :</p>
+<pre><code>bitomc --regtest wallet create
+</code></pre>
+<p>Obtenez une adresse de réception sur regtest avec :</p>
+<pre><code>bitomc --regtest wallet receive
+</code></pre>
+<p>Minez 101 blocs (pour débloquer la récompense du coinbase) avec :</p>
+<pre><code>bitcoin-cli -regtest generatetoaddress 101 &lt;receive address&gt;
+</code></pre>
+<p>Mint in regtest with:</p>
+<pre><code>bitomc --regtest wallet mint --fee-rate 1
+</code></pre>
+<p>Mine the transaction with:</p>
+<pre><code>bitcoin-cli -regtest generatetoaddress 1 &lt;receive address&gt;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

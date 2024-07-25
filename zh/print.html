@@ -1,0 +1,825 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="coal" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>BitOMC Handbook</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="highlight.css">
+        <link rel="stylesheet" href="tomorrow-night.css">
+        <link rel="stylesheet" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="language-picker.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "coal" : "coal";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="introduction.html">介绍</a></li><li class="chapter-item expanded "><a href="overview.html"><strong aria-hidden="true">1.</strong> 概述</a></li><li class="chapter-item expanded "><a href="bitomc.html"><strong aria-hidden="true">2.</strong> BitOMC</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="bitomc/specification.html"><strong aria-hidden="true">2.1.</strong> 规范</a></li></ol></li><li class="chapter-item expanded "><a href="contributing.html"><strong aria-hidden="true">3.</strong> 贡献</a></li><li class="chapter-item expanded "><a href="guides.html"><strong aria-hidden="true">4.</strong> 指引</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="guides/wallet.html"><strong aria-hidden="true">4.1.</strong> 钱包</a></li><li class="chapter-item expanded "><a href="guides/reindexing.html"><strong aria-hidden="true">4.2.</strong> 重新索引</a></li><li class="chapter-item expanded "><a href="guides/settings.html"><strong aria-hidden="true">4.3.</strong> 设置</a></li><li class="chapter-item expanded "><a href="guides/testing.html"><strong aria-hidden="true">4.4.</strong> 调试</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">BitOMC Handbook</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="de">Deutsch</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="fr">Français</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="es">Español</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="pt">Português</a>
+                          </button></li>
+                           <li role="none"><button role="menuitem" class="theme">
+                              <a id="ru">Русский</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh">中文版</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ja">日本語版</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ko">한국어</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="fil">Filipino</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ar">العربية</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="hi">हिंदी</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="it">Italiano</a>
+                          </button></li>
+                        </ul>
+
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("zh");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "print.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "en") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+                        </script>
+
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/BitOMC/BitOMC" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="介绍"><a class="header" href="#介绍">介绍</a></h1>
+<p>This handbook is a guide to BitOMC, a metaprotocol on Bitcoin that facilitates the creation of a more stable unit of account for Bitcoin payments.</p>
+<p>In a world with ever-changing economic conditions, Bitcoin's fixed supply makes it unattractive as a unit of account in contracts where payment is due in the future. BitOMC addresses this by defining a market-driven unit of account that can facilitate price stability in a Bitcoin economy, without changing Bitcoin's core protocol.</p>
+<p>BitOMC uses two interconvertible assets, Tighten and Ease, to establish a dynamic interest rate and a new unit of Bitcoin called the "util". Tighten and Ease are transferable on Bitcoin using rules nearly identical to those used by the Runes protocol.</p>
+<p>BitOMC is not premined. Users can mint Tighten and Ease once per block according to the same four-year halving schedule as Bitcoin. To limit network congestion and MEV, mint and conversion transactions leave a small anchor output, which must be spent by the next respective transaction.</p>
+<p>For more high-level details, see the <a href="overview.html">overview</a>.</p>
+<p>For details on the specification, see <a href="bitomc.html">bitomc</a>.</p>
+<p>When you're ready to get your hands dirty, a good place to start is by <a href="guides/wallet.html">minting</a>.</p>
+<h2 id="链接"><a class="header" href="#链接">链接</a></h2>
+<ul>
+<li><a href="https://github.com/BitOMC/BitOMC/">GitHub仓库</a></li>
+<li><a href="https://bitomc.org/bitomc.pdf">BitOMC Whitepaper</a></li>
+<li><a href="https://t.me/bitOMC_chat">BitOMC Telegram group</a></li>
+<li><a href="https://bitomc.org/">BitOMC Website</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc-overview"><a class="header" href="#bitomc-overview">BitOMC Overview</a></h1>
+<p>BitOMC is a fork of the <a href="https://docs.ordinals.com/runes.html">Runes protocol</a>, consisting of two interconvertible assets, Tighten and Ease, which users can convert between according to a constant function conversion rule. This keeps the system in balance and ensures the conversion rate reflects their relative market price. This conversion rate determines a dynamic interest rate, which in turn defines a floating unit of Bitcoin called the "util". Transactions continue to settle in Bitcoin, but parties seeking greater price stability may choose to denominate their contracts in "utils" rather than BTC or a fiat currency.</p>
+<p>Technical details are available in <a href="https://bitomc.org/bitomc.pdf">the whitepaper</a>.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc"><a class="header" href="#bitomc">BitOMC</a></h1>
+<p>BitOMC is a fork of the <a href="https://docs.ordinals.com/runes.html">Runes protocol</a>. Runes allow Bitcoin transactions to mint, transfer, and convert Bitcoin-native digital commodities. There are only two runes in BitOMC, Tighten and Ease.</p>
+<h2 id="符石"><a class="header" href="#符石">符石</a></h2>
+<p>称为符石的符文协议消息，存储在比特币交易输出中。</p>
+<p>In BitOMC, a runestone output's script pubkey begins with an <code>OP_RETURN</code>, followed by <code>OP_14</code>, followed by zero or more data pushes. These data pushes are concatenated and decoded into a sequence of 128-bit integers, and finally parsed into a runestone.</p>
+<p>一笔交易最多可以有一个符石。</p>
+<p>A runestone may mint an existing rune, transfer runes from a transaction's inputs to its outputs, and convert from one rune to another.</p>
+<p>一个交易输出可以持有任意数量的符文余额。</p>
+<p>Runes are identified by IDs. The IDs of Tighten and Ease are <code>1:0</code> and <code>1:1</code>, respectively.</p>
+<h2 id="铸造"><a class="header" href="#铸造">铸造</a></h2>
+<p>Anyone may create a mint transaction that mints the amount of Tighten and Ease available in the block the transaction is mined, plus any amount of Tighten and Ease that has been burned. The issuance of Tighten and Ease follows a four-year halving schedule as outlined in <a href="https://bitomc.org/bitomc.pdf">the whitepaper</a>.</p>
+<h2 id="转移"><a class="header" href="#转移">转移</a></h2>
+<p>When transaction inputs contain runes, or new runes are created by a mint, those runes are transferred to that transaction's outputs. A transaction's runestone may change how input runes transfer to outputs.</p>
+<h3 id="法令"><a class="header" href="#法令">法令</a></h3>
+<p>符石可以包含任意数量的法令。法令由一个符文ID、一个数量和一个输出编号组成。法令按顺序处理，将未分配的符文分配给输出。</p>
+<h3 id="指针"><a class="header" href="#指针">指针</a></h3>
+<p>在所有法令处理完毕后，剩余的未分配符文被转移到交易的第一个非OP_RETURN输出。符石可以选择性地包含一个指针，指定一个替代的默认输出。</p>
+<h3 id="燃烧"><a class="header" href="#燃烧">燃烧</a></h3>
+<p>符文可以通过将它们转移到一个包含法令或指针的<code>OP_RETURN</code>输出来燃烧。</p>
+<h2 id="converting"><a class="header" href="#converting">Converting</a></h2>
+<p>When runes of one ID are burned and runes of another are transferred in excess of their input balance, those runes are created if the conversion rules are satisfied. Any remaining runes post-conversion are transferred to the ID of the last edict in the runestone.</p>
+<h2 id="墓碑"><a class="header" href="#墓碑">墓碑</a></h2>
+<p>由于多种原因，符石可能会形成错误，包括符石<code>OP_RETURN</code>中的非推送数据操作码、无效的变长整数或无法识别的符石字段。</p>
+<p>形成错误的符石被称为<a href="https://en.wikipedia.org/wiki/Cenotaph">墓碑</a>.</p>
+<p>输入到包含墓碑的交易的符文被燃烧。在包含墓碑的交易中刻画的符文被设置为不可铸造。在包含墓碑的交易中的铸造计入铸造上限，但铸造的符文被燃烧。</p>
+<p>墓碑是一种升级机制，允许符石被赋予新的语义，改变符文的创建和转移方式，同时不会误导未升级的客户端关于这些符文的位置，因为未升级的客户端会看到这些符文已经被燃烧。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc-does-not-have-a-specification"><a class="header" href="#bitomc-does-not-have-a-specification">BitOMC Does Not Have a Specification</a></h1>
+<p>The BitOMC reference implementation, <code>bitomc</code>, is the normative specification of the BitOMC protocol.</p>
+<p>Nothing you read here or elsewhere, aside from the code of <code>bitomc</code>, is a specification. This prose description of the BitOMC protocol is provided as a guide to the behavior of <code>bitomc</code>, and the code of <code>bitomc</code> itself should always be consulted to confirm the correctness of any prose description.</p>
+<p>如果由于<code>bitomc</code>中的一个错误，本文档与<code>bitomc</code>的实际行为出现偏差，并且改变<code>bitomc</code>的行为实际上是不切实际的，那么本文档将被修订以符合<code>bitomc</code>的实际行为。</p>
+<p>使用替代实现的用户需自担风险，强烈建议希望整合符文的服务使用<code>bitomc</code>本身来进行符文交易，并确定符文、铸币和余额的状态</p>
+<h2 id="符石-1"><a class="header" href="#符石-1">符石</a></h2>
+<p>Like Runes, BitOMC protocol messages are termed "runestones".</p>
+<p>The protocol activates on block 854,000. Runestones in earlier blocks are ignored.</p>
+<p>抽象地，符石包含以下字段：1</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Runestone {
+  edicts: Vec&lt;Edict&gt;,
+  pointer: Option&lt;u32&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符文通过法令转移：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符文 ID 被编码为蚀刻符文的交易的区块高度和交易索引：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct RuneId {
+  block: u64,
+  tx: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符文 ID 在文本中表示为<code>BLOCK:TX</code>。</p>
+<p>符文名称被编码为修改后的 26 进制整数：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Rune(u128);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="破译"><a class="header" href="#破译">破译</a></h3>
+<p>解读符石是通过以下步骤从交易中解码得到的：</p>
+<ol>
+<li>
+<p>Find the first transaction output whose script pubkey begins with <code>OP_RETURN OP_14</code>.</p>
+</li>
+<li>
+<p>将所有后续数据推送连接到一个有效载荷缓冲区中。</p>
+</li>
+<li>
+<p>从有效载荷缓冲区解码一系列 128 位的 <a href="https://en.wikipedia.org/wiki/LEB128">LEB128</a> 整数。</p>
+</li>
+<li>
+<p>将整数序列解析为未类型化消息。</p>
+</li>
+<li>
+<p>将未类型化消息解析为符石。</p>
+</li>
+</ol>
+<p>解读可能会产生一个格式错误的符石，称为<a href="https://en.wikipedia.org/wiki/Cenotaph">纪念碑</a>。</p>
+<h4 id="定位符石输出"><a class="header" href="#定位符石输出">定位符石输出</a></h4>
+<p>Outputs are searched for the first script pubkey that beings with <code>OP_RETURN OP_14</code>. If deciphering fails, later matching outputs are not considered.</p>
+<h4 id="组装有效载荷缓冲区"><a class="header" href="#组装有效载荷缓冲区">组装有效载荷缓冲区</a></h4>
+<p>The payload buffer is assembled by concatenating data pushes, after <code>OP_14</code>, in the matching script pubkey.</p>
+<p>数据推送是操作码 0 到 78 之间的操作码。如果遇到大于或等于操作码 79 的操作码，则解密的符文是一个没有雕刻、铸造或法令的纪念碑。</p>
+<h4 id="解码整数序列"><a class="header" href="#解码整数序列">解码整数序列</a></h4>
+<p>从有效载荷中解码一系列 128 位整数作为 LEB128 变长整数。</p>
+<p>LEB128 变长整数被编码为一系列字节，每个字节的最高有效位都被设置，最后一个字节除外。</p>
+<p>如果 LEB128 变长整数包含超过 18 个字节，会溢出一个 u128，或者是截断的，意味着在遇到未设置继续位的字节之前达到有效载荷缓冲区的末尾，解码的符石是没有铭刻、铸造或法令的纪念碑。</p>
+<h4 id="解析消息"><a class="header" href="#解析消息">解析消息</a></h4>
+<p>将整数序列解析为未类型化消息。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Message {
+  pointer: Option&lt;u32&gt;,
+  edicts: Vec&lt;Edict&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the number of integers is odd, the first integer is interpreted as the pointer, and all subsequent integer pairs are interpreted as edicts. If the number of integers is even, the pointer is set to null, and each integer pair is interpreted as an edict.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>In the integer pair, <code>id</code> is interpreted as <code>1:0</code> (Tighten) if the first integer is odd. Otherwise, <code>id</code> is interpreted as <code>1:1</code> (Ease). <code>amount</code> is interpreted as the first integer divided by 2, and <code>output</code> is interpreted as the second integer.</p>
+<h4 id="铸造-1"><a class="header" href="#铸造-1">铸造</a></h4>
+<p>A transaction may mint Tighten and Ease by including an output that anyone can spend after 1 block, using a P2WSH for <code>OP_1 OP_CHECKSEQUENCEVERIFY</code>, and spending the output of the previous mint, if unspent. If no such output exists, the first mint transaction receives the mint reward.</p>
+<p>If successful, the mint amount is added to the unallocated runes in the transaction's inputs. These runes may be transferred using edicts, and will otherwise be transferred to the first non-<code>OP_RETURN</code> output, or the output designated by the <code>Pointer</code> field. A runestone is required for a mint transaction to be valid.</p>
+<p>At the start of each block, the amount of Tighten and Ease to be issued is immediately burned, and the mint transaction receives the amount of outstanding burned Tighten and Ease. For this reason, if no mint transaction is present, the runes to be issued are made available to the first minter in subsequent blocks.</p>
+<h4 id="转移-1"><a class="header" href="#转移-1">转移</a></h4>
+<p>符文通过法令转移：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符石可以包含任意数量的法令edicts，这些法令edicts按顺序处理。</p>
+<p>在处理法令edicts之前，输入符文以及铸造或预铸的符文（如果有）是未分配的。</p>
+<p>每个法令将rune <code>id</code>的未分配余额减少，并将rune <code>id</code>的余额增加到交易输出。</p>
+<p>如果法令edict将分配的符文数量超过当前未分配的符文，则数量将减少到当前未分配的符文<code>数量</code>。换句话说，法令edict分配了rune<code>id</code>的所有剩余未分配单位。</p>
+<p>金额<code>amount</code>为零的法令分配了rune <code>id</code>的所有剩余单位。</p>
+<p>An edict with <code>output</code> equal to the number of transaction outputs allocates <code>amount</code> runes to each non-<code>OP_RETURN</code> output in order.</p>
+<p>金额<code>amount</code> 为零且输出等于交易输出<code>output</code> 数量的法令将所有未分配的rune <code>id</code>单位平均分配给每个非<code>OP_RETURN</code>输出。如果未分配的符文数量不能被非<code>OP_RETURN</code>输出的数量整除，则前<code>R</code>个非<code>OP_RETURN</code>输出将分配1个额外的符文，其中<code>R</code>是将未分配的rune <code>id</code>单位余额除以非<code>OP_RETURN</code>输出数量后的余数。</p>
+<p>If any edict in a runestone has an <code>output</code> greater than the number of transaction outputs, the runestone is a cenotaph.</p>
+<p>注意，纪念碑中的法令不会被处理，所有输入符文都将被销毁。</p>
+<h4 id="converting-1"><a class="header" href="#converting-1">Converting</a></h4>
+<p>A runestone may convert between Tighten and Ease by burning one as an input and allocating more of the other than are unallocated. The ID of the final edict in the Runestone determines whether the input or the output of the conversion is to be exact. If the ID is the same as the output ID, then the input is exact and the required output is the minimum allowable output amount. Otherwise, the output is exact and the input is the maximum allowable input amount.</p>
+<p>Runes are converted according to the invariant <code>A^2 + B^2 = K^2</code>, where <code>A</code> and <code>B</code> are the supply of Tighten and Ease, respectively, and <code>K</code> is some constant, which is the same before and after.</p>
+<p>If the invariant is satisfied, the output runes are allocated. If the conversion yields more output runes than the minimum allowable output amount, the additional output runes are allocated to the first tx output already receiving output runes.</p>
+<p>If the conversion requires fewer input runes than the maximum allowable input amount, the leftover input runes are allocated to the output of the last edict of input ID with an output whose value is less than the number of tx outputs. If no such output exists, the input runes are allocated to the first output with a non-zero balance for input ID. If still unallocated, the input runes are allocated to the output of the first edict.</p>
+<p>If the invariant is not satisfied, the transaction does not signal RBF, the transaction fails to leave a P2WPKH output for the private key <code>0x01</code> repeating, or the P2WPKH output of the preceding conversion is unspent and not spent by this transaction, the burned input runes are unburned and allocated according to the same rules as the preceding paragraph.</p>
+<p>An exception to this final condition is made for conversions in a block <code>P</code> in which the first conversion cannot spend an output of a previous conversion. When this is case, conversions in the block do not need to spend an output of the previous conversion to be valid. The first conversion in the next block, however, must spend the output created by the first conversion in block <code>P</code>.</p>
+<h2 id="the-util"><a class="header" href="#the-util">The Util</a></h2>
+<p>The util is the dynamic unit of account created by BitOMC. The util is a dynamic sub-denomination of sats, determined by an interest rate that is controlled by the relative quantity of Tighten and Ease. To calculate the number of utils per sat, a second sub-denomination of sats is introduced, called the e-bond. The number of e-bonds per sat increases monotically at the current interest rate. The number of utils per sat is then determined by the number of utils per e-bond, which is 1 divided by the interest rate.</p>
+<h3 id="the-interest-rate"><a class="header" href="#the-interest-rate">The Interest Rate</a></h3>
+<p>The interest rate equals the median value of <code>(A - B) / (A + B)</code> over the last 100 blocks where <code>A &gt; B</code> and <code>(A - B) / (A + B)</code> is non-zero after integer division. <code>A</code> and <code>B</code> are the supply of Tighten and Ease, respectively, and the value is calculated to 12 decimal places. The default interest rate is 100%.</p>
+<p>The number of e-bonds per sat is stored as an integer with 12 decimal places and updated each block using the current interest rate divided by 52,595, which is approximately the number of blocks per year.</p>
+<h3 id="utils-per-sat"><a class="header" href="#utils-per-sat">Utils per Sat</a></h3>
+<p>The number of utils per bond is calculated by dividing 10^24 by the interest rate in integer form.</p>
+<p>The number of utils per sat is calculated by multiplying the number of bonds per sat by the number of utils per bond and dividing by 10^12.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="如何为bitomc做贡献"><a class="header" href="#如何为bitomc做贡献">如何为<code>bitomc</code>做贡献</a></h1>
+<h2 id="建议的步骤"><a class="header" href="#建议的步骤">建议的步骤</a></h2>
+<ol>
+<li>找到一个你想解决的问题。</li>
+<li>弄清楚什么是解决这个问题的良好的第一步，这可以是代码，研究和提案的形式，或者是如果它已经过时，或者一开始就不是一个好主意，则建议将其关闭。</li>
+<li>概述您所建议的第一步，对问题进行评论，并征求反馈。当然你也可以立即投入并开始编写代码或者测试。但是如果问题已经过时、未明确制定、因其他原因受阻或者未准备好实施，这一步可以避免潜在的精力浪费。</li>
+<li>如果问题需要更改代码或者修复错误，请打开测试PR草稿，并征求反馈意见。这将保证每一个人会同步知道需要做一些什么，或者解决这个问题的第一步是什么。同样，调试是必须的，所以首先写出测试草案并确认更新是可以被容易的测试的。</li>
+<li>随机敲击键盘直到测试通过，然后重构直到代码准备好提交。</li>
+<li>将 PR 标记为审查就绪。</li>
+<li>根据需要修改 PR 。</li>
+<li>最后一步，合并！</li>
+</ol>
+<h2 id="集腋成裘"><a class="header" href="#集腋成裘">集腋成裘</a></h2>
+<p>小的改变可以让你迅速的产生影响力，即便你采取了错误的策略，你也不会浪费太多的时间。</p>
+<p>一些小问题的思路:</p>
+<ul>
+<li>增加新的测试或者测试案例以增加测试的覆盖率</li>
+<li>增加或者改进文档</li>
+<li>找到一个需要更多研究的问题，进行研究并在评论中进行总结</li>
+<li>找到一个过时的问题，并评论使其关闭</li>
+<li>找到一个本不该做的问题，并提供建设性的反馈，详细说明您认为会出现这种情况的原因</li>
+</ul>
+<h2 id="早合并勤合并"><a class="header" href="#早合并勤合并">早合并，勤合并</a></h2>
+<p>将大大型的任务分成多个较小的步骤，这些步骤可以单独取的进展。如果有程序错误，您也可以打开一个PR，添加一个失败的忽略测试。这可以合并，下一步可以修复错误并忽略测试。将你的研究或者测试结果进行报告。将一个大的功能分解为小的子功能并一次一个的逐步实现它们。</p>
+<p>弄清楚如何将一个较大的PR分解成较小的PR，每个PR都可以合并是一种非常值得练习，这也是编程的一种艺术。 困难的部分是每个PR本身必须是一个改进。</p>
+<p>我自己努力遵循这个建议，而且当我这样做时，我总是可以做的更好。</p>
+<p>小的更改可以快速编写、审查和合并，这比为一个需要永远编写、审查和合并的大型的PR工作要有趣得多。小的更改不会花费太多时间，因此如果您需要停止处理一个小的更改，与代表许多小时工作的较大更改相比，您不会浪费太多时间。 快速获得PR可以立即改进项目，而不必等待很长时间才能进行更大的改进。 小的更改不太可能累积合并冲突。正如雅典人所说：<em>快者尽其所愿，慢者兼并其所必须。</em></p>
+<h2 id="寻求帮助"><a class="header" href="#寻求帮助">寻求帮助</a></h2>
+<p>如果您遇到困难超过 15 分钟，请寻求帮助，例如 Rust Discord、Stack Exchange，或者在项目问题或讨论中寻求帮助。</p>
+<h2 id="实践假说驱动的调试"><a class="header" href="#实践假说驱动的调试">实践'假说驱动'的调试</a></h2>
+<p>就导致问题的原因提出假设。 弄清楚如何检验该假设。 执行该测试。 如果有效，那太好了，您解决了问题，或者现在您知道如何解决问题了。 如果不是，请重复一个新的假设。</p>
+<h2 id="关注错误信息"><a class="header" href="#关注错误信息">关注错误信息</a></h2>
+<p>阅读所有错误消息，不要容忍警告。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="bitomc-guides"><a class="header" href="#bitomc-guides">BitOMC Guides</a></h1>
+<p>See the table of contents for a list of guides, including a guide to the explorer and a guide to the wallet.</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="钱包"><a class="header" href="#钱包">钱包</a></h1>
+<p>Tighten and Ease can be held in a Bitcoin wallet and transferred using Bitcoin transactions. Utils are a floating denomination of sats and can be transferred by transferring the equivalent number of sats.</p>
+<p>BitOMC requires a Bitcoin node to give you a view of the current state of the Bitcoin blockchain, and a wallet that can transfer utils, mint and convert Tighten and Ease, and perform sat control when constructing transactions to send them to another wallet.</p>
+<p>Bitcoin Core provides both a Bitcoin node and wallet. However, the Bitcoin Core wallet cannot mint or convert Tighten and Ease and does not perform sat control.</p>
+<p>The utility <a href="https://github.com/BitOMC/BitOMC"><code>bitomc</code></a> doesn't implement its own wallet, so <code>bitomc wallet</code> subcommands interact with Bitcoin Core wallets.</p>
+<p>本指南涵盖：</p>
+<ol>
+<li>安装 Bitcoin Core</li>
+<li>同步比特币区块链</li>
+<li>创建 Bitcoin Core 钱包</li>
+<li>使用 <code>bitomc wallet receive</code>收取聪</li>
+<li>Minting Tighten and Ease with <code>bitomc wallet mint</code></li>
+<li>Converting Tighten and Ease with <code>bitomc wallet convert-exact-input</code> and <code>bitomc wallet convert-exact-output</code></li>
+<li>Sending sats, utils, and Tighten and Ease with <code>bitomc wallet send</code></li>
+<li>Receiving Tighten and Ease with <code>bitomc wallet receive</code></li>
+</ol>
+<h2 id="寻求帮助-1"><a class="header" href="#寻求帮助-1">寻求帮助</a></h2>
+<p>如果你遇到困难，可以在<a href="https://discord.com/invite/87cjuz4FYg">Ordinals Discord Server</a>,或者检查Github上的相关内容<a href="https://github.com/BitOMC/BitOMC/issues">问题</a> 和<a href="https://github.com/BitOMC/BitOMC/discussions">讨论</a>.</p>
+<h2 id="安装-bitcoin-core"><a class="header" href="#安装-bitcoin-core">安装 Bitcoin Core</a></h2>
+<p>Bitcoin Core 可以在 <a href="https://bitcoincore.org/">bitcoincore.org</a> 上的<a href="https://bitcoincore.org/en/download/">下载页面</a>.</p>
+<p><code>bitomc</code> requires Bitcoin Core 24 or newer.</p>
+<p>本指南不包括如何详细安装 Bitcoin Core；当你成功安装Bitcoin Core以后，你应该可以在命令行使用 <code>bitcoind -version</code>命令。</p>
+<h2 id="配置-bitcoin-core"><a class="header" href="#配置-bitcoin-core">配置 Bitcoin Core</a></h2>
+<p><code>bitomc</code> requires Bitcoin Core's rest interface and block data. The <code>bitomc</code> explorer also requires the transaction index, but the explorer is optional.</p>
+<p>配置你的Bitcoin Core阶段去维护一个交易索引，需要在<code>bitcoin.conf</code>里面添加:</p>
+<pre><code>txindex=1
+</code></pre>
+<p>或者, 运行 <code>bitcoind</code> 和 <code>-txindex</code>:</p>
+<pre><code>bitcoind -txindex
+</code></pre>
+<p><code>bitomc</code> can be run on a Bitcoin Core node pruned below block 854000. Subsequent blocks may be manually pruned after being indexed by <code>bitomc</code>, but this will prevent <code>bitomc</code> from re-indexing.</p>
+<p>关于创建或者修改你的 <code>bitcoin.conf</code>文件，可以参考 <a href="https://github.com/bitcoin/bitcoin/blob/master/doc/bitcoin-conf.md">这里</a>.</p>
+<h2 id="比特币区块同步"><a class="header" href="#比特币区块同步">比特币区块同步</a></h2>
+<p>区块同步，运行：</p>
+<pre><code>bitcoind
+</code></pre>
+<p>…直到运行 <code>getblockcount</code>:</p>
+<pre><code>bitcoin-cli getblockcount
+</code></pre>
+<p>像区块链浏览器<a href="https://mempool.space/">the mempool.space block explorer</a>一样对区块进行记述. <code>bitomc</code>同<code>bitcoind</code>进行交互, 所以你在使用<code>bitomc</code>时候需要让<code>bitcoind</code> 在后台运行。</p>
+<p>区块链占用约600GB的磁盘空间。如果你有一个外接硬盘来存储区块，可以使用配置选项<code>blocksdir=&lt;external_drive_path&gt;</code>. 这比使用<code>datadir</code> 选项更简单， <code>bitcoin-cli</code> 和 <code>bitomc</code> 可以在默认的位置找到cookie文件</p>
+<h2 id="故障排除"><a class="header" href="#故障排除">故障排除</a></h2>
+<p>确保你可以通过 <code>bitcoin-cli -getinfo</code> 来访问<code>bitcoind</code> ，并且它已经完全同步</p>
+<p>假如 <code>bitcoin-cli -getinfo</code> 返回的是 <code>Could not connect to the server</code>, 这可能是<code>bitcoind</code> 没有运行</p>
+<p>确保 <code>rpcuser</code>, <code>rpcpassword</code>, 或者 <code>rpcauth</code> <em>没有</em> 在你的 <code>bitcoin.conf</code> 文件里进行设置。 <code>bitomc</code> 需要使用 cookie 认证。因此需要确保 你的bitcoin data的文件夹里有 <code>.cookie</code>文件。</p>
+<p>如果 <code>bitcoin-cli -getinfo</code> 返回<code>Could not locate RPC credentials</code>, 那么 你必须指定 cookie 文件的位置。如果你正在使用自定义的数据目录 (指定 <code>datadir</code> 的选项),那么你必须指定cookie文件的位置. <code>bitcoin-cli -rpccookiefile=&lt;your_bitcoin_datadir&gt;/ cookie -getinfo</code>.当你运行 <code>bitomc</code> 命令时，你必须指定 cookie 文件的位置 <code>--cookie-file=&lt;your_bitcoin_datadir&gt;/.cookie</code>.</p>
+<p>确保你在<code>bitcoin.conf</code> 文件中 <em>没有</em> 配置 <code>disablewallet=1</code> 如果 <code>bitcoin-cli listwallets</code> 返回 <code>Method not found</code> 那么钱包就会被禁用你将要无法使用 <code>bitomc</code>.</p>
+<p>如果你设置了<code>maxuploadtarget</code> ，他将干扰 <code>bitomc</code> 的索引获取区块， 你可以选择移除或者设置<code>whitebind=127.0.0.1:8333</code>.</p>
+<h2 id="安装-bitomc"><a class="header" href="#安装-bitomc">安装 <code>bitomc</code></a></h2>
+<p><code>bitomc</code> 程序使用Rust语言写成，可以从<a href="https://github.com/BitOMC/BitOMC">源码</a>安装. 预制文件可以从<a href="https://github.com/BitOMC/BitOMC/releases">版本发布页</a>下载。</p>
+<p>你也可以在命令行中使用下面命令来安装最新的文件：</p>
+<pre><code class="language-sh">curl --proto '=https' --tlsv1.2 -fsLS https://bitomc.org/install.sh | bash -s
+</code></pre>
+<p>当 <code>bitomc</code> 成功安装以后,你可以运行 :</p>
+<pre><code>bitomc --version
+</code></pre>
+<p>这会返回 <code>bitomc</code>的版本信息.</p>
+<h2 id="创建一个bitcoin-core钱包"><a class="header" href="#创建一个bitcoin-core钱包">创建一个Bitcoin Core钱包</a></h2>
+<p><code>bitomc</code> uses <code>bitcoind</code> to manage private keys, sign transactions, and broadcast transactions to the Bitcoin network. Additionally the <code>bitomc wallet</code> requires <code>bitomc server</code> running in the background. Make sure these programs are running:</p>
+<pre><code>bitcoind
+</code></pre>
+<pre><code>bitomc server
+</code></pre>
+<p>创建一个名为<code>bitomc</code> 的Bitcoin Core 钱包，运行:</p>
+<pre><code>bitomc wallet create
+</code></pre>
+<p>这将打印出您的助记词，并将其存储在安全的地方。</p>
+<pre><code>{
+  "mnemonic": "dignity buddy actor toast talk crisp city annual tourist orient similar federal",
+  "passphrase": ""
+}
+</code></pre>
+<p>如果你想指定不同的名称或者在非默认的URL上运行 <code>bitomc server</code>你可以设置以下选项:</p>
+<pre><code>bitomc wallet --name foo --server-url http://127.0.0.1:8080 create
+</code></pre>
+<p>查看所有可用的钱包选项，你可以运行</p>
+<pre><code>bitomc wallet help
+</code></pre>
+<h2 id="恢复和转存钱包"><a class="header" href="#恢复和转存钱包">恢复和转存钱包</a></h2>
+<p><code>bitomc</code>钱包使用描述符descriptors,你可以导出输出描述符并将它们导入另外一个基于描述符的钱包导出钱包描述符，其中包含你的私钥:</p>
+<pre><code>$ bitomc wallet dump
+==========================================
+= 这个字节包含你的私钥信息 =
+=   不要和任何人分享 =
+==========================================
+{
+  "wallet_name": "bitomc",
+  "descriptors": [
+    {
+      "desc": "tr([551ac972/86'/1'/0']tprv8h4xBhrfZwX9o1XtUMmz92yNiGRYjF9B1vkvQ858aN1UQcACZNqN9nFzj3vrYPa4jdPMfw4ooMuNBfR4gcYm7LmhKZNTaF4etbN29Tj7UcH/0/*)#uxn94yt5",
+      "timestamp": 1296688602,
+      "active": true,
+      "internal": false,
+      "range": [
+        0,
+        999
+      ],
+      "next": 0
+    },
+    {
+      "desc": "tr([551ac972/86'/1'/0']tprv8h4xBhrfZwX9o1XtUMmz92yNiGRYjF9B1vkvQ858aN1UQcACZNqN9nFzj3vrYPa4jdPMfw4ooMuNBfR4gcYm7LmhKZNTaF4etbN29Tj7UcH/1/*)#djkyg3mv",
+      "timestamp": 1296688602,
+      "active": true,
+      "internal": true,
+      "range": [
+        0,
+        999
+      ],
+      "next": 0
+    }
+  ]
+}
+</code></pre>
+<p><code>bitomc</code> 钱包可以从助记词恢复:</p>
+<pre><code>bitomc wallet restore --from mnemonic
+</code></pre>
+<p>输入你的助记词并按回车</p>
+<p>从<code>descriptor.json</code>恢复描述符:</p>
+<pre><code>cat descriptor.json | bitomc wallet restore --from descriptor
+</code></pre>
+<p>要从剪贴板中的描述符恢复：</p>
+<pre><code>bitomc wallet restore --from descriptor
+</code></pre>
+<p>将描述符粘贴到终端中，UNIX里按CTRL-D 或 Windows里按 CTRL-Z</p>
+<h2 id="接收聪"><a class="header" href="#接收聪">接收聪</a></h2>
+<p>铭文是在单个聪上制作的，使用聪来支付费用的普通比特币交易，因此你的钱包将需要一些 聪（比特币）。</p>
+<p>为你的 <code>bitomc</code> 钱包创建一个新地址，运行:</p>
+<pre><code>bitomc wallet receive
+</code></pre>
+<p>向上面地址发送一些资金。</p>
+<p>你可以使用以下命令看到交易情况：</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>一旦交易确认，你应该可以使用 <code>bitomc wallet outputs</code>看到交易的输出；</p>
+<h2 id="minting-tighten-and-ease"><a class="header" href="#minting-tighten-and-ease">Minting Tighten and Ease</a></h2>
+<p>To mint Tighten and Ease, run:</p>
+<pre><code>bitomc wallet mint --fee-rate &lt;FEE_RATE&gt;
+</code></pre>
+<p>BitOMC will output the transaction ID, the amount of Tighten and Ease received, and a <code>connected</code> boolean, which will be <code>true</code> if the transaction spends the output left by the previous mint transaction. If so, the transaction will be added to the mempool if and only if it is able to RBF the existing candidate mint transaction (or if it is the first mint transaction seen). If <code>false</code>, the transaction will only mint Tighten and Ease if it is the first transaction in the block.</p>
+<p>You can check the status of the transactions using <a href="https://mempool.space/">the mempool.space block explorer</a>.</p>
+<p>Once the transaction has been mined, you can confirm receipt by running:</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="converting-tighten-and-ease"><a class="header" href="#converting-tighten-and-ease">Converting Tighten and Ease</a></h2>
+<p>To convert between Tighten and Ease using an exact input amount, run:</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate &lt;INPUT_AMOUNT&gt; &lt;MIN_OUTPUT_AMOUNT&gt;
+</code></pre>
+<p>Where <code>INPUT_AMOUNT</code> is the number of runes to convert, a <code>:</code> character, and the name of the input rune, and <code>MIN_OUTPUT_AMOUNT</code> is the minimum number of runes you wish to receive, a <code>:</code> character, and the name of the output rune.</p>
+<p>For example, if you want to convert 1000 TIGHTEN and receive at least 500 EASE, you would use <code>1000:TIGHTEN</code> and <code>500:EASE</code>.</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate 1 1000:TIGHTEN 500:EASE
+</code></pre>
+<p>Alternatively, if you want to convert 1000 TIGHTEN at the latest conversion rate, you would use <code>1000:TIGHTEN</code> and <code>0:EASE</code>.</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate 1 1000:TIGHTEN 0:EASE
+</code></pre>
+<p>To convert between Tighten and Ease using an exact output amount, run:</p>
+<pre><code>bitomc wallet convert-exact-input --fee-rate &lt;OUTPUT_AMOUNT&gt; &lt;MAX_INPUT_AMOUNT&gt;
+</code></pre>
+<p>BitOMC will output the transaction ID, the expected amount of Tighten and Ease received, and a <code>connected</code> boolean, which will be <code>true</code> if and only if the transaction spends the output left by the preceding conversion transaction.</p>
+<p>You can check the status of the transactions using <a href="https://mempool.space/">the mempool.space block explorer</a>.</p>
+<p>Once the transaction has been mined, you can confirm receipt by running:</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="sending-sats"><a class="header" href="#sending-sats">Sending Sats</a></h2>
+<p>Send sats by running:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;SAT_AMOUNT&gt;
+</code></pre>
+<p>Where <code>SAT_AMOUNT</code> is the amount of sats to send, an optional space, and the denomination (<code>bit|btc|cbtc|mbtc|msat|nbtc|pbtc|sat|satoshi|ubtc</code>). For example if you want to send 1000 sats, you would use <code>1000 sats</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000 sats
+</code></pre>
+<p>检查未完成交易情况：</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>一旦交易确认，接收方可以使用一下命令查看接收到的铭文</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="sending-utils"><a class="header" href="#sending-utils">Sending Utils</a></h2>
+<p>Send utils by running:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;UTIL_AMOUNT&gt;
+</code></pre>
+<p>Where <code>UTIL_AMOUNT</code> is the amount of sats to send, an optional space, and the denomination <code>util</code> or <code>utils</code>. For example if you want to send 1000 utils, you would use <code>1000 utils</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000 utils
+</code></pre>
+<p>检查未完成交易情况：</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>一旦交易确认，接收方可以使用一下命令查看接收到的铭文</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="sending-tighten-and-ease"><a class="header" href="#sending-tighten-and-ease">Sending Tighten and Ease</a></h2>
+<p>铭文接收方使用一下命令生成地址</p>
+<pre><code>bitomc wallet receive
+</code></pre>
+<p>使用命令格式发送铭文：</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;RUNES_AMOUNT&gt;
+</code></pre>
+<p>Where <code>RUNES_AMOUNT</code> is the number of runes to send, a <code>:</code> character, and the name of the rune. For example if you want to send 1000 of TIGHTEN, you would use <code>1000:TIGHTEN</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EXAMPLE
+</code></pre>
+<p>Likewise, if you want to send 1000 of EASE, you would use <code>1000:EASE</code>.</p>
+<pre><code>bitomc wallet send --fee-rate 1 SOME_ADDRESS 1000:EASE
+</code></pre>
+<p>检查未完成交易情况：</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>一旦交易确认，接收方可以使用一下命令查看接收到的铭文</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<h2 id="receiving-runes"><a class="header" href="#receiving-runes">Receiving Runes</a></h2>
+<p>使用以下命令生成一个新的接收地址</p>
+<pre><code>bitomc wallet receive
+</code></pre>
+<p>The sender can transfer the rune to your address using:</p>
+<pre><code>bitomc wallet send --fee-rate &lt;FEE_RATE&gt; &lt;ADDRESS&gt; &lt;RUNES_AMOUNT&gt;
+</code></pre>
+<p>检查未完成交易情况：</p>
+<pre><code>bitomc wallet transactions
+</code></pre>
+<p>一旦交易确认，你可以使用以下命令确认收到</p>
+<pre><code>bitomc wallet balance
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="重新索引"><a class="header" href="#重新索引">重新索引</a></h1>
+<p>有时必须重新索引‘bitomc’数据库，这意味着删除数据库并使用 <code>bitomc index update</code>或<code>bitomc server</code>来重新索引数据库。重新索引的原因是：</p>
+<ol>
+<li>bitomc 发布新的主要版本，更改了数据库架构</li>
+<li>数据库可能会损坏</li>
+</ol>
+<p><code>bitomc</code> 使用的数据库称为 <a href="https://github.com/cberner/redb">redb</a>，所以我们为索引指定默认文件名‘index.redb’。默认情况下我们存储根据您的操作系统，此文件位于不同的位置。</p>
+<div class="table-wrapper"><table><thead><tr><th>平台</th><th>Value</th><th>示例</th></tr></thead><tbody>
+<tr><td>Linux</td><td><code>$XDG_DATA_HOME</code>/bitomc or <code>$HOME</code>/.local/share/bitomc</td><td>/home/alice/.local/share/bitomc</td></tr>
+<tr><td>macOS</td><td><code>$HOME</code>/Library/Application Support/bitomc</td><td>/Users/Alice/Library/Application Support/bitomc</td></tr>
+<tr><td>Windows</td><td><code>{FOLDERID_RoamingAppData}</code>\bitomc</td><td>C:\Users\Alice\AppData\Roaming\bitomc</td></tr>
+</tbody></table>
+</div>
+<p>因此，要在 MacOS 上删除数据库并重新索引，您必须在终端中执行以下命令：</p>
+<pre><code class="language-bash">rm ~/Library/Application Support/bitomc/index.redb
+bitomc index update
+</code></pre>
+<p>您当然也可以自己设置数据目录的位置,<code>bitomc --datadir &lt;DIR&gt; index update</code> 或为其指定特定的文件名和路径,使用‘bitomc --index <FILENAME>索引运行’。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="设置"><a class="header" href="#设置">设置</a></h1>
+<p><code>bitomc</code>可以通过命令行、环境变量、配置文件以及默认值进行配置。</p>
+<p>命令行的优先级高于环境变量，环境变量的优先级又高于配置文件，配置文件的优先级高于默认值。</p>
+<p>配置文件的路径可以通过 <code>--config &lt;CONFIG_PATH&gt;</code>给出. 如果 <code>&lt;CONFIG_PATH&gt;</code> 不存在则<code>bitomc</code> 会显示错误 .</p>
+<p>可以使用<code>--config-dir &lt;CONFIG_DIR_PATH&gt;</code> 或 <code>--datadir &lt;DATA_DIR_PATH&gt;</code> 指定包含名为bitomc.yaml的配置文件的目录路径。在这种情况下，配置路径为<code>&lt;CONFIG_DIR_PATH&gt;/bitomc.yaml</code>或<code>&lt;DATA_DIR_PATH&gt;/bitomc.yaml</code>。如果它不存在，这不是一个错误。</p>
+<p>如果没有给出<code>--config</code>、<code>--config-dir</code>或<code>--datadir</code>中的任何一个，并且在默认数据目录中存在一个名为bitomc.yaml的文件，它将会被加载。</p>
+<p>对于命令行中名为<code>--setting-name</code>的设置，环境变量将被命名为<code>BITOMC_SETTING_NAME</code>，配置文件中的字段将被命名为<code>setting_name</code>。例如，数据目录可以通过命令行中的<code>--datadir</code>、环境变量<code>BITOMC_DATA_DIR</code>或配置文件中的<code>data_dir</code>来配置。</p>
+<p>查看<code>bitomc --help</code>可以获取所有设置的文档。</p>
+<p><code>bitomc</code>当前的配置可以通过<code>bitomc settings</code>命令以JSON格式查看。</p>
+<h2 id="示例配置"><a class="header" href="#示例配置">示例配置</a></h2>
+<pre><code class="language-yaml"># example config
+
+# see `bitomc --help` for setting documentation
+
+bitcoin_data_dir: /var/lib/bitcoin
+bitcoin_rpc_password: bar
+bitcoin_rpc_url: https://localhost:8000
+bitcoin_rpc_username: foo
+chain: mainnet
+commit_interval: 10000
+config: /var/lib/bitomc/bitomc.yaml
+config_dir: /var/lib/bitomc
+cookie_file: /var/lib/bitcoin/.cookie
+data_dir: /var/lib/bitomc
+first_rune_height: 100
+height_limit: 1000
+index: /var/lib/bitomc/index.redb
+index_addresses: false
+index_cache_size: 1000000000
+index_transactions: false
+integration_test: true
+server_password: bar
+server_url: http://localhost:8888
+server_username: foo
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="调试"><a class="header" href="#调试">调试</a></h1>
+<h2 id="测试环境"><a class="header" href="#测试环境">测试环境</a></h2>
+<p><code>bitomc env &lt;DIRECTORY&gt;</code>在<code>&lt;DIRECTORY&gt;</code>中创建一个测试环境，启动<code>bitcoind</code>和<code>bitomc server</code>实例，打印与测试<code>bitcoind</code>和<code>bitomc server</code>实例交互的示例命令，等待<code>CTRL-C</code>，然后关闭<code>bitcoind</code>和<code>bitomc server</code>。</p>
+<p><code>bitomc env</code>尝试使用端口9000作为<code>bitcoind</code>的RPC接口，以及端口<code>9001</code>作为<code>bitomc</code>的RPC接口，但如果这些端口被占用，它将回退到随机的未使用端口。</p>
+<p>在env目录内部，<code>bitomc env</code>将会将<code>bitcoind</code>的配置写入<code>bitcoin.conf</code>，<code>bitomc</code>的配置写入<code>bitomc.yaml</code>，以及环境配置写入<code>env.json</code>。</p>
+<p><code>env.json</code>包含了调用<code>bitcoin-cli</code>和<code>bitomc wallet</code>所需的命令，以及<code>bitcoind</code>和<code>bitomc server</code>正在监听的端口信息。</p>
+<p>这些可以使用<code>jq</code>提取成shell命令：</p>
+<pre><code class="language-shell">bitcoin=`jq -r '.bitcoin_cli_command | join(" ")' env/env.json`
+$bitcoin listunspent
+
+bitomc=`jq -r '.ord_wallet_command | join(" ")' env/env.json`
+$bitomc outputs
+</code></pre>
+<p>如果<code>bitomc</code>在<code>$PATH</code>中，并且环境目录是<code>env</code>，那么<code>bitcoin-cli</code>命令将会是：</p>
+<pre><code>bitcoin-cli -datadir=env`
+</code></pre>
+<p><code>bitomc</code>将是</p>
+<pre><code>bitomc --datadir env
+</code></pre>
+<h2 id="测试网络"><a class="header" href="#测试网络">测试网络</a></h2>
+<p>BitOMC can be tested using the following flags to specify the test network. For more information on running Bitcoin Core for testing, see <a href="https://developer.bitcoin.org/examples/testing.html">Bitcoin's developer documentation</a>.</p>
+<p>Most <code>bitomc</code> commands in <a href="guides/wallet.html">wallet</a> can be run with the following network flags:</p>
+<div class="table-wrapper"><table><thead><tr><th>网络</th><th>标记</th></tr></thead><tbody>
+<tr><td>测试网</td><td><code>--testnet</code> or <code>-t</code></td></tr>
+<tr><td>Signet</td><td><code>--signet</code> or <code>-s</code></td></tr>
+<tr><td>Regtest</td><td><code>--regtest</code> or <code>-r</code></td></tr>
+</tbody></table>
+</div>
+<p>Regtest doesn't require downloading the blockchain since you create your own private blockchain, so indexing <code>bitomc</code> is almost instantaneous.</p>
+<h2 id="示例"><a class="header" href="#示例">示例</a></h2>
+<p>在regtest里运行bitcoind，使用：</p>
+<pre><code>bitcoind -regtest -txindex
+</code></pre>
+<p>在regtest里运行ord server，使用：</p>
+<pre><code>bitomc --regtest server
+</code></pre>
+<p>在regtest里创建钱包</p>
+<pre><code>bitomc --regtest wallet create
+</code></pre>
+<p>创建一个regtest接收地址</p>
+<pre><code>bitomc --regtest wallet receive
+</code></pre>
+<p>挖取101个区块（解锁coinbase）使用：</p>
+<pre><code>bitcoin-cli -regtest generatetoaddress 101 &lt;receive address&gt;
+</code></pre>
+<p>Mint in regtest with:</p>
+<pre><code>bitomc --regtest wallet mint --fee-rate 1
+</code></pre>
+<p>Mine the transaction with:</p>
+<pre><code>bitcoin-cli -regtest generatetoaddress 1 &lt;receive address&gt;
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

@@ -1,0 +1,428 @@
+<!DOCTYPE HTML>
+<html lang="zh" class="coal" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>规范 - BitOMC Handbook</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../language-picker.css">
+
+    </head>
+    <body class="sidebar-visible no-js">
+    <div id="body-container">
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "coal" : "coal";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('coal')
+            html.classList.add(theme);
+            var body = document.querySelector('body');
+            body.classList.remove('no-js')
+            body.classList.add('js');
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var body = document.querySelector('body');
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            body.classList.remove('sidebar-visible');
+            body.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item expanded affix "><a href="../introduction.html">介绍</a></li><li class="chapter-item expanded "><a href="../overview.html"><strong aria-hidden="true">1.</strong> 概述</a></li><li class="chapter-item expanded "><a href="../bitomc.html"><strong aria-hidden="true">2.</strong> BitOMC</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../bitomc/specification.html" class="active"><strong aria-hidden="true">2.1.</strong> 规范</a></li></ol></li><li class="chapter-item expanded "><a href="../contributing.html"><strong aria-hidden="true">3.</strong> 贡献</a></li><li class="chapter-item expanded "><a href="../guides.html"><strong aria-hidden="true">4.</strong> 指引</a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../guides/wallet.html"><strong aria-hidden="true">4.1.</strong> 钱包</a></li><li class="chapter-item expanded "><a href="../guides/reindexing.html"><strong aria-hidden="true">4.2.</strong> 重新索引</a></li><li class="chapter-item expanded "><a href="../guides/settings.html"><strong aria-hidden="true">4.3.</strong> 设置</a></li><li class="chapter-item expanded "><a href="../guides/testing.html"><strong aria-hidden="true">4.4.</strong> 调试</a></li></ol></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <!-- Track and set sidebar scroll position -->
+        <script>
+            var sidebarScrollbox = document.querySelector('#sidebar .sidebar-scrollbox');
+            sidebarScrollbox.addEventListener('click', function(e) {
+                if (e.target.tagName === 'A') {
+                    sessionStorage.setItem('sidebar-scroll', sidebarScrollbox.scrollTop);
+                }
+            }, { passive: true });
+            var sidebarScrollTop = sessionStorage.getItem('sidebar-scroll');
+            sessionStorage.removeItem('sidebar-scroll');
+            if (sidebarScrollTop) {
+                // preserve sidebar scroll position when navigating via links within sidebar
+                sidebarScrollbox.scrollTop = sidebarScrollTop;
+            } else {
+                // scroll sidebar to current active section when navigating via "next/previous chapter" buttons
+                var activeSection = document.querySelector('#sidebar .active');
+                if (activeSection) {
+                    activeSection.scrollIntoView({ block: 'center' });
+                }
+            }
+        </script>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">BitOMC Handbook</h1>
+
+                    <div class="right-buttons">
+                        <button id="language-toggle" class="icon-button" type="button"
+                                title="Change language" aria-label="Change language"
+                                aria-haspopup="true" aria-expanded="false"
+                                aria-controls="language-list">
+                            <i class="fa fa-globe"></i>
+                        </button>
+                        <ul id="language-list" class="theme-popup" aria-label="Languages" role="menu">
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="en">English</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="de">Deutsch</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="fr">Français</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="es">Español</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="pt">Português</a>
+                          </button></li>
+                           <li role="none"><button role="menuitem" class="theme">
+                              <a id="ru">Русский</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="zh">中文版</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ja">日本語版</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ko">한국어</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="fil">Filipino</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="ar">العربية</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="hi">हिंदी</a>
+                          </button></li>
+                          <li role="none"><button role="menuitem" class="theme">
+                              <a id="it">Italiano</a>
+                          </button></li>
+                        </ul>
+
+                        <script>
+                          let langToggle = document.getElementById("language-toggle");
+                          let langList = document.getElementById("language-list");
+                          langToggle.addEventListener("click", (event) => {
+                              langList.style.display = langList.style.display == "block" ? "none" : "block";
+                          });
+                          let selectedLang = document.getElementById("zh");
+                          if (selectedLang) {
+                              selectedLang.parentNode.classList.add("theme-selected");
+                          }
+
+                          // The path to the root, taking the current
+                          // language into account.
+                          let full_path_to_root = "../../";
+                          // The page path (mdbook only gives us
+                          // access to the path to the Markdown file).
+                          let path = "bitomc/specification.md".replace(/\.md$/, ".html");
+                          for (let lang of langList.querySelectorAll("a")) {
+                              if (lang.id == "en") {
+                                  lang.href = `${full_path_to_root}${path}`;
+                              } else {
+                                  lang.href = `${full_path_to_root}${lang.id}/${path}`;
+                              }
+                          }
+                        </script>
+
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/BitOMC/BitOMC" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="bitomc-does-not-have-a-specification"><a class="header" href="#bitomc-does-not-have-a-specification">BitOMC Does Not Have a Specification</a></h1>
+<p>The BitOMC reference implementation, <code>bitomc</code>, is the normative specification of the BitOMC protocol.</p>
+<p>Nothing you read here or elsewhere, aside from the code of <code>bitomc</code>, is a specification. This prose description of the BitOMC protocol is provided as a guide to the behavior of <code>bitomc</code>, and the code of <code>bitomc</code> itself should always be consulted to confirm the correctness of any prose description.</p>
+<p>如果由于<code>bitomc</code>中的一个错误，本文档与<code>bitomc</code>的实际行为出现偏差，并且改变<code>bitomc</code>的行为实际上是不切实际的，那么本文档将被修订以符合<code>bitomc</code>的实际行为。</p>
+<p>使用替代实现的用户需自担风险，强烈建议希望整合符文的服务使用<code>bitomc</code>本身来进行符文交易，并确定符文、铸币和余额的状态</p>
+<h2 id="符石"><a class="header" href="#符石">符石</a></h2>
+<p>Like Runes, BitOMC protocol messages are termed "runestones".</p>
+<p>The protocol activates on block 854,000. Runestones in earlier blocks are ignored.</p>
+<p>抽象地，符石包含以下字段：1</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Runestone {
+  edicts: Vec&lt;Edict&gt;,
+  pointer: Option&lt;u32&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符文通过法令转移：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符文 ID 被编码为蚀刻符文的交易的区块高度和交易索引：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct RuneId {
+  block: u64,
+  tx: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符文 ID 在文本中表示为<code>BLOCK:TX</code>。</p>
+<p>符文名称被编码为修改后的 26 进制整数：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Rune(u128);
+<span class="boring">}</span></code></pre></pre>
+<h3 id="破译"><a class="header" href="#破译">破译</a></h3>
+<p>解读符石是通过以下步骤从交易中解码得到的：</p>
+<ol>
+<li>
+<p>Find the first transaction output whose script pubkey begins with <code>OP_RETURN OP_14</code>.</p>
+</li>
+<li>
+<p>将所有后续数据推送连接到一个有效载荷缓冲区中。</p>
+</li>
+<li>
+<p>从有效载荷缓冲区解码一系列 128 位的 <a href="https://en.wikipedia.org/wiki/LEB128">LEB128</a> 整数。</p>
+</li>
+<li>
+<p>将整数序列解析为未类型化消息。</p>
+</li>
+<li>
+<p>将未类型化消息解析为符石。</p>
+</li>
+</ol>
+<p>解读可能会产生一个格式错误的符石，称为<a href="https://en.wikipedia.org/wiki/Cenotaph">纪念碑</a>。</p>
+<h4 id="定位符石输出"><a class="header" href="#定位符石输出">定位符石输出</a></h4>
+<p>Outputs are searched for the first script pubkey that beings with <code>OP_RETURN OP_14</code>. If deciphering fails, later matching outputs are not considered.</p>
+<h4 id="组装有效载荷缓冲区"><a class="header" href="#组装有效载荷缓冲区">组装有效载荷缓冲区</a></h4>
+<p>The payload buffer is assembled by concatenating data pushes, after <code>OP_14</code>, in the matching script pubkey.</p>
+<p>数据推送是操作码 0 到 78 之间的操作码。如果遇到大于或等于操作码 79 的操作码，则解密的符文是一个没有雕刻、铸造或法令的纪念碑。</p>
+<h4 id="解码整数序列"><a class="header" href="#解码整数序列">解码整数序列</a></h4>
+<p>从有效载荷中解码一系列 128 位整数作为 LEB128 变长整数。</p>
+<p>LEB128 变长整数被编码为一系列字节，每个字节的最高有效位都被设置，最后一个字节除外。</p>
+<p>如果 LEB128 变长整数包含超过 18 个字节，会溢出一个 u128，或者是截断的，意味着在遇到未设置继续位的字节之前达到有效载荷缓冲区的末尾，解码的符石是没有铭刻、铸造或法令的纪念碑。</p>
+<h4 id="解析消息"><a class="header" href="#解析消息">解析消息</a></h4>
+<p>将整数序列解析为未类型化消息。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Message {
+  pointer: Option&lt;u32&gt;,
+  edicts: Vec&lt;Edict&gt;,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>If the number of integers is odd, the first integer is interpreted as the pointer, and all subsequent integer pairs are interpreted as edicts. If the number of integers is even, the pointer is set to null, and each integer pair is interpreted as an edict.</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>In the integer pair, <code>id</code> is interpreted as <code>1:0</code> (Tighten) if the first integer is odd. Otherwise, <code>id</code> is interpreted as <code>1:1</code> (Ease). <code>amount</code> is interpreted as the first integer divided by 2, and <code>output</code> is interpreted as the second integer.</p>
+<h4 id="铸造"><a class="header" href="#铸造">铸造</a></h4>
+<p>A transaction may mint Tighten and Ease by including an output that anyone can spend after 1 block, using a P2WSH for <code>OP_1 OP_CHECKSEQUENCEVERIFY</code>, and spending the output of the previous mint, if unspent. If no such output exists, the first mint transaction receives the mint reward.</p>
+<p>If successful, the mint amount is added to the unallocated runes in the transaction's inputs. These runes may be transferred using edicts, and will otherwise be transferred to the first non-<code>OP_RETURN</code> output, or the output designated by the <code>Pointer</code> field. A runestone is required for a mint transaction to be valid.</p>
+<p>At the start of each block, the amount of Tighten and Ease to be issued is immediately burned, and the mint transaction receives the amount of outstanding burned Tighten and Ease. For this reason, if no mint transaction is present, the runes to be issued are made available to the first minter in subsequent blocks.</p>
+<h4 id="转移"><a class="header" href="#转移">转移</a></h4>
+<p>符文通过法令转移：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>struct Edict {
+  id: RuneId,
+  amount: u128,
+  output: u32,
+}
+<span class="boring">}</span></code></pre></pre>
+<p>符石可以包含任意数量的法令edicts，这些法令edicts按顺序处理。</p>
+<p>在处理法令edicts之前，输入符文以及铸造或预铸的符文（如果有）是未分配的。</p>
+<p>每个法令将rune <code>id</code>的未分配余额减少，并将rune <code>id</code>的余额增加到交易输出。</p>
+<p>如果法令edict将分配的符文数量超过当前未分配的符文，则数量将减少到当前未分配的符文<code>数量</code>。换句话说，法令edict分配了rune<code>id</code>的所有剩余未分配单位。</p>
+<p>金额<code>amount</code>为零的法令分配了rune <code>id</code>的所有剩余单位。</p>
+<p>An edict with <code>output</code> equal to the number of transaction outputs allocates <code>amount</code> runes to each non-<code>OP_RETURN</code> output in order.</p>
+<p>金额<code>amount</code> 为零且输出等于交易输出<code>output</code> 数量的法令将所有未分配的rune <code>id</code>单位平均分配给每个非<code>OP_RETURN</code>输出。如果未分配的符文数量不能被非<code>OP_RETURN</code>输出的数量整除，则前<code>R</code>个非<code>OP_RETURN</code>输出将分配1个额外的符文，其中<code>R</code>是将未分配的rune <code>id</code>单位余额除以非<code>OP_RETURN</code>输出数量后的余数。</p>
+<p>If any edict in a runestone has an <code>output</code> greater than the number of transaction outputs, the runestone is a cenotaph.</p>
+<p>注意，纪念碑中的法令不会被处理，所有输入符文都将被销毁。</p>
+<h4 id="converting"><a class="header" href="#converting">Converting</a></h4>
+<p>A runestone may convert between Tighten and Ease by burning one as an input and allocating more of the other than are unallocated. The ID of the final edict in the Runestone determines whether the input or the output of the conversion is to be exact. If the ID is the same as the output ID, then the input is exact and the required output is the minimum allowable output amount. Otherwise, the output is exact and the input is the maximum allowable input amount.</p>
+<p>Runes are converted according to the invariant <code>A^2 + B^2 = K^2</code>, where <code>A</code> and <code>B</code> are the supply of Tighten and Ease, respectively, and <code>K</code> is some constant, which is the same before and after.</p>
+<p>If the invariant is satisfied, the output runes are allocated. If the conversion yields more output runes than the minimum allowable output amount, the additional output runes are allocated to the first tx output already receiving output runes.</p>
+<p>If the conversion requires fewer input runes than the maximum allowable input amount, the leftover input runes are allocated to the output of the last edict of input ID with an output whose value is less than the number of tx outputs. If no such output exists, the input runes are allocated to the first output with a non-zero balance for input ID. If still unallocated, the input runes are allocated to the output of the first edict.</p>
+<p>If the invariant is not satisfied, the transaction does not signal RBF, the transaction fails to leave a P2WPKH output for the private key <code>0x01</code> repeating, or the P2WPKH output of the preceding conversion is unspent and not spent by this transaction, the burned input runes are unburned and allocated according to the same rules as the preceding paragraph.</p>
+<p>An exception to this final condition is made for conversions in a block <code>P</code> in which the first conversion cannot spend an output of a previous conversion. When this is case, conversions in the block do not need to spend an output of the previous conversion to be valid. The first conversion in the next block, however, must spend the output created by the first conversion in block <code>P</code>.</p>
+<h2 id="the-util"><a class="header" href="#the-util">The Util</a></h2>
+<p>The util is the dynamic unit of account created by BitOMC. The util is a dynamic sub-denomination of sats, determined by an interest rate that is controlled by the relative quantity of Tighten and Ease. To calculate the number of utils per sat, a second sub-denomination of sats is introduced, called the e-bond. The number of e-bonds per sat increases monotically at the current interest rate. The number of utils per sat is then determined by the number of utils per e-bond, which is 1 divided by the interest rate.</p>
+<h3 id="the-interest-rate"><a class="header" href="#the-interest-rate">The Interest Rate</a></h3>
+<p>The interest rate equals the median value of <code>(A - B) / (A + B)</code> over the last 100 blocks where <code>A &gt; B</code> and <code>(A - B) / (A + B)</code> is non-zero after integer division. <code>A</code> and <code>B</code> are the supply of Tighten and Ease, respectively, and the value is calculated to 12 decimal places. The default interest rate is 100%.</p>
+<p>The number of e-bonds per sat is stored as an integer with 12 decimal places and updated each block using the current interest rate divided by 52,595, which is approximately the number of blocks per year.</p>
+<h3 id="utils-per-sat"><a class="header" href="#utils-per-sat">Utils per Sat</a></h3>
+<p>The number of utils per bond is calculated by dividing 10^24 by the interest rate in integer form.</p>
+<p>The number of utils per sat is calculated by multiplying the number of bonds per sat by the number of utils per bond and dividing by 10^12.</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../bitomc.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../contributing.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../bitomc.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../contributing.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
