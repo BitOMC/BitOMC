@@ -1,4 +1,5 @@
-use super::*;
+#[allow(unused_imports)]
+use {super::*, std::io::BufRead, std::io::BufReader};
 
 #[test]
 fn run() {
