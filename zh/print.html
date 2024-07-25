@@ -301,7 +301,7 @@
 <p>使用替代实现的用户需自担风险，强烈建议希望整合符文的服务使用<code>bitomc</code>本身来进行符文交易，并确定符文、铸币和余额的状态</p>
 <h2 id="符石-1"><a class="header" href="#符石-1">符石</a></h2>
 <p>Like Runes, BitOMC protocol messages are termed "runestones".</p>
-<p>The protocol activates on block 854,000. Runestones in earlier blocks are ignored.</p>
+<p>The protocol activates on block 854,500. Runestones in earlier blocks are ignored.</p>
 <p>抽象地，符石包含以下字段：1</p>
 <pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
 </span><span class="boring">fn main() {
@@ -484,7 +484,7 @@
 <p>或者, 运行 <code>bitcoind</code> 和 <code>-txindex</code>:</p>
 <pre><code>bitcoind -txindex
 </code></pre>
-<p><code>bitomc</code> can be run on a Bitcoin Core node pruned below block 854000. Subsequent blocks may be manually pruned after being indexed by <code>bitomc</code>, but this will prevent <code>bitomc</code> from re-indexing.</p>
+<p><code>bitomc</code> can be run on a Bitcoin Core node pruned below block 854500. Subsequent blocks can be manually pruned after being indexed by <code>bitomc</code>, but doing so will prevent <code>bitomc</code> from re-indexing.</p>
 <p>关于创建或者修改你的 <code>bitcoin.conf</code>文件，可以参考 <a href="https://github.com/bitcoin/bitcoin/blob/master/doc/bitcoin-conf.md">这里</a>.</p>
 <h2 id="比特币区块同步"><a class="header" href="#比特币区块同步">比特币区块同步</a></h2>
 <p>区块同步，运行：</p>
