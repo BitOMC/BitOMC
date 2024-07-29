@@ -4,21 +4,23 @@
 `bitomc` is an index and command-line wallet. It is experimental
 software with no warranty. See [LICENSE](LICENSE) for more details.
 
-BitOMC is a metaprotocol on Bitcoin that defines a dynamic sub-denomination of sats
-called the "util." The util is a more stable unit of account, ideal for contracts
-where payment is due in the future.
+BitOMC is an experimental metaprotocol on Bitcoin that defines an dynamic sub-denomination 
+of sats called the "util," which can adapt to changing economic conditions. The objective
+is to define a credibly-neutral unit of account that can provide price stability to 
+the Bitcoin economy.
 
-BitOMC is a fork of the Runes protocol and consists of two interconvertible assets,
-Tighten and Ease. Users convert between them according to a constant function
-conversion rule, and their relative quantity determines a dynamic interest rate,
-which defines the util.
-
-See [the docs](docs/src/SUMMARY.md) for documentation and guides.
+This unit of account is controlled by the open market through an
+interest rate, set by the relative pricing of two interconvertible assets, Tighten and 
+Ease. Users convert between them according to a constant function conversion rule, ensuring
+the conversion rate reflects the relative market price. Tighten and Ease are issued
+steadily over time, through a free mint that halves every four years. 
 
 See [the whitepaper](https://bitomc.org/bitomc.pdf) for a technical description of the
 protocol.
 
-Join [the Telegram group](https://t.me/bitOMC_chat) to chat with fellow members
+See [the docs](docs/src/SUMMARY.md) for documentation and guides.
+
+Join [the Telegram group](https://t.me/bitOMC_chat) to chat with fellow users
 of BitOMC.
 
 Wallet
