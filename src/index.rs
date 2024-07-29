@@ -1006,11 +1006,15 @@ impl Index {
       }
     }
 
-    if let Ok(result) = self.client.get_transaction(&txid, None) {
-      Ok(result.transaction().ok())
-    } else {
-      self.client.get_raw_transaction(&txid, None).into_option()
+    // Go through every wallet and try to find the transaction
+    for wallet in self.client.list_wallets()? {
+      let client = self.settings.bitcoin_rpc_client(Some(wallet))?;
+      if let Ok(result) = client.get_transaction(&txid, None) {
+        return Ok(result.transaction().ok());
+      }
     }
+
+    self.client.get_raw_transaction(&txid, None).into_option()
   }
 
   pub fn is_output_spent(&self, outpoint: OutPoint) -> Result<bool> {
