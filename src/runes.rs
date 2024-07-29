@@ -4433,7 +4433,7 @@ mod tests {
 
   #[test]
   fn genesis_rune() {
-    assert_eq!(Chain::Mainnet.first_rune_height(), 854_500,);
+    assert_eq!(Chain::Mainnet.first_rune_height(), 855_000,);
 
     Context::builder()
       .chain(Chain::Mainnet)
@@ -4443,7 +4443,7 @@ mod tests {
           (
             ID0,
             RuneEntry {
-              block: 854_500,
+              block: 855_000,
               spaced_rune: SpacedRune {
                 rune: Rune(TIGHTEN),
                 spacers: 0,
@@ -4454,7 +4454,7 @@ mod tests {
           (
             ID1,
             RuneEntry {
-              block: 854_500,
+              block: 855_000,
               spaced_rune: SpacedRune {
                 rune: Rune(EASE),
                 spacers: 0,

@@ -66,7 +66,7 @@ Or, run `bitcoind` with `-txindex`:
 bitcoind -txindex
 ```
 
-`bitomc` can be run on a Bitcoin Core node pruned below block 854500. Subsequent
+`bitomc` can be run on a Bitcoin Core node pruned below block 855000. Subsequent
 blocks can be manually pruned after being indexed by `bitomc`, but doing so will 
 prevent `bitomc` from re-indexing.
 
