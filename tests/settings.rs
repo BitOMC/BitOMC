@@ -17,7 +17,7 @@ fn default() {
   "config_dir": null,
   "cookie_file": ".*\.cookie",
   "data_dir": ".*",
-  "first_rune_height": 854500,
+  "first_rune_height": 855000,
   "height_limit": null,
   "http_port": null,
   "index": ".*index\.redb",
