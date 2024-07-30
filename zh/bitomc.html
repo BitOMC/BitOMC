@@ -252,7 +252,7 @@
                         <h1 id="bitomc"><a class="header" href="#bitomc">BitOMC</a></h1>
 <p>BitOMC is a fork of the <a href="https://docs.ordinals.com/runes.html">Runes protocol</a>. Runes allow Bitcoin transactions to mint, transfer, and convert Bitcoin-native digital commodities. There are only two runes in BitOMC, Tighten and Ease.</p>
 <h2 id="符石"><a class="header" href="#符石">符石</a></h2>
-<p>称为符石的符文协议消息，存储在比特币交易输出中。</p>
+<p>Protocol messages, called runestones, are stored in Bitcoin transaction outputs.</p>
 <p>In BitOMC, a runestone output's script pubkey begins with an <code>OP_RETURN</code>, followed by <code>OP_14</code>, followed by zero or more data pushes. These data pushes are concatenated and decoded into a sequence of 128-bit integers, and finally parsed into a runestone.</p>
 <p>一笔交易最多可以有一个符石。</p>
 <p>A runestone may mint an existing rune, transfer runes from a transaction's inputs to its outputs, and convert from one rune to another.</p>

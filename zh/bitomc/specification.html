@@ -335,7 +335,7 @@
   output: u32,
 }
 <span class="boring">}</span></code></pre></pre>
-<p>In the integer pair, <code>id</code> is interpreted as <code>1:0</code> (Tighten) if the first integer is odd. Otherwise, <code>id</code> is interpreted as <code>1:1</code> (Ease). <code>amount</code> is interpreted as the first integer divided by 2, and <code>output</code> is interpreted as the second integer.</p>
+<p>In the integer pair, <code>id</code> is interpreted as <code>1:0</code> (Tighten) if the first integer is even. Otherwise, <code>id</code> is interpreted as <code>1:1</code> (Ease). <code>amount</code> is interpreted as the first integer divided by 2, and <code>output</code> is interpreted as the second integer.</p>
 <h4 id="铸造"><a class="header" href="#铸造">铸造</a></h4>
 <p>A transaction may mint Tighten and Ease by including an output that anyone can spend after 1 block, using a P2WSH for <code>OP_1 OP_CHECKSEQUENCEVERIFY</code>, and spending the output of the previous mint, if unspent. If no such output exists, the first mint transaction receives the mint reward.</p>
 <p>If successful, the mint amount is added to the unallocated runes in the transaction's inputs. These runes may be transferred using edicts, and will otherwise be transferred to the first non-<code>OP_RETURN</code> output, or the output designated by the <code>Pointer</code> field. A runestone is required for a mint transaction to be valid.</p>
