@@ -4,15 +4,15 @@
 `bitomc` is an index and command-line wallet. It is experimental
 software with no warranty. See [LICENSE](LICENSE) for more details.
 
-BitOMC is an experimental metaprotocol on Bitcoin that defines an dynamic sub-denomination 
+BitOMC is an experimental metaprotocol on Bitcoin that defines a dynamic sub-denomination 
 of sats called the "util," which can adapt to changing economic conditions. The objective
 is to define a credibly-neutral unit of account that can provide price stability to 
 the Bitcoin economy.
 
 This unit of account is controlled by the open market through an
-interest rate, set by the relative pricing of two interconvertible assets, Tighten and 
+interest rate, set by the relative quantity of two interconvertible assets, Tighten and 
 Ease. Users convert between them according to a constant function conversion rule, ensuring
-the conversion rate reflects the relative market price. Tighten and Ease are issued
+the relative quantity reflects the relative price. Tighten and Ease are issued
 steadily over time, through a free mint that halves every four years. 
 
 See [the whitepaper](https://bitomc.org/bitomc.pdf) for a technical description of the
