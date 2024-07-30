@@ -130,7 +130,7 @@ struct Edict {
 }
 ```
 
-In the integer pair, `id` is interpreted as `1:0` (Tighten) if the first integer is odd.
+In the integer pair, `id` is interpreted as `1:0` (Tighten) if the first integer is even.
 Otherwise, `id` is interpreted as `1:1` (Ease). `amount` is interpreted as the first
 integer divided by 2, and `output` is interpreted as the second integer.
 

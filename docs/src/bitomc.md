@@ -8,7 +8,7 @@ digital commodities. There are only two runes in BitOMC, Tighten and Ease.
 Runestones
 ----------
 
-Rune protocol messages, called runestones, are stored in Bitcoin transaction
+Protocol messages, called runestones, are stored in Bitcoin transaction
 outputs.
 
 In BitOMC, a runestone output's script pubkey begins with an `OP_RETURN`, followed
