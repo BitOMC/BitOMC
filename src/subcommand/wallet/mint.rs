@@ -105,10 +105,7 @@ impl Mint {
     let mut fee_for_input = 0;
     let mut input_amount = 0;
     if last_mint_outpoint != OutPoint::null() {
-      let input_tx = bitcoin_client.get_transaction(&last_mint_outpoint.txid, None)?;
-      if !input_tx.details.is_empty() {
-        input_amount = input_tx.details[0].amount.to_sat().unsigned_abs();
-      }
+      input_amount = 330; // temporary fix
       let input_vb = (input.segwit_weight() + 2) / 4; // include 2WU for segwit marker
       fee_for_input = self.fee_rate.fee(input_vb).to_sat();
     }
