@@ -2,6 +2,8 @@ use {super::*, num_integer::Roots};
 
 #[derive(Debug, Parser)]
 pub(crate) struct Mint {
+  #[arg(long, help = "Don't sign or broadcast transaction")]
+  pub(crate) dry_run: bool,
   #[clap(long, help = "Use <FEE_RATE> sats/vbyte for mint transaction.")]
   fee_rate: FeeRate,
   #[clap(
@@ -148,16 +150,19 @@ impl Mint {
       unsigned_transaction.input.push(input);
     }
 
-    let signed_transaction = bitcoin_client
-      .sign_raw_transaction_with_wallet(&unsigned_transaction, None, None)?
-      .hex;
+    let signed_transaction =
+      bitcoin_client.sign_raw_transaction_with_wallet(&unsigned_transaction, None, None)?;
 
     assert_eq!(
-      Runestone::decipher(&consensus::encode::deserialize(&signed_transaction)?),
+      Runestone::decipher(&consensus::encode::deserialize(&signed_transaction.hex)?),
       Some(Artifact::Runestone(runestone)),
     );
 
-    let transaction = bitcoin_client.send_raw_transaction(&signed_transaction)?;
+    let transaction = if self.dry_run {
+      signed_transaction.transaction()?.txid()
+    } else {
+      bitcoin_client.send_raw_transaction(&signed_transaction.hex)?
+    };
 
     Ok(Some(Box::new(Output {
       rune0: rune_entry0.spaced_rune,
