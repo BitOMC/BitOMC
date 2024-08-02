@@ -53,6 +53,7 @@ define_table! { TRANSACTION_ID_TO_RUNE, &TxidValue, u128 }
 define_table! { TRANSACTION_ID_TO_TRANSACTION, &TxidValue, &[u8] }
 define_table! { WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP, u32, u128 }
 define_table! { STATE_CHANGE_TO_LAST_OUTPOINT, u8, &OutPointValue }
+define_table! { STATE_CHANGE_TO_LAST_TXOUT_VALUE, u8, u64 }
 define_table! { UTIL_ENTRY, u8, UtilEntryValue }
 
 #[derive(Copy, Clone)]
@@ -299,6 +300,7 @@ impl Index {
         tx.open_table(TRANSACTION_ID_TO_RUNE)?;
         tx.open_table(WRITE_TRANSACTION_STARTING_BLOCK_COUNT_TO_TIMESTAMP)?;
         tx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
+        tx.open_table(STATE_CHANGE_TO_LAST_TXOUT_VALUE)?;
         tx.open_table(UTIL_ENTRY)?
           .insert(0, UtilEntry::new().store())?;
 
@@ -458,8 +460,9 @@ impl Index {
       transaction_index: statistic(Statistic::IndexTransactions)? != 0,
       unrecoverably_reorged: self.unrecoverably_reorged.load(atomic::Ordering::Relaxed),
       uptime: (Utc::now() - self.started).to_std()?,
-      last_mint_outpoint: self.get_last_outpoint_for_state_change(StateChange::Mint)?,
-      last_conversion_outpoint: self.get_last_outpoint_for_state_change(StateChange::Convert)?,
+      last_mint_outpoint: self.get_last_outpoint_txout_for_state_change(StateChange::Mint)?,
+      last_conversion_outpoint: self
+        .get_last_outpoint_txout_for_state_change(StateChange::Convert)?,
     })
   }
 
@@ -687,8 +690,11 @@ impl Index {
       .unwrap_or_default()
   }
 
-  pub fn get_last_outpoint_for_state_change(&self, state_change: StateChange) -> Result<OutPoint> {
-    Ok(
+  pub fn get_last_outpoint_txout_for_state_change(
+    &self,
+    state_change: StateChange,
+  ) -> Result<(OutPoint, u64)> {
+    Ok((
       self
         .database
         .begin_read()?
@@ -696,7 +702,14 @@ impl Index {
         .get(&state_change.key())?
         .map(|entry| OutPoint::load(*entry.value()))
         .unwrap_or(OutPoint::null()),
-    )
+      self
+        .database
+        .begin_read()?
+        .open_table(STATE_CHANGE_TO_LAST_TXOUT_VALUE)?
+        .get(&state_change.key())?
+        .map(|entry| entry.value())
+        .unwrap_or(0),
+    ))
   }
 
   pub fn block_count(&self) -> Result<u32> {

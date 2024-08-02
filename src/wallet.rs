@@ -101,14 +101,14 @@ impl Wallet {
     Ok(Some((rune_json.id, rune_json.entry, rune_json.parent)))
   }
 
-  pub(crate) fn get_last_conversion_outpoint(&self) -> Result<OutPoint> {
+  pub(crate) fn get_last_conversion_outpoint(&self) -> Result<(OutPoint, u64)> {
     let response = self
       .ord_client
       .get(self.rpc_url.join("/status").unwrap())
       .send()?;
 
     if !response.status().is_success() {
-      return Ok(OutPoint::null());
+      return Ok((OutPoint::null(), 0));
     }
 
     let status_json: api::Status = serde_json::from_str(&response.text()?)?;
@@ -116,14 +116,14 @@ impl Wallet {
     Ok(status_json.last_conversion_outpoint)
   }
 
-  pub(crate) fn get_last_mint_outpoint(&self) -> Result<OutPoint> {
+  pub(crate) fn get_last_mint_outpoint(&self) -> Result<(OutPoint, u64)> {
     let response = self
       .ord_client
       .get(self.rpc_url.join("/status").unwrap())
       .send()?;
 
     if !response.status().is_success() {
-      return Ok(OutPoint::null());
+      return Ok((OutPoint::null(), 0));
     }
 
     let status_json: api::Status = serde_json::from_str(&response.text()?)?;

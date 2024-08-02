@@ -392,6 +392,8 @@ impl<'index> Updater<'index> {
       let mut outpoint_to_rune_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
       let mut rune_id_to_rune_entry = wtx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
       let mut state_change_to_last_outpoint = wtx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
+      let mut state_change_to_last_txout_value =
+        wtx.open_table(STATE_CHANGE_TO_LAST_TXOUT_VALUE)?;
       let mut util_entry_table = wtx.open_table(UTIL_ENTRY)?;
 
       let mut rune_updater = RuneUpdater {
@@ -401,6 +403,7 @@ impl<'index> Updater<'index> {
         id_to_entry: &mut rune_id_to_rune_entry,
         outpoint_to_balances: &mut outpoint_to_rune_balances,
         state_change_to_last_outpoint: &mut state_change_to_last_outpoint,
+        state_change_to_last_txout_value: &mut state_change_to_last_txout_value,
         require_conversion_outpoint: true,
       };
 
@@ -511,6 +514,7 @@ impl<'index> Updater<'index> {
     let mut id_to_entry = wtx.open_table(RUNE_ID_TO_RUNE_ENTRY)?;
     let mut outpoint_to_balances = wtx.open_table(OUTPOINT_TO_RUNE_BALANCES)?;
     let mut state_change_to_last_outpoint = wtx.open_table(STATE_CHANGE_TO_LAST_OUTPOINT)?;
+    let mut state_change_to_last_txout_value = wtx.open_table(STATE_CHANGE_TO_LAST_TXOUT_VALUE)?;
 
     let mut rune_updater = RuneUpdater {
       event_sender: None,
@@ -519,6 +523,7 @@ impl<'index> Updater<'index> {
       id_to_entry: &mut id_to_entry,
       outpoint_to_balances: &mut outpoint_to_balances,
       state_change_to_last_outpoint: &mut state_change_to_last_outpoint,
+      state_change_to_last_txout_value: &mut state_change_to_last_txout_value,
       require_conversion_outpoint: true,
     };
 

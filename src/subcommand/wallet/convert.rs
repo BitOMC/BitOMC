@@ -683,20 +683,18 @@ fn get_conversion_chain(wallet: &Wallet) -> Result<Vec<ChainStateOutput>> {
     input: None,
     entry: None,
   }];
-  let last_conversion_outpoint = wallet.get_last_conversion_outpoint()?;
+  let (last_conversion_outpoint, last_conversion_txout_value) =
+    wallet.get_last_conversion_outpoint()?;
   if last_conversion_outpoint == OutPoint::null() {
     return Ok(state_chain);
   };
 
-  let output = wallet
-    .bitcoin_client()
-    .get_raw_transaction(&last_conversion_outpoint.txid, None)?
-    .output[last_conversion_outpoint.vout as usize]
-    .clone();
-
   let prev_outpoint = OutPointTxOut {
     outpoint: last_conversion_outpoint,
-    output,
+    output: TxOut {
+      value: last_conversion_txout_value,
+      script_pubkey: get_convert_script(),
+    },
   };
 
   let (txs, entries, outpoints) = find_current_conversion_chain(wallet, prev_outpoint.clone())?;

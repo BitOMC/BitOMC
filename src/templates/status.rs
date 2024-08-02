@@ -13,8 +13,8 @@ pub struct StatusHtml {
   pub transaction_index: bool,
   pub unrecoverably_reorged: bool,
   pub uptime: Duration,
-  pub last_mint_outpoint: OutPoint,
-  pub last_conversion_outpoint: OutPoint,
+  pub last_mint_outpoint: (OutPoint, u64),
+  pub last_conversion_outpoint: (OutPoint, u64),
 }
 
 impl PageContent for StatusHtml {

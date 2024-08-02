@@ -139,8 +139,8 @@ fn get_status() {
       transaction_index: false,
       unrecoverably_reorged: false,
       uptime: dummy_duration,
-      last_mint_outpoint: OutPoint::null(),
-      last_conversion_outpoint: OutPoint::null(),
+      last_mint_outpoint: (OutPoint::null(), 0),
+      last_conversion_outpoint: (OutPoint::null(), 0),
     }
   );
 }

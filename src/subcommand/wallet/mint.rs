@@ -40,7 +40,7 @@ impl Mint {
     let Some((_, rune_entry1, _)) = wallet.get_rune(Rune(1))? else {
       bail!("rune has not been etched");
     };
-    let last_mint_outpoint = wallet.get_last_mint_outpoint()?;
+    let (last_mint_outpoint, last_mint_txout_value) = wallet.get_last_mint_outpoint()?;
 
     let postage = self.postage.unwrap_or(TARGET_POSTAGE);
     let p2wsh_dust = self.dust.unwrap_or(TARGET_P2WSH_DUST);
@@ -103,9 +103,7 @@ impl Mint {
     };
 
     let mut fee_for_input = 0;
-    let mut input_amount = 0;
     if last_mint_outpoint != OutPoint::null() {
-      input_amount = 330; // temporary fix
       let input_vb = (input.segwit_weight() + 2) / 4; // include 2WU for segwit marker
       fee_for_input = self.fee_rate.fee(input_vb).to_sat();
     }
@@ -142,10 +140,10 @@ impl Mint {
       unsigned_transaction.output[0].value -= fee_for_input;
       if unsigned_transaction.output.len() > 3 {
         // If change output exists, add input amount to it
-        unsigned_transaction.output[3].value += input_amount;
+        unsigned_transaction.output[3].value += last_mint_txout_value;
       } else {
         // Otherwise, add input amount to runic output
-        unsigned_transaction.output[1].value += input_amount;
+        unsigned_transaction.output[1].value += last_mint_txout_value;
       }
       unsigned_transaction.input.push(input);
     }

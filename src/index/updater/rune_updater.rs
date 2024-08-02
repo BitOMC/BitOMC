@@ -6,6 +6,7 @@ pub(super) struct RuneUpdater<'a, 'tx> {
   pub(super) height: u32,
   pub(super) id_to_entry: &'a mut Table<'tx, RuneIdValue, RuneEntryValue>,
   pub(super) state_change_to_last_outpoint: &'a mut Table<'tx, u8, &'static OutPointValue>,
+  pub(super) state_change_to_last_txout_value: &'a mut Table<'tx, u8, u64>,
   pub(super) outpoint_to_balances: &'a mut Table<'tx, &'static OutPointValue, &'static [u8]>,
   pub(super) require_conversion_outpoint: bool,
 }
@@ -482,6 +483,7 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
     for input in &tx.input {
       if input.previous_output == last_mint_outpoint {
         let next_mint_outpoint;
+        let next_mint_value;
         if let Some(vout) = tx
           .output
           .iter()
@@ -491,17 +493,23 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
             txid,
             vout: u32::try_from(vout).unwrap(),
           };
+          next_mint_value = tx.output[vout].value;
         } else {
           next_mint_outpoint = OutPoint::null();
+          next_mint_value = 0;
         };
 
         self
           .state_change_to_last_outpoint
           .insert(&StateChange::Mint.key(), &next_mint_outpoint.store())?;
+        self
+          .state_change_to_last_txout_value
+          .insert(&StateChange::Mint.key(), &next_mint_value)?;
       }
 
       if input.previous_output == last_conversion_outpoint {
         let next_conversion_outpoint;
+        let next_conversion_value;
         if let Some(vout) = tx
           .output
           .iter()
@@ -511,14 +519,19 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
             txid: tx.txid(),
             vout: u32::try_from(vout).unwrap(),
           };
+          next_conversion_value = tx.output[vout].value;
         } else {
           next_conversion_outpoint = OutPoint::null();
+          next_conversion_value = 0;
         };
 
         self.state_change_to_last_outpoint.insert(
           &StateChange::Convert.key(),
           &next_conversion_outpoint.store(),
         )?;
+        self
+          .state_change_to_last_txout_value
+          .insert(&StateChange::Convert.key(), &next_conversion_value)?;
       }
     }
 
@@ -571,9 +584,13 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         txid,
         vout: u32::try_from(vout).unwrap(),
       };
+      let mint_value = tx.output[vout].value;
       self
         .state_change_to_last_outpoint
         .insert(&StateChange::Mint.key(), &mint_outpoint.store())?;
+      self
+        .state_change_to_last_txout_value
+        .insert(&StateChange::Mint.key(), &mint_value)?;
     } else if last_mint_outpoint.txid != txid {
       // Saved outpoint must point to this transaction
       return Ok(None);
@@ -624,10 +641,14 @@ impl<'a, 'tx> RuneUpdater<'a, 'tx> {
         txid,
         vout: u32::try_from(vout).unwrap(),
       };
+      let conversion_value = tx.output[vout].value;
 
       self
         .state_change_to_last_outpoint
         .insert(&StateChange::Convert.key(), &conversion_outpoint.store())?;
+      self
+        .state_change_to_last_txout_value
+        .insert(&StateChange::Convert.key(), &conversion_value)?;
 
       // Allow unconnected conversions once conversion chain has been broken (only for 1 block)
       self.require_conversion_outpoint = false;
